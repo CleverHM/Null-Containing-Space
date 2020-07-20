@@ -1,0 +1,151 @@
+-- DROP TABLE User;
+-- DROP TABLE Follow;
+-- DROP TABLE Following;
+-- DROP TABLE UserTag;
+-- DROP TABLE UserTag;
+
+-- use Test;
+
+-- CREATE SCHEMA test;
+-- use JPA;
+
+CREATE TABLE User(
+	id					int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	email				varchar(30) NOT NULL,
+	pw					varchar(30) NOT NULL,
+	nickname			varchar(30) NOT NULL,
+	follow				int,
+	following			int,
+	blog_address		varchar(30),
+	git_address			varchar(30),
+	introduce			varchar(200),
+	find_question		varchar(30),
+	find_answer			varchar(30)
+);
+
+INSERT INTO User(id, email, pw, nickname)
+VALUE(1, 'kkk@naver.com','1111','À¯·É');
+
+CREATE TABLE UserTag(
+	id			int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	tag_name 	varchar(30) NOT NULL,
+
+	user_id		int NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Follow(
+	id			int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	follow_user varchar(30) NOT NULL,
+
+	user_id		int NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Following(
+	id				int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	following_user 	varchar(30) NOT NULL,
+
+	user_id			int NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE SNS(
+	id			int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title		varchar(200) NOT NULL,
+	term		varchar(30),
+	image_route	varchar (100),
+	like_count	int,
+	reply_count	int,
+	content		varchar(2000),
+	sns_date	timestamp,
+
+	user_id		int default 1,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE SET DEFAULT
+);
+
+CREATE TABLE SNSReply(
+	id				int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	content			varchar(200),
+	sns_reply_date	timestamp,
+
+	user_id			int default 1,
+	sns_id			int,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE SET DEFAULT,
+	FOREIGN KEY (sns_id) REFERENCES SNS(id) ON DELETE SET DEFAULT
+);
+
+CREATE TABLE SNSTag(
+	id				int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	tag_name		varchar(30),
+	
+	sns_id			int,
+	FOREIGN KEY (sns_id) REFERENCES SNS(id) ON DELETE SET DEFAULT
+);
+
+CREATE TABLE Study(
+	id				int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title			varchar(200) NOT NULL,
+	term			varchar(30),
+	image_route		varchar (100),
+	current_count	int,
+	total_count		int,
+	content			varchar(2000),
+	contact			varchar(50),
+	study_date		timestamp,
+
+	user_id			int,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE StudyReply(
+	id					int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	content				varchar(200),
+	study_reply_date	timestamp,
+
+	user_id				int default 1,
+	study_id			int,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE SET DEFAULT,
+	FOREIGN KEY (study_id) REFERENCES Study(id) ON DELETE SET DEFAULT
+);
+
+CREATE TABLE Competition(
+	id					int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title				varchar(200) NOT NULL,
+	term				varchar(30),
+	image_route			varchar (100),
+	current_count		int,
+	total_count			int,
+	content				varchar(2000),
+	contact				varchar(50),
+	competition_date	timestamp,
+
+	user_id				int,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Competition(
+	id					int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title				varchar(200) NOT NULL,
+	term				varchar(30),
+	image_route			varchar (100),
+	current_count		int,
+	total_count			int,
+	content				varchar(2000),
+	contact				varchar(50),
+	competition_date	timestamp,
+
+	user_id				int,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+
+CREATE TABLE CompetitionReply(
+	id						int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	content					varchar(200),
+	competition_reply_date	timestamp,
+
+	user_id					int default 1,
+	competition_id			int,
+	FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+	FOREIGN KEY (competition_id) REFERENCES Competition(id) ON DELETE CASCADE
+);
