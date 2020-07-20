@@ -1,5 +1,7 @@
 package com.ssafy.pjt1.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,12 @@ public class AuthServiceImpl implements AuthService{
 	public void insert(Auth auth) {
 		// TODO Auto-generated method stub
 		 authdao.save(auth);
+	}
+
+	@Override
+	public Optional<Auth> findone(String email) {
+		// TODO Auto-generated method stub
+		return authdao.findAuthByEmail(email);
 	}
 	 
 
