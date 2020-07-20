@@ -25,20 +25,24 @@
 
 
 
-## PJT construction
+## PJT Construction
 
-- [Spring (Back end)](../markdown/backend/Backend_Construction.md)
+> [Back end](../document/backend/Backend_Construction.md/#-directory) | [Front end](../document/frontend/Frontend_Construction.md/#-directory)
 
-- [Vue.js (Front end)](../markdown/frontend/Frontend_Construction.md)
+
+
+## File Definition
+
+> [Back end](../document/backend/Backend_Construction.md/#-file-definition) | [Front end](../document/frontend/Frontend_Construction.md/#-file-definition)
 
 
 
 ## wireFrame
 
-![wireFrame](./images/20200716203337.png)
+![wireFrame](./document/images/wireframe.png)
 
 
 
 ## ERD
 
-![ERD](./images/ERD.png)
+![ERD](./document/images/ERD.png)
