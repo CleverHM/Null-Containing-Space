@@ -27,13 +27,13 @@
 
 ## PJT Construction
 
-> [Back end](../document/backend/Backend_Construction.md/#-directory) | [Front end](../document/frontend/Frontend_Construction.md/#-directory)
+> [Back end](../document/backend/Backend_Construction.md/#directory) | [Front end](../document/frontend/Frontend_Construction.md/#directory)
 
 
 
 ## File Definition
 
-> [Back end](../document/backend/Backend_Construction.md/#-file-definition) | [Front end](../document/frontend/Frontend_Construction.md/#-file-definition)
+> [Back end](../document/backend/Backend_Construction.md/#file-definition) | [Front end](../document/frontend/Frontend_Construction.md/#file-definition)
 
 
 
