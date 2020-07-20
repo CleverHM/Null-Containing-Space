@@ -17,33 +17,43 @@ import com.ssafy.pjt1.service.AuthService;
 public class CustomMailSender {
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	@Autowired
 	private SpringTemplateEngine templateEngine;
-	
+
 	@Autowired
 	AuthService authservice;
-	
+
 	public void sendMail(String email) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		
-		helper.setSubject("test 이메일");
-		
+
+		helper.setSubject("블라블라 SNS 회원가입을 위한 인증번호 입니다.");
+
 		helper.setTo(email);
-		
-		String msg = "1234";
+
+		String msg = makeAuth();
 		Context context = new Context();
 		context.setVariable("test_key", "인증 번호: " + msg);
-		
+
 		// db넣기
 		Auth auth = new Auth(email, msg);
 		authservice.insert(auth);
-		
+
 		String html = templateEngine.process("mail-template", context);
 		helper.setText(html, true);
-		
+
 		javaMailSender.send(message);
-				
+
+	}
+
+	static String makeAuth() {
+		String auth = "";
+
+		for (int i = 0; i < 5; i++) {
+			auth += (int)(Math.random() * 100);
+		}
+
+		return auth;
 	}
 }
