@@ -15,7 +15,7 @@
 import { mapState } from "vuex";
 import "../../components/css/feed/feed-item.scss";
 import "../../components/css/feed/newsfeed.scss";
-import FeedItem from "../../components/feed/FeedItem.vue";
+import FeedItem from "../../components/SNS/FeedItem.vue";
 
 export default {
   props: ["keyword"],
