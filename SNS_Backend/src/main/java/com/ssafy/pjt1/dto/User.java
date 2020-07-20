@@ -3,12 +3,16 @@
 package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -29,13 +33,31 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
-    private int uid;
+    private int id;
 
     private String nickname;
     private String password;
+    private int follow;
+    private int following;
+    private String blog_addr;
+    private String git_addr;
+    private String introduce;
+    private String find_q;
+    private String find_a;
+    
+    
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Follow> Follows = new ArrayList<>(); 
+    
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Following> Followings = new ArrayList<>(); 
+    
 
     @JsonIgnore
     private String email;
+    
 
    
     @CreationTimestamp
@@ -52,24 +74,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public int getId() {
+		return id;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public int getUid() {
-		return uid;
-	}
-
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNickname() {
@@ -80,15 +90,76 @@ public class User {
 		this.nickname = nickname;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int getFollow() {
+		return follow;
+	}
+
+	public void setFollow(int follow) {
+		this.follow = follow;
+	}
+
+	public int getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(int following) {
+		this.following = following;
+	}
+
+	public String getBlog_addr() {
+		return blog_addr;
+	}
+
+	public void setBlog_addr(String blog_addr) {
+		this.blog_addr = blog_addr;
+	}
+
+	public String getGit_addr() {
+		return git_addr;
+	}
+
+	public void setGit_addr(String git_addr) {
+		this.git_addr = git_addr;
+	}
+
+	public String getIntroduce() {
+		return introduce;
+	}
+
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
+
+	public String getFind_q() {
+		return find_q;
+	}
+
+	public void setFind_q(String find_q) {
+		this.find_q = find_q;
+	}
+
+	public String getFind_a() {
+		return find_a;
+	}
+
+	public void setFind_a(String find_a) {
+		this.find_a = find_a;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-//	public LocalDateTime getCreateDate() {
-//		return createDate;
-//	}
-//
-//	public void setCreateDate(LocalDateTime createDate) {
-//		this.createDate = createDate;
-//	}
 }
