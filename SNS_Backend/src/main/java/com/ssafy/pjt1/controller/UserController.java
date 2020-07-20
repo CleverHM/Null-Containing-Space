@@ -132,26 +132,29 @@ public class UserController {
 		return response;
 	}
 
-	@PostMapping("/account/signup")
-	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
-	public Object signup(@Valid @RequestBody SignupRequest request) {
+	// Create
+    @PostMapping("/account/signup")
+    @ApiOperation(value = "가입하기", notes="가입하기 기능을 구현")
 
-		User user1 = new User(request.getEmail(), request.getPassword(), request.getNickname());
-		User user2 = userservice.signUp(user1);
+    public Object signup(@Valid @RequestBody SignupRequest request) {
+ 
+    	User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail());
+    	User user2 = userservice.signUp(user1);
+    
+    	
+    	if(user2 == null) {
+             System.out.println("실패");
+             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	}else {
+    		System.out.println(user2.getNickname() +" " + user2.getPassword() + " " + user2.getEmail());
+    		System.out.println("성공");
+    		final BasicResponse result = new BasicResponse();
+            result.status = true;
+            result.data = "success";
 
-		System.out.println(user2.getEmail() + " " + user2.getCreateDate() + " " + user2.getPassword());
-
-		if (user2 == null) {
-			System.out.println("실패");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		} else {
-			System.out.println("성공");
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		}
-
-	}
+            return new ResponseEntity<>(result, HttpStatus.OK);
+    	}
+    	
+        
+    }
 }

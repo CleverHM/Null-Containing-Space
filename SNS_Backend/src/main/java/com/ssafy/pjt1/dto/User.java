@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -35,8 +37,9 @@ public class User {
     @JsonIgnore
     private String email;
 
-    @JsonIgnore
-    @Column(insertable = false, updatable = false)
+   
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createDate;
     
     public User() {
@@ -81,11 +84,11 @@ public class User {
 		this.email = email;
 	}
 
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
-	}
+//	public LocalDateTime getCreateDate() {
+//		return createDate;
+//	}
+//
+//	public void setCreateDate(LocalDateTime createDate) {
+//		this.createDate = createDate;
+//	}
 }
