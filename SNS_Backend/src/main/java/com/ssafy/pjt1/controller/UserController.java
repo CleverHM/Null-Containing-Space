@@ -51,25 +51,29 @@ public class UserController {
 
 	@PostMapping("/account/loginMailSend")
 	@ApiOperation(value = "회원가입시 인증 메일 전송", notes = "회원가입시 인증 메일 전송 기능 구현")
-	public void loginMailSend(@Valid @RequestParam String email) throws MessagingException {
+	public void loginMailSend(@Valid @RequestBody String email) throws MessagingException {
 		// 이메일 보내기
+		System.out.println(email);
+		System.out.println(email.charAt(0));
 		customMailSender.sendMail(email);
 	}
 	
 	@PostMapping("/account/loginMailConfirm")
 	@ApiOperation(value = "회원가입시 메일인증", notes = "회원가입시 메일인증 기능 구현")
-	public Object loginMailConfirm(@Valid @RequestParam String email, @Valid @RequestParam String authNum){
+	public Object loginMailConfirm(@Valid @RequestBody Auth auth){
 
 		// 확인 하기
+		System.out.println(auth.getAuth_email());
+		System.out.println(auth.getAuth_number());
 		
-		Optional<Auth> flag = authservice.findone(email);
+		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
 		});
 
 		if (flag != null) {
-			if (num.equals(authNum)) {
+			if (num.equals(auth.getAuth_number())) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
 				result.data = "success";

@@ -132,7 +132,7 @@ export default {
         let msg = "";
 
         http
-        .post("/login", {
+        .post("/account/login", {
           email : this.email,
           password : this.password,
         })

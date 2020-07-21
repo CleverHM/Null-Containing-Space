@@ -7,7 +7,7 @@
 
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="emailCode" id="emailcode" placeholder="인증코드를 입력하세요." type="text" />
+        <input v-model="authNum" id="emailcode" placeholder="인증코드를 입력하세요." type="text" />
         <label for="emailcode">인증코드</label>
       </div>
     </div>
@@ -22,7 +22,12 @@
 import http from "@/util/http-common.js";
 
 export default {
-
+  props: {
+    authNum:{
+      type:String,
+      required: true
+    }
+  },
   data: () => {
       return {
           // 일단 password로 해놓고 나중에 알고리즘으로 임시비밀번호 발급하기
@@ -32,8 +37,8 @@ export default {
   },
   methods:{
    confirmCode() {
-     console.log("hello")
-     this.$emit("ConfirmCode", this.emailCode)
+
+     this.$emit("ConfirmCode", this.authNum)
     }
   }
 };

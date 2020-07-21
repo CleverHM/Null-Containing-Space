@@ -18,13 +18,13 @@ import http from "@/util/http-common.js";
 import "../../assets/css/components.scss";
 
 export default {
-
-  data: () => {
-    return {
-      email: "",
-
-    };
+  props: {
+    email:{
+      type:String,
+      required: true
+    }
   },
+
   methods:{
     // 데이터베이스에 이메일이 있는지 확인하고 다음페이지로 이동시키기
     confirmEmail() {

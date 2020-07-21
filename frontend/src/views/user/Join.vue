@@ -13,11 +13,11 @@
         <Join3></Join3>
       </div>
       <div v-else>
-        <Join2 @ConfirmCode="Gostep3"></Join2>
+        <Join2 @ConfirmCode="Gostep3" :authNum="user.authNum"></Join2>
       </div>
     </div>
     <div v-else>
-      <Join1 @ConfirmEmail="Gostep2"></Join1>
+      <Join1 @ConfirmEmail="Gostep2" :email="user.email"></Join1>
     </div>
 
   </div>
@@ -27,6 +27,8 @@
 import Join1 from '../../components/user/join1.vue'
 import Join2 from '../../components/user/join2.vue'
 import Join3 from '../../components/user/join3.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
 export default {
   name: 'JoinView',
   components: {
@@ -36,15 +38,44 @@ export default {
   },
   data: () => {
     return {
+      user : {},
       isActiveStep2 : false,
       isActiveStep3 : false,
     };
   },
+  created(){
+    this.user.email = ""
+    this.user.authNum = ""
+  },
   methods:{
-    Gostep2(){
+    Gostep2(email){
+      this.user.email = email
+      console.log(this.user.email, typeof(this.user.email))
+      
+      http
+      .post('/account/loginMailSend', 
+        this.user.email,
+      )
+      .then((data) => {
+        console.log(data)
+      })
+
+
       this.isActiveStep2 = true;
     },
-    Gostep3() {
+    Gostep3(authNum) {
+      console.log(this.user.email)
+      console.log(authNum)
+      http
+      .post('/account/loginMailConfirm', 
+        {
+          "auth_email": this.user.email,
+          "auth_number": authNum,
+        }
+        )
+      .then((data) => {
+        console.log(data)
+      })
       this.isActiveStep3 = true;
     }
     
