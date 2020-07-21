@@ -5,25 +5,21 @@
     Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
  -->
 <template>
-  <div class="user join wrapC">
-    <h4>가입하기</h4>
+  <div id="join3" class="user join wrapC">
     <h5 class="mb-4">
-    아래의 폼을 입력해주세요.
+     아래의 회원가입 폼을 작성하세요.
     </h5>
-
-    <div class="input-with-label">
-        <input v-model="nickName" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">닉네임</label>
-    </div>
-
-
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text"/>
+        <input v-model="nickName" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <label for="nickname">닉네임</label>
+      </div>
+
+      <div class="input-with-label">
+        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
         <label for="email">이메일</label>
       </div>
 
-      
       <div class="input-with-label">
         <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
         <label for="password">비밀번호</label>
@@ -38,42 +34,28 @@
         />
         <label for="password-confirm">비밀번호 확인</label>
       </div>
-
-      <!-- 비밀번호 찾기 !-->
-      <div class="components-page">
-        <SelectComponent :options="options" />
-      </div>
-      <div class="input-with-label">
-        <input v-model="passwordAnswer" id="password" type="text" placeholder="비밀번호 질문의 답을 입력하세요." />
-        <label for="passwordAnswer">비밀번호 질문</label>
-      </div>
-
-
-
-
     </div>
 
-    <button class="btn-bottom" @click="join">
-    가입하기
-    </button>
+    <label>
+      <input v-model="isTerm" type="checkbox" id="term" />
+      <span>약관을 동의합니다.</span>
+    </label>
+
+    <span @click="termPopup=true">약관보기</span>
+
+    <button class="btn-input" @click="join">가입하기</button>
   </div>
 </template>
 
 <script>
 import http from "@/util/http-common.js";
-import SelectComponent from "../../components/user/snsLogin/Select.vue";
-import "../../assets/css/components.scss";
 
 export default {
-  components: {
-      SelectComponent,
-  },
   data: () => {
     return {
       email: "",
       password: "",
       passwordConfirm: "",
-      passwordAnswer: "",
       nickName: "",
       isTerm: false,
       isLoading: false,
@@ -87,21 +69,12 @@ export default {
       isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
-      termPopup: false,
-      options: [
-        {
-          value: "option1",
-          title: "가장 좋아하는 프로그래밍 언어는?"
-        },
-        {
-          value: "option2",
-          title: "당신의 이름은?"
-        }
-      ],
+      termPopup: false
     };
   },
   methods:{
     join(){
+      this.$router.push("/");
       let msg = "";
       http
       .post("/signup", {
@@ -124,6 +97,27 @@ export default {
 };
 </script>
 
-
 <style scoped>
+#join3{
+  position: absolute;
+  width:100%;
+  top:134px;
+  padding: 0px 30px 30px 30px;
+}
+.input-with-label{
+  width: 100%;
+}
+
+.btn-input{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  background-color: #464545;
+  height: 50px;
+  border-radius: 3px;
+  color: #f7f7f7;
+  font-weight: bold;
+  width:100%;
+}
 </style>
+
