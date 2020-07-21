@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,13 +41,11 @@ public class User {
 	private String password;
 	private String email;
 	
-	
-	
-	@JoinTable(name = "relation", 
-	joinColumns = {@JoinColumn(name = "From", referencedColumnName = "uid")},
-	inverseJoinColumns = {@JoinColumn(name = "To", referencedColumnName = "uid")})
-	
-	@ManyToMany
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "Follow", 
+	joinColumns = {@JoinColumn(name = "From_id", referencedColumnName = "uid")},
+	inverseJoinColumns = {@JoinColumn(name = "To_id", referencedColumnName = "uid")})
 	private Set<User> followings;
 	
 	

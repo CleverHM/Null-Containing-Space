@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,21 +63,15 @@ public class UserController {
 
 	@PostMapping("/account/loginMailConfirm")
 	@ApiOperation(value = "회원가입시 메일인증", notes = "회원가입시 메일인증 기능 구현")
-<<<<<<< Updated upstream
-	public Object loginMailConfirm(@Valid @RequestBody Auth auth){
 
+	public Object loginMailConfirm(@Valid @RequestParam Auth auth) {
 		// 확인 하기
 		System.out.println(auth.getAuth_email());
 		System.out.println(auth.getAuth_number());
-		
+
+
 		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
-=======
-	public Object loginMailConfirm(@Valid @RequestParam String email, @Valid @RequestParam String authNum) {
 
-		// 확인 하기
-
-		Optional<Auth> flag = authservice.findone(email);
->>>>>>> Stashed changes
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
@@ -201,8 +194,14 @@ public class UserController {
 
 	@PostMapping("/account/follow")
 	@ApiOperation(value = "팔로우 ", notes = "팔로우 기능을 구현")
-	public void follow(@Valid @RequestParam String email, @Valid @RequestBody User fromUser) {
+	public void follow(@Valid @RequestParam String email) {
 
+		User master = new User("hm", "gksrnr7729", "conquerer1209@gmail.com");
+		User slave = new User("hyun", "gksrnr7729", email);
+		
+		master.getFollowing().add(slave);
+		
+		userservice.signUp(master);
 		
 	}
 }
