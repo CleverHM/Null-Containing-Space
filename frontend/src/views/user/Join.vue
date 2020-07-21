@@ -2,62 +2,84 @@
   <div class="JoinView">
     <div class="progress-container">
       <ul class="progressbar">
-        <li class="active">이메일 입력</li>
-        <li class="active">Step2</li>
-        <li>Step3</li>
+        <li id="Step1" class="active">이메일 입력</li>
+        <li id="Step2" :class="{'active':isActiveStep2}">이메일 인증</li>
+        <li id="Step3" :class="{'active':isActiveStep3}">회원가입 폼 작성</li>
       </ul>
     </div>
+    <div v-if="isActiveStep2">
 
-    <div id="step1">
-      <h5 class="mb-4">
-      가입할 이메일 주소를 아래에 입력해주세요.
-      </h5>
-      <div class="form-wrap">
-        <div class="input-with-label">
-          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-          <label for="email">이메일</label>
-        </div>
+      <div v-if="isActiveStep3">
+        <Join3></Join3>
       </div>
-      <button class="btn-input" @click="next()">입력</button>
+      <div v-else>
+        <Join2 @ConfirmCode="Gostep3" :authNum="user.authNum"></Join2>
+      </div>
     </div>
-
-    <div id="step2">
-      <h5 class="mb-4">
-      가입할 이메일 주소를 아래에 입력해주세요.
-      </h5>
-      <div class="form-wrap">
-        <div class="input-with-label">
-          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-          <label for="email">이메일</label>
-        </div>
-      </div>
-      <button class="btn-input" @click="next()">입력</button>
-    </div>
-
-    <div id="step3">
-      <h5 class="mb-4">
-      가입할 이메일 주소를 아래에 입력해주세요.
-      </h5>
-      <div class="form-wrap">
-        <div class="input-with-label">
-          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-          <label for="email">이메일</label>
-        </div>
-      </div>
-      <button class="btn-input" @click="next()">입력</button>
+    <div v-else>
+      <Join1 @ConfirmEmail="Gostep2" :email="user.email"></Join1>
     </div>
 
   </div>
 </template>
 
 <script>
+import Join1 from '../../components/user/join1.vue'
+import Join2 from '../../components/user/join2.vue'
+import Join3 from '../../components/user/join3.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
 export default {
   name: 'JoinView',
+  components: {
+    Join1,
+    Join2, 
+    Join3,
+  },
+  data: () => {
+    return {
+      user : {},
+      isActiveStep2 : false,
+      isActiveStep3 : false,
+    };
+  },
+  created(){
+    this.user.email = ""
+    this.user.authNum = ""
+  },
   methods:{
-    next(){
-      this.$router.push('/')
+    Gostep2(email){
+      this.user.email = email
+      console.log(this.user.email, typeof(this.user.email))
+      
+      http
+      .post('/account/loginMailSend', 
+        this.user.email,
+      )
+      .then((data) => {
+        console.log(data)
+      })
+
+
+      this.isActiveStep2 = true;
+    },
+    Gostep3(authNum) {
+      console.log(this.user.email)
+      console.log(authNum)
+      http
+      .post('/account/loginMailConfirm', 
+        {
+          "auth_email": this.user.email,
+          "auth_number": authNum,
+        }
+        )
+      .then((data) => {
+        console.log(data)
+      })
+      this.isActiveStep3 = true;
     }
-  }
+    
+  },
 }
 </script>
 
