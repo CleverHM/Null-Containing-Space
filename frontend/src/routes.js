@@ -2,10 +2,11 @@
 
 import testLogin from './views/user/testLogin.vue'
 // import Login from './views/user/Login.vue'
-// import Join from './views/user/Join.vue'
+import Join from './views/user/Join.vue'
 import Join1 from './views/user/join1.vue'
 import Join2 from './views/user/join2.vue'
-import Join from './views/user/joinForm.vue'
+// import Join from './views/user/joinForm.vue'
+// import Join from './views/user/Joincopy.vue'
 import findPassword1 from './views/user/FindPassword1.vue'
 import findPassword2 from './views/user/FindPassword2.vue'
 import findPassword3 from './views/user/FindPassword3.vue'
@@ -16,6 +17,8 @@ import FeedMain from './views/SNS/IndexFeed.vue'
 import Components from './views/Components.vue'
 
 import Main from './views/Main.vue'
+
+import studyList from './views/study/studyList.vue'
 
 
 export default [
@@ -63,6 +66,11 @@ export default [
         path : '/main/',
         name : 'Main',
         component : Main
+    },
+    {
+        path : '/study/list',
+        name : 'StudyList',
+        component : StudyList
     },
     {
         path : '/feed/',

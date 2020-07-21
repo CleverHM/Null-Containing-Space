@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueGoodWizard from 'vue-good-wizard'
 import App from './App.vue'
 import VueRouter from 'vue-router';
 import routes from './routes'
@@ -11,12 +12,15 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+
 //fontawesome
 library.add(fas)
 library.add(far)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
+// step progress bar (Join page)
+Vue.use(VueGoodWizard)
 
 Vue.use(VueRouter)
 // Bootstrap
