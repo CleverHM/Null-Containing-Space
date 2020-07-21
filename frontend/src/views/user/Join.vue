@@ -1,97 +1,140 @@
-
-<!--
-    가입하기는 기본적인 폼만 제공됩니다
-    기능명세에 따라 개발을 진행하세요.
-    Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
- -->
 <template>
-  <div class="user join wrapC">
-    <h1>가입하기</h1>
-    <div class="form-wrap">
-      <div class="input-with-label">
-        <input v-model="nickName" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">닉네임</label>
-      </div>
-
-      <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-        <label for="email">이메일</label>
-      </div>
-
-      <div class="input-with-label">
-        <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
-        <label for="password">비밀번호</label>
-      </div>
-
-      <div class="input-with-label">
-        <input
-          v-model="passwordConfirm"
-          :type="passwordConfirmType"
-          id="password-confirm"
-          placeholder="비밀번호를 다시한번 입력하세요."
-        />
-        <label for="password-confirm">비밀번호 확인</label>
-      </div>
+  <div class="JoinView">
+    <div class="progress-container">
+      <ul class="progressbar">
+        <li class="active">이메일 입력</li>
+        <li class="active">Step2</li>
+        <li>Step3</li>
+      </ul>
     </div>
 
-    <label>
-      <input v-model="isTerm" type="checkbox" id="term" />
-      <span>약관을 동의합니다.</span>
-    </label>
+    <div id="step1">
+      <h5 class="mb-4">
+      가입할 이메일 주소를 아래에 입력해주세요.
+      </h5>
+      <div class="form-wrap">
+        <div class="input-with-label">
+          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
+          <label for="email">이메일</label>
+        </div>
+      </div>
+      <button class="btn-input" @click="next()">입력</button>
+    </div>
 
-    <span @click="termPopup=true">약관보기</span>
+    <div id="step2">
+      <h5 class="mb-4">
+      가입할 이메일 주소를 아래에 입력해주세요.
+      </h5>
+      <div class="form-wrap">
+        <div class="input-with-label">
+          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
+          <label for="email">이메일</label>
+        </div>
+      </div>
+      <button class="btn-input" @click="next()">입력</button>
+    </div>
 
-    <button class="btn-bottom" @click="join">가입하기</button>
+    <div id="step3">
+      <h5 class="mb-4">
+      가입할 이메일 주소를 아래에 입력해주세요.
+      </h5>
+      <div class="form-wrap">
+        <div class="input-with-label">
+          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
+          <label for="email">이메일</label>
+        </div>
+      </div>
+      <button class="btn-input" @click="next()">입력</button>
+    </div>
+
   </div>
 </template>
 
 <script>
-import http from "@/util/http-common.js";
-
 export default {
-  data: () => {
-    return {
-      email: "",
-      password: "",
-      passwordConfirm: "",
-      nickName: "",
-      isTerm: false,
-      isLoading: false,
-      error: {
-        email: false,
-        password: false,
-        nickName: false,
-        passwordConfirm: false,
-        term: false
-      },
-      isSubmit: false,
-      passwordType: "password",
-      passwordConfirmType: "password",
-      termPopup: false
-    };
-  },
+  name: 'JoinView',
   methods:{
-    join(){
-      let msg = "";
-      http
-      .post("/signup", {
-        email : this.email,
-        password : this.password,
-        nickName : this.nickName
-      })
-      .then(({data}) => {
-        if(data == "success") {
-          msg = "complete";
-        }
-        alert(msg);
-        this.moveLogin();
-      });
-    },
-    moveLogin(){
-      this.$router.push("/");
+    next(){
+      this.$router.push('/')
     }
   }
-};
+}
 </script>
 
+<style scoped>
+.progress-container{
+  width:100%;
+  position: absolute;
+  top:30px;
+  z-index: 1;
+}
+.progressbar{
+  counter-reset: step;
+}
+.progressbar li{
+  float: left;
+  width: 33.333%;
+  position: relative;
+  text-align: center;
+}
+.progressbar li:before{
+  content:counter(step);
+  counter-increment: step;
+  width:30px;
+  height:30px;
 
+  border: 2px solid #ACCCC4;
+  color: #ACCCC4;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  line-height: 27px;
+  background:  #f7f7f7;
+  text-align: center;
+  font-weight: bold;
+}
+.progressbar li:after{
+  content: '';
+  position: absolute;
+  width:100%;
+  height: 3px;
+  background: #ACCCC4;
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+.progressbar li:first-child:after{
+content: none;
+}
+.progressbar li.active:before{
+border-color: #3aac5d;
+background: #3aac5d;
+color: white
+}
+.progressbar li.active:after{
+ background: #3aac5d;
+}
+
+
+#step1, #step2, #step3{
+  position: absolute;
+  width:100%;
+  top:134px;
+  padding: 0px 30px 30px 30px;
+}
+.input-with-label{
+  width: 100%;
+}
+
+.btn-input{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  background-color: #464545;
+  height: 50px;
+  border-radius: 3px;
+  color: #f7f7f7;
+  font-weight: bold;
+  width:100%;
+}
+</style>
