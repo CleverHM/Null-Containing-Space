@@ -3,7 +3,11 @@
     <div class="wrapB">
       <Navbar></Navbar>
       <subNav></subNav>
-      <h1>뉴스피드</h1>
+      <div class="d-flex justify-content-end align-items-center">
+          <button class="btn-sort" style="background-color: #C4BCB8;">전체</button>
+          <button class="btn-sort" style="background-color: blue;">QnA</button>
+          <button class="btn-sort" style="background-color: black;">Tip</button>
+      </div>
 
       <FeedItem />
       <FeedItem />
@@ -32,3 +36,14 @@ export default {
 };
 </script>
 
+
+<style scoped>
+.btn-sort{
+    width: 70px;
+    margin: 10px 5px 10px 5px;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #f7f7f7;
+}
+</style>
