@@ -19,6 +19,7 @@ import Components from './views/Components.vue'
 import Main from './views/Main.vue'
 
 import StudyList from './views/study/StudyList.vue'
+import StudyDetail from './views/study/StudyDetail.vue'
 
 
 export default [
@@ -71,6 +72,11 @@ export default [
         path : '/study/list',
         name : 'StudyList',
         component : StudyList
+    },
+    {
+        path : '/study/detail',
+        name : 'StudyDetail',
+        component : StudyDetail
     },
     {
         path : '/feed/',
