@@ -194,14 +194,19 @@ public class UserController {
 
 	@PostMapping("/account/follow")
 	@ApiOperation(value = "팔로우 ", notes = "팔로우 기능을 구현")
-	public void follow(@Valid @RequestParam String email) {
+	public void follow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
 
-		User master = new User("hm", "gksrnr7729", "conquerer1209@gmail.com");
-		User slave = new User("hyun", "gksrnr7729", email);
+		Optional<User> master = userservice.findone(From);
+		Optional<User> slave = userservice.findone(To);
 		
-		master.getFollowing().add(slave);
+		User u1 = master.get();
+		User u2 = slave.get();
 		
-		userservice.signUp(master);
+		
+		u1.getFollowing().add(u2);
+		u2.getFollowers().add(u1);
+		
+		userservice.signUp(u1);
 		
 	}
 }
