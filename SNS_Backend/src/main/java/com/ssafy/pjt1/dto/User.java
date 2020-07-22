@@ -46,13 +46,15 @@ public class User {
 	private boolean gender; // 1이면 남자, 2이면 여자
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Follow", joinColumns = {
+	@JoinTable(name = "Userfollow", joinColumns = {
 			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
 					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
 	private Set<User> followings;
 
 	@ManyToMany(mappedBy = "followings")
 	private Set<User> followers;
+	
+//	@ManytoMany(fetch = FetchType.LAZY)
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -61,6 +63,15 @@ public class User {
 	public User() {
 
 	}
+	
+	public User(String nickname, String password, String email) {
+		this.nickname = nickname;
+		this.password = password;
+		this.email = email;
+		this.followers = new HashSet<User>();
+		this.followings = new HashSet<User>();
+	}
+	
 
 	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
 		this.nickname = nickname;

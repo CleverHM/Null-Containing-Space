@@ -1,6 +1,7 @@
 package com.ssafy.pjt1.controller;
 
 import java.util.Optional;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.CustomMailSender;
+import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
@@ -47,8 +50,8 @@ public class UserController {
 	@Autowired
 	AuthService authservice;
 	
-//	@Autowired
-//	FollowDao followdao;
+	@Autowired
+	UserDao userdao;
 
 	private String num;
 
@@ -194,7 +197,7 @@ public class UserController {
 	}
 
 	@PostMapping("/account/follow")
-	@ApiOperation(value = "팔로우 ", notes = "팔로우 기능을 구현")
+	@ApiOperation(value = "유저 팔로우", notes = "사용자간 팔로우 기능을 구현")
 	public void follow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
 
 		Optional<User> master = userservice.findone(From);
@@ -208,6 +211,27 @@ public class UserController {
 		u2.getFollowers().add(u1);
 		
 		userservice.signUp(u1);
+	}
+	
+	
+	@GetMapping("/account/follow/list")
+	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
+	public void follow(@Valid @RequestParam String email) {
+		
+		//뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
+		Optional<User> temp = userservice.findone(email);
+		User u1 = temp.get();
+		Set<User> followers = u1.getFollowers();
+		Set<User> followings = u1.getFollowing();
+		
+		System.out.println("팔로워");
+		for(User u : followers) System.out.print(u.getEmail() + ", ");
+		
+		System.out.println();
+		System.out.println("------------------------------");
+		
+		System.out.println("팔로잉");
+		for(User u : followings) System.out.print(u.getEmail() + ", ");
 		
 	}
 }
