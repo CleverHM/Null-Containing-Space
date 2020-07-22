@@ -9,6 +9,7 @@
       <div class="input-with-label">
         <input v-model="authNum" id="emailcode" placeholder="인증코드를 입력하세요." type="text" />
         <label for="emailcode">인증코드</label>
+        <span id="ErrorMsg">{{ ErrorMessage }}</span>
       </div>
     </div>
 
@@ -26,6 +27,9 @@ export default {
     authNum:{
       type:String,
       required: true
+    },
+    ErrorMessage: {
+      type: String,
     }
   },
   data: () => {
@@ -66,5 +70,8 @@ export default {
   color: #f7f7f7;
   font-weight: bold;
   width:100%;
+}
+#ErrorMsg{
+  color : #D91120;
 }
 </style>

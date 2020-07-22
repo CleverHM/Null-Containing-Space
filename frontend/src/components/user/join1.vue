@@ -7,8 +7,11 @@
         <div class="input-with-label">
           <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
           <label for="email">이메일</label>
+          <span id="ErrorMsg">{{ ErrorMessage }}</span>
+
         </div>
       </div>
+      
       <button class="btn-input" @click="confirmEmail">입력</button>
   </div>
 </template>
@@ -16,6 +19,8 @@
 <script>
 import http from "@/util/http-common.js";
 import "../../assets/css/components.scss";
+// 이메일 체크 정규식
+var EmailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
 export default {
   props: {
@@ -24,11 +29,20 @@ export default {
       required: true
     }
   },
-
+  data : () => {
+    return {
+      ErrorMessage : ""
+    }
+  },
   methods:{
     // 데이터베이스에 이메일이 있는지 확인하고 다음페이지로 이동시키기
     confirmEmail() {
-        this.$emit("ConfirmEmail", this.email)
+        if (this.email.match(EmailregExp) != null){
+          this.$emit("ConfirmEmail", this.email)
+        }else {
+          this.ErrorMessage = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
+        }
+        
     },
   }
 };
@@ -57,4 +71,8 @@ export default {
   font-weight: bold;
   width:100%;
 }
+#ErrorMsg{
+  color : #D91120;
+}
+
 </style>
