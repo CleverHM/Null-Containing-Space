@@ -25,8 +25,8 @@ import StudyDetail from './views/study/StudyDetail.vue'
 export default [
     {
         path : '/',
-        name : 'testLogin',
-        component : testLogin
+        name : 'Login',
+        component : Login
     },
     {
         path : '/user/join',
@@ -74,6 +74,11 @@ export default [
         component : FeedMain
     },
     {
+        path : '/components',
+        name : 'Components',
+        component : Components
+    },
+    {
         path : '/feed/detail',
         name : 'FeedDetail',
         component : FeedDetail
@@ -83,10 +88,5 @@ export default [
         name : 'FeedCreate',
         component : FeedCreate
     },
-    {
-        path : '/components',
-        name : 'Components',
-        component : Components
-    },
-    
+      
 ]
