@@ -1,7 +1,6 @@
 
 
-import testLogin from './views/user/testLogin.vue'
-// import Login from './views/user/Login.vue'
+import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import findPassword1 from './views/user/FindPassword1.vue'
 import findPassword2 from './views/user/FindPassword2.vue'
@@ -21,8 +20,8 @@ import StudyDetail from './views/study/StudyDetail.vue'
 export default [
     {
         path : '/',
-        name : 'testLogin',
-        component : testLogin
+        name : 'Login',
+        component : Login
     },
     {
         path : '/user/join',
