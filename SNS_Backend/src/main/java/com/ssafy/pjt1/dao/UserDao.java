@@ -15,5 +15,4 @@ public interface UserDao extends JpaRepository<User, Integer> {
     Optional<User> deleteUserByEmail(String email);
     //Optional<User> save(SignupRequest request);
     //Optional<User> delete(SignupRequest request);
-
 }

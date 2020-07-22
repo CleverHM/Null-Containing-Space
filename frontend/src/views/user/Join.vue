@@ -1,97 +1,162 @@
-
-<!--
-    가입하기는 기본적인 폼만 제공됩니다
-    기능명세에 따라 개발을 진행하세요.
-    Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
- -->
 <template>
-  <div class="user join wrapC">
-    <h1>가입하기</h1>
-    <div class="form-wrap">
-      <div class="input-with-label">
-        <input v-model="nickName" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">닉네임</label>
-      </div>
+  <div class="JoinView">
+    <div class="progress-container">
+      <ul class="progressbar">
+        <li id="Step1" class="active">이메일 입력</li>
+        <li id="Step2" :class="{'active':isActiveStep2}">이메일 인증</li>
+        <li id="Step3" :class="{'active':isActiveStep3}">회원가입 폼 작성</li>
+      </ul>
+    </div>
+    <div v-if="isActiveStep2">
 
-      <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-        <label for="email">이메일</label>
+      <div v-if="isActiveStep3">
+        <Join3></Join3>
       </div>
-
-      <div class="input-with-label">
-        <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
-        <label for="password">비밀번호</label>
-      </div>
-
-      <div class="input-with-label">
-        <input
-          v-model="passwordConfirm"
-          :type="passwordConfirmType"
-          id="password-confirm"
-          placeholder="비밀번호를 다시한번 입력하세요."
-        />
-        <label for="password-confirm">비밀번호 확인</label>
+      <div v-else>
+        <Join2 @ConfirmCode="Gostep3" :authNum="user.authNum"></Join2>
       </div>
     </div>
+    <div v-else>
+      <Join1 @ConfirmEmail="Gostep2" :email="user.email"></Join1>
+    </div>
 
-    <label>
-      <input v-model="isTerm" type="checkbox" id="term" />
-      <span>약관을 동의합니다.</span>
-    </label>
-
-    <span @click="termPopup=true">약관보기</span>
-
-    <button class="btn-bottom" @click="join">가입하기</button>
   </div>
 </template>
 
 <script>
-import http from "@/util/http-common.js";
-
+import Join1 from '../../components/user/join1.vue'
+import Join2 from '../../components/user/join2.vue'
+import Join3 from '../../components/user/join3.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
 export default {
+  name: 'JoinView',
+  components: {
+    Join1,
+    Join2, 
+    Join3,
+  },
   data: () => {
     return {
-      email: "",
-      password: "",
-      passwordConfirm: "",
-      nickName: "",
-      isTerm: false,
-      isLoading: false,
-      error: {
-        email: false,
-        password: false,
-        nickName: false,
-        passwordConfirm: false,
-        term: false
-      },
-      isSubmit: false,
-      passwordType: "password",
-      passwordConfirmType: "password",
-      termPopup: false
+      user : {},
+      isActiveStep2 : false,
+      isActiveStep3 : false,
     };
   },
+  created(){
+    this.user.email = ""
+    this.user.authNum = ""
+  },
   methods:{
-    join(){
-      let msg = "";
+    Gostep2(email){
+      this.user.email = email
+      console.log(this.user.email, typeof(this.user.email))
+      
       http
-      .post("/signup", {
-        email : this.email,
-        password : this.password,
-        nickName : this.nickName
+      .post('/account/loginMailSend', 
+        this.user.email,
+      )
+      .then((data) => {
+        console.log(data)
       })
-      .then(({data}) => {
-        if(data == "success") {
-          msg = "complete";
-        }
-        alert(msg);
-        this.moveLogin();
-      });
+
+
+      this.isActiveStep2 = true;
     },
-    moveLogin(){
-      this.$router.push("/");
+    Gostep3(authNum) {
+      console.log(this.user.email)
+      console.log(authNum)
+      http
+      .post('/account/loginMailConfirm', 
+        {
+          "auth_email": this.user.email,
+          "auth_number": authNum,
+        }
+        )
+      .then((data) => {
+        console.log(data)
+      })
+      this.isActiveStep3 = true;
     }
-  }
-};
+    
+  },
+}
 </script>
 
+<style scoped>
+.progress-container{
+  width:100%;
+  position: absolute;
+  top:30px;
+  z-index: 1;
+}
+.progressbar{
+  counter-reset: step;
+}
+.progressbar li{
+  float: left;
+  width: 33.333%;
+  position: relative;
+  text-align: center;
+}
+.progressbar li:before{
+  content:counter(step);
+  counter-increment: step;
+  width:30px;
+  height:30px;
 
+  border: 2px solid #ACCCC4;
+  color: #ACCCC4;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  line-height: 27px;
+  background:  #f7f7f7;
+  text-align: center;
+  font-weight: bold;
+}
+.progressbar li:after{
+  content: '';
+  position: absolute;
+  width:100%;
+  height: 3px;
+  background: #ACCCC4;
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+.progressbar li:first-child:after{
+content: none;
+}
+.progressbar li.active:before{
+border-color: #3aac5d;
+background: #3aac5d;
+color: white
+}
+.progressbar li.active:after{
+ background: #3aac5d;
+}
+
+
+#step1, #step2, #step3{
+  position: absolute;
+  width:100%;
+  top:134px;
+  padding: 0px 30px 30px 30px;
+}
+.input-with-label{
+  width: 100%;
+}
+
+.btn-input{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  background-color: #464545;
+  height: 50px;
+  border-radius: 3px;
+  color: #f7f7f7;
+  font-weight: bold;
+  width:100%;
+}
+</style>
