@@ -57,6 +57,7 @@ export default {
       passwordType: "password",
       passwordConfirmType: "password",
       termPopup: false
+      
     };
   },
   created(){

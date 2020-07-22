@@ -16,6 +16,11 @@
     <div class="form-wrap">
       <div class="input-with-label">
         <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <label for="nickname">이름</label>
+      </div>
+
+      <div class="input-with-label">
+        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
         <label for="nickname">닉네임</label>
       </div>
 
@@ -37,6 +42,10 @@
       </div>
     </div>
 
+    <HalfButton :buttons="buttons" />
+
+
+
     <label>
       <input v-model="isTerm" type="checkbox" id="term" />
       <span>약관을 동의합니다.</span>
@@ -50,6 +59,7 @@
 
 <script>
 import http from "@/util/http-common.js";
+
 export default {
   props: {
     user:{
@@ -72,7 +82,23 @@ export default {
       isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
-      termPopup: false
+      termPopup: false,
+      // 성별
+      buttons: [
+        {
+          title: "확인",
+          highlight: true,
+          onClick: () => {
+            console.log("클릭");
+          }
+        },
+        {
+          title: "취소",
+          onClick: () => {
+            console.log("클릭");
+          }
+        }
+      ],
     };
   },
   methods:{
