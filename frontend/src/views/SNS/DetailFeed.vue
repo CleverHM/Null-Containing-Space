@@ -41,15 +41,18 @@
 
       <!-- 댓글 part -->
       <div class="comment-part">
-        댓글 댓글
+        <Comment></Comment>
+        <Comment></Comment>
       </div>
 
     </div>
     <!-- 댓글 작성창 -->
     <div class="fixed-bottom comment-add d-flex align-items-center">
       <input v-model="commentData" type="text"
-          placeholder="댓글을 작성해주세요."/>
-      <button style="width:100%;">
+          placeholder="댓글을 작성해주세요."
+          class="flex-fill"
+          style="border:none;"/>
+      <button class="px-3">
           작성
       </button>
     </div>
@@ -60,12 +63,14 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
+import Comment from '../../components/SNS/SNSCommentItem.vue'
 
 export default {
   name: "detailFeed",
   components: {
     Navbar,
     subNav,
+    Comment
   },
   
   data() {
@@ -150,6 +155,10 @@ export default {
   margin: 5px 0px 5px 0px;
 }
 
+.icon-part {
+  margin-top: 10px;
+}
+
 .icon-heart-data {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #E2DFD8;
@@ -158,7 +167,7 @@ export default {
 
 .comment-add {
   width: 100%;
-  background-color: #EDECEA;
+  background-color: #f7f7f7;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
