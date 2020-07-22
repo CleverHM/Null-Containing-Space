@@ -1,8 +1,6 @@
 ﻿package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -29,49 +26,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="User")
+@Table(name = "User")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private int id;
-
-    private String nickname;
-    private String password;
-    private int follow;
-    private int following;
-    private String blog_addr;
-    private String git_addr;
-    private String introduce;
-    private String find_q;
-    private String find_a;
-    
-    
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Follow> Follows = new ArrayList<>(); 
-    
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Following> Followings = new ArrayList<>(); 
-    
-
-    @JsonIgnore
-    private String email;
-    
-
-   
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createDate;
-    
-    public User() {
-    	
-    }
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
@@ -80,19 +40,16 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
-	
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Follow", 
-	joinColumns = {@JoinColumn(name = "From_id", referencedColumnName = "uid")},
-	inverseJoinColumns = {@JoinColumn(name = "To_id", referencedColumnName = "uid")})
+	@JoinTable(name = "Follow", joinColumns = {
+			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
+					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
 	private Set<User> followings;
-	
-	
+
 	@ManyToMany(mappedBy = "followings")
 	private Set<User> followers;
-	
-	
+
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime createDate;
@@ -109,22 +66,6 @@ public class User {
 		this.followings = new HashSet<User>();
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -133,68 +74,25 @@ public class User {
 		this.password = password;
 	}
 
-	public int getFollow() {
-		return follow;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setFollow(int follow) {
-		this.follow = follow;
-	}
 	public int getUid() {
-		
+
 		return uid;
 	}
 
-	public int getFollowing() {
-		return following;
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
-	public void setFollowing(int following) {
-		this.following = following;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public String getBlog_addr() {
-		return blog_addr;
-	}
-
-	public void setBlog_addr(String blog_addr) {
-		this.blog_addr = blog_addr;
-	}
-
-	public String getGit_addr() {
-		return git_addr;
-	}
-
-	public void setGit_addr(String git_addr) {
-		this.git_addr = git_addr;
-	}
-
-	public String getIntroduce() {
-		return introduce;
-	}
-
-	public void setIntroduce(String introduce) {
-		this.introduce = introduce;
-	}
-
-	public String getFind_q() {
-		return find_q;
-	}
-
-	public void setFind_q(String find_q) {
-		this.find_q = find_q;
-	}
-
-	public String getFind_a() {
-		return find_a;
-	}
-
-	public void setFind_a(String find_a) {
-		this.find_a = find_a;
-	}
-
-	public String getEmail() {
-		return email;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public void setEmail(String email) {
