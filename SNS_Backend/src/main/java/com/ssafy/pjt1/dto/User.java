@@ -1,11 +1,6 @@
 ﻿package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.List;
-=======
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,10 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-<<<<<<< HEAD
-import javax.persistence.OneToMany;
-=======
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -32,61 +23,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-<<<<<<< HEAD
 @Table(name = "User")
-=======
->>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
 @Data
-@Table(name="User")
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
-<<<<<<< HEAD
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private int id;
-
-    private String nickname;
-    private String password;
-    private int follow;
-    private int following;
-    private String blog_addr;
-    private String git_addr;
-    private String introduce;
-    private String find_q;
-    private String find_a;
-    
-    
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Follow> Follows = new ArrayList<>(); 
-    
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Following> Followings = new ArrayList<>(); 
-    
-
-    @JsonIgnore
-    private String email;
-    
-
-   
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createDate;
-    
-    public User() {
-    	
-    }
-=======
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
@@ -95,22 +40,17 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
-<<<<<<< HEAD
-=======
-	private String gender;
-	private String age;
-	
->>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
+	private String name;
+	private String tel;
+	private int age;
+	private boolean gender; // 1이면 남자, 2이면 여자
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "Follow", joinColumns = {
 			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
 					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
 	private Set<User> followings;
-<<<<<<< HEAD
 
-=======
->>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
 	@ManyToMany(mappedBy = "followings")
 	private Set<User> followers;
 
@@ -121,16 +61,17 @@ public class User {
 	public User() {
 
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
-	public User(String nickname, String password, String email) {
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
 		this.followers = new HashSet<User>();
 		this.followings = new HashSet<User>();
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
 	}
 
 	public String getPassword() {
@@ -144,26 +85,8 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-<<<<<<< HEAD
-	public void setFollow(int follow) {
-		this.follow = follow;
-	}
-	public int getUid() {
-		
-		return uid;
-	}
-
-	public int getFollowing() {
-		return following;
-	}
-
-	public void setFollowing(int following) {
-		this.following = following;
-	}
-=======
 
 	public int getUid() {
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 
 		return uid;
 	}
@@ -183,10 +106,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 	public Set<User> getFollowers() {
 		return followers;
 	}
@@ -202,27 +122,36 @@ public class User {
 	public void setFollowing(Set<User> followings) {
 		this.followings = followings;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-=======
-=======
 
-	public String getGender() {
-		return gender;
+	public String getName() {
+		return name;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getAge() {
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
->>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
+
+	public boolean isGender() {
+		return gender;
+	}
+
+	public void setGender(boolean gender) {
+		this.gender = gender;
+	}
 }
->>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc

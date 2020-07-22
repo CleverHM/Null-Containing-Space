@@ -100,7 +100,8 @@ public class UserController {
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
 
-		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail());
+		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(),
+				request.getName(), request.getTel(), request.getAge(), request.isGender());
 		User user2 = userservice.signUp(user1);
 
 		if (user2 == null) {
