@@ -23,11 +23,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name="User")
 @Data
+@Table(name="User")
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,6 +42,8 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
+	private String gender;
+	private String age;
 	
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -47,8 +51,6 @@ public class User {
 	joinColumns = {@JoinColumn(name = "From_id", referencedColumnName = "uid")},
 	inverseJoinColumns = {@JoinColumn(name = "To_id", referencedColumnName = "uid")})
 	private Set<User> followings;
-	
-	
 	@ManyToMany(mappedBy = "followings")
 	private Set<User> followers;
 	
@@ -116,5 +118,21 @@ public class User {
 
 	public void setFollowing(Set<User> followings) {
 		this.followings = followings;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 }
