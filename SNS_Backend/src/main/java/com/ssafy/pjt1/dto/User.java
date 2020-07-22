@@ -40,6 +40,10 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
+	private String name;
+	private String tel;
+	private int age;
+	private boolean gender; // 1이면 남자, 2이면 여자
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "Follow", joinColumns = {
@@ -58,12 +62,16 @@ public class User {
 
 	}
 
-	public User(String nickname, String password, String email) {
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
 		this.followers = new HashSet<User>();
 		this.followings = new HashSet<User>();
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
 	}
 
 	public String getPassword() {
@@ -113,5 +121,37 @@ public class User {
 
 	public void setFollowing(Set<User> followings) {
 		this.followings = followings;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public boolean isGender() {
+		return gender;
+	}
+
+	public void setGender(boolean gender) {
+		this.gender = gender;
 	}
 }
