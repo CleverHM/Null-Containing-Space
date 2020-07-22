@@ -32,11 +32,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+<<<<<<< HEAD
 @Table(name = "User")
+=======
+>>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
 @Data
+@Table(name="User")
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -89,13 +95,22 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
+<<<<<<< HEAD
+=======
+	private String gender;
+	private String age;
+	
+>>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "Follow", joinColumns = {
 			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
 					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
 	private Set<User> followings;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
 	@ManyToMany(mappedBy = "followings")
 	private Set<User> followers;
 
@@ -188,7 +203,26 @@ public class User {
 		this.followings = followings;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
+=======
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+>>>>>>> 35a649e19358a85a9b80ba4a3b298578d3e29432
 }
 >>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
