@@ -57,7 +57,7 @@
         </div>
         <div class="wrap">
           <p>아직 회원이 아니신가요?</p>
-          <router-link to="/user/join/email" class="btn--text">가입하기</router-link>
+          <router-link to="/user/join" class="btn--text">가입하기</router-link>
         </div>
       </div>
     </div>
@@ -132,7 +132,7 @@ export default {
         let msg = "";
 
         http
-        .post("/login", {
+        .post("/account/login", {
           email : this.email,
           password : this.password,
         })
