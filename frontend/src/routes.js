@@ -11,12 +11,15 @@ import profile from './views/user/profile.vue'
 
 import FeedMain from './views/SNS/IndexFeed.vue'
 import FeedDetail from './views/SNS/DetailFeed.vue'
+import FeedCreate from './views/SNS/CreateFeed.vue'
+
 import Components from './views/Components.vue'
 
 import Main from './views/Main.vue'
 
 import StudyList from './views/study/StudyList.vue'
 import StudyDetail from './views/study/StudyDetail.vue'
+
 
 
 export default [
@@ -75,7 +78,11 @@ export default [
         name : 'FeedDetail',
         component : FeedDetail
     },
-
+    {
+        path : '/feed/create',
+        name : 'FeedCreate',
+        component : FeedCreate
+    },
     {
         path : '/components',
         name : 'Components',

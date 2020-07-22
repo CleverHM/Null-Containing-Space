@@ -38,6 +38,11 @@
       </div>
       
       <hr>
+      <!-- 해시태그 -->
+      <div class="hash-tags mb-3">
+        <span>Algorithm</span>
+        <span>Python</span>
+      </div>
 
       <!-- 댓글 part -->
       <div class="comment-part">
@@ -171,5 +176,12 @@ export default {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.hash-tags > span {
+  background-color: #c6dfd6;
+  border-radius: 20px;
+  padding: 7px;
+  font-size: 13px;
+  margin-right: 10px;
+}
 
 </style>
