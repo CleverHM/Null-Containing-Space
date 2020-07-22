@@ -15,20 +15,8 @@
     </div>
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">이름</label>
-      </div>
-
-      <div class="input-with-label">
-        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">닉네임</label>
-      </div>
-
-      
-
-      <div class="input-with-label">
-        <input v-model="user.password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
-        <label for="password">비밀번호</label>
+          <input v-model="user.password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
+          <label for="password">비밀번호</label>
       </div>
 
       <div class="input-with-label">
@@ -40,11 +28,31 @@
         />
         <label for="password-confirm">비밀번호 확인</label>
       </div>
+
+      <!-- 성별 !-->
+      <div>
+        <p class="m-0">성별</p>
+        <button class="btn-gender isClick" id="Male">남자</button>
+        <button class="btn-gender" id="Female">여자</button>
+      </div>
+      
+      <!-- 이름 & 나이 !-->     
+      <div class="input-with-label NameAge">
+          <input v-model="user.nickname" id="nickname" placeholder="나이를 입력하세요." type="text" />
+          <label for="nickname">나이</label>
+      </div>
+      <div class="input-with-label NameAge">
+        <input v-model="user.nickname" id="nickname" placeholder="이름을 입력하세요." type="text" />
+        <label for="nickname">이름</label>
+      </div>
+
+
+
+      <div class="input-with-label">
+        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <label for="nickname">닉네임</label>
+      </div>
     </div>
-
-    <HalfButton :buttons="buttons" />
-
-
 
     <label>
       <input v-model="isTerm" type="checkbox" id="term" />
@@ -83,26 +91,12 @@ export default {
       passwordType: "password",
       passwordConfirmType: "password",
       termPopup: false,
-      // 성별
-      buttons: [
-        {
-          title: "확인",
-          highlight: true,
-          onClick: () => {
-            console.log("클릭");
-          }
-        },
-        {
-          title: "취소",
-          onClick: () => {
-            console.log("클릭");
-          }
-        }
-      ],
+
     };
   },
   methods:{
     join(){
+      
       this.$emit("ConfirmJoin", this.user, this.passwordConfirm)
     }
   }
@@ -134,5 +128,25 @@ export default {
 #email:hover{
   border: 1px solid #000;
 }
+.gender-buttons{
+  background-color: #f7f7f7;
+  margin-bottom: 16px;
+  border: 1px solid;
+  
+}
+.btn-gender{
+  width:50%;
+  height: 50px;
+  border: 1px solid #464545;
+  margin-bottom: 16px;
+    
+}
+
+.isClick{
+  background-color: #464545;
+  color: #f7f7f7;
+  margin-left: -0px;
+}
+
 </style>
 
