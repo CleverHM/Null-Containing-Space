@@ -14,6 +14,7 @@ import findPassword3 from './views/user/FindPassword3.vue'
 import profile from './views/user/profile.vue'
 
 import FeedMain from './views/SNS/IndexFeed.vue'
+import FeedDetail from './views/SNS/DetailFeed.vue'
 import Components from './views/Components.vue'
 
 import Main from './views/Main.vue'
@@ -83,6 +84,12 @@ export default [
         name : 'FeedMain',
         component : FeedMain
     },
+    {
+        path : '/feed/detail',
+        name : 'FeedDetail',
+        component : FeedDetail
+    },
+
     {
         path : '/components',
         name : 'Components',
