@@ -1,13 +1,10 @@
 ﻿package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
-=======
 import java.util.HashSet;
 import java.util.Set;
->>>>>>> 7c223fd9e4fbd8dbaf0ad0c1d47301de8fae4629
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,13 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-<<<<<<< HEAD
 import javax.persistence.OneToMany;
-=======
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
->>>>>>> 7c223fd9e4fbd8dbaf0ad0c1d47301de8fae4629
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -41,7 +35,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
-<<<<<<< HEAD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -79,7 +72,6 @@ public class User {
     public User() {
     	
     }
-=======
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
@@ -108,8 +100,6 @@ public class User {
 	public User() {
 
 	}
->>>>>>> 7c223fd9e4fbd8dbaf0ad0c1d47301de8fae4629
-
 	public User(String nickname, String password, String email) {
 		this.nickname = nickname;
 		this.password = password;
@@ -145,15 +135,12 @@ public class User {
 	public int getFollow() {
 		return follow;
 	}
-
-<<<<<<< HEAD
 	public void setFollow(int follow) {
 		this.follow = follow;
-=======
+	}
 	public int getUid() {
 		
 		return uid;
->>>>>>> 7c223fd9e4fbd8dbaf0ad0c1d47301de8fae4629
 	}
 
 	public int getFollowing() {
@@ -211,9 +198,6 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-<<<<<<< HEAD
-=======
 	public Set<User> getFollowers() {
 		return followers;
 	}
@@ -229,5 +213,4 @@ public class User {
 	public void setFollowing(Set<User> followings) {
 		this.followings = followings;
 	}
->>>>>>> 7c223fd9e4fbd8dbaf0ad0c1d47301de8fae4629
 }
