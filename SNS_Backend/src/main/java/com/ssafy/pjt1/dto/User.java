@@ -29,7 +29,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="User")
+@Table(name = "User")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -80,19 +80,16 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
-	
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Follow", 
-	joinColumns = {@JoinColumn(name = "From_id", referencedColumnName = "uid")},
-	inverseJoinColumns = {@JoinColumn(name = "To_id", referencedColumnName = "uid")})
+	@JoinTable(name = "Follow", joinColumns = {
+			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
+					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
 	private Set<User> followings;
-	
-	
+
 	@ManyToMany(mappedBy = "followings")
 	private Set<User> followers;
-	
-	
+
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime createDate;
@@ -108,22 +105,6 @@ public class User {
 		this.followings = new HashSet<User>();
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -132,8 +113,8 @@ public class User {
 		this.password = password;
 	}
 
-	public int getFollow() {
-		return follow;
+	public String getEmail() {
+		return email;
 	}
 	public void setFollow(int follow) {
 		this.follow = follow;
@@ -151,48 +132,22 @@ public class User {
 		this.following = following;
 	}
 
-	public String getBlog_addr() {
-		return blog_addr;
+	public int getUid() {
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
+
+		return uid;
 	}
 
-	public void setBlog_addr(String blog_addr) {
-		this.blog_addr = blog_addr;
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
-	public String getGit_addr() {
-		return git_addr;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setGit_addr(String git_addr) {
-		this.git_addr = git_addr;
-	}
-
-	public String getIntroduce() {
-		return introduce;
-	}
-
-	public void setIntroduce(String introduce) {
-		this.introduce = introduce;
-	}
-
-	public String getFind_q() {
-		return find_q;
-	}
-
-	public void setFind_q(String find_q) {
-		this.find_q = find_q;
-	}
-
-	public String getFind_a() {
-		return find_a;
-	}
-
-	public void setFind_a(String find_a) {
-		this.find_a = find_a;
-	}
-
-	public String getEmail() {
-		return email;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public void setEmail(String email) {
