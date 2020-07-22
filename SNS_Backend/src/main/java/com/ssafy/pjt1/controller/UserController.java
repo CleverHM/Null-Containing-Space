@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	CustomMailSender customMailSender;
 
@@ -46,6 +46,9 @@ public class UserController {
 
 	@Autowired
 	AuthService authservice;
+	
+//	@Autowired
+//	FollowDao followdao;
 
 	private String num;
 
@@ -57,16 +60,18 @@ public class UserController {
 		System.out.println(email.charAt(0));
 		customMailSender.sendMail(email);
 	}
-	
+
 	@PostMapping("/account/loginMailConfirm")
 	@ApiOperation(value = "회원가입시 메일인증", notes = "회원가입시 메일인증 기능 구현")
-	public Object loginMailConfirm(@Valid @RequestBody Auth auth){
 
+	public Object loginMailConfirm(@Valid @RequestBody Auth auth) {
 		// 확인 하기
 		System.out.println(auth.getAuth_email());
 		System.out.println(auth.getAuth_number());
-		
+
+
 		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
+
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
@@ -87,6 +92,31 @@ public class UserController {
 			System.out.println("실패");
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
+	}
+
+	// Create
+	@PostMapping("/account/signup")
+	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
+
+	public Object signup(@Valid @RequestBody SignupRequest request) {
+
+		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(),
+				request.getName(), request.getTel(), request.getAge(), request.isGender());
+		User user2 = userservice.signUp(user1);
+
+		if (user2 == null) {
+			System.out.println("실패");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
+			System.out.println("성공");
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+
 	}
 
 	@PostMapping("/account/modify")
@@ -163,27 +193,21 @@ public class UserController {
 		return response;
 	}
 
-	// Create
-	@PostMapping("/account/signup")
-	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
+	@PostMapping("/account/follow")
+	@ApiOperation(value = "팔로우 ", notes = "팔로우 기능을 구현")
+	public void follow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
 
-	public Object signup(@Valid @RequestBody SignupRequest request) {
-
-		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail());
-		User user2 = userservice.signUp(user1);
-
-		if (user2 == null) {
-			System.out.println("실패");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		} else {
-			System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
-			System.out.println("성공");
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		}
-
+		Optional<User> master = userservice.findone(From);
+		Optional<User> slave = userservice.findone(To);
+		
+		User u1 = master.get();
+		User u2 = slave.get();
+		
+		
+		u1.getFollowing().add(u2);
+		u2.getFollowers().add(u1);
+		
+		userservice.signUp(u1);
+		
 	}
 }

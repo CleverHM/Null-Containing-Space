@@ -1,14 +1,20 @@
-﻿// 하단 DB 설정 부분은 Sub PJT II에서 데이터베이스를 구성한 이후에 주석을 해제하여 사용.
-
-package com.ssafy.pjt1.dto;
+﻿package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -20,36 +26,52 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "User")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private int uid;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
+	private int uid;
 
-    private String nickname;
-    private String password;
+	private String nickname;
+	private String password;
+	private String email;
+	private String name;
+	private String tel;
+	private int age;
+	private boolean gender; // 1이면 남자, 2이면 여자
 
-    @JsonIgnore
-    private String email;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "Follow", joinColumns = {
+			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
+					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
+	private Set<User> followings;
 
-   
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createDate;
-    
-    public User() {
-    	
-    }
+	@ManyToMany(mappedBy = "followings")
+	private Set<User> followers;
 
-	public User(String nickname, String password, String email) {
+	@CreationTimestamp
+	@Column(updatable = false)
+	private LocalDateTime createDate;
+
+	public User() {
+
+	}
+
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
+		this.followers = new HashSet<User>();
+		this.followings = new HashSet<User>();
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
 	}
 
 	public String getPassword() {
@@ -65,6 +87,7 @@ public class User {
 	}
 
 	public int getUid() {
+
 		return uid;
 	}
 
@@ -84,12 +107,51 @@ public class User {
 		this.email = email;
 	}
 
-//	public LocalDateTime getCreateDate() {
-//		return createDate;
-//	}
-//
-//	public void setCreateDate(LocalDateTime createDate) {
-//		this.createDate = createDate;
-//	}
+	public Set<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(Set<User> followers) {
+		this.followers = followers;
+	}
+
+	public Set<User> getFollowing() {
+		return followings;
+	}
+
+	public void setFollowing(Set<User> followings) {
+		this.followings = followings;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public boolean isGender() {
+		return gender;
+	}
+
+	public void setGender(boolean gender) {
+		this.gender = gender;
+	}
 }
-//
