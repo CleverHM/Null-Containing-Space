@@ -5,7 +5,7 @@
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img"></div>
       <div class="flex-column ml-2">
-        <div class="user-name">{{ SNS.username}}</div>
+        <div class="user-name">{{ SNS.username }}</div>
         <div class="date-diff">{{ SNS.data}}</div>
       </div>
     </div>
