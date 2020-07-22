@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import "../../assets/css/components.scss";
+
     export default {
         name: "buttonHalf",
         props : ['buttons','title'],

@@ -9,20 +9,14 @@
     <h5 class="mb-4">
      아래의 회원가입 폼을 작성하세요.
     </h5>
+    <div class="input-with-label">
+        <input v-model="user.email" :disabled="true" id="email" placeholder="이메일을 입력하세요." type="text" />
+        <label for="email">이메일</label>
+    </div>
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="nickName" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">닉네임</label>
-      </div>
-
-      <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-        <label for="email">이메일</label>
-      </div>
-
-      <div class="input-with-label">
-        <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
-        <label for="password">비밀번호</label>
+          <input v-model="user.password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
+          <label for="password">비밀번호</label>
       </div>
 
       <div class="input-with-label">
@@ -33,6 +27,30 @@
           placeholder="비밀번호를 다시한번 입력하세요."
         />
         <label for="password-confirm">비밀번호 확인</label>
+      </div>
+
+      <!-- 성별 !-->
+      <div>
+        <p class="m-0">성별</p>
+        <button class="btn-gender isClick" id="Male">남자</button>
+        <button class="btn-gender" id="Female">여자</button>
+      </div>
+      
+      <!-- 이름 & 나이 !-->     
+      <div class="input-with-label NameAge">
+          <input v-model="user.nickname" id="nickname" placeholder="나이를 입력하세요." type="text" />
+          <label for="nickname">나이</label>
+      </div>
+      <div class="input-with-label NameAge">
+        <input v-model="user.nickname" id="nickname" placeholder="이름을 입력하세요." type="text" />
+        <label for="nickname">이름</label>
+      </div>
+
+
+
+      <div class="input-with-label">
+        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <label for="nickname">닉네임</label>
       </div>
     </div>
 
@@ -51,47 +69,35 @@
 import http from "@/util/http-common.js";
 
 export default {
+  props: {
+    user:{
+      type:Object,
+      required: true
+    }
+  },
   data: () => {
     return {
-      email: "",
-      password: "",
       passwordConfirm: "",
-      nickName: "",
       isTerm: false,
       isLoading: false,
       error: {
         email: false,
         password: false,
-        nickName: false,
+        nickname: false,
         passwordConfirm: false,
         term: false
       },
       isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
-      termPopup: false
+      termPopup: false,
+
     };
   },
   methods:{
     join(){
-      this.$router.push("/");
-      let msg = "";
-      http
-      .post("/signup", {
-        email : this.email,
-        password : this.password,
-        nickName : this.nickName
-      })
-      .then(({data}) => {
-        if(data == "success") {
-          msg = "complete";
-        }
-        alert(msg);
-        this.moveLogin();
-      });
-    },
-    moveLogin(){
-      this.$router.push("/");
+      
+      this.$emit("ConfirmJoin", this.user, this.passwordConfirm)
     }
   }
 };
@@ -119,5 +125,28 @@ export default {
   font-weight: bold;
   width:100%;
 }
+#email:hover{
+  border: 1px solid #000;
+}
+.gender-buttons{
+  background-color: #f7f7f7;
+  margin-bottom: 16px;
+  border: 1px solid;
+  
+}
+.btn-gender{
+  width:50%;
+  height: 50px;
+  border: 1px solid #464545;
+  margin-bottom: 16px;
+    
+}
+
+.isClick{
+  background-color: #464545;
+  color: #f7f7f7;
+  margin-left: -0px;
+}
+
 </style>
 
