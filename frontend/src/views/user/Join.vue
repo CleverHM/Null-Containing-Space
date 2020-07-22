@@ -10,10 +10,10 @@
     <div v-if="isActiveStep2">
 
       <div v-if="isActiveStep3">
-        <Join3></Join3>
+        <Join3 @ConfirmJoin="Join" :user="user"></Join3>
       </div>
       <div v-else>
-        <Join2 @ConfirmCode="Gostep3" :authNum="user.authNum"></Join2>
+        <Join2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Join2>
       </div>
     </div>
     <div v-else>
@@ -39,19 +39,36 @@ export default {
   data: () => {
     return {
       user : {},
+      authNum : "",
       isActiveStep2 : false,
       isActiveStep3 : false,
+      PasswordErrorMsg : "",
+      // 회원가입 폼 확인
+      isTerm: false,
+      isLoading: false,
+      error: {
+        email: false,
+        password: false,
+        nickName: false,
+        passwordConfirm: false,
+        term: false
+      },
+      isSubmit: false,
+      passwordType: "password",
+      passwordConfirmType: "password",
+      termPopup: false
     };
   },
   created(){
     this.user.email = ""
-    this.user.authNum = ""
+    this.user.nickname = ""
+    this.user.password = ""
   },
   methods:{
     Gostep2(email){
       this.user.email = email
       console.log(this.user.email, typeof(this.user.email))
-      
+      console.log(this.user, typeof(this.user))
       http
       .post('/account/loginMailSend', 
         this.user.email,
@@ -74,9 +91,33 @@ export default {
         }
         )
       .then((data) => {
-        console.log(data)
+        this.isActiveStep3 = true;
       })
-      this.isActiveStep3 = true;
+      .catch((err) => {
+        this.PasswordErrorMsg = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
+      })
+      
+    },
+    Join(user, passwordConfirm){
+      this.user = user
+      console.log(this.user)
+      let msg = "";
+      http
+      .post("/account/signup", {
+        email : this.user.email,
+        nickname : this.user.nickname,
+        password : this.user.password
+      })
+      .then(({data}) => {
+        if(data == "success") {
+          msg = "complete";
+        }
+        alert(msg);
+        this.moveLogin();
+      });
+    },
+    moveLogin(){
+      this.$router.push("/");
     }
     
   },

@@ -9,19 +9,20 @@
     <h5 class="mb-4">
      아래의 회원가입 폼을 작성하세요.
     </h5>
+    <div class="input-with-label">
+        <input v-model="user.email" :disabled="true" id="email" placeholder="이메일을 입력하세요." type="text" />
+        <label for="email">이메일</label>
+    </div>
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="nickName" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
         <label for="nickname">닉네임</label>
       </div>
 
-      <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-        <label for="email">이메일</label>
-      </div>
+      
 
       <div class="input-with-label">
-        <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
+        <input v-model="user.password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
         <label for="password">비밀번호</label>
       </div>
 
@@ -49,20 +50,22 @@
 
 <script>
 import http from "@/util/http-common.js";
-
 export default {
+  props: {
+    user:{
+      type:Object,
+      required: true
+    }
+  },
   data: () => {
     return {
-      email: "",
-      password: "",
       passwordConfirm: "",
-      nickName: "",
       isTerm: false,
       isLoading: false,
       error: {
         email: false,
         password: false,
-        nickName: false,
+        nickname: false,
         passwordConfirm: false,
         term: false
       },
@@ -74,24 +77,7 @@ export default {
   },
   methods:{
     join(){
-      this.$router.push("/");
-      let msg = "";
-      http
-      .post("/signup", {
-        email : this.email,
-        password : this.password,
-        nickName : this.nickName
-      })
-      .then(({data}) => {
-        if(data == "success") {
-          msg = "complete";
-        }
-        alert(msg);
-        this.moveLogin();
-      });
-    },
-    moveLogin(){
-      this.$router.push("/");
+      this.$emit("ConfirmJoin", this.user, this.passwordConfirm)
     }
   }
 };
@@ -118,6 +104,9 @@ export default {
   color: #f7f7f7;
   font-weight: bold;
   width:100%;
+}
+#email:hover{
+  border: 1px solid #000;
 }
 </style>
 

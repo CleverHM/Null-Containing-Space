@@ -3,10 +3,7 @@
 <template>
   <div class="user" id="login">
     <div class="wrapC">
-      <h1>
-        로그인을 하고 나면
-        <br />좋은 일만 있을 거예요.
-      </h1>
+      <Logo :component="component" />
 
       <div class="input-with-label">
         <input
@@ -56,6 +53,7 @@
         </div>
         <div class="wrap">
           <p>비밀번호를 잊으셨나요?</p>
+          <router-link to="/find/password/email" class="btn--text">비밀번호 찾기</router-link>
         </div>
         <div class="wrap">
           <p>아직 회원이 아니신가요?</p>
@@ -70,6 +68,7 @@
 import "../../components/css/user.scss";
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
+import Logo from "../../components/user/Logo.vue";
 import KakaoLogin from "../../components/user/snsLogin/Kakao.vue";
 import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import UserApi from "../../api/UserApi";
@@ -77,6 +76,7 @@ import http from "../../util/http-common.js";
 
 export default {
   components: {
+    Logo,
     KakaoLogin,
     GoogleLogin
   },
@@ -129,15 +129,10 @@ export default {
 
       if (this.isSubmit) {
 
-        console.log("c");
-
-        console.log(this.email);
-        console.log(this.password);
-
         let msg = "";
 
         http
-        .post("/login", {
+        .post("/account/login", {
           email : this.email,
           password : this.password,
         })
@@ -151,27 +146,6 @@ export default {
           this.moveFeed();
         })
         ;
-      
-
-        //요청 후에는 버튼 비활성화
-        // this.isSubmit = false;
-
-        // UserApi.requestLogin(
-        //   data,
-        //   res => {
-        //     //통신을 통해 전달받은 값 콘솔에 출력
-        //     //console.log(res);
-
-        //     //요청이 끝나면 버튼 활성화
-        //     this.isSubmit = true;
-
-        //     this.$router.push("/main");
-        //   },
-        //   error => {
-        //     //요청이 끝나면 버튼 활성화
-        //     this.isSubmit = true;
-        //   }
-        // );
     
     }
   },
