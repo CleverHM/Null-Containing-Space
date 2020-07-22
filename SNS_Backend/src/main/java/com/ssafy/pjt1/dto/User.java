@@ -1,8 +1,11 @@
 ﻿package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
+=======
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +17,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+<<<<<<< HEAD
 import javax.persistence.OneToMany;
+=======
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -35,6 +41,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
+<<<<<<< HEAD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -72,6 +79,8 @@ public class User {
     public User() {
     	
     }
+=======
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
@@ -97,6 +106,10 @@ public class User {
 	public User() {
 
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 	public User(String nickname, String password, String email) {
 		this.nickname = nickname;
 		this.password = password;
@@ -116,6 +129,7 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
+<<<<<<< HEAD
 	public void setFollow(int follow) {
 		this.follow = follow;
 	}
@@ -131,6 +145,7 @@ public class User {
 	public void setFollowing(int following) {
 		this.following = following;
 	}
+=======
 
 	public int getUid() {
 >>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
@@ -153,6 +168,10 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
 	public Set<User> getFollowers() {
 		return followers;
 	}
@@ -168,4 +187,8 @@ public class User {
 	public void setFollowing(Set<User> followings) {
 		this.followings = followings;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f154c9fbdc65530ac7fc7b4ecd18d819ccd305cc
