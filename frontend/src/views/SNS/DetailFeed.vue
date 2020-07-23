@@ -39,9 +39,9 @@
       
       <hr>
       <!-- 해시태그 -->
-      <div class="hash-tags mb-3">
-        <span>Algorithm</span>
-        <span>Python</span>
+      <div class="hash-tags d-flex flex-wrap">
+        <div v-for="hashtag in article.hashtags" :key="hashtag.id">
+          {{ hashtag.name }}</div>
       </div>
 
       <!-- 댓글 part -->
@@ -90,7 +90,19 @@ export default {
             username: '알골마스터',
             created_at: '2020-07-15',
             title: '.....ABCDEFGHIJK',
-            content: 'Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome.'
+            content: 'Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome.',
+            hashtags: [
+              { name: 'Python',
+                id: '1' },
+              { name: 'Algorithm',
+                id: '2' },
+              { name: 'JavaScript',
+                id: '3' },
+              { name: 'Django',
+                id: '4' },
+              { name: 'Vue.js',
+                id: '5' },
+            ],
         },
         commentData: '',
       }
@@ -148,6 +160,7 @@ export default {
   font-size: 14px;
 }
 
+/* 페이지 밖으로 나가지 않도록 하기 */
 .page-content {
   margin-top: 5px;
   width: 98%;
@@ -176,12 +189,19 @@ export default {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.hash-tags > span {
+.hash-tags {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.hash-tags > div {
   background-color: #c6dfd6;
   border-radius: 20px;
   padding: 7px;
   font-size: 13px;
   margin-right: 10px;
+  margin-bottom: 7px;
 }
+
 
 </style>

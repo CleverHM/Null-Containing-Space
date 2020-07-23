@@ -5,8 +5,8 @@
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img"></div>
       <div class="flex-column ml-2">
-        <div class="user-name">{{ SNS.username }}</div>
-        <div class="date-diff">{{ SNS.data}}</div>
+        <div class="user-name">{{ article.username }}</div>
+        <div class="date-diff">{{ article.data}}</div>
       </div>
     </div>
 
@@ -17,13 +17,13 @@
 
     <!-- 제목 -->
     <div class="SNS-content">
-      {{ SNS.title }}
+      {{ article.title }}
     </div>
 
     <!-- 해시태그 -->
-    <div class="hash-tags mb-3">
-      <span>Algorithm</span>
-      <span>Python</span>
+    <div class="hash-tags d-flex flex-wrap">
+      <div v-for="hashtag in article.hashtags" :key="hashtag.id" @click="tagOn">
+        {{ hashtag.name }}</div>
     </div>
     
     <!-- SNS 좋아요, 댓글수 부분  -->
@@ -46,19 +46,38 @@ export default {
   name: "SNSItemn",
   
   data() {
-      return {
-        mainProps: { 
-          blank: true,
-          blankColor: '#c6dfd6',
-          height: 200,
-          class: 'm1'
-        },
-        SNS: {
-            username: '알골마스터',
-            data: '9시간 전',
-            title: '.....ABCDEFGHIJK',
-        }
+    return {
+      mainProps: { 
+        blank: true,
+        blankColor: '#c6dfd6',
+        height: 200,
+        class: 'm1'
+      },
+      article: {
+          username: '알골마스터',
+          data: '9시간 전',
+          title: '.....ABCDEFGHIJK',
+          hashtags: [
+            { name: 'Python',
+              id: '1' },
+            { name: 'Algorithm',
+              id: '2' },
+            { name: 'JavaScript',
+              id: '3' },
+            { name: 'Django',
+              id: '4' },
+            { name: 'Vue.js',
+              id: '5' },
+          ],
       }
+    }
+  },
+
+  methods: {
+    tagOn(event) {
+      // console.log(event.target.innerText)
+      this.$emit('tag-add', event.target.innerText)
+    }
   },
 }
 </script>
@@ -70,6 +89,7 @@ export default {
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .user-img {
@@ -105,12 +125,18 @@ export default {
   margin: 0px 0px 0px 7px;
 }
 
-.hash-tags > span {
+.hash-tags {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.hash-tags > div {
   background-color: #c6dfd6;
   border-radius: 20px;
   padding: 7px;
   font-size: 13px;
   margin-right: 10px;
+  margin-bottom: 7px;
 }
 
 .style-icon {

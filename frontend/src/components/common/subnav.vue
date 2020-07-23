@@ -1,10 +1,10 @@
 <template>
     <div class="subbutton d-flex fixed-top">
         <button class="study-button">
-        공모전/스터디
+            공모전/스터디
         </button>
         <button class="info-button">
-        Info
+            SNS
         </button>
     </div>
 </template>

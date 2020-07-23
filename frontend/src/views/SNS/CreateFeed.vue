@@ -5,13 +5,13 @@
     <div class="feed-form">
 
       <!-- 제목 -->
-      <div class="input-with-label mx-1">
+      <div class="input-with-label">
         <input v-model="article.title" id="title" placeholder="제목을 입력하세요." type="text" />
         <label for="title">제목</label>
       </div>
 
       <!-- 본문 -->
-      <div class="textarea-wrap mx-1">
+      <div class="textarea-wrap">
         <div class="d-flex flex-row justify-content-between">
           <label>본문</label>
           <span>{{ article.content.length }}/</span>
@@ -103,14 +103,15 @@ export default {
 <style scoped>
 .feed-form {
   margin-top: 85px;
+  margin-bottom: 50px;
 }
 
 .input-with-label{
-  width: 98%;
+  width: 100%;
 }
 
 .textarea-wrap {
-  width: 98%;
+  width: 100%;
   float: left;
   position: relative;
   border: 1px solid #000;
