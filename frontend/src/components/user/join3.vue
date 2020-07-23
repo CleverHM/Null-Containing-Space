@@ -28,22 +28,22 @@
         />
         <label for="password-confirm">비밀번호 확인</label>
       </div>
+      <div class="input-with-label NameAge">
+        <input v-model="user.name" id="name" placeholder="이름을 입력하세요." type="text" />
+        <label for="nickname">이름</label>
+      </div>
 
       <!-- 성별 !-->
       <div>
         <p class="m-0">성별</p>
-        <button class="btn-gender isClick" id="Male">남자</button>
-        <button class="btn-gender" id="Female">여자</button>
+        <button class="btn-gender" :class="{'isClick' :male}" @click="selectmale" id="Male">남자</button>
+        <button class="btn-gender" :class="{'isClick' : female}" @click="selectfemale" id="Female">여자</button>
       </div>
       
       <!-- 이름 & 나이 !-->     
       <div class="input-with-label NameAge">
           <input v-model="user.nickname" id="nickname" placeholder="나이를 입력하세요." type="text" />
           <label for="nickname">나이</label>
-      </div>
-      <div class="input-with-label NameAge">
-        <input v-model="user.nickname" id="nickname" placeholder="이름을 입력하세요." type="text" />
-        <label for="nickname">이름</label>
       </div>
 
 
@@ -80,6 +80,8 @@ export default {
       passwordConfirm: "",
       isTerm: false,
       isLoading: false,
+      male: true,
+      female : false,
       error: {
         email: false,
         password: false,
@@ -95,6 +97,15 @@ export default {
     };
   },
   methods:{
+    selectmale() {
+      this.male = true;
+      this.female = false;
+    },
+    selectfemale() {
+      this.male = false;
+      this.female = true;
+
+    },
     join(){
       
       this.$emit("ConfirmJoin", this.user, this.passwordConfirm)
