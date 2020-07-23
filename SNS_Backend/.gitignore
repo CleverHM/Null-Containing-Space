@@ -12,6 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
+target/classes/META-INF/maven/com.ssafy/SNS_Backend/pom.properties
 
 ### IntelliJ IDEA ###
 .idea
