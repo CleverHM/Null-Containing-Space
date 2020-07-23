@@ -2,13 +2,13 @@
   <div class="JoinView">
     <div class="progress-container">
       <ul class="progressbar">
-        <li id="Step1" class="active">이메일 입력</li>
-        <li id="Step2" :class="{'active':isActiveStep2}">이메일 인증</li>
-        <li id="Step3" :class="{'active':isActiveStep3}">회원가입 폼 작성</li>
+        <button id="Step1" :disable="!isActiveStep1" :class="{'active':isActiveStep1}">이메일 입력</button>
+        <button id="Step2" :disable="!isActiveStep2" :class="{'active':isActiveStep2}">이메일 인증</button>
+        <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">회원가입 폼 작성</button>
       </ul>
     </div>
-    <div v-if="isActiveStep2">
 
+    <div v-if="isActiveStep2">
       <div v-if="isActiveStep3">
         <Join3 @ConfirmJoin="Join" :user="user"></Join3>
       </div>
@@ -16,6 +16,7 @@
         <Join2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Join2>
       </div>
     </div>
+
     <div v-else>
       <Join1 @ConfirmEmail="Gostep2" :email="user.email"></Join1>
     </div>
@@ -29,6 +30,8 @@ import Join2 from '../../components/user/join2.vue'
 import Join3 from '../../components/user/join3.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
+
+
 export default {
   name: 'JoinView',
   components: {
@@ -38,10 +41,19 @@ export default {
   },
   data: () => {
     return {
-      user : {},
+      user : {
+        email: "",
+        name: "",
+        nickname: "",
+        password: "",
+        tel: "",
+        gender: true,
+        age: null,
+      },
       authNum : "",
-      isActiveStep2 : false,
-      isActiveStep3 : false,
+      isActiveStep1 : true,
+      isActiveStep2 : true,
+      isActiveStep3 : true,
       PasswordErrorMsg : "",
       // 회원가입 폼 확인
       isTerm: false,
@@ -103,7 +115,7 @@ export default {
       })
       
     },
-    Join(user, passwordConfirm){
+    Join(user){
       this.user = user
       console.log(this.user)
       let msg = "";
@@ -143,13 +155,19 @@ export default {
 .progressbar{
   counter-reset: step;
 }
-.progressbar li{
+.progressbar button{
   float: left;
   width: 33.333%;
   position: relative;
   text-align: center;
+  border: 0;
+  outline: 0;
+  cursor: default;
 }
-.progressbar li:before{
+.progressbar button.active{
+  cursor: pointer;
+}
+.progressbar button:before{
   content:counter(step);
   counter-increment: step;
   width:30px;
@@ -165,7 +183,7 @@ export default {
   text-align: center;
   font-weight: bold;
 }
-.progressbar li:after{
+.progressbar button:after{
   content: '';
   position: absolute;
   width:100%;
@@ -175,15 +193,18 @@ export default {
   left: -50%;
   z-index: -1;
 }
-.progressbar li:first-child:after{
+.progressbar button:first-child:after{
 content: none;
 }
-.progressbar li.active:before{
+button.active{
+  cursor : hand;
+}
+.progressbar button.active:before{
 border-color: #3aac5d;
 background: #3aac5d;
 color: white
 }
-.progressbar li.active:after{
+.progressbar button.active:after{
  background: #3aac5d;
 }
 

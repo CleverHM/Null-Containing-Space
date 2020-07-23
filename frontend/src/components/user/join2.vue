@@ -7,7 +7,7 @@
 
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="authNum" id="emailcode" placeholder="인증코드를 입력하세요." type="text" />
+        <input v-model="authNum" id="emailcode" @keyup.enter="confirmCode" placeholder="인증코드를 입력하세요." type="text" />
         <label for="emailcode">인증코드</label>
         <span id="ErrorMsg">{{ ErrorMessage }}</span>
       </div>
