@@ -258,12 +258,10 @@ public class UserController {
 //		System.out.println(set.contains(t2));
 //		System.out.println(set.contains(t4));
 		
-		
-		Tag t = new Tag(tagname);
-		
 		Optional<Tag> optionalTag = tagdao.findTagByName(tagname);
 		
 		if(!optionalTag.isPresent()) {
+			Tag t = new Tag(tagname);
 			tagdao.save(t);
 			
 			Optional<User> optionalUser = userdao.findUserByEmail(email);
@@ -273,24 +271,21 @@ public class UserController {
 			
 			userdao.save(u);
 		} else {
+	
+			Tag t = optionalTag.get();
+			
 			System.out.println("태그 있음");
+			
 			Optional<User> optionalUser = userdao.findUserByEmail(email);
 			User u = optionalUser.get();
 			
-			int flag = 0;
 			for(Tag t1: u.getTags()) {
-				//System.out.println(t1.getName());
-				if(t1.getName().equals(t.getName())) {
-					flag = 1;
-					break;
-				}
+				System.out.println(t1.getName());
 			}
-//			Set<Tag> set = u.getTags();
-//			
-//			System.out.println(t.getName());
+		
 			System.out.println(u.getTags().contains(t));
 			
-			if(flag == 0) {
+			if(!u.getTags().contains(t)) {
 				System.out.println("eee");
 				u.getTags().add(t);
 				t.getUsers().add(u);
