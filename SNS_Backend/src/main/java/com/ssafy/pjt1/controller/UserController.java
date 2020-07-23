@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -240,24 +241,62 @@ public class UserController {
 		
 	}
 	
+	
+	@PostMapping("/account/tagfollow")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
 	public void tagFollow(@Valid @RequestParam String email, @Valid @RequestParam String tagname) {
 		
+//		Tag t1 = new Tag("python");
+//		Tag t3 = new Tag("java");
+//		Tag t2 = new Tag("java");
+//		Tag t4 = new Tag("test");
+//		Set<Tag> set = new HashSet<Tag>();
+//	
+//		set.add(t1);
+//		set.add(t3);
+//		
+//		System.out.println(set.contains(t2));
+//		System.out.println(set.contains(t4));
+		
+		
 		Tag t = new Tag(tagname);
-		tagdao.save(t);
 		
-		User u = userdao.get
+		Optional<Tag> optionalTag = tagdao.findTagByName(tagname);
 		
-		
-		User u1 = master.get();
-		User u2 = slave.get();
-		
-		
-		u1.getFollowing().add(u2);
-		u2.getFollowers().add(u1);
-		
-		userservice.signUp(u1);
+		if(!optionalTag.isPresent()) {
+			tagdao.save(t);
+			
+			Optional<User> optionalUser = userdao.findUserByEmail(email);
+			User u = optionalUser.get();
+			u.getTags().add(t);
+			t.getUsers().add(u);
+			
+			userdao.save(u);
+		} else {
+			System.out.println("태그 있음");
+			Optional<User> optionalUser = userdao.findUserByEmail(email);
+			User u = optionalUser.get();
+			
+			int flag = 0;
+			for(Tag t1: u.getTags()) {
+				//System.out.println(t1.getName());
+				if(t1.getName().equals(t.getName())) {
+					flag = 1;
+					break;
+				}
+			}
+//			Set<Tag> set = u.getTags();
+//			
+//			System.out.println(t.getName());
+			System.out.println(u.getTags().contains(t));
+			
+			if(flag == 0) {
+				System.out.println("eee");
+				u.getTags().add(t);
+				t.getUsers().add(u);
+				userdao.save(u);
+			}
+		}
+
 	}
-	
-	
 }
