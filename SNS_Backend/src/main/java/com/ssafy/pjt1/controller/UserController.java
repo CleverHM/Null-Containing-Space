@@ -1,6 +1,5 @@
 package com.ssafy.pjt1.controller;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.CustomMailSender;
+import com.ssafy.pjt1.dao.PostDao;
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
+import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
+import com.ssafy.pjt1.model.PostRequest;
 import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.AuthService;
 import com.ssafy.pjt1.service.UserService;
@@ -52,12 +54,15 @@ public class UserController {
 
 	@Autowired
 	AuthService authservice;
-	
+
 	@Autowired
 	UserDao userdao;
-	
+
 	@Autowired
 	TagDao tagdao;
+
+	@Autowired
+	PostDao postdao;
 
 	private String num;
 
@@ -78,9 +83,7 @@ public class UserController {
 		System.out.println(auth.getAuth_email());
 		System.out.println(auth.getAuth_number());
 
-
 		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
-
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
@@ -109,8 +112,8 @@ public class UserController {
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
 
-		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(),
-				request.getName(), request.getTel(), request.getAge(), request.isGender());
+		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
+				request.getTel(), request.getAge(), request.isGender());
 		User user2 = userservice.signUp(user1);
 
 		if (user2 == null) {
@@ -208,84 +211,68 @@ public class UserController {
 
 		Optional<User> master = userservice.findone(From);
 		Optional<User> slave = userservice.findone(To);
-		
+
 		User u1 = master.get();
 		User u2 = slave.get();
-		
-		
+
 		u1.getFollowing().add(u2);
 		u2.getFollowers().add(u1);
-		
+
 		userservice.signUp(u1);
 	}
-	
-	
+
 	@GetMapping("/account/follow/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
 	public void userFollowList(@Valid @RequestParam String email) {
-		
-		//뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
+
+		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
 		Optional<User> temp = userservice.findone(email);
 		User u1 = temp.get();
 		Set<User> followers = u1.getFollowers();
 		Set<User> followings = u1.getFollowing();
-		
+
 		System.out.println("팔로워");
-		for(User u : followers) System.out.print(u.getEmail() + ", ");
-		
+		for (User u : followers)
+			System.out.print(u.getEmail() + ", ");
+
 		System.out.println();
 		System.out.println("------------------------------");
-		
+
 		System.out.println("팔로잉");
-		for(User u : followings) System.out.print(u.getEmail() + ", ");
-		
+		for (User u : followings)
+			System.out.print(u.getEmail() + ", ");
+
 	}
-	
-	
+
 	@PostMapping("/account/tagfollow")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
 	public void tagFollow(@Valid @RequestParam String email, @Valid @RequestParam String tagname) {
-		
-//		Tag t1 = new Tag("python");
-//		Tag t3 = new Tag("java");
-//		Tag t2 = new Tag("java");
-//		Tag t4 = new Tag("test");
-//		Set<Tag> set = new HashSet<Tag>();
-//	
-//		set.add(t1);
-//		set.add(t3);
-//		
-//		System.out.println(set.contains(t2));
-//		System.out.println(set.contains(t4));
-		
 		Optional<Tag> optionalTag = tagdao.findTagByName(tagname);
-		
-		if(!optionalTag.isPresent()) {
+
+		// 태그가 테이블에 존재하지 않는 경우.
+		if (!optionalTag.isPresent()) {
 			Tag t = new Tag(tagname);
 			tagdao.save(t);
-			
+
 			Optional<User> optionalUser = userdao.findUserByEmail(email);
 			User u = optionalUser.get();
 			u.getTags().add(t);
 			t.getUsers().add(u);
-			
 			userdao.save(u);
-		} else {
-	
+
+		}
+		// 태그가 테이블에 존재하는 경우.
+		else {
+
 			Tag t = optionalTag.get();
-			
+
 			System.out.println("태그 있음");
-			
+
 			Optional<User> optionalUser = userdao.findUserByEmail(email);
 			User u = optionalUser.get();
-			
-			for(Tag t1: u.getTags()) {
-				System.out.println(t1.getName());
-			}
-		
-			System.out.println(u.getTags().contains(t));
-			
-			if(!u.getTags().contains(t)) {
+
+			// 태그가 테이블에 존재하나, 유저가 팔로우 하지않은 태그일 경우.
+			if (!u.getTags().contains(t)) {
 				System.out.println("eee");
 				u.getTags().add(t);
 				t.getUsers().add(u);
@@ -293,5 +280,18 @@ public class UserController {
 			}
 		}
 
+	}
+
+	@PostMapping("/account/posting")
+	@ApiOperation(value = "유저 게시물작성", notes = "게시물 작성 기능을 구현.")
+	public void userPost(@Valid @RequestParam String email, @Valid @RequestBody PostRequest request) {
+
+		Post post = new Post(request.getTitle(), request.getContent(), request.getImg());
+		Optional<User> optionaluser = userdao.findUserByEmail(email);
+		User u = optionaluser.get();
+		u.getPosts().add(post);
+		post.setUser(u);
+		postdao.save(post);
+		userdao.save(u);
 	}
 }
