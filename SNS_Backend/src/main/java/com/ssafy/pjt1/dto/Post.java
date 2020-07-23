@@ -26,23 +26,38 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
 	private int pid;
-	
+
 	private String title;
-	
 	private String content;
-	
 	private String img;
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "test", joinColumns = {
-	@JoinColumn(name = "post_id") }, inverseJoinColumns = {
-	@JoinColumn(name = "tag_id")})
-	private Set<Tag> tags = new HashSet<Tag>();
-	
+
+//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinTable(name = "test", joinColumns = {
+//	@JoinColumn(name = "post_id") }, inverseJoinColumns = {
+//	@JoinColumn(name = "tag_id")})
+//	private Set<Tag> tags = new HashSet<Tag>();
+
+	@ManyToOne
+	@JoinColumn(name = "USER_ID")
+	private User user;
+
+	public Post() {
+
+	}
+
 	public Post(String title, String content, String img) {
 		this.title = title;
 		this.content = content;
 		this.img = img;
+	}
+	
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public int getPid() {
@@ -76,14 +91,4 @@ public class Post {
 	public void setImg(String img) {
 		this.img = img;
 	}
-
-	public Set<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
-	}
-	
-	
 }
