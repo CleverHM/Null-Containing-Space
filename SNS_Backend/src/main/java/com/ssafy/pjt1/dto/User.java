@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -57,7 +58,8 @@ public class User {
 	@JoinColumn(name = "tag_id")})
 	private Set<Tag> tags = new HashSet<Tag>();
 	
-
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Post> posts = new HashSet<Post>();
 	
 	@CreationTimestamp
 	@Column(updatable = false)
