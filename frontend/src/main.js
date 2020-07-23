@@ -12,6 +12,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueEllipseProgress from 'vue-ellipse-progress';
+import UploadImage from 'vue-upload-image';
 
 
 //fontawesome
@@ -30,6 +31,9 @@ Vue.use(IconsPlugin)
 
 // vueEllipse
 Vue.use(VueEllipseProgress)
+
+// vue uploadimage
+Vue.component('upload-image', UploadImage)
 
 const router = new VueRouter({
     mode:'history',
