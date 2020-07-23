@@ -52,10 +52,10 @@ public class UserController {
 
 	@Autowired
 	AuthService authservice;
-
+	
 	@Autowired
 	UserDao userdao;
-
+	
 	@Autowired
 	TagDao tagdao;
 
@@ -78,7 +78,9 @@ public class UserController {
 		System.out.println(auth.getAuth_email());
 		System.out.println(auth.getAuth_number());
 
+
 		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
+
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
@@ -101,14 +103,14 @@ public class UserController {
 		}
 	}
 
-// Create
+	// Create
 	@PostMapping("/account/signup")
 	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
 
-		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender());
+		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(),
+				request.getName(), request.getTel(), request.getAge(), request.isGender());
 		User user2 = userservice.signUp(user1);
 
 		if (user2 == null) {
@@ -206,71 +208,84 @@ public class UserController {
 
 		Optional<User> master = userservice.findone(From);
 		Optional<User> slave = userservice.findone(To);
-
+		
 		User u1 = master.get();
 		User u2 = slave.get();
-
+		
+		
 		u1.getFollowing().add(u2);
 		u2.getFollowers().add(u1);
-
+		
 		userservice.signUp(u1);
 	}
-
+	
+	
 	@GetMapping("/account/follow/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
 	public void userFollowList(@Valid @RequestParam String email) {
-
-		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
+		
+		//뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
 		Optional<User> temp = userservice.findone(email);
 		User u1 = temp.get();
 		Set<User> followers = u1.getFollowers();
 		Set<User> followings = u1.getFollowing();
-
+		
 		System.out.println("팔로워");
-		for (User u : followers)
-			System.out.print(u.getEmail() + ", ");
-
+		for(User u : followers) System.out.print(u.getEmail() + ", ");
+		
 		System.out.println();
 		System.out.println("------------------------------");
-
+		
 		System.out.println("팔로잉");
-		for (User u : followings)
-			System.out.print(u.getEmail() + ", ");
-
+		for(User u : followings) System.out.print(u.getEmail() + ", ");
+		
 	}
-
+	
+	
 	@PostMapping("/account/tagfollow")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
 	public void tagFollow(@Valid @RequestParam String email, @Valid @RequestParam String tagname) {
-
+		
+//		Tag t1 = new Tag("python");
+//		Tag t3 = new Tag("java");
+//		Tag t2 = new Tag("java");
+//		Tag t4 = new Tag("test");
+//		Set<Tag> set = new HashSet<Tag>();
+//	
+//		set.add(t1);
+//		set.add(t3);
+//		
+//		System.out.println(set.contains(t2));
+//		System.out.println(set.contains(t4));
+		
 		Optional<Tag> optionalTag = tagdao.findTagByName(tagname);
-
-		if (!optionalTag.isPresent()) {
+		
+		if(!optionalTag.isPresent()) {
 			Tag t = new Tag(tagname);
 			tagdao.save(t);
-
+			
 			Optional<User> optionalUser = userdao.findUserByEmail(email);
 			User u = optionalUser.get();
 			u.getTags().add(t);
 			t.getUsers().add(u);
-
+			
 			userdao.save(u);
 		} else {
-
+	
 			Tag t = optionalTag.get();
-
+			
 			System.out.println("태그 있음");
-
+			
 			Optional<User> optionalUser = userdao.findUserByEmail(email);
 			User u = optionalUser.get();
-
-			for (Tag t1 : u.getTags()) {
+			
+			for(Tag t1: u.getTags()) {
 				System.out.println(t1.getName());
 			}
-
+		
 			System.out.println(u.getTags().contains(t));
-
-			if (!u.getTags().contains(t)) {
+			
+			if(!u.getTags().contains(t)) {
 				System.out.println("eee");
 				u.getTags().add(t);
 				t.getUsers().add(u);
