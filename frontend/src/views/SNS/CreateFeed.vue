@@ -186,7 +186,8 @@ textarea {
 .article-submit button {
   color: white;
   width: 100%;
-  background-color: #C4BCB8;
+  background-color: #464545;
+  font-size: 14px;
 }
 
 </style>
