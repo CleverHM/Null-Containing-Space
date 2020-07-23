@@ -8,6 +8,7 @@
   <div id="join3" class="user join wrapC">
     <h5 class="mb-4">
      아래의 회원가입 폼을 작성하세요.
+     {{ selectedStats }}
     </h5>
     <div class="input-with-label">
         <input v-model="user.email" :disabled="true" id="email" placeholder="이메일을 입력하세요." type="text" />
@@ -28,24 +29,31 @@
         />
         <label for="password-confirm">비밀번호 확인</label>
       </div>
+      <!-- 이름 !-->
+      <div class="input-with-label NameAge">
+        <input v-model="user.name" id="name" placeholder="이름을 입력하세요." type="text" />
+        <label for="name">이름</label>
+      </div>
 
       <!-- 성별 !-->
       <div>
-        <p class="m-0">성별</p>
-        <button class="btn-gender isClick" id="Male">남자</button>
-        <button class="btn-gender" id="Female">여자</button>
+        <div class="m-0">성별</div>
+        <button class="btn-gender" :class="{'isClick' :male}" @click="selectmale" id="Male">남자</button>
+        <button class="btn-gender" :class="{'isClick' : female}" @click="selectfemale" id="Female">여자</button>
       </div>
       
-      <!-- 이름 & 나이 !-->     
+      <!-- 나이 !-->     
       <div class="input-with-label NameAge">
-          <input v-model="user.nickname" id="nickname" placeholder="나이를 입력하세요." type="text" />
-          <label for="nickname">나이</label>
-      </div>
-      <div class="input-with-label NameAge">
-        <input v-model="user.nickname" id="nickname" placeholder="이름을 입력하세요." type="text" />
-        <label for="nickname">이름</label>
+          <input v-model="user.age" id="age" placeholder="나이를 입력하세요." type="text" />
+          <label for="age">나이</label>
       </div>
 
+      <!-- 휴대폰 번호 !-->
+      <div class="input-with-label NameAge">
+        <input v-model="user.tel" id="tel" placeholder="번호를 입력하세요." type="text" />
+        <label for="tel">휴대폰</label>
+      </div>
+      
 
 
       <div class="input-with-label">
@@ -58,8 +66,9 @@
       <input v-model="isTerm" type="checkbox" id="term" />
       <span>약관을 동의합니다.</span>
     </label>
-
+    
     <span @click="termPopup=true">약관보기</span>
+    
 
     <button class="btn-input" @click="join">가입하기</button>
   </div>
@@ -80,6 +89,8 @@ export default {
       passwordConfirm: "",
       isTerm: false,
       isLoading: false,
+      male: true,
+      female : false,
       error: {
         email: false,
         password: false,
@@ -91,10 +102,20 @@ export default {
       passwordType: "password",
       passwordConfirmType: "password",
       termPopup: false,
-
     };
   },
   methods:{
+    selectmale() {
+      this.male = true;
+      this.female = false;
+      this.user.gender = true;
+    },
+    selectfemale() {
+      this.male = false;
+      this.female = true;
+      this.user.gender = false;
+
+    },
     join(){
       
       this.$emit("ConfirmJoin", this.user, this.passwordConfirm)
@@ -146,6 +167,24 @@ export default {
   background-color: #464545;
   color: #f7f7f7;
   margin-left: -0px;
+}
+
+/* 폰번호 style */
+.dropdown-menu.radio .dropdown-item { 
+	position:relative;
+	overflow:hidden; 
+	cursor:pointer; }
+
+.dropdown-menu.radio input { 
+	visibility: hidden; 
+	position:absolute; left: -30px; }
+
+.dropdown-menu.radio i { 
+	font-weight:normal; font-style:normal; 
+	display:block; }
+
+.dropdown-item.active {
+  background-color:#555; color:#fff;
 }
 
 </style>
