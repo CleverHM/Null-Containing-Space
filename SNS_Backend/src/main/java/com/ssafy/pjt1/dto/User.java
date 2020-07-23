@@ -21,15 +21,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "User")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 	@Id
@@ -49,13 +43,22 @@ public class User {
 	@JoinTable(name = "Userfollow", joinColumns = {
 			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
 					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
-	private Set<User> followings;
+	@JsonIgnore
+	private Set<User> followings = new HashSet<User>();
 
 	@ManyToMany(mappedBy = "followings")
-	private Set<User> followers;
+	@JsonIgnore
+	private Set<User> followers = new HashSet<User>();
 	
-//	@ManytoMany(fetch = FetchType.LAZY)
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "Tagfollow", joinColumns = {
+	@JoinColumn(name = "user_id") }, inverseJoinColumns = {
+	@JoinColumn(name = "tag_id")})
+	private Set<Tag> tags = new HashSet<Tag>();
+	
 
+	
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime createDate;
@@ -68,8 +71,6 @@ public class User {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
-		this.followers = new HashSet<User>();
-		this.followings = new HashSet<User>();
 	}
 	
 
@@ -77,8 +78,6 @@ public class User {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
-		this.followers = new HashSet<User>();
-		this.followings = new HashSet<User>();
 		this.name = name;
 		this.tel = tel;
 		this.age = age;
@@ -165,4 +164,13 @@ public class User {
 	public void setGender(boolean gender) {
 		this.gender = gender;
 	}
+	
+	public Set<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
+	}
+
 }
