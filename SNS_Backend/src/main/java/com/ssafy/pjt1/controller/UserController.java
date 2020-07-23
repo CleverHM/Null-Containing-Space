@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.CustomMailSender;
+import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
+import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
@@ -52,6 +54,9 @@ public class UserController {
 	
 	@Autowired
 	UserDao userdao;
+	
+	@Autowired
+	TagDao tagdao;
 
 	private String num;
 
@@ -198,7 +203,7 @@ public class UserController {
 
 	@PostMapping("/account/follow")
 	@ApiOperation(value = "유저 팔로우", notes = "사용자간 팔로우 기능을 구현")
-	public void follow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
+	public void userFollow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
 
 		Optional<User> master = userservice.findone(From);
 		Optional<User> slave = userservice.findone(To);
@@ -216,7 +221,7 @@ public class UserController {
 	
 	@GetMapping("/account/follow/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	public void follow(@Valid @RequestParam String email) {
+	public void userFollowList(@Valid @RequestParam String email) {
 		
 		//뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
 		Optional<User> temp = userservice.findone(email);
@@ -234,4 +239,25 @@ public class UserController {
 		for(User u : followings) System.out.print(u.getEmail() + ", ");
 		
 	}
+	
+	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
+	public void tagFollow(@Valid @RequestParam String email, @Valid @RequestParam String tagname) {
+		
+		Tag t = new Tag(tagname);
+		tagdao.save(t);
+		
+		User u = userdao.get
+		
+		
+		User u1 = master.get();
+		User u2 = slave.get();
+		
+		
+		u1.getFollowing().add(u2);
+		u2.getFollowers().add(u1);
+		
+		userservice.signUp(u1);
+	}
+	
+	
 }
