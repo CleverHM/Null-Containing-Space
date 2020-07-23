@@ -62,8 +62,12 @@ export default {
   },
   created(){
     this.user.email = ""
+    this.user.name = ""
     this.user.nickname = ""
     this.user.password = ""
+    this.user.tel = ""
+    this.user.gender = true
+    this.user.age = null
   },
   methods:{
     Gostep2(email){
@@ -105,9 +109,13 @@ export default {
       let msg = "";
       http
       .post("/account/signup", {
+        age : this.user.age,
         email : this.user.email,
+        gender : this.user.gender,
+        name: this.user.name,
         nickname : this.user.nickname,
-        password : this.user.password
+        password : this.user.password,
+        tel : this.user.tel
       })
       .then(({data}) => {
         if(data == "success") {
