@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,32 +28,44 @@ public class Post {
 	@JsonIgnore
 	private int pid;
 
+	
 	private String title;
 	private String content;
-	private String img;
 
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	@JoinTable(name = "test", joinColumns = {
-//	@JoinColumn(name = "post_id") }, inverseJoinColumns = {
-//	@JoinColumn(name = "tag_id")})
-//	private Set<Tag> tags = new HashSet<Tag>();
+	//게시물 : 태그 (N : N 관계)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "Posttag", joinColumns = {
+	@JoinColumn(name = "POST_ID") }, inverseJoinColumns = {
+	@JoinColumn(name = "TAG_ID")})
+	private Set<Tag> tags = new HashSet<Tag>();
 
-	
-	//게시물 : 유저 (N: 1 관계)
+	//게시물 : 유저 (N : 1 관계)
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	private User user;
+	
+	//게시물 : 이미지(1 : 1 관계)
+	@OneToOne
+	@JoinColumn(name = "IMAGE_ID")
+	private Image img;
 
 	public Post() {
 
 	}
 
-	public Post(String title, String content, String img) {
+	public Post(String title, String content, Image img) {
 		this.title = title;
 		this.content = content;
 		this.img = img;
 	}
 	
+	public Set<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
+	}
 	
 	public User getUser() {
 		return user;
@@ -86,11 +99,11 @@ public class Post {
 		this.content = content;
 	}
 
-	public String getImg() {
+	public Image getImg() {
 		return img;
 	}
 
-	public void setImg(String img) {
+	public void setImg(Image img) {
 		this.img = img;
 	}
 }
