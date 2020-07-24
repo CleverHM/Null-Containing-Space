@@ -114,7 +114,7 @@ export default {
 
       // 파일 업로드 axios 요청
       http
-      .POST("",
+      .POST("/account/posting",
         formData,
         {
           headers: {
