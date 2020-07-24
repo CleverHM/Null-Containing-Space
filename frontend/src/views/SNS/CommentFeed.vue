@@ -1,34 +1,35 @@
 <template>
-  <div class="commentFeed">
-    <Navbar></Navbar>
-    <subNav></subNav>
-    <div class="wrapB">
+    <div class="commentFeed">
+        <Navbar></Navbar>
+        <subNav></subNav>
+        <div class="wrapB">
       
-      <!-- 게시글 -->
-      <div class="article-part">
-        aaaa
-      </div>
+        <!-- 게시글 -->
+        <div class="article-part">
+            aaaa
+        </div>
+        
+        <!-- 댓글 part -->
+        <div class="comment-part">
+            <Comment></Comment>
+            <hr>
+            <Comment></Comment>
+        </div>
+
+        <div class="fixed-bottom comment-add d-flex align-items-center">
+            <input type="text"
+                placeholder="댓글을 작성해주세요."
+                class="flex-fill"
+                v-model="commentData"
+                style="border:none;"/>
+            <button class="px-3">
+                작성
+            </button>
+        </div>
+    
       
-      <!-- 댓글 part -->
-      <div class="comment-part">
-        <Comment></Comment>
-        <hr>
-        <Comment></Comment>
-      </div>
-      
-      <!-- 댓글 작성창 -->
-      <div class="fixed-bottom comment-add d-flex align-items-center">
-        <input v-model="commentData" type="text"
-          placeholder="댓글을 작성해주세요."
-          class="flex-fill"
-          style="border:none;"/>
-        <button class="px-3">
-          작성
-        </button>
-      </div>
-      
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -38,7 +39,6 @@ import Comment from '../../components/SNS/SNSCommentItem.vue'
 
 export default {
   name: "commentFeed",
-
   components: { 
     Navbar,
     subNav,
@@ -47,8 +47,13 @@ export default {
 
   date() {
     return {
-      commentData: '',
+        commentData: '',
     }
+  },
+
+  methods: {
+    commentOn() {
+    },
   },
 
 }
