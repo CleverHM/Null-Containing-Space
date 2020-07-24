@@ -26,6 +26,9 @@
             v-model="file"
             :state="Boolean(file)"
             id="file"
+            ref="file"
+            v-on:change="handleFileUpload()"
+            accept="image/*"
             size="sm"
             style="border-color: #000;">
           </b-form-file>
@@ -62,31 +65,96 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
-// import UploadImage from 'vue-upload-image';
+import http from "../../util/http-common.js";
+import axios from 'axios';
 
 export default {
   name: "CreateFeed",
   components: {
     Navbar,
     subNav,
-    // UploadImage 
   },
   data() {
     return {
       maxLength: 1000,
       file: null,
       article: {
-        title: '',
-        content: '',
+        title: "",
+        content: "",
         hashtags: [],
-        image: '',
       },
     }
   },
+
   methods: {
+    // 글 작성
     articleSubmit() {
+    
+      if (this.article.title === "") {
+        this.errorMsg();
+      } else {
+        this.submitOn();
+      }
+    },
+
+    errorMsg() {
+      alert('제목을 입력하세요.')
+    },
+
+    submitOn() {
       console.log('submit');
-    }
+
+      // 파일 axios 보내기
+      let formData = new FormData();
+      formData.append("file", this.file);
+
+      formData.append("title", this.article.title);
+      formData.append("content", this.article.content);
+      formData.append("hashtags", this.article.hashtags);
+
+      // 파일 업로드 axios 요청
+      http
+      .POST("",
+        formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+      .then(function(){
+        console.log('SUCCESS!!');
+      })
+      .catch(function(){
+        console.log('FAILURE!!');
+      })
+      
+      // 이미지 제외 axios 요청
+    //   http
+    //   .POST("", {
+    //     title: this.article.title,
+    //     content: this.article.content,
+    //     hashtags: this.article.hashtags
+    //   })
+    //   .then(({data}) => {
+    //     if(data == "success") {
+    //       console.log("complete");
+    //     }
+    //     this.moveFeed();
+    //   });
+    },
+
+    moveFeed() {
+      this.$router.push({ name: 'FeedMain' });
+    },
+    
+    // 파일 업로드
+    handleFileUpload() {
+      // console.log(this.$refs.file.$refs.input.files[0])
+      this.file = this.$refs.file.$refs.input.files[0];
+      console.log(this.file)
+    },
+
   },
   
   watch:{

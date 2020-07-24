@@ -51,16 +51,16 @@
           <Comment></Comment>
         </div>
 
-      <!-- 댓글 작성창 -->
-      <div class="fixed-bottom comment-add d-flex align-items-center">
-        <input v-model="commentData" type="text"
+        <!-- 댓글 작성창 -->
+        <div class="fixed-bottom comment-add d-flex align-items-center">
+          <input v-model="commentData" type="text"
             placeholder="댓글을 작성해주세요."
             class="flex-fill"
             style="border:none;"/>
-        <button class="px-3">
+          <button class="px-3">
             작성
-        </button>
-      </div>
+          </button>
+        </div>
 
       </div>
     </div>
@@ -81,30 +81,30 @@ export default {
   },
   
   data() {
-      return {
-        imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-        like_color: '',
-        liked: false,
-        article: {
-            username: '알골마스터',
-            created_at: '2020-07-15',
-            title: '.....ABCDEFGHIJK',
-            content: 'Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome.',
-            hashtags: [
-              { name: 'Python',
-                id: '1' },
-              { name: 'Algorithm',
-                id: '2' },
-              { name: 'JavaScript',
-                id: '3' },
-              { name: 'Django',
-                id: '4' },
-              { name: 'Vue.js',
-                id: '5' },
-            ],
-        },
-        commentData: '',
-      }
+    return {
+      imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
+      like_color: '',
+      liked: false,
+      article: {
+        username: '알골마스터',
+        created_at: '2020-07-15',
+        title: '.....ABCDEFGHIJK',
+        content: 'Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome.',
+        hashtags: [
+          { name: 'Python',
+            id: '1' },
+          { name: 'Algorithm',
+            id: '2' },
+          { name: 'JavaScript',
+            id: '3' },
+          { name: 'Django',
+            id: '4' },
+          { name: 'Vue.js',
+            id: '5' },
+        ],
+      },
+      commentData: '',
+    }
   },
 
   created() {
