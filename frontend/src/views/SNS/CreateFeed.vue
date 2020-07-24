@@ -14,27 +14,28 @@
       <div class="textarea-wrap">
         <div class="d-flex flex-row justify-content-between">
           <label>본문</label>
-          <span>{{article.content.length}}/</span>
+          <span>{{ article.content.length }}/</span>
         </div>
         <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
       </div>
 
       <!-- 이미지 -->
-      <b-form-group label="image" label-for="file" label-cols-sm="2" label-size="sm">
-        <b-form-file 
-          v-model="file"
-          :state="Boolean(file)"
-          id="file"
-          size="sm">
-        </b-form-file>
-      </b-form-group>
-      <upload-image
-      ></upload-image>
+      <div class="mx-1">
+        <b-form-group label="이미지" label-for="file" label-cols-sm="2" label-size="sm" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
+          <b-form-file 
+            v-model="file"
+            :state="Boolean(file)"
+            id="file"
+            size="sm"
+            style="border-color: #000;">
+          </b-form-file>
+        </b-form-group>
+      </div>
 
 
       <!-- 해시태그 -->
-      <div>
-        <label for="tags-pills">Hash-tag</label>
+      <div class="mx-1">
+        <label for="tags-pills" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold; font-size:13px;">Hash-tag</label>
         <b-form-tags
           input-id="tags-pills"
           :input-attrs="{ 'aria-describedby': 'tags-remove-on-delete-help' }"
@@ -50,20 +51,25 @@
       </div>
 
     </div>
+
+    <!-- 작성 -->
+    <div class="article-submit fixed-bottom d-flex justify-content-center align-content-center">
+      <button @click="articleSubmit">작성하기</button>
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
-import UploadImage from 'vue-upload-image';
+// import UploadImage from 'vue-upload-image';
 
 export default {
   name: "CreateFeed",
   components: {
     Navbar,
     subNav,
-    UploadImage 
+    // UploadImage 
   },
   data() {
     return {
@@ -76,7 +82,11 @@ export default {
         image: '',
       },
     }
-  
+  },
+  methods: {
+    articleSubmit() {
+      console.log('submit');
+    }
   },
   
   watch:{
@@ -93,13 +103,10 @@ export default {
 <style scoped>
 .feed-form {
   margin-top: 85px;
+  margin-bottom: 50px;
 }
 
 .input-with-label{
-  width: 100%;
-}
-
-.textarea-wrap {
   width: 100%;
 }
 
@@ -164,13 +171,24 @@ textarea {
     color: grey;
     background-color: #f7f7f7;
     background-clip: padding-box;
-    border: 1px solid #ced4da;
+    border: 1px solid #000;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 .badge-secondary {
     color: #fff;
     background-color: #ACCCC4;
+}
+
+.article-submit {
+  height: 40px;
+}
+
+.article-submit button {
+  color: white;
+  width: 100%;
+  background-color: #464545;
+  font-size: 14px;
 }
 
 </style>
