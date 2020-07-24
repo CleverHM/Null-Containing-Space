@@ -242,21 +242,19 @@ public class UserController {
 	
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
 	public void tagFollow(@Valid @RequestParam String email, @Valid @RequestParam String tagname) {
-		
-		Tag t = new Tag(tagname);
-		tagdao.save(t);
-		
-		User u = userdao.get
-		
-		
-		User u1 = master.get();
-		User u2 = slave.get();
-		
-		
-		u1.getFollowing().add(u2);
-		u2.getFollowers().add(u1);
-		
-		userservice.signUp(u1);
+		/*
+		 * Tag t = new Tag(tagname); tagdao.save(t);
+		 * 
+		 * User u = userdao.get();
+		 * 
+		 * 
+		 * User u1 = master.get(); User u2 = slave.get();
+		 * 
+		 * 
+		 * u1.getFollowing().add(u2); u2.getFollowers().add(u1);
+		 * 
+		 * userservice.signUp(u1);
+		 */
 	}
 	
 	

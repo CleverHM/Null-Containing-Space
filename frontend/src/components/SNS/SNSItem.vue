@@ -11,13 +11,13 @@
     </div>
 
     <!-- SNS 이미지, 제목 부분 -->
-    <div class="SNS-img">
+    <div class="SNS-img" @click="detailOn">
       <b-img v-bind="mainProps" rounded alt="Rounded image"></b-img>
     </div>
 
     <!-- 제목 -->
     <div class="SNS-content">
-      {{ article.title }}
+      <span @click="detailOn">{{ article.title }}</span>
     </div>
 
     <!-- 해시태그 -->
@@ -74,10 +74,18 @@ export default {
   },
 
   methods: {
+    // tag 클릭하면 화면 상단에 filtering 걸린 태그를 출력하기 위해서 상단 컴포넌트로 올려줌
     tagOn(event) {
       // console.log(event.target.innerText)
       this.$emit('tag-add', event.target.innerText)
+    },
+
+    // 클릭 시 해당 article의 detail 페이지로 넘어감
+    detailOn(event) {
+      // console.log(event)
+      this.$router.push('/feed/detail')
     }
+
   },
 }
 </script>
