@@ -14,13 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 
 @Entity
 @Table(name = "User")
@@ -49,16 +49,15 @@ public class User {
 	@ManyToMany(mappedBy = "followings")
 	@JsonIgnore
 	private Set<User> followers = new HashSet<User>();
-	
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Tagfollow", joinColumns = {
-	@JoinColumn(name = "user_id") }, inverseJoinColumns = {
-	@JoinColumn(name = "tag_id")})
-	private Set<Tag> tags = new HashSet<Tag>();
-	
 
-	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "Tagfollow", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "tag_id") })
+	private Set<Tag> tags = new HashSet<Tag>();
+
+	@OneToMany(mappedBy = "user")
+	private Set<Post> posts = new HashSet<Post>();
+
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime createDate;
@@ -66,13 +65,12 @@ public class User {
 	public User() {
 
 	}
-	
+
 	public User(String nickname, String password, String email) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
 	}
-	
 
 	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
 		this.nickname = nickname;
@@ -82,6 +80,14 @@ public class User {
 		this.tel = tel;
 		this.age = age;
 		this.gender = gender;
+	}
+	
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
 	}
 
 	public String getPassword() {
@@ -164,7 +170,7 @@ public class User {
 	public void setGender(boolean gender) {
 		this.gender = gender;
 	}
-	
+
 	public Set<Tag> getTags() {
 		return tags;
 	}
@@ -172,5 +178,4 @@ public class User {
 	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
-
 }
