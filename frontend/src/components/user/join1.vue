@@ -5,7 +5,7 @@
       </h5>
       <div class="form-wrap">
         <div class="input-with-label">
-          <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
+          <input @keyup.enter="confirmEmail" v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
           <label for="email">이메일</label>
           <span id="ErrorMsg">{{ ErrorMessage }}</span>
 
