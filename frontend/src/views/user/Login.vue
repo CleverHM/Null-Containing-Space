@@ -53,7 +53,7 @@
         </div>
         <div class="wrap">
           <p>비밀번호를 잊으셨나요?</p>
-          <router-link to="/find/password/email" class="btn--text">비밀번호 찾기</router-link>
+          <router-link to="/find/password" class="btn--text">비밀번호 찾기</router-link>
         </div>
         <div class="wrap">
           <p>아직 회원이 아니신가요?</p>

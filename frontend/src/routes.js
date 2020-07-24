@@ -2,15 +2,14 @@
 
 import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
-import findPassword1 from './views/user/FindPassword1.vue'
-import findPassword2 from './views/user/FindPassword2.vue'
-import findPassword3 from './views/user/FindPassword3.vue'
+import findPassword from './views/user/FindPassword.vue'
 
 import profile from './views/user/profile.vue'
 
 import FeedMain from './views/SNS/IndexFeed.vue'
 import FeedDetail from './views/SNS/DetailFeed.vue'
 import FeedCreate from './views/SNS/CreateFeed.vue'
+import FeedComment from './views/SNS/CommentFeed.vue'
 
 import Components from './views/Components.vue'
 
@@ -33,19 +32,9 @@ export default [
         component : Join
     },
     {
-        path : '/find/password/email',
-        name : 'findPassword1',
-        component : findPassword1
-    },
-    {
-        path : '/find/password/question',
-        name : 'findPassword2',
-        component : findPassword2
-    },
-    {
         path : '/find/password/',
-        name : 'findPassword3',
-        component : findPassword3
+        name : 'findPassword',
+        component : findPassword
     },
     {
         path : '/user/profile/',
@@ -86,6 +75,11 @@ export default [
         path : '/feed/create',
         name : 'FeedCreate',
         component : FeedCreate
+    },
+    {
+        path : '/feed/comment',
+        name : 'FeedComment',
+        component : FeedComment
     },
       
 ]

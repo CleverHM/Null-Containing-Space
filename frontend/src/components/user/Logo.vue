@@ -4,7 +4,7 @@
             <img src="../../assets/images/LogoImage.png">
         </div>
         <h5 class="my-5" style="color:#464545">
-        SW 개발자를 위한 블라블라 SNS
+            SW 개발자를 위한 블라블라 SNS
         </h5>
     </div>
     
