@@ -9,16 +9,15 @@ import com.ssafy.pjt1.dao.AuthDao;
 import com.ssafy.pjt1.dto.Auth;
 
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
-	
-	 @Autowired
-	 AuthDao authdao;
+	@Autowired
+	AuthDao authdao;
 
 	@Override
 	public void insert(Auth auth) {
 		// TODO Auto-generated method stub
-		 authdao.save(auth);
+		authdao.save(auth);
 	}
 
 	@Override
@@ -26,6 +25,5 @@ public class AuthServiceImpl implements AuthService{
 		// TODO Auto-generated method stub
 		return authdao.findAuthByEmail(email);
 	}
-	 
 
 }
