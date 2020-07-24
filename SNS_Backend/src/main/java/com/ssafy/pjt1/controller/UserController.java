@@ -22,7 +22,6 @@ import com.ssafy.pjt1.dao.PostDao;
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
-import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
@@ -30,6 +29,7 @@ import com.ssafy.pjt1.model.LoginRequest;
 import com.ssafy.pjt1.model.PostRequest;
 import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.AuthService;
+import com.ssafy.pjt1.service.ImageService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -63,6 +63,9 @@ public class UserController {
 
 	@Autowired
 	PostDao postdao;
+	
+	@Autowired
+	ImageService imageservice;
 
 	private String num;
 
@@ -106,7 +109,7 @@ public class UserController {
 			num = selectUser.getAuth_number();
 		});
 
-		if (flag != null) {
+		if (flag.isPresent()) {
 			if (num.equals(auth.getAuth_number())) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
@@ -132,10 +135,13 @@ public class UserController {
 	@PostMapping("/account/passwordUpdateMailSend")
 	@ApiOperation(value = "비밀번호 변경시 인증 메일 전송", notes = "비밀번호 변경시 인증 메일 전송 기능 구현")
 	public Object passwordUpdateMailSend(@Valid @RequestBody String email) throws MessagingException {
+		
 		// 이메일 중복 체크
 		Optional<User> user = userdao.findUserByEmail(email);
 		// User u = user.get();
 		// System.out.println(u.getEmail());
+		
+		
 		if (!user.isPresent()) {
 			System.out.println("이메일이 없습니다.");
 			final BasicResponse result = new BasicResponse();
@@ -168,7 +174,7 @@ public class UserController {
 			num = selectUser.getAuth_number();
 		});
 
-		if (flag != null) {
+		if (flag.isPresent()) {
 			if (num.equals(auth.getAuth_number())) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
@@ -366,17 +372,24 @@ public class UserController {
 		}
 
 	}
+	
+	// 게시물 작성할때 같이 파일이 넘어옴.	
+	// 1. 이미지도 저장하고
+	// 2. 게시물도 저장하고
 
 	@PostMapping("/account/posting")
 	@ApiOperation(value = "유저 게시물작성", notes = "게시물 작성 기능을 구현.")
 	public void userPost(@Valid @RequestParam String email, @Valid @RequestBody PostRequest request) {
+		
+		// 파일 업로드 구현해야 함.
 
-		Post post = new Post(request.getTitle(), request.getContent(), request.getImg());
-		Optional<User> optionaluser = userdao.findUserByEmail(email);
-		User u = optionaluser.get();
-		u.getPosts().add(post);
-		post.setUser(u);
-		postdao.save(post);
-		userdao.save(u);
+//		Post post = new Post(request.getTitle(), request.getContent(), request.getImg());
+//		Optional<User> optionaluser = userdao.findUserByEmail(email);
+//		User u = optionaluser.get();
+//		u.getPosts().add(post);
+//		post.setUser(u);
+//		postdao.save(post);
+//		userdao.save(u);
 	}
+	
 }
