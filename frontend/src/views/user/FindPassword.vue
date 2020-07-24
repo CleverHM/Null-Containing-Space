@@ -4,30 +4,30 @@
       <ul class="progressbar">
         <button id="Step1" :disable="!isActiveStep1" :class="{'active':isActiveStep1}">이메일 입력</button>
         <button id="Step2" :disable="!isActiveStep2" :class="{'active':isActiveStep2}">이메일 인증</button>
-        <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">회원가입 폼 작성</button>
+        <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">새 비밀번호 입력</button>
       </ul>
     </div>
 
     <div v-if="isActiveStep2">
       <div v-if="isActiveStep3">
-        <Join3 @ConfirmJoin="Join" :user="user"></Join3>
+        <Password3 @ConfirmJoin="Join" :user="user"></Password3>
       </div>
       <div v-else>
-        <Join2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Join2>
+        <Password2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Password2>
       </div>
     </div>
 
     <div v-else>
-      <Join1 @ConfirmEmail="Gostep2" :email="user.email"></Join1>
+      <Password1 @ConfirmEmail="Gostep2" :email="user.email"></Password1>
     </div>
 
   </div>
 </template>
 
 <script>
-import Join1 from '../../components/user/join1.vue'
-import Join2 from '../../components/user/join2.vue'
-import Join3 from '../../components/user/join3.vue'
+import Password1 from '../../components/user/step1.vue'
+import Password2 from '../../components/user/step2.vue'
+import Password3 from '../../components/user/passwordform.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -35,9 +35,9 @@ import axios from 'axios';
 export default {
   name: 'JoinView',
   components: {
-    Join1,
-    Join2, 
-    Join3,
+    Password1,
+    Password2, 
+    Password3,
   },
   data: () => {
     return {
@@ -52,8 +52,8 @@ export default {
       },
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : true,
-      isActiveStep3 : true,
+      isActiveStep2 : false,
+      isActiveStep3 : false,
       PasswordErrorMsg : "",
       // 회원가입 폼 확인
       isTerm: false,
