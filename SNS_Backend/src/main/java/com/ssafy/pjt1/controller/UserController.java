@@ -22,6 +22,7 @@ import com.ssafy.pjt1.dao.PostDao;
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
+import com.ssafy.pjt1.dto.Image;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
@@ -379,9 +380,15 @@ public class UserController {
 	@PostMapping("/account/posting")
 	@ApiOperation(value = "유저 게시물작성", notes = "게시물 작성 기능을 구현.")
 	public void userPost(@Valid @RequestParam String email, @Valid @RequestBody PostRequest request) {
+		Image img = new Image();
+		
+		String sourceImageName = img.getUploadname();
 		
 		// 파일 업로드 구현해야 함.
+		
 
+		
+	
 //		Post post = new Post(request.getTitle(), request.getContent(), request.getImg());
 //		Optional<User> optionaluser = userdao.findUserByEmail(email);
 //		User u = optionaluser.get();
