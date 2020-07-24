@@ -48,7 +48,7 @@ export default {
   methods: {
     // 글 작성하기
     articleSubmit() {
-      this.$router.push("/feed/create");
+      this.$router.push({ name: 'FeedCreate' });
     },
 
     // 태그 클릭하면 +. 중복은 제거
