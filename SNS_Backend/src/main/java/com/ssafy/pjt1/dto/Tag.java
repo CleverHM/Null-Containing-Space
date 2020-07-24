@@ -1,6 +1,7 @@
 package com.ssafy.pjt1.dto;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 @Entity
-@Table(name = "User")
+@Table(name = "Tag")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Tag {
 	@Id
@@ -24,9 +25,9 @@ public class Tag {
 	private int tid;
 	
 	private String name;
-	
+
 	@ManyToMany(mappedBy = "tags")
-	private Set<User> users = new HashSet<User>();
+	private Set<User> users;
 	
 	
 	public Tag() {
@@ -35,6 +36,7 @@ public class Tag {
 	
 	public Tag(String name) {
 		this.name = name;
+		this.users = new HashSet<User>();
 	}
 
 	
@@ -64,6 +66,21 @@ public class Tag {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Tag t = (Tag) obj;
+		if (t.getName() == this.name) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tid);
 	}
 	
 }
