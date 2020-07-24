@@ -1,7 +1,10 @@
 <template>
   <div id="join1">
-      <h5 class="mb-4">
-      가입할 이메일 주소를 아래에 입력해주세요.
+      <h5 class="mb-4" v-if="linkName==='Join'">
+      {{ title.join }}
+      </h5>
+      <h5 class="mb-4" v-if="linkName==='findPassword'">
+      {{ title.password }}
       </h5>
       <div class="form-wrap">
         <div class="input-with-label">
@@ -21,7 +24,6 @@ import http from "@/util/http-common.js";
 import "../../assets/css/components.scss";
 // 이메일 체크 정규식
 var EmailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
 export default {
   props: {
     email:{
@@ -29,9 +31,18 @@ export default {
       required: true
     }
   },
+  created() {
+    this.linkName = this.$route.name
+    console.log(this.linkName)
+  },
   data : () => {
     return {
-      ErrorMessage : ""
+      linkName: null,
+      ErrorMessage : "",
+      title : {
+        join : "가입할 이메일 주소를 아래에 입력해주세요.",
+        password : "가입한 이메일 주소를 아래에 입력해주세요.",
+      },
     }
   },
   methods:{

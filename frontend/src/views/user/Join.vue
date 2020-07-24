@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import Join1 from '../../components/user/join1.vue'
-import Join2 from '../../components/user/join2.vue'
-import Join3 from '../../components/user/join3.vue'
+import Join1 from '../../components/user/step1.vue'
+import Join2 from '../../components/user/step2.vue'
+import Join3 from '../../components/user/joinform.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -52,8 +52,8 @@ export default {
       },
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : true,
-      isActiveStep3 : true,
+      isActiveStep2 : false,
+      isActiveStep3 : false,
       PasswordErrorMsg : "",
       // 회원가입 폼 확인
       isTerm: false,
