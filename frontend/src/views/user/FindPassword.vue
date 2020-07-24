@@ -52,8 +52,8 @@ export default {
       },
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : false,
-      isActiveStep3 : false,
+      isActiveStep2 : true,
+      isActiveStep3 : true,
       PasswordErrorMsg : "",
       // 회원가입 폼 확인
       isTerm: false,
