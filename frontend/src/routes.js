@@ -9,6 +9,7 @@ import profile from './views/user/profile.vue'
 import FeedMain from './views/SNS/IndexFeed.vue'
 import FeedDetail from './views/SNS/DetailFeed.vue'
 import FeedCreate from './views/SNS/CreateFeed.vue'
+import FeedComment from './views/SNS/CommentFeed.vue'
 
 import Components from './views/Components.vue'
 
@@ -74,6 +75,11 @@ export default [
         path : '/feed/create',
         name : 'FeedCreate',
         component : FeedCreate
+    },
+    {
+        path : '/feed/comment',
+        name : 'FeedComment',
+        component : FeedComment
     },
       
 ]
