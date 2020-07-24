@@ -37,3 +37,4 @@ build/
 
 
 target/classes/META-INF/maven/com.ssafy/SNS_Backend/pom.properties
+target/classes/com
