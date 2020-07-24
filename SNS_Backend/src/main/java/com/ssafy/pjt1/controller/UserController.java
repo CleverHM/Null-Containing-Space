@@ -94,7 +94,6 @@ public class UserController {
 
 	@PostMapping("/account/loginMailConfirm")
 	@ApiOperation(value = "회원가입시 메일인증", notes = "회원가입시 메일인증 기능 구현")
-
 	public Object loginMailConfirm(@Valid @RequestBody Auth auth) {
 		// 확인 하기
 		System.out.println(auth.getAuth_email());
