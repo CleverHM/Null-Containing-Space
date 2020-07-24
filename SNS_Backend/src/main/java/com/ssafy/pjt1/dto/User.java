@@ -54,7 +54,9 @@ public class User {
 	@JoinTable(name = "Tagfollow", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "tag_id") })
 	private Set<Tag> tags = new HashSet<Tag>();
-
+    
+	
+	// 유저 : 게시물 (1: N 관계)
 	@OneToMany(mappedBy = "user")
 	private Set<Post> posts = new HashSet<Post>();
 
