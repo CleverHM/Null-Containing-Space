@@ -1,65 +1,63 @@
-
-<!--
-    가입하기는 기본적인 폼만 제공됩니다
-    기능명세에 따라 개발을 진행하세요.
-    Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
- -->
 <template>
   <div id="join3" class="user join wrapC">
     <h5 class="mb-4">
      아래의 회원가입 폼을 작성하세요.
     </h5>
     <div class="input-with-label">
-        <input v-model="user.email" :disabled="true" id="email" placeholder="이메일을 입력하세요." type="text" />
+        <input v-model="user.email" :disabled="true" id="email" placeholder="example@xxxxx.com" type="text" />
         <label for="email">이메일</label>
     </div>
     <div class="form-wrap">
       <div class="input-with-label">
-          <input v-model="user.password" id="password" :type="passwordType" placeholder="비밀번호를 입력하세요." />
+          <input v-model="user.password" @keyup="checkpassword" id="password" :type="passwordType" placeholder="＊＊＊＊＊＊＊" />
           <label for="password">비밀번호</label>
+          <div class="Warning" v-if="error.password"><i class="fas fa-exclamation-triangle"></i> 영문,숫자 포함 8 자리이상이어야 합니다.</div>
       </div>
-
+      
       <div class="input-with-label">
         <input
           v-model="passwordConfirm"
           :type="passwordConfirmType"
+          @keyup="checkpasswordconfirm" 
           id="password-confirm"
-          placeholder="비밀번호를 다시한번 입력하세요."
+          placeholder="＊＊＊＊＊＊＊"
         />
         <label for="password-confirm">비밀번호 확인</label>
+        <div class="Warning" v-if="error.passwordConfirm"><i class="fas fa-exclamation-triangle"></i> 비밀번호가 일치하지 않습니다.</div>
       </div>
-
-      <!-- 성별 !-->
+      <!-- 이름 !-->
+      <div class="input-with-label NameAge">
+        <input v-model="user.name" id="name" placeholder="홍길동" type="text" />
+        <label for="name">이름</label>
+      </div>
+        <!-- 성별 !-->
       <div>
-        <p class="m-0">성별</p>
-        <button class="btn-gender isClick" id="Male">남자</button>
-        <button class="btn-gender" id="Female">여자</button>
+        <div class="m-0">성별</div>
+        <button class="btn-gender" :class="{'isClick' :male}" @click="selectmale" id="Male">남자</button>
+        <button class="btn-gender" :class="{'isClick' : female}" @click="selectfemale" id="Female">여자</button>
       </div>
       
-      <!-- 이름 & 나이 !-->     
+      <!-- 나이 !-->     
       <div class="input-with-label NameAge">
-          <input v-model="user.nickname" id="nickname" placeholder="나이를 입력하세요." type="text" />
-          <label for="nickname">나이</label>
+          <input @keyup="checkage" v-model="user.age" id="age" placeholder="25" type="text" />
+          <label for="age">나이</label>
+          <div class="Warning" v-if="error.age"><i class="fas fa-exclamation-triangle"></i>올바른 형식이 아닙니다.</div>
       </div>
+      <!-- 휴대폰 번호 !-->
       <div class="input-with-label NameAge">
-        <input v-model="user.nickname" id="nickname" placeholder="이름을 입력하세요." type="text" />
-        <label for="nickname">이름</label>
+        <input @keyup="ChangeTelForm(user.tel)" v-model="user.tel" id="tel" placeholder="'-'를 제외하고 입력하세요." type="text" maxlength="13" />
+        <label for="tel">휴대폰</label>
+        <div class="Warning" v-if="error.tel"><i class="fas fa-exclamation-triangle"></i>올바른 형식이 아닙니다.</div>
       </div>
-
-
 
       <div class="input-with-label">
-        <input v-model="user.nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <input @keyup="checknickname" v-model="user.nickname" id="nickname" placeholder="ex) 알골마스터" type="text" />
         <label for="nickname">닉네임</label>
+        <div class="Warning" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i> 이미 존재하는 닉네임입니다.{{ user.nickname }}</div>
       </div>
     </div>
 
-    <label>
-      <input v-model="isTerm" type="checkbox" id="term" />
-      <span>약관을 동의합니다.</span>
-    </label>
-
-    <span @click="termPopup=true">약관보기</span>
+    
 
     <button class="btn-input" @click="join">가입하기</button>
   </div>
@@ -68,39 +66,107 @@
 <script>
 import http from "@/util/http-common.js";
 
+const passwordReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
+const ageReg = /^[1-9]{1}$|^[1-4]{1}[0-9]{1}$|^100$/
+
+
 export default {
+  name: 'Join3',
   props: {
     user:{
-      type:Object,
-      required: true
+      type: Object,
+      required: true,
     }
   },
-  data: () => {
-    return {
+  data() {
+    return{
+      tel: "",
       passwordConfirm: "",
       isTerm: false,
       isLoading: false,
+      male: true,
+      female : false,
       error: {
-        email: false,
         password: false,
         nickname: false,
         passwordConfirm: false,
-        term: false
+        age: false,
+        tel: false,
       },
       isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
       termPopup: false,
-
-    };
+    }
   },
-  methods:{
+  methods: {
+    selectmale() {
+      this.male = true;
+      this.female = false;
+      this.user.gender = true;
+    },
+    selectfemale() {
+      this.male = false;
+      this.female = true;
+      this.user.gender = false;
+    },
+     ChangeTelForm(inputNum){
+      var phoneNum = inputNum.replace(/[^0-9]/g, '');
+      console.log("before change", phoneNum)
+      var tmp = '';
+      if (phoneNum.length < 4){
+        tmp = phoneNum
+      } else if (phoneNum.length < 7){
+        tmp += phoneNum.substr(0, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(3);
+      } else if (phoneNum.length < 11) {
+        tmp += phoneNum.substr(0, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(3, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(6);
+      }else {
+        tmp += phoneNum.substr(0, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(3, 4);
+        tmp += '-'
+        tmp += phoneNum.substr(7);
+      }
+      this.user.tel = tmp
+      console.log("after = ", tmp)
+      console.log("user.tel = ", this.user.tel)
+    },
+    checkpassword(){
+      if (this.user.password.match(passwordReg) != null){
+        this.error.password = false;
+      } else {
+        this.error.password = true;
+      }
+    },
+    checkpasswordconfirm(){
+      if (this.user.password === this.passwordConfirm){
+        this.error.passwordConfirm = false;
+      } else {
+        this.error.passwordConfirm = true;
+      }
+    },
+    checkage(){
+      if (this.user.age.match(ageReg) != null){
+        this.error.age = false;
+      } else {
+        this.error.age = true;
+      }
+
+    },
+    checknickname(){
+
+    },
     join(){
-      
-      this.$emit("ConfirmJoin", this.user, this.passwordConfirm)
+      console.log("hello")
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -146,6 +212,27 @@ export default {
   background-color: #464545;
   color: #f7f7f7;
   margin-left: -0px;
+}
+.Warning{
+  font-size: 13px;
+  color: red;
+}
+/* 폰번호 style */
+.dropdown-menu.radio .dropdown-item { 
+	position:relative;
+	overflow:hidden; 
+	cursor:pointer; }
+
+.dropdown-menu.radio input { 
+	visibility: hidden; 
+	position:absolute; left: -30px; }
+
+.dropdown-menu.radio i { 
+	font-weight:normal; font-style:normal; 
+	display:block; }
+
+.dropdown-item.active {
+  background-color:#555; color:#fff;
 }
 
 </style>

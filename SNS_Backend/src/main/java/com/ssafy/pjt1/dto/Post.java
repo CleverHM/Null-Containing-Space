@@ -37,6 +37,8 @@ public class Post {
 //	@JoinColumn(name = "tag_id")})
 //	private Set<Tag> tags = new HashSet<Tag>();
 
+	
+	//게시물 : 유저 (N: 1 관계)
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	private User user;
