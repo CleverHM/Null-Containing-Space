@@ -40,7 +40,10 @@
 ## 2020. 07. 27
 
 - 조대흠
-- 뉴스피드 CRUD 중 C 구현완료(Spring)
+  - 뉴스피드 CRUD 중 C 구현완료(Spring)
 - 박상현
+  - Ability 엔티티 설계
+  - Ability 엔티티 vs User 엔티티 (1:1 관계)
+  - 팀원 매칭 알고리즘 설계 중
 - 김호한
   - Token Create, 인증 부분 개발중 (Spring)
