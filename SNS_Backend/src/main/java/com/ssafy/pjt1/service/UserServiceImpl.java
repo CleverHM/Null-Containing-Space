@@ -10,8 +10,8 @@ import com.ssafy.pjt1.dto.User;
 
 @Service
 public class UserServiceImpl implements UserService {
-	 @Autowired
-	 UserDao userdao;
+	@Autowired
+	UserDao userdao;
 
 	@Override
 	public Optional<User> login(String email, String password) {
@@ -36,9 +36,5 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		userdao.delete(user);
 	}
-
-
-
-
 
 }

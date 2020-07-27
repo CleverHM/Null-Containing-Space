@@ -1,21 +1,30 @@
 <template>
   <div id="createFeed">
     <Navbar></Navbar>
-    <subNav></subNav>
+    <!-- <subNav></subNav> -->
     <div class="feed-form">
 
       <!-- 제목 -->
-      <div class="input-with-label">
+      <!-- <div class="input-with-label">
         <input v-model="article.title" id="title" placeholder="제목을 입력하세요." type="text" />
         <label for="title">제목</label>
+      </div> -->
+
+      <div class="inputForm">
+        <input v-model="article.title" id="title" placeholder="제목(3글자 이상 입력해주세요)" type="text" />
       </div>
 
       <!-- 본문 -->
-      <div class="textarea-wrap">
+      <!-- <div class="textarea-wrap">
         <div class="d-flex flex-row justify-content-between">
           <label>본문</label>
           <span>{{ article.content.length }}/</span>
         </div>
+        <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
+      </div> -->
+
+      <div class="textareaForm">
+        <div class="textlength">{{ article.content.length }}/</div>
         <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
       </div>
 
@@ -64,7 +73,7 @@
 
 <script>
 import Navbar from '../../components/common/Navigation.vue'
-import subNav from '../../components/common/subnav.vue'
+// import subNav from '../../components/common/subnav.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -72,7 +81,7 @@ export default {
   name: "CreateFeed",
   components: {
     Navbar,
-    subNav,
+    // subNav,
   },
   data() {
     return {
@@ -105,8 +114,9 @@ export default {
       console.log('submit');
 
       // 파일 axios 보내기
+      console.log(this.file)
       let formData = new FormData();
-      formData.append("file", this.file);
+      formData.append("files", this.file);
 
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
@@ -114,7 +124,7 @@ export default {
 
       // 파일 업로드 axios 요청
       http
-      .POST("",
+      .post("/account/posting",
         formData,
         {
           headers: {
@@ -177,7 +187,32 @@ export default {
 .input-with-label{
   width: 100%;
 }
-
+.inputForm{
+  margin: 0px 5px 10px 5px;
+  
+}
+#title {
+  padding: 0 10px 0 10px;
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid black;
+}
+input::placeholder {
+  font-size: 13px;
+}
+.textareaForm{
+  margin: 0px 5px 10px 5px;
+  border: none;
+}
+.textareaForm textarea {
+  padding: 0 10px 0 10px;
+}
+.textlength{
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
 .textarea-wrap {
   width: 100%;
   float: left;

@@ -4,10 +4,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -29,6 +33,8 @@ public class Tag {
 	@ManyToMany(mappedBy = "tags")
 	private Set<User> users;
 	
+	@ManyToMany(mappedBy = "tags")
+	private Set<Post> posts;
 	
 	public Tag() {
 	
