@@ -30,9 +30,10 @@
 
       <!-- 이미지 -->
       <div class="mx-1">
-        <b-form-group label="이미지" label-for="file" label-cols-sm="2" label-size="sm" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
+        <b-form-group label-cols-sm="2" label-size="sm" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
           <b-form-file 
             v-model="file"
+            placeholder="이미지를 업로드해주세요."
             :state="Boolean(file)"
             id="file"
             ref="file"
@@ -46,7 +47,7 @@
 
 
       <!-- 해시태그 -->
-      <div class="mx-1">
+      <!-- <div class="mx-1">
         <label for="tags-pills" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold; font-size:13px;">Hash-tag</label>
         <b-form-tags
           input-id="tags-pills"
@@ -59,8 +60,24 @@
           remove-on-delete
           class="mb-2"
         ></b-form-tags>
-        <!-- <p>{{ article.hashtags }}</p> -->
+      </div> -->
+
+      <!-- 해시태그 -->
+
+      <!-- 해시태그 작성 -->
+      <div class="mx-1 mb-2">
+        <input v-model="hashtag"
+         @keyup.space="addhashtag(hashtag)" 
+         @keyup.enter="addhashtag(hashtag)" 
+         @keyup.delete="removetag(hashtag)" 
+         placeholder="해시태그를 입력해주세요." 
+         type="text" />
       </div>
+      <div class="displaytags" v-if="article.hashtags.length">
+      입력 태그 : 
+      <button class="btn-tags" v-for="tag in article.hashtags" :key="tag" @click="tagRemove">{{ tag }}</button>
+      </div>
+      
 
     </div>
 
@@ -92,6 +109,7 @@ export default {
         content: "",
         hashtags: [],
       },
+      hashtag: "",
     }
   },
 
@@ -157,10 +175,39 @@ export default {
     moveFeed() {
       this.$router.push({ name: 'FeedMain' });
     },
+    addhashtag(hashtag) {
+      if (hashtag && hashtag !="" && hashtag != " ") {
+        var isDouble = this.article.hashtags.find(function(n){
+          return hashtag === n
+        })
+      console.log(isDouble)
+      if (!isDouble) {
+        this.article.hashtags.push(hashtag)
+      }
+      }
+      
+      this.hashtag = ""
+
+    },
+    // 해시태그 작성중 backspace키 누르면
+    removetag(hashtag) {
+      if (!hashtag) {
+        this.article.hashtags.pop()
+      }
+      
+    },
+    // 태그 클릭하면 -
+    tagRemove(event) {
+      console.log(event.target.innerText)
+      console.log(this.article.hashtags)
+      console.log(this.article.hashtags.indexOf(event.target.innerText))
+      this.article.hashtags.splice(this.article.hashtags.indexOf(event.target.innerText),1)
+      // console.log([...this.clicktags])
+    },
     
     // 파일 업로드
     handleFileUpload() {
-      // console.log(this.$refs.file.$refs.input.files[0])
+      console.log(this.$refs.file.$refs.input.files)
       this.file = this.$refs.file.$refs.input.files[0];
       console.log(this.file)
     },
@@ -191,7 +238,7 @@ export default {
   margin: 0px 5px 10px 5px;
   
 }
-#title {
+input {
   padding: 0 10px 0 10px;
   width: 100%;
   height: 40px;
@@ -212,6 +259,20 @@ input::placeholder {
   position: absolute;
   right: 0;
   margin-right: 10px;
+}
+.hashtags::placeholder{
+   color: red;
+}
+.btn-tags{
+  border-radius: 10px;
+  margin: 3px;
+  padding: 1px 5px 1px 5px;
+  background-color: #C4BCB8;
+  font-weight:bold;
+  color: #f7f7f7;
+}
+.displaytags{
+  padding: 0px 10px 0 10px;
 }
 .textarea-wrap {
   width: 100%;
