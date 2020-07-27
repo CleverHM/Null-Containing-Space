@@ -401,25 +401,18 @@ public class UserController {
 		img.setFilename(destinationFileName);
 		img.setFileOriname(sourceFileName);
 		img.setFileurl(fileUrl);
-		//filesservice.upload(img);
-		// 파일 업로드 끝!
 		
 		
-		// 게시물 업로드 시작!
-		System.out.println(title);
-		System.out.println(content);
-		for(int i=0; i<hashtags.length; i++) {
-			System.out.println(hashtags[i]);
-		}
-		
+		// 게시물 업로드 시작!	
 		Post post = new Post();
-		
 		Optional<User> u = userservice.findone(email);
 		User pUser = u.get();
 		
+		// Post : User 정보이어주기.
 		post.setUser(pUser);
 		post.setTitle(title);
 		post.setContent(content);
+		// Post : Files 정보이어주기
 		post.setImg(img);
 		
 		
@@ -430,28 +423,24 @@ public class UserController {
 			if (!optionalTag.isPresent()) {
 				Tag t = new Tag(hashtags[i]);
 				tagdao.save(t);
+				// Post : Tag 정보 이어주기.
 				post.getTags().add(t);
 			}
+			
 			// 태그가 테이블에 존재하는 경우.
 			else {
 				Tag t = optionalTag.get();
 				System.out.println("태그 있음");
+				// Post : Tag 정보 이어주기.
 				post.getTags().add(t);
 			}	
 		}
-		
-		pUser.getPosts().add(post);
-		img.setPost(post);
-		
-		
-		userdao.save(pUser);
-		
+				
+		postdao.save(post);
 		System.out.println(post.getContent());
 		System.out.println(post.getImg().getFid());
 		System.out.println(post.getTitle());
 		System.out.println(post.getUser().getUid());
-		
-		postdao.save(post);
 		
 	}
 }
