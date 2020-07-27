@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.dto;
 
+import java.awt.Image;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,13 +48,13 @@ public class Post {
 	//게시물 : 이미지(1 : 1 관계)
 	@OneToOne
 	@JoinColumn(name = "IMAGE_ID")
-	private Image img;
+	private Files img;
 
 	public Post() {
 
 	}
 
-	public Post(String title, String content, Image img) {
+	public Post(String title, String content, Files img) {
 		this.title = title;
 		this.content = content;
 		this.img = img;
@@ -99,11 +100,11 @@ public class Post {
 		this.content = content;
 	}
 
-	public Image getImg() {
+	public Files getImg() {
 		return img;
 	}
 
-	public void setImg(Image img) {
+	public void setImg(Files img) {
 		this.img = img;
 	}
 }

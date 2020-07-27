@@ -1,11 +1,14 @@
 package com.ssafy.pjt1.controller;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +19,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.pjt1.CustomMailSender;
 import com.ssafy.pjt1.dao.PostDao;
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
-import com.ssafy.pjt1.dto.Image;
+import com.ssafy.pjt1.dto.Files;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
-import com.ssafy.pjt1.model.PostRequest;
 import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.AuthService;
-import com.ssafy.pjt1.service.ImageService;
+import com.ssafy.pjt1.service.FilesService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -66,7 +69,7 @@ public class UserController {
 	PostDao postdao;
 	
 	@Autowired
-	ImageService imageservice;
+	FilesService filesservice;
 
 	private String num;
 
@@ -379,23 +382,33 @@ public class UserController {
 
 	@PostMapping("/account/posting")
 	@ApiOperation(value = "유저 게시물작성", notes = "게시물 작성 기능을 구현.")
-	public void userPost(@Valid @RequestParam String email, @Valid @RequestBody PostRequest request) {
-		Image img = new Image();
+	public void userPost(@Valid @RequestParam MultipartFile files, String title, String content, String[] hashtags) throws Exception {
 		
-		String sourceImageName = img.getUploadname();
+		System.out.println("222222");
+		
+		Files img = new Files();
+		
+		String sourceFileName = files.getOriginalFilename();
+		System.out.println(sourceFileName);
+		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+		File destinationFile;
+		String destinationFileName;
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		
+		do {
+			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
+			destinationFile = new File(fileUrl + destinationFileName);
+		}while(destinationFile.exists());
+		
+		destinationFile.getParentFile().mkdirs();
+		files.transferTo(destinationFile);
+		
+		img.setFilename(destinationFileName);
+		img.setFileOriname(sourceFileName);
+		img.setFileurl(fileUrl);
+		filesservice.upload(img);
 		
 		// 파일 업로드 구현해야 함.
-		
-
-		
-	
-//		Post post = new Post(request.getTitle(), request.getContent(), request.getImg());
-//		Optional<User> optionaluser = userdao.findUserByEmail(email);
-//		User u = optionaluser.get();
-//		u.getPosts().add(post);
-//		post.setUser(u);
-//		postdao.save(post);
-//		userdao.save(u);
 	}
 	
 }
