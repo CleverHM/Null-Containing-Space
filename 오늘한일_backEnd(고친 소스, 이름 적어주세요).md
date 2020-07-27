@@ -40,8 +40,7 @@
 ## 2020. 07. 27
 
 - 조대흠
-
+- 뉴스피드 CRUD 중 C 구현완료(Spring)
 - 박상현
-
 - 김호한
   - Token Create, 인증 부분 개발중 (Spring)
