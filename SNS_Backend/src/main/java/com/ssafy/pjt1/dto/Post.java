@@ -39,7 +39,7 @@ public class Post {
 	private Set<Tag> tags = new HashSet<Tag>();
 
 	//게시물 : 유저 (N : 1 관계)
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	

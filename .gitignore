@@ -2,3 +2,6 @@
 Servers
 SNS_Backend/Servers
 SNS_Backend/target/classes/com/ssafy/pjt1/controller/UserController.class
+SNS_Backend/target/classes/com/ssafy/pjt1/controller/AuthController.class
+SNS_Backend/target/classes/com/ssafy/pjt1/controller/FollowController.class
+SNS_Backend/target/classes/com/ssafy/pjt1/controller/PostController.class

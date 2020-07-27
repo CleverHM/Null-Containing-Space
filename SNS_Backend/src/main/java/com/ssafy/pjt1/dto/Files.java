@@ -23,7 +23,7 @@ public class Files {
 	private String fileOriname;
 	private String fileurl;
 	
-	
+	//이미지 : 게시물(1 : 1 관계)
 	@OneToOne(mappedBy = "files")
 	private Post post;
 	
