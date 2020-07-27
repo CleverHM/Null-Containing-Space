@@ -401,7 +401,7 @@ public class UserController {
 		img.setFilename(destinationFileName);
 		img.setFileOriname(sourceFileName);
 		img.setFileurl(fileUrl);
-		filesservice.upload(img);
+		//filesservice.upload(img);
 		// 파일 업로드 끝!
 		
 		
@@ -413,6 +413,7 @@ public class UserController {
 		}
 		
 		Post post = new Post();
+		
 		Optional<User> u = userservice.findone(email);
 		User pUser = u.get();
 		
@@ -420,6 +421,7 @@ public class UserController {
 		post.setTitle(title);
 		post.setContent(content);
 		post.setImg(img);
+		
 		
 		for(int i=0; i<hashtags.length; i++) {
 			Optional<Tag> optionalTag = tagdao.findTagByName(hashtags[i]);
@@ -439,9 +441,16 @@ public class UserController {
 		}
 		
 		pUser.getPosts().add(post);
+		img.setPost(post);
 		
-		filesservice.upload(img);
+		
 		userdao.save(pUser);
+		
+		System.out.println(post.getContent());
+		System.out.println(post.getImg().getFid());
+		System.out.println(post.getTitle());
+		System.out.println(post.getUser().getUid());
+		
 		postdao.save(post);
 		
 	}
