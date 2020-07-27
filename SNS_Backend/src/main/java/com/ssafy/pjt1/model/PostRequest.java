@@ -1,12 +1,13 @@
 package com.ssafy.pjt1.model;
 
+import java.awt.Image;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.pjt1.dto.Image;
+import com.ssafy.pjt1.dto.Files;
 import com.ssafy.pjt1.dto.Tag;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -22,7 +23,7 @@ public class PostRequest {
 	
 	@ApiModelProperty(required = true)
 	@NotNull
-	Image img;
+	Files img;
 	
 	@ApiModelProperty(required = true)
 	@NotNull
@@ -50,12 +51,12 @@ public class PostRequest {
 	}
 
 	
-	public Image getImg() {
+	public Files getImg() {
 		return img;
 	}
 
 	
-	public void setImg(Image img) {
+	public void setImg(Files img) {
 		this.img = img;
 	}
 
