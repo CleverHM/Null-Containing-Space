@@ -43,28 +43,24 @@ public class Tag {
 	public Tag(String name) {
 		this.name = name;
 		this.users = new HashSet<User>();
+		this.posts = new HashSet<Post>();
 	}
 
-	
 	public int getTid() {
 		return tid;
 	}
 
-	
 	public void setTid(int tid) {
 		this.tid = tid;
 	}
 
-	
 	public String getName() {
 		return name;
 	}
 
-	
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public Set<User> getUsers() {
 		return users;
@@ -72,6 +68,14 @@ public class Tag {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+	
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
 	}
 	
 	@Override

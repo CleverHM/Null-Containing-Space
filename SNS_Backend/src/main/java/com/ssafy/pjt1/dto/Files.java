@@ -24,6 +24,10 @@ public class Files {
 	private String fileurl;
 	
 	
+	@OneToOne(mappedBy = "files")
+	private Post post;
+	
+	
 	public Files() {
 		
 	}
@@ -59,14 +63,21 @@ public class Files {
 		this.fileOriname = fileOriname;
 	}
 
-
 	public String getFileurl() {
 		return fileurl;
 	}
 
-
 	public void setFileurl(String fileurl) {
 		this.fileurl = fileurl;
+	}
+	
+	public Post getPost() {
+		return post;
+	}
+
+
+	public void setPost(Post post) {
+		this.post = post;
 	}
 	
 }
