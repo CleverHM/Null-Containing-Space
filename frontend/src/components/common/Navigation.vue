@@ -1,13 +1,13 @@
 <template>
     <div class="fixed-top">
         <div class="Navi">
-            <b-icon-envelope-open v-if="currentRouteName === 'Main'" class="envelope-open-icon" scale="1.3"></b-icon-envelope-open>
-            <b-icon-arrow-left v-if="currentRouteName === 'profile'" class="arrow-left-icon" scale="1.3"></b-icon-arrow-left>
             <p>{{ currentRouteName }}</p>
             <div>
-            <b-icon-search class="search-icon mx-4" scale="1.3"></b-icon-search>
-            <b-icon-person-fill v-if="currentRouteName != 'profile'" class="person-icon" scale="1.3"></b-icon-person-fill>
-            <b-icon-question-circle-fill v-if="currentRouteName === 'profile'" class="question-circle-icon" scale="1.3"></b-icon-question-circle-fill>
+                <b-icon-envelope-open v-if="currentRouteName === 'FeedMain'" class="envelop-open-icon icons" scale="1.3"></b-icon-envelope-open>
+                <b-icon-arrow-left @click="goBack" v-if="currentRouteName != 'FeedMain'" class="arrow-left-icon icons" scale="1.3"></b-icon-arrow-left>
+                <b-icon-search class="icons search-icon mx-4" scale="1.3"></b-icon-search>
+                <b-icon-person-fill v-if="currentRouteName != 'profile'" class="icons person-icon" scale="1.3" @click="goProfile"></b-icon-person-fill>
+                <b-icon-question-circle-fill v-if="currentRouteName === 'profile'" class="icons question-circle-icon" scale="1.3"></b-icon-question-circle-fill>
             </div>
         </div>
 
@@ -22,6 +22,21 @@ export default {
         return this.$route.name;
       }
   },
+  methods: {
+      goBack(){
+          console.log("hello")
+          this.$router.go(-1)
+      },
+      goProfile(){
+          this.$router.push("/user/profile")
+      },
+      goSearch(){
+
+      },
+      goNotice() {
+
+      },
+  }
 };
 </script>
 
@@ -38,7 +53,10 @@ export default {
     font-weight: bold;
     font-size: 1.11em;
 }
-.envelope-open-icon, .envelope-close-icon{
+.icons{
+    cursor: pointer;
+}
+.envelop-open-icon, .envelop-close-icon{
     position: fixed;
     left:20px;
     top:0;
