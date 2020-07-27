@@ -1,0 +1,4 @@
+/.metadata/
+Servers
+SNS_Backend/Servers
+SNS_Backend/target/classes/com/ssafy/pjt1/controller/UserController.class
