@@ -24,6 +24,10 @@ public class Files {
 	private String fileurl;
 	
 	
+	@OneToOne(mappedBy = "img")
+	private Post post;
+	
+	
 	public Files() {
 		
 	}

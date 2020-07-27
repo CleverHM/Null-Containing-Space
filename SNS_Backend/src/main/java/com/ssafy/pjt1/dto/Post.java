@@ -28,8 +28,6 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
 	private int pid;
-
-	
 	private String title;
 	private String content;
 
@@ -53,6 +51,16 @@ public class Post {
 	public Post() {
 
 	}
+	
+	
+	public Post(String title, String content, Set<Tag> tags, User user, Files img) {
+		this.title = title;
+		this.content = content;
+		this.tags = tags;
+		this.user = user;
+		this.img = img;
+	}
+
 
 	public Post(String title, String content, Files img) {
 		this.title = title;
