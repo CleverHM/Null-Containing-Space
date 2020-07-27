@@ -44,28 +44,28 @@ public class Post {
 	private User user;
 	
 	//게시물 : 이미지(1 : 1 관계)
-	@OneToOne
-	@JoinColumn(name = "IMAGE_ID")
-	private Files img;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "FILES_ID")
+	private Files files;
 
 	public Post() {
 
 	}
 	
 	
-	public Post(String title, String content, Set<Tag> tags, User user, Files img) {
+	public Post(String title, String content, Set<Tag> tags, User user, Files files) {
 		this.title = title;
 		this.content = content;
 		this.tags = tags;
 		this.user = user;
-		this.img = img;
+		this.files = files;
 	}
 
 
-	public Post(String title, String content, Files img) {
+	public Post(String title, String content, Files files) {
 		this.title = title;
 		this.content = content;
-		this.img = img;
+		this.files = files;
 	}
 	
 	public Set<Tag> getTags() {
@@ -109,10 +109,10 @@ public class Post {
 	}
 
 	public Files getImg() {
-		return img;
+		return files;
 	}
 
-	public void setImg(Files img) {
-		this.img = img;
+	public void setImg(Files files) {
+		this.files = files;
 	}
 }
