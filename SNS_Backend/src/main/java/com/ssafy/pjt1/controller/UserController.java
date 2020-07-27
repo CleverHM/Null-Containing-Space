@@ -27,6 +27,7 @@ import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
 import com.ssafy.pjt1.dto.Auth;
 import com.ssafy.pjt1.dto.Files;
+import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
@@ -49,25 +50,18 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class UserController {
-
 	@Autowired
 	CustomMailSender customMailSender;
-
 	@Autowired
 	UserService userservice;
-
 	@Autowired
 	AuthService authservice;
-
 	@Autowired
 	UserDao userdao;
-
 	@Autowired
 	TagDao tagdao;
-
 	@Autowired
 	PostDao postdao;
-	
 	@Autowired
 	FilesService filesservice;
 
@@ -382,9 +376,10 @@ public class UserController {
 
 	@PostMapping("/account/posting")
 	@ApiOperation(value = "유저 게시물작성", notes = "게시물 작성 기능을 구현.")
-	public void userPost(@Valid @RequestParam MultipartFile files, String title, String content, String[] hashtags) throws Exception {
+	public void userPost(@Valid @RequestParam MultipartFile files, String email, String title, String content, String[] hashtags) throws Exception {
 		
-		System.out.println("222222");
+		// 파일 업로드 시작!
+		System.out.println("게시물 작성");
 		
 		Files img = new Files();
 		
@@ -407,8 +402,47 @@ public class UserController {
 		img.setFileOriname(sourceFileName);
 		img.setFileurl(fileUrl);
 		filesservice.upload(img);
+		// 파일 업로드 끝!
 		
-		// 파일 업로드 구현해야 함.
+		
+		// 게시물 업로드 시작!
+		System.out.println(title);
+		System.out.println(content);
+		for(int i=0; i<hashtags.length; i++) {
+			System.out.println(hashtags[i]);
+		}
+		
+		Post post = new Post();
+		Optional<User> u = userservice.findone(email);
+		User pUser = u.get();
+		
+		post.setUser(pUser);
+		post.setTitle(title);
+		post.setContent(content);
+		post.setImg(img);
+		
+		for(int i=0; i<hashtags.length; i++) {
+			Optional<Tag> optionalTag = tagdao.findTagByName(hashtags[i]);
+
+			// 태그가 테이블에 존재하지 않는 경우.
+			if (!optionalTag.isPresent()) {
+				Tag t = new Tag(hashtags[i]);
+				tagdao.save(t);
+				post.getTags().add(t);
+			}
+			// 태그가 테이블에 존재하는 경우.
+			else {
+				Tag t = optionalTag.get();
+				System.out.println("태그 있음");
+				post.getTags().add(t);
+			}	
+		}
+		
+		pUser.getPosts().add(post);
+		
+		filesservice.upload(img);
+		userdao.save(pUser);
+		postdao.save(post);
+		
 	}
-	
 }
