@@ -13,12 +13,12 @@
         <Password3 @ConfirmJoin="Join" :user="user"></Password3>
       </div>
       <div v-else>
-        <Password2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Password2>
+        <Password2 @ConfirmCode="Gostep3" :ErrorMessage="ErrorMsg.auth"></Password2>
       </div>
     </div>
 
     <div v-else>
-      <Password1 @ConfirmEmail="Gostep2" :email="user.email"></Password1>
+      <Password1 @ConfirmEmail="Gostep2" :ErrorMessage="ErrorMsg.email"></Password1>
     </div>
 
   </div>
@@ -33,7 +33,7 @@ import axios from 'axios';
 
 
 export default {
-  name: 'JoinView',
+  name: 'FindPassword',
   components: {
     Password1,
     Password2, 
@@ -52,24 +52,15 @@ export default {
       },
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : true,
-      isActiveStep3 : true,
-      PasswordErrorMsg : "",
-      // 회원가입 폼 확인
-      isTerm: false,
-      isLoading: false,
-      error: {
-        email: false,
-        password: false,
-        nickName: false,
-        passwordConfirm: false,
-        term: false
+      isActiveStep2 : false,
+      isActiveStep3 : false,
+      ErrorMsg: {
+        email: "",
+        auth: "",
+        password: "",
       },
-      isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
-      termPopup: false
-      
     };
   },
   created(){
@@ -87,15 +78,19 @@ export default {
       console.log(this.user.email, typeof(this.user.email))
       console.log(this.user, typeof(this.user))
       http
-      .post('/account/loginMailSend', 
+      .post('/account/passwordUpdateMailSend', 
         this.user.email,
       )
       .then((data) => {
         console.log(data)
+        this.isActiveStep2 = true;
+      })
+      .catch((err) => {
+        this.ErrorMsg.email = "존재하지 않는 이메일입니다."
       })
 
 
-      this.isActiveStep2 = true;
+      
     },
     Gostep3(authNum) {
       console.log(this.user.email)
@@ -111,7 +106,7 @@ export default {
         this.isActiveStep3 = true;
       })
       .catch((err) => {
-        this.PasswordErrorMsg = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
+        this.ErrorMsg.auth = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
       })
       
     },
