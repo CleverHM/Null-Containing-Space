@@ -13,12 +13,12 @@
         <Join3 @ConfirmJoin="Join" :user="user"></Join3>
       </div>
       <div v-else>
-        <Join2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Join2>
+        <Join2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="ErrorMsg.auth"></Join2>
       </div>
     </div>
 
     <div v-else>
-      <Join1 @ConfirmEmail="Gostep2" :email="user.email"></Join1>
+      <Join1 @ConfirmEmail="Gostep2" :ErrorMessage="ErrorMsg.email"></Join1>
     </div>
 
   </div>
@@ -54,32 +54,14 @@ export default {
       isActiveStep1 : true,
       isActiveStep2 : false,
       isActiveStep3 : false,
-      PasswordErrorMsg : "",
-      // 회원가입 폼 확인
-      isTerm: false,
-      isLoading: false,
-      error: {
-        email: false,
-        password: false,
-        nickName: false,
-        passwordConfirm: false,
-        term: false
+      ErrorMsg: {
+        email: "",
+        auth: "",
+        password: "",
       },
-      isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
-      termPopup: false
-      
     };
-  },
-  created(){
-    this.user.email = ""
-    this.user.name = ""
-    this.user.nickname = ""
-    this.user.password = ""
-    this.user.tel = ""
-    this.user.gender = true
-    this.user.age = null
   },
   methods:{
     Gostep2(email){
@@ -91,7 +73,7 @@ export default {
         this.user.email,
       )
       .then((data) => {
-        console.log(data)
+        this.ErrorMsg.email = "이미 존재하는 이메일입니다."
       })
 
 
@@ -111,7 +93,7 @@ export default {
         this.isActiveStep3 = true;
       })
       .catch((err) => {
-        this.PasswordErrorMsg = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
+        this.ErrorMsg.auth = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
       })
       
     },
