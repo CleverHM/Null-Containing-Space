@@ -112,6 +112,10 @@ export default {
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
 
+      console.log(this.article.title)
+      console.log(this.article.hashtags)
+      console.log(formData)
+
       // 파일 업로드 axios 요청
       http
       .POST("/account/posting",
