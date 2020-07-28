@@ -164,6 +164,7 @@ export default {
     },
     join(){
       console.log("hello")
+      this.$emit("ConfirmJoin", this.user)
     }
   }
 }

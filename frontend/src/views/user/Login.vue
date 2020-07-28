@@ -76,7 +76,7 @@ import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import UserApi from "../../api/UserApi";
 import http from "../../util/http-common.js";
 
-const storage = window.sessionStorage;
+const storage = window.localStorage;
 
 export default {
   components: {
@@ -156,6 +156,7 @@ export default {
         .then((res) => {
           console.log(res)
           if(res.data.status) {
+            console.log(res.data.email);
             msg = "로그인되었습니다.";
             
           }

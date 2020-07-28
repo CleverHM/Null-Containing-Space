@@ -78,7 +78,7 @@ export default {
       console.log(this.user.email, typeof(this.user.email))
       console.log(this.user, typeof(this.user))
       http
-      .post('/account/passwordUpdateMailSend', 
+      .post('/auth/passwordUpdateMailSend', 
         this.user.email,
       )
       .then((data) => {
@@ -92,7 +92,7 @@ export default {
       resend(email) {
       console.log(email)
       http
-      .post('/account/loginMailSend', 
+      .post('/auth/passwordUpdateMailSend', 
         this.user.email,
       )
       .then((data) => {
@@ -106,7 +106,7 @@ export default {
       console.log(this.user.email)
       console.log(authNum)
       http
-      .post('/account/loginMailConfirm', 
+      .post('/auth/passwordUpdateMailConfirm', 
         {
           "auth_email": this.user.email,
           "auth_number": authNum,

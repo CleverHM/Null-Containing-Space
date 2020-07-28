@@ -117,14 +117,14 @@ export default {
       console.log(this.file)
       let formData = new FormData();
       formData.append("files", this.file);
-
+      formData.append("email", "jykim@naver.com");
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
-
+      console.log(formData)
       // 파일 업로드 axios 요청
       http
-      .post("/account/posting",
+      .post("/post/create",
         formData,
         {
           headers: {
@@ -132,13 +132,15 @@ export default {
           }
         }
       )
-      .then(function(){
+      .then((res) => {
         console.log('SUCCESS!!');
+        this.$router.push("/feed");
       })
-      .catch(function(){
+      .catch((err) => {
+        console.log(err)
         console.log('FAILURE!!');
       })
-      
+           
       // 이미지 제외 axios 요청
     //   http
     //   .POST("", {
