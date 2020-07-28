@@ -12,11 +12,8 @@
       <SNSItem @tag-add="tagAdd"/>
       <SNSItem @tag-add="tagAdd"/>
     </div>
-    
     <!-- 작성 -->
-    <div class="article-submit fixed-bottom d-flex justify-content-center align-content-center">
-      <button @click="articleSubmit">작성하기</button>
-    </div>
+    <button class="createArticle" @click="articleSubmit"><b-icon-pencil-square></b-icon-pencil-square></button>
   </div>
 </template>
 
@@ -83,14 +80,14 @@ export default {
     font-size: 12px;
     color: #464545;
 }
-
-.article-submit {
-  height: 40px;
-}
-
-.article-submit button {
+.createArticle {
+  position: fixed;
+  bottom: 15px;
+  right: 30px;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
   color: white;
-  width: 100%;
   background-color: #464545;
   font-size: 14px;
 }
