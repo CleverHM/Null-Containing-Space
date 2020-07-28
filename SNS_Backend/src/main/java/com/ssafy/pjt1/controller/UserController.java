@@ -1,14 +1,19 @@
 package com.ssafy.pjt1.controller;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +40,7 @@ import com.ssafy.pjt1.model.LoginRequest;
 import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.AuthService;
 import com.ssafy.pjt1.service.FilesService;
+import com.ssafy.pjt1.service.JwtService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -51,20 +57,23 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 public class UserController {
 	@Autowired
-	CustomMailSender customMailSender;
+	private CustomMailSender customMailSender;
 	@Autowired
-	UserService userservice;
+	private UserService userservice;
 	@Autowired
-	AuthService authservice;
+	private AuthService authservice;
 	@Autowired
-	UserDao userdao;
+	private UserDao userdao;
 	@Autowired
-	TagDao tagdao;
+	private TagDao tagdao;
 	@Autowired
-	PostDao postdao;
+	private PostDao postdao;
 	@Autowired
-	FilesService filesservice;
-
+	private FilesService filesservice;
+	@Autowired
+	private JwtService jwtservice;
+	
+	private static final Logger log  = LoggerFactory.getLogger(JwtService.class);
 	private String num;
 
 	@PostMapping("/account/loginMailSend")
@@ -232,6 +241,7 @@ public class UserController {
 		});
 
 		if (legacyUser.isPresent()) {
+			
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -270,27 +280,34 @@ public class UserController {
 
 	@PostMapping("/account/login")
 	@ApiOperation(value = "로그인 ", notes = "로그인 기능을 구현")
-	public Object login(@Valid @RequestBody LoginRequest request) {
-
+	public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request, HttpServletResponse res) {
+		
 		System.out.println("email: " + request.getEmail());
 		System.out.println("pass: " + request.getPassword());
-
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
 		Optional<User> userOpt = userservice.login(request.getEmail(), request.getPassword());
 
-		ResponseEntity response = null;
 
 		if (userOpt.isPresent()) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-			System.out.println("성공");
+			
+			User loginUser = userOpt.get();
+			String token = jwtservice.create(loginUser.getEmail(), loginUser.getNickname());
+			res.setHeader("jwt-auth-token", token);
+			
+			resultMap.put("status", true);
+			resultMap.put("email", loginUser.getEmail());
+			resultMap.put("nickname", loginUser.getNickname());
+			status = HttpStatus.ACCEPTED;
+			
+			System.out.println("로그인 성공");
 		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-			System.out.println("실패");
+			resultMap.put("message", "로그인 실패");
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return response;
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	@PostMapping("/account/follow")
