@@ -1,45 +1,29 @@
 package com.ssafy.pjt1.controller;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.pjt1.CustomMailSender;
-import com.ssafy.pjt1.dao.PostDao;
-import com.ssafy.pjt1.dao.TagDao;
-import com.ssafy.pjt1.dao.UserDao;
-import com.ssafy.pjt1.dto.Auth;
-import com.ssafy.pjt1.dto.Files;
-import com.ssafy.pjt1.dto.Post;
-import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
 import com.ssafy.pjt1.model.SignupRequest;
-import com.ssafy.pjt1.service.AuthService;
-import com.ssafy.pjt1.service.FilesService;
 import com.ssafy.pjt1.service.JwtService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -139,36 +123,35 @@ public class UserController {
 	}
 
 	@PostMapping("/account/login")
-	@ApiOperation(value = "로그인 ", notes = "로그인 기능을 구현")
-	public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request, HttpServletResponse res) {
-		
-		System.out.println("email: " + request.getEmail());
-		System.out.println("pass: " + request.getPassword());
-		
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		Optional<User> userOpt = userservice.login(request.getEmail(), request.getPassword());
+    @ApiOperation(value = "로그인 ", notes = "로그인 기능을 구현")
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request, HttpServletResponse res) {
+        
+        System.out.println("email: " + request.getEmail());
+        System.out.println("pass: " + request.getPassword());
+        
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        Optional<User> userOpt = userservice.login(request.getEmail(), request.getPassword());
 
 
-		if (userOpt.isPresent()) {
-			
-			User loginUser = userOpt.get();
-			String token = jwtservice.create(loginUser.getEmail(), loginUser.getNickname());
-			res.setHeader("jwt-auth-token", token);
-			
-			resultMap.put("status", true);
-			resultMap.put("email", loginUser.getEmail());
-			resultMap.put("nickname", loginUser.getNickname());
-			status = HttpStatus.ACCEPTED;
-			
-			System.out.println("로그인 성공");
-		} else {
-			resultMap.put("message", "로그인 실패");
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+        if (userOpt.isPresent()) {
+            User loginUser = userOpt.get();
+            String token = jwtservice.create(loginUser.getEmail(), loginUser.getNickname());
+            res.setHeader("jwt-auth-token", token);
+            
+            resultMap.put("status", true);
+            resultMap.put("email", loginUser.getEmail());
+            resultMap.put("nickname", loginUser.getNickname());
+            status = HttpStatus.ACCEPTED;
+            
+            System.out.println("로그인 성공");
+        } else {
+            resultMap.put("message", "로그인 실패");
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
 
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 	
 	@PostMapping("/account/findPasswordModify")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
