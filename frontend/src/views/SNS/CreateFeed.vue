@@ -30,7 +30,7 @@
 
       <!-- 이미지 -->
       <div class="mx-1">
-        <b-form-group label-cols-sm="2" label-size="sm" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
+        <b-form-group style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
           <b-form-file 
             v-model="file"
             placeholder="이미지를 업로드해주세요."
@@ -44,23 +44,6 @@
           </b-form-file>
         </b-form-group>
       </div>
-
-
-      <!-- 해시태그 -->
-      <!-- <div class="mx-1">
-        <label for="tags-pills" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold; font-size:13px;">Hash-tag</label>
-        <b-form-tags
-          input-id="tags-pills"
-          :input-attrs="{ 'aria-describedby': 'tags-remove-on-delete-help' }"
-          v-model="article.hashtags"
-          tag-variant="info"
-          tag-pills
-          separator=" "
-          placeholder="해시태그를 적어주세요."
-          remove-on-delete
-          class="mb-2"
-        ></b-form-tags>
-      </div> -->
 
       <!-- 해시태그 -->
 
@@ -93,7 +76,6 @@ import Navbar from '../../components/common/Navigation.vue'
 // import subNav from '../../components/common/subnav.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
-
 export default {
   name: "CreateFeed",
   components: {
@@ -135,14 +117,14 @@ export default {
       console.log(this.file)
       let formData = new FormData();
       formData.append("files", this.file);
-
+      formData.append("email", "jykim@naver.com");
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
-
+      console.log(formData)
       // 파일 업로드 axios 요청
       http
-      .post("/account/posting",
+      .post("/post/create",
         formData,
         {
           headers: {
@@ -150,13 +132,15 @@ export default {
           }
         }
       )
-      .then(function(){
+      .then((res) => {
         console.log('SUCCESS!!');
+        this.$router.push("/feed");
       })
-      .catch(function(){
+      .catch((err) => {
+        console.log(err)
         console.log('FAILURE!!');
       })
-      
+           
       // 이미지 제외 axios 요청
     //   http
     //   .POST("", {

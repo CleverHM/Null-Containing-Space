@@ -23,8 +23,8 @@ public class Files {
 	private String fileOriname;
 	private String fileurl;
 	
-	
-	@OneToOne(mappedBy = "img")
+	//이미지 : 게시물(1 : 1 관계)
+	@OneToOne(mappedBy = "files")
 	private Post post;
 	
 	
@@ -63,14 +63,21 @@ public class Files {
 		this.fileOriname = fileOriname;
 	}
 
-
 	public String getFileurl() {
 		return fileurl;
 	}
 
-
 	public void setFileurl(String fileurl) {
 		this.fileurl = fileurl;
+	}
+	
+	public Post getPost() {
+		return post;
+	}
+
+
+	public void setPost(Post post) {
+		this.post = post;
 	}
 	
 }

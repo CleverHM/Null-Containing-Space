@@ -39,10 +39,11 @@ public class User {
 	private int age;
 	private boolean gender; // 1이면 남자, 2이면 여자
 
+	// 유저 : 유저 (N : N 관계 ) -> 유저가 팔로우 하는 유저들.
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Userfollow", joinColumns = {
-			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
-					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
+	@JoinTable(name = "Userfollow", 
+	joinColumns = {@JoinColumn(name = "From_id", referencedColumnName = "uid")}, 
+	inverseJoinColumns = { @JoinColumn(name = "To_id", referencedColumnName = "uid") })
 	@JsonIgnore
 	private Set<User> followings = new HashSet<User>();
 
@@ -50,13 +51,14 @@ public class User {
 	@JsonIgnore
 	private Set<User> followers = new HashSet<User>();
 
+	// 유저  : 게시물 (N : N 관계) -> 유저가 팔로우 하는 태그들.
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Tagfollow", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "tag_id") })
+	@JoinTable(name = "Tagfollow", 
+	joinColumns = { @JoinColumn(name = "user_id") }, 
+	inverseJoinColumns = { @JoinColumn(name = "tag_id") })
 	private Set<Tag> tags = new HashSet<Tag>();
     
-	
-	// 유저 : 게시물 (1: N 관계)
+	// 유저  : 게시물 (1 : N 관계)
 	@OneToMany(mappedBy = "user")
 	private Set<Post> posts = new HashSet<Post>();
 
