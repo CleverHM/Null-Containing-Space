@@ -151,14 +151,12 @@ export default {
         .post("/account/login", {
           email : this.email,
           password : this.password,
-        })
+        },
+        )
         .then((res) => {
           console.log(res)
-          console.dir(res)
-
-          if(res.status == 200) {
+          if(res.data.status) {
             msg = "로그인되었습니다.";
-            console.log(res.headers)
             
           }
           alert(msg);
