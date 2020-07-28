@@ -13,7 +13,7 @@
         <Password3 @ConfirmJoin="Join" :user="user"></Password3>
       </div>
       <div v-else>
-        <Password2 @ConfirmCode="Gostep3" :ErrorMessage="ErrorMsg.auth"></Password2>
+        <Password2 @ConfirmCode="Gostep3" @Resend="resend" :email="user.email" :ErrorMessage="ErrorMsg.auth"></Password2>
       </div>
     </div>
 
@@ -88,9 +88,19 @@ export default {
       .catch((err) => {
         this.ErrorMsg.email = "존재하지 않는 이메일입니다."
       })
-
-
-      
+    },
+      resend(email) {
+      console.log(email)
+      http
+      .post('/account/loginMailSend', 
+        this.user.email,
+      )
+      .then((data) => {
+        alert("인증번호가 재전송되었습니다.")
+      })  
+      .catch((err) => {
+        console.log(err)
+      })
     },
     Gostep3(authNum) {
       console.log(this.user.email)
