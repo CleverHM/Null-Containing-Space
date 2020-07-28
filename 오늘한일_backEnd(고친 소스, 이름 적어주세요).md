@@ -57,4 +57,4 @@
 - 박상현
   - 
 - 김호한
-  - 
+  - 로그인 토큰 backend 완성(JWT Spring)
