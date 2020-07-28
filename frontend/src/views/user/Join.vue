@@ -13,7 +13,7 @@
         <Join3 @ConfirmJoin="Join" :user="user"></Join3>
       </div>
       <div v-else>
-        <Join2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="ErrorMsg.auth"></Join2>
+        <Join2 @ConfirmCode="Gostep3" @Resend="resend" :email="user.email" :ErrorMessage="ErrorMsg.auth"></Join2>
       </div>
     </div>
 
@@ -69,21 +69,35 @@ export default {
       console.log(this.user.email, typeof(this.user.email))
       console.log(this.user, typeof(this.user))
       http
-      .post('/account/loginMailSend', 
+      .post('/auth/loginMailSend', 
         this.user.email,
       )
       .then((data) => {
+        this.isActiveStep2 = true
+      })  
+      .catch((err) => {
         this.ErrorMsg.email = "이미 존재하는 이메일입니다."
       })
-
-
-      this.isActiveStep2 = true;
+    },
+    resend(email) {
+      console.log(email)
+      http
+      .post('/auth/loginMailSend', 
+        this.user.email,
+      )
+      .then((data) => {
+        this.isActiveStep2 = true
+        console.log("complete")
+      })  
+      .catch((err) => {
+        this.ErrorMsg.email = "이미 존재하는 이메일입니다."
+      })
     },
     Gostep3(authNum) {
       console.log(this.user.email)
       console.log(authNum)
       http
-      .post('/account/loginMailConfirm', 
+      .post('/auth/loginMailConfirm', 
         {
           "auth_email": this.user.email,
           "auth_number": authNum,
