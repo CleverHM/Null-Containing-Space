@@ -10,10 +10,10 @@
 
     <div v-if="isActiveStep2">
       <div v-if="isActiveStep3">
-        <Password3 @ConfirmJoin="Join" :user="user"></Password3>
+        <Password3 @updatePassword="updatePassword"></Password3>
       </div>
       <div v-else>
-        <Password2 @ConfirmCode="Gostep3" @Resend="resend" :email="user.email" :ErrorMessage="ErrorMsg.auth"></Password2>
+        <Password2 @ConfirmCode="Gostep3" @Resend="resend" :email="email" :ErrorMessage="ErrorMsg.auth"></Password2>
       </div>
     </div>
 
@@ -41,15 +41,8 @@ export default {
   },
   data: () => {
     return {
-      user : {
-        email: "",
-        name: "",
-        nickname: "",
-        password: "",
-        tel: "",
-        gender: true,
-        age: null,
-      },
+      email: "",
+      password: "",
       authNum : "",
       isActiveStep1 : true,
       isActiveStep2 : false,
@@ -64,22 +57,14 @@ export default {
     };
   },
   created(){
-    this.user.email = ""
-    this.user.name = ""
-    this.user.nickname = ""
-    this.user.password = ""
-    this.user.tel = ""
-    this.user.gender = true
-    this.user.age = null
   },
   methods:{
     Gostep2(email){
-      this.user.email = email
-      console.log(this.user.email, typeof(this.user.email))
-      console.log(this.user, typeof(this.user))
+      this.email = email
+      console.log(this.email, typeof(this.email))
       http
       .post('/auth/passwordUpdateMailSend', 
-        this.user.email,
+        this.email,
       )
       .then((data) => {
         console.log(data)
@@ -93,7 +78,7 @@ export default {
       console.log(email)
       http
       .post('/auth/passwordUpdateMailSend', 
-        this.user.email,
+        this.email,
       )
       .then((data) => {
         alert("인증번호가 재전송되었습니다.")
@@ -103,12 +88,12 @@ export default {
       })
     },
     Gostep3(authNum) {
-      console.log(this.user.email)
+      console.log(this.email)
       console.log(authNum)
       http
       .post('/auth/passwordUpdateMailConfirm', 
         {
-          "auth_email": this.user.email,
+          "auth_email": this.email,
           "auth_number": authNum,
         }
         )
@@ -120,21 +105,17 @@ export default {
       })
       
     },
-    Join(user){
-      this.user = user
-      console.log(this.user)
+    updatePassword(password){
+      
+      console.log(this.email, password)
       let msg = "";
       http
-      .post("/account/signup", {
-        age : this.user.age,
-        email : this.user.email,
-        gender : this.user.gender,
-        name: this.user.name,
-        nickname : this.user.nickname,
-        password : this.user.password,
-        tel : this.user.tel
+      .post("/account/findPasswordModify", {
+        email: this.email,
+        NewPassword: password
       })
-      .then(({data}) => {
+      .then((data) => {
+        console.log(data)
         if(data == "success") {
           msg = "complete";
         }

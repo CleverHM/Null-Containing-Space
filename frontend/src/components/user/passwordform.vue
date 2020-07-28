@@ -5,7 +5,7 @@
     </h5>
     <div class="form-wrap">
       <div class="input-with-label">
-          <input v-model="user.password" @keyup="checkpassword" id="password" :type="passwordType" placeholder="＊＊＊＊＊＊＊" />
+          <input v-model="password" @keyup="checkpassword" id="password" :type="passwordType" placeholder="＊＊＊＊＊＊＊" />
           <label for="password">새 비밀번호</label>
           <div class="Warning" v-if="error.password"><i class="fas fa-exclamation-triangle"></i> 영문,숫자 포함 6~20자리를 입력하세요.</div>
       </div>
@@ -24,7 +24,7 @@
     </div>
     
 
-    <button class="btn-input" @click="join">변경하기</button>
+    <button class="btn-input" @click="updatePassword">변경하기</button>
   </div>
 </template>
 
@@ -35,14 +35,9 @@ const passwordReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
 
 export default {
   name: 'Join3',
-  props: {
-    user:{
-      type: Object,
-      required: true,
-    }
-  },
   data() {
     return{
+      password: "",
       passwordConfirm: "",
       error: {
         password: false,
@@ -56,21 +51,21 @@ export default {
   },
   methods: {
     checkpassword(){
-      if (this.user.password.match(passwordReg) != null){
+      if (this.password.match(passwordReg) != null){
         this.error.password = false;
       } else {
         this.error.password = true;
       }
     },
     checkpasswordconfirm(){
-      if (this.user.password === this.passwordConfirm){
+      if (this.password === this.passwordConfirm){
         this.error.passwordConfirm = false;
       } else {
         this.error.passwordConfirm = true;
       }
     },
-    join(){
-      console.log("hello")
+    updatePassword(){
+      this.$emit("updatePassword", this.password)
     }
   }
 }
