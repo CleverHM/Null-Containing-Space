@@ -3,26 +3,12 @@
     <Navbar></Navbar>
     <!-- <subNav></subNav> -->
     <div class="feed-form">
-
       <!-- 제목 -->
-      <!-- <div class="input-with-label">
-        <input v-model="article.title" id="title" placeholder="제목을 입력하세요." type="text" />
-        <label for="title">제목</label>
-      </div> -->
-
       <div class="inputForm">
         <input v-model="article.title" id="title" placeholder="제목(3글자 이상 입력해주세요)" type="text" />
       </div>
 
       <!-- 본문 -->
-      <!-- <div class="textarea-wrap">
-        <div class="d-flex flex-row justify-content-between">
-          <label>본문</label>
-          <span>{{ article.content.length }}/</span>
-        </div>
-        <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
-      </div> -->
-
       <div class="textareaForm">
         <div class="textlength">{{ article.content.length }}/</div>
         <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
@@ -76,6 +62,9 @@ import Navbar from '../../components/common/Navigation.vue'
 // import subNav from '../../components/common/subnav.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
+
+const storage = window.localStorage;
+
 export default {
   name: "CreateFeed",
   components: {
@@ -117,7 +106,7 @@ export default {
       console.log(this.file)
       let formData = new FormData();
       formData.append("files", this.file);
-      formData.append("email", "jykim@naver.com");
+      formData.append("email", storage.getItem("User"));
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
