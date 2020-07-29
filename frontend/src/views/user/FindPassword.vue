@@ -10,15 +10,15 @@
 
     <div v-if="isActiveStep2">
       <div v-if="isActiveStep3">
-        <Password3 @ConfirmJoin="Join" :user="user"></Password3>
+        <Password3 @updatePassword="updatePassword"></Password3>
       </div>
       <div v-else>
-        <Password2 @ConfirmCode="Gostep3" :authNum="authNum" :ErrorMessage="PasswordErrorMsg"></Password2>
+        <Password2 @ConfirmCode="Gostep3" @Resend="resend" :email="email" :ErrorMessage="ErrorMsg.auth"></Password2>
       </div>
     </div>
 
     <div v-else>
-      <Password1 @ConfirmEmail="Gostep2" :email="user.email"></Password1>
+      <Password1 @ConfirmEmail="Gostep2" :ErrorMessage="ErrorMsg.email"></Password1>
     </div>
 
   </div>
@@ -33,7 +33,7 @@ import axios from 'axios';
 
 
 export default {
-  name: 'JoinView',
+  name: 'FindPassword',
   components: {
     Password1,
     Password2, 
@@ -41,69 +41,59 @@ export default {
   },
   data: () => {
     return {
-      user : {
-        email: "",
-        name: "",
-        nickname: "",
-        password: "",
-        tel: "",
-        gender: true,
-        age: null,
-      },
+      email: "",
+      password: "",
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : true,
-      isActiveStep3 : true,
-      PasswordErrorMsg : "",
-      // 회원가입 폼 확인
-      isTerm: false,
-      isLoading: false,
-      error: {
-        email: false,
-        password: false,
-        nickName: false,
-        passwordConfirm: false,
-        term: false
+      isActiveStep2 : false,
+      isActiveStep3 : false,
+      ErrorMsg: {
+        email: "",
+        auth: "",
+        password: "",
       },
-      isSubmit: false,
       passwordType: "password",
       passwordConfirmType: "password",
-      termPopup: false
-      
     };
   },
   created(){
-    this.user.email = ""
-    this.user.name = ""
-    this.user.nickname = ""
-    this.user.password = ""
-    this.user.tel = ""
-    this.user.gender = true
-    this.user.age = null
   },
   methods:{
     Gostep2(email){
-      this.user.email = email
-      console.log(this.user.email, typeof(this.user.email))
-      console.log(this.user, typeof(this.user))
+      this.email = email
+      console.log(this.email, typeof(this.email))
       http
-      .post('/account/loginMailSend', 
-        this.user.email,
+      .post('/auth/passwordUpdateMailSend', 
+        this.email,
       )
       .then((data) => {
         console.log(data)
+        this.isActiveStep2 = true;
       })
-
-
-      this.isActiveStep2 = true;
+      .catch((err) => {
+        this.ErrorMsg.email = "존재하지 않는 이메일입니다."
+      })
+    },
+      resend(email) {
+      console.log(email)
+      http
+      .post('/auth/passwordUpdateMailSend', 
+        this.email,
+      )
+      .then((data) => {
+        alert("인증번호가 재전송되었습니다.")
+      })  
+      .catch((err) => {
+        console.log(err)
+      })
     },
     Gostep3(authNum) {
-      console.log(this.user.email)
+      console.log(this.email)
       console.log(authNum)
       http
-      .post('/account/loginMailConfirm', 
+      .post('/auth/passwordUpdateMailConfirm', 
         {
-          "auth_email": this.user.email,
+          "auth_email": this.email,
           "auth_number": authNum,
         }
         )
@@ -111,25 +101,21 @@ export default {
         this.isActiveStep3 = true;
       })
       .catch((err) => {
-        this.PasswordErrorMsg = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
+        this.ErrorMsg.auth = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
       })
       
     },
-    Join(user){
-      this.user = user
-      console.log(this.user)
+    updatePassword(password){
+      
+      console.log(this.email, password)
       let msg = "";
       http
-      .post("/account/signup", {
-        age : this.user.age,
-        email : this.user.email,
-        gender : this.user.gender,
-        name: this.user.name,
-        nickname : this.user.nickname,
-        password : this.user.password,
-        tel : this.user.tel
+      .post("/account/findPasswordModify", {
+        email: this.email,
+        NewPassword: password
       })
-      .then(({data}) => {
+      .then((data) => {
+        console.log(data)
         if(data == "success") {
           msg = "complete";
         }

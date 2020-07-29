@@ -4,14 +4,21 @@
     이메일로 받은 인증코드를 아래에 입력하세요.
     </h5>
 
-
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="authNum" id="emailcode" @keyup.enter="confirmCode" placeholder="인증코드를 입력하세요." type="text" />
+        <input v-model="childauthNum" id="emailcode" @keyup.enter="confirmCode" placeholder="인증코드를 입력하세요." type="text" />
         <label for="emailcode">인증코드</label>
         <span id="ErrorMsg">{{ ErrorMessage }}</span>
       </div>
     </div>
+    <div>
+      <div><small>혹시 이메일이 오지 않았나요? </small></div>
+      <small>
+      <span>스팸편지함 확인 또는 </span>
+      <span class="text-primary resend" @click="resend">인증 메일 다시 보내기</span>
+      </small>
+    </div>
+    
 
     <button class="btn-input" @click="confirmCode">
     입력
@@ -24,27 +31,27 @@ import http from "@/util/http-common.js";
 
 export default {
   props: {
-    authNum:{
-      type:String,
-      required: true
-    },
     ErrorMessage: {
+      type: String,
+    },
+    email: {
       type: String,
     }
   },
   data: () => {
-      return {
-          // 일단 password로 해놓고 나중에 알고리즘으로 임시비밀번호 발급하기
-          emailCode : "",
-      }
-
+    return {
+      childauthNum: "",
+    }
   },
   methods:{
    confirmCode() {
-
-     this.$emit("ConfirmCode", this.authNum)
+     this.$emit("ConfirmCode", this.childauthNum)
+    },
+    resend() {
+      this.$emit("Resend", this.email)
     }
-  }
+    
+  },
 };
 </script>
 
@@ -59,7 +66,10 @@ export default {
 .input-with-label{
   width: 100%;
 }
-
+.resend:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
 .btn-input{
   position: fixed;
   bottom:0;

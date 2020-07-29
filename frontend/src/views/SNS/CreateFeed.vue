@@ -1,29 +1,39 @@
 <template>
   <div id="createFeed">
     <Navbar></Navbar>
-    <subNav></subNav>
+    <!-- <subNav></subNav> -->
     <div class="feed-form">
 
       <!-- 제목 -->
-      <div class="input-with-label">
+      <!-- <div class="input-with-label">
         <input v-model="article.title" id="title" placeholder="제목을 입력하세요." type="text" />
         <label for="title">제목</label>
+      </div> -->
+
+      <div class="inputForm">
+        <input v-model="article.title" id="title" placeholder="제목(3글자 이상 입력해주세요)" type="text" />
       </div>
 
       <!-- 본문 -->
-      <div class="textarea-wrap">
+      <!-- <div class="textarea-wrap">
         <div class="d-flex flex-row justify-content-between">
           <label>본문</label>
           <span>{{ article.content.length }}/</span>
         </div>
         <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
+      </div> -->
+
+      <div class="textareaForm">
+        <div class="textlength">{{ article.content.length }}/</div>
+        <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
       </div>
 
       <!-- 이미지 -->
       <div class="mx-1">
-        <b-form-group label="이미지" label-for="file" label-cols-sm="2" label-size="sm" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
+        <b-form-group style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
           <b-form-file 
             v-model="file"
+            placeholder="이미지를 업로드해주세요."
             :state="Boolean(file)"
             id="file"
             ref="file"
@@ -35,23 +45,22 @@
         </b-form-group>
       </div>
 
-
       <!-- 해시태그 -->
-      <div class="mx-1">
-        <label for="tags-pills" style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold; font-size:13px;">Hash-tag</label>
-        <b-form-tags
-          input-id="tags-pills"
-          :input-attrs="{ 'aria-describedby': 'tags-remove-on-delete-help' }"
-          v-model="article.hashtags"
-          tag-variant="info"
-          tag-pills
-          separator=" "
-          placeholder="해시태그를 적어주세요."
-          remove-on-delete
-          class="mb-2"
-        ></b-form-tags>
-        <!-- <p>{{ article.hashtags }}</p> -->
+
+      <!-- 해시태그 작성 -->
+      <div class="mx-1 mb-2">
+        <input v-model="hashtag"
+         @keyup.space="addhashtag(hashtag)" 
+         @keyup.enter="addhashtag(hashtag)" 
+         @keyup.delete="removetag(hashtag)" 
+         placeholder="해시태그를 입력해주세요." 
+         type="text" />
       </div>
+      <div class="displaytags" v-if="article.hashtags.length">
+      입력 태그 : 
+      <button class="btn-tags" v-for="tag in article.hashtags" :key="tag" @click="tagRemove">{{ tag }}</button>
+      </div>
+      
 
     </div>
 
@@ -64,15 +73,14 @@
 
 <script>
 import Navbar from '../../components/common/Navigation.vue'
-import subNav from '../../components/common/subnav.vue'
+// import subNav from '../../components/common/subnav.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
-
 export default {
   name: "CreateFeed",
   components: {
     Navbar,
-    subNav,
+    // subNav,
   },
   data() {
     return {
@@ -83,6 +91,7 @@ export default {
         content: "",
         hashtags: [],
       },
+      hashtag: "",
     }
   },
 
@@ -105,20 +114,17 @@ export default {
       console.log('submit');
 
       // 파일 axios 보내기
+      console.log(this.file)
       let formData = new FormData();
-      formData.append("file", this.file);
-
+      formData.append("files", this.file);
+      formData.append("email", "jykim@naver.com");
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
-
-      console.log(this.article.title)
-      console.log(this.article.hashtags)
       console.log(formData)
-
       // 파일 업로드 axios 요청
       http
-      .POST("/account/posting",
+      .post("/post/create",
         formData,
         {
           headers: {
@@ -126,13 +132,15 @@ export default {
           }
         }
       )
-      .then(function(){
+      .then((res) => {
         console.log('SUCCESS!!');
+        this.$router.push("/feed");
       })
-      .catch(function(){
+      .catch((err) => {
+        console.log(err)
         console.log('FAILURE!!');
       })
-      
+           
       // 이미지 제외 axios 요청
     //   http
     //   .POST("", {
@@ -151,10 +159,39 @@ export default {
     moveFeed() {
       this.$router.push({ name: 'FeedMain' });
     },
+    addhashtag(hashtag) {
+      if (hashtag && hashtag !="" && hashtag != " ") {
+        var isDouble = this.article.hashtags.find(function(n){
+          return hashtag === n
+        })
+      console.log(isDouble)
+      if (!isDouble) {
+        this.article.hashtags.push(hashtag)
+      }
+      }
+      
+      this.hashtag = ""
+
+    },
+    // 해시태그 작성중 backspace키 누르면
+    removetag(hashtag) {
+      if (!hashtag) {
+        this.article.hashtags.pop()
+      }
+      
+    },
+    // 태그 클릭하면 -
+    tagRemove(event) {
+      console.log(event.target.innerText)
+      console.log(this.article.hashtags)
+      console.log(this.article.hashtags.indexOf(event.target.innerText))
+      this.article.hashtags.splice(this.article.hashtags.indexOf(event.target.innerText),1)
+      // console.log([...this.clicktags])
+    },
     
     // 파일 업로드
     handleFileUpload() {
-      // console.log(this.$refs.file.$refs.input.files[0])
+      console.log(this.$refs.file.$refs.input.files)
       this.file = this.$refs.file.$refs.input.files[0];
       console.log(this.file)
     },
@@ -181,7 +218,46 @@ export default {
 .input-with-label{
   width: 100%;
 }
-
+.inputForm{
+  margin: 0px 5px 10px 5px;
+  
+}
+input {
+  padding: 0 10px 0 10px;
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid black;
+}
+input::placeholder {
+  font-size: 13px;
+}
+.textareaForm{
+  margin: 0px 5px 10px 5px;
+  border: none;
+}
+.textareaForm textarea {
+  padding: 0 10px 0 10px;
+}
+.textlength{
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+.hashtags::placeholder{
+   color: red;
+}
+.btn-tags{
+  border-radius: 10px;
+  margin: 3px;
+  padding: 1px 5px 1px 5px;
+  background-color: #C4BCB8;
+  font-weight:bold;
+  color: #f7f7f7;
+}
+.displaytags{
+  padding: 0px 10px 0 10px;
+}
 .textarea-wrap {
   width: 100%;
   float: left;

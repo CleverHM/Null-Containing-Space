@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.dto;
 
+import java.awt.Image;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +28,6 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
 	private int pid;
-
-	
 	private String title;
 	private String content;
 
@@ -40,23 +39,33 @@ public class Post {
 	private Set<Tag> tags = new HashSet<Tag>();
 
 	//게시물 : 유저 (N : 1 관계)
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
 	//게시물 : 이미지(1 : 1 관계)
-	@OneToOne
-	@JoinColumn(name = "IMAGE_ID")
-	private Image img;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "FILES_ID")
+	private Files files;
 
 	public Post() {
 
 	}
-
-	public Post(String title, String content, Image img) {
+	
+	
+	public Post(String title, String content, Set<Tag> tags, User user, Files files) {
 		this.title = title;
 		this.content = content;
-		this.img = img;
+		this.tags = tags;
+		this.user = user;
+		this.files = files;
+	}
+
+
+	public Post(String title, String content, Files files) {
+		this.title = title;
+		this.content = content;
+		this.files = files;
 	}
 	
 	public Set<Tag> getTags() {
@@ -99,11 +108,11 @@ public class Post {
 		this.content = content;
 	}
 
-	public Image getImg() {
-		return img;
+	public Files getImg() {
+		return files;
 	}
 
-	public void setImg(Image img) {
-		this.img = img;
+	public void setImg(Files files) {
+		this.files = files;
 	}
 }

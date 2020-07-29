@@ -32,17 +32,17 @@ export default [
         component : Join
     },
     {
-        path : '/find/password/',
+        path : '/find/password',
         name : 'findPassword',
         component : findPassword
     },
     {
-        path : '/user/profile/',
+        path : '/user/profile',
         name : 'profile',
         component : profile
     },
     {
-        path : '/main/',
+        path : '/main',
         name : 'Main',
         component : Main
     },
@@ -57,7 +57,7 @@ export default [
         component : StudyDetail
     },
     {
-        path : '/feed/',
+        path : '/feed',
         name : 'FeedMain',
         component : FeedMain
     },

@@ -156,6 +156,7 @@ export default {
 .hash-tags {
   width: 100%;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 .hash-tags > div {
