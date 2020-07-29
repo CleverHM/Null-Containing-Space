@@ -53,11 +53,12 @@
 
         <!-- 댓글 작성창 -->
         <div class="fixed-bottom comment-add d-flex align-items-center">
-          <input v-model="commentData" type="text"
+          <input v-model="comment.content" type="text"
             placeholder="댓글을 작성해주세요."
             class="flex-fill"
-            style="border:none;"/>
-          <button class="px-3">
+            style="border:none;"
+            @keyup.enter="commentOn"/>
+          <button class="px-3" @click="commentOn">
             작성
           </button>
         </div>
@@ -71,6 +72,10 @@
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
 import Comment from '../../components/SNS/SNSCommentItem.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.localStorage;
 
 export default {
   name: "detailFeed",
@@ -103,7 +108,9 @@ export default {
             id: '5' },
         ],
       },
-      commentData: '',
+      comment: {
+        content: "",
+      },
     }
   },
 
@@ -116,9 +123,40 @@ export default {
   },
 
   methods: {
+    // 댓글 작성 버튼 눌림
     commentOn() {
+      console.log(this.comment.content)
+      if (this.comment.content === "") {
+        this.errorMsg();
+      } else {
+        this.commentSubmit()
+      }
     },
     
+    // 에러메세지
+    errorMsg() {
+      alert("댓글 내용을 입력해주세요.")
+    },
+
+    // 댓글 작성
+    commentSubmit() {
+      console.log("comment submit!")
+      
+      http
+      .post('url', {
+        content: this.comment.content,
+        email: storage.getItem("User"),
+      })
+      .then((res) => {
+        console.log('SUCCESS!!');
+        this.$router.push("/feed/detail");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('ERROR!!');
+      })
+    },
+
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
