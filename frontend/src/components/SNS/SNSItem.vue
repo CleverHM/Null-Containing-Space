@@ -6,7 +6,7 @@
       <div class="user-img"></div>
       <div class="flex-column ml-1">
         <div class="user-name">{{ article.username }}</div>
-        <div class="date-diff">{{ article.data}}</div>
+        <div class="date-diff">{{ article.data }}</div>
       </div>
     </div>
 
@@ -44,8 +44,10 @@
 <script>
 export default {
   name: "SNSItemn",
+  props: {
 
-  
+  },
+
   created() {
     if (this.article.liked) {
       this.article.like_color = '#FF3300';

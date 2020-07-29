@@ -142,7 +142,7 @@ export default {
     onLogin() {
       if (this.isSubmit) {
 
-        storage.setItem("jwt-auth-token", "");
+        storage.setItem("token", "");
         storage.setItem("User", "");
         
         let msg = "";
@@ -160,12 +160,13 @@ export default {
             msg = "로그인되었습니다.";
             // storage에 받아온 데이터 집어넣기
             storage.setItem("token", res.data.token)
+            console.log(storage)
             var User = {
               "email" : res.data.email,
               "nickname" : res.data.nickname,
             }
             console.log(User, typeof(User))
-            storage.setItem("User", JSON.stringify(User))
+            storage.setItem("User", res.data.email)
           }
           alert(msg);
           this.moveFeed();
