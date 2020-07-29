@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "studyMatching",
+  name: "StudyMatching",
 
   data() {
     return {
@@ -26,7 +26,6 @@ export default {
     // 버튼이 눌리거나 첫 화면
     matchingRequest() {
       this.loading = true;
-      this.()
     },
 
 

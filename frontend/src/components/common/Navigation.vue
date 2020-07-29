@@ -8,7 +8,8 @@
                 <b-icon-search class="icons search-icon mx-4" scale="1.3"></b-icon-search>
                 <b-icon-person-fill v-if="currentRouteName != 'profile'" class="icons person-icon" scale="1.3" @click="goProfile"></b-icon-person-fill>
 
-                <b-icon-list v-if="currentRouteName === 'profile'" @click='toggleShow' class='list-icon'></b-icon-list>
+                <!-- 프로필페이지 dropdown -->
+                <b-icon-list v-if="currentRouteName === 'profile'"@click='toggleShow' class='list-icon'></b-icon-list>
                     <div v-if='showMenu' class='menu'>
                         <div class='menu-item'>
                             <li class="menu-user m-3">알골마스터</li>
