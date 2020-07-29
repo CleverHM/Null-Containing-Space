@@ -158,11 +158,14 @@ export default {
           if(res.data.status) {
             console.log(res.data.email);
             msg = "로그인되었습니다.";
-            // console.log(res.data)
             // storage에 받아온 데이터 집어넣기
-            storage.setItem("jwt-auth-token", res.data.token)
-            storage.setItem("User", res.data.email)
-            // console.log(storage)
+            storage.setItem("token", res.data.token)
+            var User = {
+              "email" : res.data.email,
+              "nickname" : res.data.nickname,
+            }
+            console.log(User, typeof(User))
+            storage.setItem("User", JSON.stringify(User))
           }
           alert(msg);
           this.moveFeed();

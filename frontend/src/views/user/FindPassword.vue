@@ -106,14 +106,12 @@ export default {
       
     },
     updatePassword(password){
-      
-      console.log(this.email, password)
+      let formData = new FormData();
+      formData.append("email", this.email);
+      formData.append("NewPassword", password);
       let msg = "";
       http
-      .post("/account/findPasswordModify", {
-        email: this.email,
-        NewPassword: password
-      })
+      .post("/account/findPasswordModify", formData)
       .then((data) => {
         console.log(data)
         if(data == "success") {

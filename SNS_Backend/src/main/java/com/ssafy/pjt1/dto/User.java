@@ -61,6 +61,8 @@ public class User {
 	// 유저  : 게시물 (1 : N 관계)
 	@OneToMany(mappedBy = "user")
 	private Set<Post> posts = new HashSet<Post>();
+	
+	
 
 	@CreationTimestamp
 	@Column(updatable = false)
