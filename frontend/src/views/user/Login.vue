@@ -74,7 +74,7 @@ import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import UserApi from "../../api/UserApi";
 import http from "../../util/http-common.js";
 
-const storage = window.localStorage;
+const storage = window.sessionStorage;
 
 export default {
   components: {
