@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="user" id="login">
     <div class="wrapC">
@@ -139,6 +137,8 @@ export default {
         if (v) this.isSubmit = false;
       });
     },
+
+    // 로그인 요청 - 토큰 받아서 local storage에 넣기
     onLogin() {
       if (this.isSubmit) {
 
@@ -158,7 +158,11 @@ export default {
           if(res.data.status) {
             console.log(res.data.email);
             msg = "로그인되었습니다.";
-            
+            // console.log(res.data)
+            // storage에 받아온 데이터 집어넣기
+            storage.setItem("jwt-auth-token", res.data.token)
+            storage.setItem("User", res.data.email)
+            // console.log(storage)
           }
           alert(msg);
           this.moveFeed();
