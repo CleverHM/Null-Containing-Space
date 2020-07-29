@@ -3,7 +3,7 @@
 import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import findPassword from './views/user/FindPassword.vue'
-import getAbility from './views/user/getAbility.vue'
+import getAbility2 from './views/user/getAbility2.vue'
 
 import profile from './views/user/profile.vue'
 
@@ -40,7 +40,7 @@ export default [
     {
         path : '/getAbility',
         name : 'getAbility',
-        component : getAbility
+        component : getAbility2
     },
     {
         path : '/user/profile',
