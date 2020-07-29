@@ -18,7 +18,7 @@ import Main from './views/Main.vue'
 
 import StudyList from './views/study/StudyList.vue'
 import StudyDetail from './views/study/StudyDetail.vue'
-
+import StudyMatching from './views/study/StudyMatching.vue'
 
 
 export default [
@@ -63,6 +63,11 @@ export default [
         component : StudyDetail
     },
     {
+        path : '/study/matching',
+        name : 'StudyMatching',
+        component : StudyMatching
+    },
+    {
         path : '/feed',
         name : 'FeedMain',
         component : FeedMain
@@ -87,5 +92,4 @@ export default [
         name : 'FeedComment',
         component : FeedComment
     },
-      
 ]
