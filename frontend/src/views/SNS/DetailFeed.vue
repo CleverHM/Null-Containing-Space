@@ -75,7 +75,7 @@ import Comment from '../../components/SNS/SNSCommentItem.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
-const storage = window.localStorage;
+const storage = window.sessionStorage;
 
 export default {
   name: "detailFeed",
