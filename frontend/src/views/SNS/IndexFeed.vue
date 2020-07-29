@@ -7,10 +7,7 @@
         <button v-for="tag in clicktags" :key="tag" class="btn-sort" style="background-color: #ACCCC4;" @click="tagRemove">{{ tag }}</button>
       </div>
 
-      <SNSItem @tag-add="tagAdd"/>
-      <SNSItem @tag-add="tagAdd"/>
-      <SNSItem @tag-add="tagAdd"/>
-      <SNSItem @tag-add="tagAdd"/>
+      <SNSItem v-for="article in articles" :article="article" :key="article.title" @tag-add="tagAdd"/>
     </div>
     <!-- 작성 -->
     <button class="createArticle" @click="articleSubmit"><b-icon-pencil-square></b-icon-pencil-square></button>
@@ -24,8 +21,10 @@ import "../../components/css/feed/newsfeed.scss";
 import SNSItem from "../../components/SNS/SNSItem.vue";
 import Navbar from '../../components/common/Navigation.vue';
 import subNav from '../../components/common/subnav.vue';
+import http from "../../util/http-common.js";
+import axios from 'axios';
 
-
+const storage = window.sessionStorage;
 
 export default {
   props: ["keyword"],
@@ -39,7 +38,32 @@ export default {
   data() {
     return {
       clicktags: [],
+      articles: null,
     }
+  },
+
+  created() {
+    console.log('feed창')
+    console.log(storage.getItem("User"))
+    // var email = storage.getItem("User")
+    // let formData = new FormData();
+    // formData.append("email", storage.getItem("User"));
+
+    // console.log(formData.get("email"))
+    // let email = storage.getItem("User");
+    http
+    .post('/post/getPost', 
+      storage.getItem("User")
+    )
+    .then((res) => {
+      console.log(res.data)
+      this.articles = res.data
+      console.log('check')
+      console.log(this.articles)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   },
 
   methods: {
