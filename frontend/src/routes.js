@@ -3,6 +3,7 @@
 import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import findPassword from './views/user/FindPassword.vue'
+import getAbility from './views/user/getAbility.vue'
 
 import profile from './views/user/profile.vue'
 
@@ -35,6 +36,11 @@ export default [
         path : '/find/password',
         name : 'findPassword',
         component : findPassword
+    },
+    {
+        path : '/getAbility',
+        name : 'getAbility',
+        component : getAbility
     },
     {
         path : '/user/profile',
