@@ -123,6 +123,13 @@
 			<version>0.7.0</version>
 		</dependency>
 
+		<!-- JPQL -->
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
 
 	</dependencies>
 
