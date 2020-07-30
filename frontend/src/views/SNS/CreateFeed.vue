@@ -129,26 +129,14 @@ export default {
         console.log(err)
         console.log('FAILURE!!');
       })
-           
-      // 이미지 제외 axios 요청
-    //   http
-    //   .POST("", {
-    //     title: this.article.title,
-    //     content: this.article.content,
-    //     hashtags: this.article.hashtags
-    //   })
-    //   .then(({data}) => {
-    //     if(data == "success") {
-    //       console.log("complete");
-    //     }
-    //     this.moveFeed();
-    //   });
+          
     },
 
     moveFeed() {
       this.$router.push({ name: 'FeedMain' });
     },
     addhashtag(hashtag) {
+      hashtag = hashtag.replace(/(\s*)/g, "")
       if (hashtag && hashtag !="" && hashtag != " ") {
         var isDouble = this.article.hashtags.find(function(n){
           return hashtag === n

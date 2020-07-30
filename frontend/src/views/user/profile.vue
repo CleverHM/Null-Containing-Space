@@ -168,7 +168,7 @@ export default {
 
 .tabs {
   position: relative;
-  margin: 0 auto;
+  top: 20px;
 }
 
 .tabs__item {
