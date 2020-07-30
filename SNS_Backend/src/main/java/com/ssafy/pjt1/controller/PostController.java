@@ -220,7 +220,7 @@ public class PostController {
             		int count = likeservice.likeCount(postList.get(i));
                     
             		// 내가 좋아요 했는가?
-            		boolean likeFlag = false;
+            		int likeFlag = 0;
             		
             		Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
             		Post post = tempP.get();
@@ -229,7 +229,7 @@ public class PostController {
             		for(PostLike pl : postlikes) {
             			// 이미 좋아요한 사람일 경우.
             			if(pl.getUser().getUid() == user.getUid()) {
-            				likeFlag = true;
+            				likeFlag = 1;
             				break;
             			}
             		}
@@ -249,7 +249,11 @@ public class PostController {
 //
         @PostMapping("/post/postDetail")
         @ApiOperation(value = "게시물 디테일 페이지", notes = "게시물 디테일 페이지 기능을 구현.")
-        public FeedDetailData postDetail(@Valid @RequestBody String pid) throws IOException{
+        public FeedDetailData postDetail(@Valid @RequestParam String pid, String email) throws IOException{
+        	
+            Optional<User> optionalUser = userservice.findone(email);
+            User user = optionalUser.get();
+        	
             FeedDetailData feedDetailData = null;
             
             // 조회수 추가
@@ -289,10 +293,24 @@ public class PostController {
 
         		int count = likeservice.likeCount(post);
                 
+        		// 내가 좋아요 했는가?
+        		int likeFlag = 0;
+        		
+        		Optional<Post> tempP = postservice.findone(post.getPid());
+        		Post pp = tempP.get();
+        		Set <PostLike> postlikes = pp.getPostlikes();
+        		
+        		for(PostLike pl : postlikes) {
+        			// 이미 좋아요한 사람일 경우.
+        			if(pl.getUser().getUid() == user.getUid()) {
+        				likeFlag = 1;
+        				break;
+        			}
+        		}
         		
                 Date d = new Date();
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate().toString(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount());
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag);
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");
