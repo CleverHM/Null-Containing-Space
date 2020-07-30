@@ -47,9 +47,24 @@
 
 - 김지영
   - 세션
-  - 전체 form 수정
-  - 이메일 인증 - 시간 + 메일 다시 보내기 추가
+  - 이메일 인증 - 메일 다시 보내기 추가
   
   - 공부할 것 : 권한 설정 
     - feed 접근하기 위해선 login이 필요하다던가 등등
     - jwt-auth-token : header에 담아서 보내기
+
+
+
+## 2020. 07. 29
+
+- 김지영
+  - 비밀번호 페이지 만들기(완료)
+  - 능력치 검증 페이지 만들기
+  - 회원가입하면 -> 로그인시키고 -> 모달페이지로 유저의 능력치 받기
+    - 능력치
+      - front : html, css, javascript
+      - back : cpp, java, python, php
+      - db : sql, nosql
+      - frame : spring, django, bootstrap, vue, react
+      - 나중에 추가하고싶은 능력치 : C#, C++ 
+

@@ -3,6 +3,7 @@
 import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import findPassword from './views/user/FindPassword.vue'
+import getAbility2 from './views/user/getAbility2.vue'
 
 import profile from './views/user/profile.vue'
 
@@ -17,7 +18,9 @@ import Main from './views/Main.vue'
 
 import StudyList from './views/study/StudyList.vue'
 import StudyDetail from './views/study/StudyDetail.vue'
+import StudyMatching from './views/study/StudyMatching.vue'
 
+import Search from './views/search/Search.vue';
 
 
 export default [
@@ -37,15 +40,22 @@ export default [
         component : findPassword
     },
     {
+        path : '/getAbility',
+        name : 'getAbility',
+        component : getAbility2
+    },
+    {
         path : '/user/profile',
         name : 'profile',
         component : profile
     },
+
     {
         path : '/main',
         name : 'Main',
         component : Main
     },
+
     {
         path : '/study/list',
         name : 'StudyList',
@@ -57,15 +67,17 @@ export default [
         component : StudyDetail
     },
     {
+        path : '/study/matching',
+        name : 'StudyMatching',
+        component : StudyMatching
+    },
+
+    {
         path : '/feed',
         name : 'FeedMain',
         component : FeedMain
     },
-    {
-        path : '/components',
-        name : 'Components',
-        component : Components
-    },
+
     {
         path : '/feed/detail',
         name : 'FeedDetail',
@@ -81,5 +93,23 @@ export default [
         name : 'FeedComment',
         component : FeedComment
     },
-      
+    
+    {
+        path : '/feed/comment',
+        name : 'FeedComment',
+        component : FeedComment
+    },
+
+    
+    {
+        path : '/search',
+        name : 'Search',
+        component : Search
+    },
+
+    {
+        path : '/components',
+        name : 'Components',
+        component : Components
+    },
 ]
