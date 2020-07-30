@@ -59,7 +59,7 @@ public class LikeController {
 		
 		for(PostLike pl : postlikes) {
 			// 이미 좋아요한 사람일 경우.
-			if(pl.getUser().getUid() == pl.getUser().getUid()) {
+			if(pl.getUser().getUid() == user.getUid()) {
 				flag = 1;
 				break;
 			}
