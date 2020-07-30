@@ -46,7 +46,7 @@
         <div class="icon-part d-flex justify-content-center">
           <div>
             <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
-            <span class="ml-2">{{ like.count }}</span>
+            <span class="ml-2">{{ article.likeCount }}</span>
           </div>
         </div>
         
@@ -110,16 +110,14 @@ export default {
   data() {
     return {
       imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      like: {
-        flag: 0,
-        count: 0,
-      },
+      likeColor: '',
       udOn: false,
       article: {
         content: "",
         data: "",
         file: "",
         likeCount: 0,
+        likeFlag: 0,
         pid: 0,
         tags: [],
         title: "",
@@ -134,15 +132,20 @@ export default {
   },
 
   created() {
-    if (this.liked) {
-      this.like_color = '#FF3300';
-    } else {
-      this.like_color = '#C4BCB8';
-    }
+    this.likeCheck();
     this.dataReceive();
   },
 
   methods: {
+    // 좋아요 체크
+    likeCheck() {
+      if (this.article.likeFlag) {
+        this.likeColor = '#FF0000';
+      } else {
+        this.likeColor = '#C4BCB8';
+      }
+    },
+
     // 댓글 작성 버튼 눌림
     commentOn() {
       console.log(this.comment.content)
@@ -155,10 +158,13 @@ export default {
 
     dataReceive() {
       // console.log(this.postId)
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("pid", this.postId);
+
+
       http
-      .post('/post/postDetail', 
-        this.postId
-      )
+      .post('/post/postDetail', formData)
       .then((res) => {
         // console.log(res.data)
         // 받아온 데이터를 집어 넣기
@@ -195,15 +201,6 @@ export default {
       })
     },
 
-    // 좋아요 체크
-    likeCheck() {
-      if (this.like.flag) {
-        this.likeColor = '#FF0000';
-      } else {
-        this.likeColor = '#C4BCB8';
-      }
-    },
-
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
@@ -217,7 +214,8 @@ export default {
       .post('/like/post', formData)
       .then((res) => {
         // console.log(res.data)
-        this.like = res.data
+        this.article.likeCount = res.data.count
+        this.article.likeFlag = res.data.flag
       })
       .catch((err) => {
         console.log(err)
