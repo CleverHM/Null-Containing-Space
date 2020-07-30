@@ -60,7 +60,7 @@ export default {
       // console.log(res.data)
       // 받아온 데이터를 집어 넣기
       this.articles = res.data
-      // console.log('check')
+      console.log('check')
       console.log(this.articles)
     })
     .catch((err) => {
@@ -88,7 +88,7 @@ export default {
       // console.log(event.target.innerText)
       this.clicktags.splice(this.clicktags.indexOf(event.target.innerText),1)
       // console.log([...this.clicktags])
-    }
+    },
 
   },
 

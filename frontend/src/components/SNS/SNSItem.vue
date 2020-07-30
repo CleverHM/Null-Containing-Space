@@ -11,12 +11,14 @@
 
     <!-- SNS 이미지, 제목 부분 -->
     <div class="SNS-img">
-      <b-img id="img" :src="imgReceive"></b-img>
+      <router-link :to="{ name: 'FeedDetail', params: { postId: article.pid }}">
+        <b-img id="img" :src="imgReceive"></b-img>
+      </router-link>
     </div>
 
     <!-- 제목 -->
     <div class="SNS-content">
-      <span @click="detailOn">{{ article.title }}</span>
+      <router-link :to="{ name: 'FeedDetail', params: { postId: article.pid }}"><span class="title-part">{{ article.title }}</span></router-link>
     </div>
 
     <!-- 해시태그 -->
@@ -29,7 +31,7 @@
     <div class="icon-part d-flex justify-content-around">
       <div>
         <b-icon icon="heart-fill" font-scale="1.2" :color="sns.like_color" @click="likeButton"></b-icon>
-        <span>0</span>
+        <span>{{ article.likeCount }}</span>
       </div>
       <div>
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
@@ -92,11 +94,11 @@ export default {
       this.$emit('tag-add', event.target.innerText)
     },
 
-    // 클릭 시 해당 article의 detail 페이지로 넘어감
-    detailOn(event) {
-      // console.log(event)
-      this.$router.push({ name: 'FeedDetail' })
-    },
+    // // 클릭 시 해당 article의 detail 페이지로 넘어감
+    // detailOn(event) {
+    //   // console.log(event)
+    //   this.$emit('go-detail', this.article.pid);
+    // },
 
     // 좋아요 체크
     likeCheck() {
@@ -191,6 +193,10 @@ export default {
   font-weight: bold;
   font-size: 16px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.title-part {
+  color: #464545;
 }
 
 </style>
