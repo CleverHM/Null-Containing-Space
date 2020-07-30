@@ -2,8 +2,11 @@
   <div class="css-slider">
     <input id="slide-1" type="radio" name="slides" checked>
     <section class="slide slide-one">
-      <h1>Pure CSS Slider</h1>
-      <checkAbility :ability="ability" v-for="ability in abilities" :key="ability.id"></checkAbility>
+      <h2>안녕하세요 알골마스터님.<br/><br />
+      <br>
+      
+      </h2>
+
       <nav>
         <!-- <label for="slide-3" class="prev">&#10094;</label> -->
         <label for="slide-2" class="next">다음 &#10095;</label>
@@ -12,7 +15,8 @@
 
     <input id="slide-2" type="radio" name="slides">
     <section class="slide slide-two">
-      <h1>Slide Two</h1>
+      <h2>아래의 언어들을 평가해주세요.</h2>
+      <checkAbility :ability="ability" v-for="ability in abilities.frontend" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-1" class="prev">&#10094; 이전</label>
         <label for="slide-3" class="next">다음 &#10095;</label>
@@ -21,7 +25,8 @@
 
     <input id="slide-3" type="radio" name="slides">
     <section class="slide slide-three">
-      <h1>Slide Three</h1>
+      <h2>아래의 언어들을 평가해주세요.</h2>
+      <checkAbility :ability="ability" v-for="ability in abilities.backend" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-2" class="prev">&#10094; 이전</label>
         <label for="slide-4" class="next">다음 &#10095;</label>
@@ -30,7 +35,8 @@
 
     <input id="slide-4" type="radio" name="slides">
     <section class="slide slide-four">
-      <h1>Slide Four</h1>
+      <h2>아래의 언어들을 평가해주세요.</h2>
+      <checkAbility :ability="ability" v-for="ability in abilities.database" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-3" class="prev">&#10094; 이전</label>
         <label for="slide-5" class="next">다음 &#10095;</label>
@@ -38,10 +44,22 @@
     </section>
 
     <input id="slide-5" type="radio" name="slides">
-    <section class="slide slide-five">
-      <h1>Slide five</h1>
+    <section class="slide slide-four">
+      <h2>아래의 언어들을 평가해주세요.</h2>
+      <checkAbility :ability="ability" v-for="ability in abilities.framework" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-4" class="prev">&#10094; 이전</label>
+        <label for="slide-6" class="next">다음 &#10095;</label>
+      </nav>
+    </section>
+
+    <input id="slide-6" type="radio" name="slides">
+    <section class="slide slide-five">
+      <h2>감사합니다. <br>
+      
+      </h2>
+      <nav>
+        <label for="slide-6" class="prev">&#10094; 이전</label>
         <label for="slide-1" class="next">&#10095; 완료</label>
       </nav>
     </section>
@@ -51,6 +69,7 @@
       <label for="slide-3" id="slide-3"></label>
       <label for="slide-4" id="slide-4"></label>
       <label for="slide-5" id="slide-5"></label>
+      <label for="slide-6" id="slide-6"></label>
     </header>
   </div>
 </template>
@@ -64,50 +83,58 @@ export default {
     },
      data() {
         return {
-            abilities: [
-          { name: 'html',
-            id: '1',
-            score: 2},
-          { name: 'css',
-            id: '2',
-            score: 2},
-          { name: 'JavaScript',
-            id: '3' ,
-            score: 2},
-          { name: 'cpp',
-            id: '4',
-            score: 2 },
-          { name: 'java',
-            id: '5' ,
-            score: 2},
-        { name: 'Python',
-            id: '6' ,
-            score: 2},
-        { name: 'php',
-            id: '7' ,
-            score: 2},
-        { name: 'sql',
-            id: '8' ,
-            score: 2},
-        { name: 'nosql',
-            id: '9' ,
-            score: 2},
-        { name: 'spring',
-            id: '10',
-            score: 2 },
-        { name: 'django',
-            id: '11',
-            score: 2 },
-        { name: 'bootstrap',
-            id: '12',
-            score: 2 },
-        { name: 'vue',
-            id: '13',
-            score: 2 },
-        { name: 'react',
-            id: '14',
-            score: 2 },
-            ],
+            abilities: {
+              frontend: [
+                { name: 'html',
+                  id: '1',
+                  score: 2},
+                { name: 'css',
+                  id: '2',
+                  score: 2},
+                { name: 'JavaScript',
+                  id: '3' ,
+                  score: 2},
+              ],
+              backend: [
+                { name: 'cpp',
+                  id: '4',
+                  score: 2 },
+                { name: 'java',
+                  id: '5' ,
+                  score: 2},
+                { name: 'Python',
+                    id: '6' ,
+                    score: 2},
+                { name: 'php',
+                    id: '7' ,
+                    score: 2},
+              ],
+              database: [
+                { name: 'sql',
+                    id: '8' ,
+                    score: 2},
+                { name: 'nosql',
+                    id: '9' ,
+                    score: 2},
+              ],
+              framework: [
+                { name: 'spring',
+                    id: '10',
+                    score: 2 },
+                { name: 'django',
+                    id: '11',
+                    score: 2 },
+                { name: 'bootstrap',
+                    id: '12',
+                    score: 2 },
+                { name: 'vue',
+                    id: '13',
+                    score: 2 },
+                { name: 'react',
+                    id: '14',
+                    score: 2 },
+              ],
+      },
     }
     },
     methods: {
@@ -172,13 +199,19 @@ header label {
 header label:hover { background: #2e353b; }
 
 nav {
-  position: absolute;
-  bottom: 10%;
-  margin-top: -42px;
+  position: fixed;
+  bottom: 60px;
+  /* margin-top: -42px; */
   z-index: 900;
   width: 100%;
 }
-nav label { font-size: 50px; }
+nav label {
+  font-size: 20px;
+  padding: 10px;
+  color: #f7f7f7;
+  width: 30%;
+  background-color: #464545;
+  }
 
 
 .prev {
@@ -198,7 +231,7 @@ nav label { font-size: 50px; }
   transition: all .5s .5s;
 }
 
-.slide h1 {
+.slide h2 {
   opacity: 0;
   -webkit-transform: translateY(100%);
   -ms-transform: translateY(100%);
@@ -211,11 +244,12 @@ input#slide-1:checked~header label#slide-1,
 input#slide-2:checked~header label#slide-2,
 input#slide-3:checked~header label#slide-3,
 input#slide-4:checked~header label#slide-4,
-input#slide-5:checked~header label#slide-5{
+input#slide-5:checked~header label#slide-5,
+input#slide-6:checked~header label#slide-6{
   background:#2e353b
   }
 
-[id^="slide"]:checked + .slide h1 {
+[id^="slide"]:checked + .slide h2 {
   opacity: 1;
   -webkit-transform: translateY(0);
   -ms-transform: translateY(0);
