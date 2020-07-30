@@ -3,24 +3,36 @@
     <div class="wrapB">
       <Navbar></Navbar>
       <subNav></subNav>
+
+      <!-- 수정삭제 부분 -->
+      <div v-if="udOn" class=" ud-part">
+        <li><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+        <li><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
+      </div>
+
       <div class="feedpage">
         <!-- title 부분 -->
-        <div class="page-title">
-          {{ article.title }}
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="page-title">
+            {{ article.title }}
+          </div>
+          <div>
+            <b-icon-three-dots-vertical @click="udButton"></b-icon-three-dots-vertical>
+          </div>
         </div>
 
         <!-- user 부분 -->
         <div class="user-part d-flex flex-row align-items-center">
           <div class="user-img"></div>
-          <div class="user-name">{{ article.username }}</div>
-          <div class="user-created-at">{{ article.created_at }}</div>
+          <div class="user-name">{{ article.userNickname }}</div>
+          <div class="user-created-at">{{ article.date }}</div>
           <div class="user-count">
             <span>조회수</span>
             <span class="ml-2">0</span>
           </div>
         </div>
 
-        <!-- SNS 이미지, 제목 부분 -->
+        <!-- SNS 이미지 -->
         <div class="SNS-img">
           <b-img :src="imgUrl" fluid alt="Fluid image" style="border-radius:2px;"></b-img>
         </div>
@@ -41,8 +53,8 @@
         <hr>
         <!-- 해시태그 -->
         <div class="hash-tags d-flex flex-wrap">
-          <div v-for="hashtag in article.hashtags" :key="hashtag.id">
-            {{ hashtag.name }}</div>
+          <div v-for="hashtag in article.tags" :key="hashtag.id">
+            {{ hashtag }}</div>
         </div>
 
         <!-- 댓글 part -->
@@ -79,6 +91,7 @@ const storage = window.sessionStorage;
 
 export default {
   name: "detailFeed",
+  props: ["postId"],
   components: {
     Navbar,
     subNav,
@@ -90,24 +103,8 @@ export default {
       imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
       like_color: '',
       liked: false,
-      article: {
-        username: '알골마스터',
-        created_at: '2020-07-15',
-        title: '.....ABCDEFGHIJK',
-        content: 'Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome.',
-        hashtags: [
-          { name: 'Python',
-            id: '1' },
-          { name: 'Algorithm',
-            id: '2' },
-          { name: 'JavaScript',
-            id: '3' },
-          { name: 'Django',
-            id: '4' },
-          { name: 'Vue.js',
-            id: '5' },
-        ],
-      },
+      udOn: false,
+      article: null,
       comment: {
         content: "",
       },
@@ -120,6 +117,7 @@ export default {
     } else {
       this.like_color = '#C4BCB8';
     }
+    this.dataReceive();
   },
 
   methods: {
@@ -131,6 +129,24 @@ export default {
       } else {
         this.commentSubmit()
       }
+    },
+
+    dataReceive() {
+      // console.log(this.postId)
+      http
+      .post('/post/postDetail', 
+        this.postId
+      )
+      .then((res) => {
+        // console.log(res.data)
+        // 받아온 데이터를 집어 넣기
+        this.article = res.data
+        // console.log('check')
+        // console.log(this.article)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     
     // 에러메세지
@@ -168,6 +184,13 @@ export default {
         this.like_color = '#FF3300';
       }
     },
+
+    // 수정, 삭제 버튼
+    udButton(event) {
+      this.udOn = !this.udOn;
+      // console.log(this.udOn)
+    }
+
   }
 }
 
@@ -263,5 +286,13 @@ export default {
   margin-bottom: 7px;
 }
 
+.ud-part {
+  position: float;
+  float: right;
+  background-color: #f7f7f7;
+}
+.ud-part > li {
+  margin: 20px;
+}
 
 </style>

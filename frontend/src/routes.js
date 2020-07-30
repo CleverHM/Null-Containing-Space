@@ -79,9 +79,10 @@ export default [
     },
 
     {
-        path : '/feed/detail',
+        path : '/feed/:postId/detail',
         name : 'FeedDetail',
-        component : FeedDetail
+        component : FeedDetail,
+        props: true,
     },
     {
         path : '/feed/create',

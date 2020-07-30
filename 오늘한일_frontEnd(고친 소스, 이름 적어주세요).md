@@ -27,6 +27,14 @@
   - FindPassword & Join
     - step1, step2, passwordform, joinform으로 페이지 구성을 나눔
     - 비밀번호 찾기 페이지 기본 구현
+- 유수정
+  - CreateFeed.vue
+    - 전체 기본 Form 구현
+  - 뉴스피드
+    - hashtag 클릭 삭제 가능
+    - 좋아요 기능 구현
+  - DetailFeed.vue
+    - 전체적인 틀 구현
 
 ## 2020. 07. 27
 
@@ -68,3 +76,18 @@
       - frame : spring, django, bootstrap, vue, react
       - 나중에 추가하고싶은 능력치 : C#, C++ 
 
+- 유수정
+  - 뉴스피드 페이지 서버 통신(진행중)
+    - image 부분 제외 출력 완료, pid 받아오기
+
+
+
+## 2020. 07. 30
+
+- 김지영
+- 유수정
+  - 뉴스피드 페이지 서버 통신(진행중)
+    - 이미지 필드 상대 경로로 출력(성공)
+    - 이미지 필드 bind 실패 - 서버 변경으로 인해 정체 중
+      - 서버단 문제 - base64로 받아오게 되었으므로 Decode 찾아보기
+    - 발표 ppt 준비
