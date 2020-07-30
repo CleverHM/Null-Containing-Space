@@ -31,7 +31,7 @@
     <div class="icon-part d-flex justify-content-around">
       <div>
         <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
-        <span>{{ like.count }}</span>
+        <span>{{ article.likeCount }}</span>
       </div>
       <div>
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
@@ -74,28 +74,6 @@ export default {
       // 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
       baseUrl: "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images",
       likeColor: '',
-      like: {
-        flag: 0,
-        count: 0,
-      },
-      sns: {
-        username: '알골마스터',
-        data: '9시간 전',
-        imgurl: "",
-        title: '.....ABCDEFGHIJK',
-        hashtags: [
-          { name: 'Python',
-            id: '1' },
-          { name: 'Algorithm',
-            id: '2' },
-          { name: 'JavaScript',
-            id: '3' },
-          { name: 'Django',
-            id: '4' },
-          { name: 'Vue.js',
-            id: '5' },
-        ],
-      }
     }
   },
 
@@ -108,7 +86,7 @@ export default {
 
     // 좋아요 체크
     likeCheck() {
-      if (this.like.flag) {
+      if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
         this.likeColor = '#C4BCB8';
@@ -128,7 +106,8 @@ export default {
       .post('/like/post', formData)
       .then((res) => {
         // console.log(res.data)
-        this.like = res.data
+        this.article.likeCount = res.data.count
+        this.article.likeFlag = res.data.flag
       })
       .catch((err) => {
         console.log(err)
