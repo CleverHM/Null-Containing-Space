@@ -1,18 +1,17 @@
 <template>
   <div id="SNSItem">
-
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img"></div>
-      <div class="flex-column ml-1">
-        <div class="user-name">{{ article.username }}</div>
-        <div class="date-diff">{{ article.data }}</div>
+      <div class="flex-column">
+        <div class="user-name">{{ article.userName }}</div>
+        <div class="date-diff">{{ article.date }}</div>
       </div>
     </div>
 
     <!-- SNS 이미지, 제목 부분 -->
     <div class="SNS-img">
-      <b-img :src="imgUrl" fluid alt="Fluid image" @click="detailOn" style="border-radius:2px;"></b-img>
+      <img id="img" src="../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/imagesYd5gCiscVXTfWq6IPdJj32IW989iAaRs.png">
     </div>
 
     <!-- 제목 -->
@@ -22,14 +21,14 @@
 
     <!-- 해시태그 -->
     <div class="hash-tags d-flex flex-wrap">
-      <div v-for="hashtag in article.hashtags" :key="hashtag.id" @click="tagOn">
-        {{ hashtag.name }}</div>
+      <div v-for="hashtag in article.tags" :key="hashtag.id" @click="tagOn">
+        {{ hashtag }}</div>
     </div>
     
     <!-- SNS 좋아요, 댓글수 부분  -->
     <div class="icon-part d-flex justify-content-around">
       <div>
-        <b-icon icon="heart-fill" font-scale="1.2" :color="article.like_color" @click="likeButton"></b-icon>
+        <b-icon icon="heart-fill" font-scale="1.2" :color="sns.like_color" @click="likeButton"></b-icon>
         <span>0</span>
       </div>
       <div>
@@ -45,21 +44,20 @@
 export default {
   name: "SNSItemn",
   props: {
-
+    article: Object,
   },
 
+
   created() {
-    if (this.article.liked) {
-      this.article.like_color = '#FF3300';
-    } else {
-      this.article.like_color = '#C4BCB8';
-    }
+    this.likeCheck()
+    this.imgUrl = `../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images${this.article.fileName}`
   },
   
   data() {
     return {
-      imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      article: {
+      // 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
+      // imgUrl: '',
+      sns: {
         username: '알골마스터',
         data: '9시간 전',
         title: '.....ABCDEFGHIJK',
@@ -94,16 +92,31 @@ export default {
       this.$router.push({ name: 'FeedDetail' })
     },
 
+    // 좋아요 체크
+    likeCheck() {
+      if (this.sns.liked) {
+        this.sns.like_color = '#FF3300';
+      } else {
+        this.sns.like_color = '#C4BCB8';
+      }
+    },
+
+    // img
+    imgUrl() {
+      var baseUrl = "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images";
+      var imgName = this.article.fileName;
+      return "'" + baseUrl + imgName + "'"
+    },
     
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
-      if (this.article.liked) {
-        this.article.liked = false;
-        this.article.like_color = '#C4BCB8';
+      if (this.sns.liked) {
+        this.sns.liked = false;
+        this.sns.like_color = '#C4BCB8';
       } else {
-        this.article.liked = true;
-        this.article.like_color = '#FF3300';
+        this.sns.liked = true;
+        this.sns.like_color = '#FF3300';
       }
     },
 
