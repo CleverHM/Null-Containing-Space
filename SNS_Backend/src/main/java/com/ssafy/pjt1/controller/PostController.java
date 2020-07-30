@@ -267,9 +267,12 @@ public class PostController {
                 responseHeaders.add("content-disposition", "attachment; filename=" + post.getFiles().getFilename());
                 responseHeaders.add("Content-Type",type);
                 
+
+        		int count = likeservice.likeCount(post);
+                
                 Date d = new Date();
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate().toString(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out);
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count);
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");
