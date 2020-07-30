@@ -12,7 +12,7 @@
     <!-- SNS 이미지, 제목 부분 -->
     <div class="SNS-img">
       <router-link :to="{ name: 'FeedDetail', params: { postId: article.pid }}">
-        <b-img id="img" :src="imgReceive"></b-img>
+        <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
       </router-link>
     </div>
 
@@ -30,8 +30,8 @@
     <!-- SNS 좋아요, 댓글수 부분  -->
     <div class="icon-part d-flex justify-content-around">
       <div>
-        <b-icon icon="heart-fill" font-scale="1.2" :color="sns.like_color" @click="likeButton"></b-icon>
-        <span>{{ article.likeCount }}</span>
+        <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
+        <span>{{ like.count }}</span>
       </div>
       <div>
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
@@ -43,6 +43,11 @@
 </template>
 
 <script>
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
+
 export default {
   name: "SNSItemn",
   props: {
@@ -50,20 +55,29 @@ export default {
   },
 
   computed: {
-    imgReceive() {
-      return this.baseUrl + this.article.fileName;
+    // 좋아요 바뀌는 것 감지
+    likeChange() {
+      this.likeCheck();
+      return this.likeColor
     },
+
   },
 
   created() {
     this.likeCheck();
+    // console.log(this.article.file)
+    this.imgUrl = this.article.file
   },
   
   data() {
     return {
       // 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
       baseUrl: "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images",
-      imgUrl: '',
+      likeColor: '',
+      like: {
+        flag: 0,
+        count: 0,
+      },
       sns: {
         username: '알골마스터',
         data: '9시간 전',
@@ -81,8 +95,6 @@ export default {
           { name: 'Vue.js',
             id: '5' },
         ],
-        liked: false,
-        like_color: '',
       }
     }
   },
@@ -94,31 +106,33 @@ export default {
       this.$emit('tag-add', event.target.innerText)
     },
 
-    // // 클릭 시 해당 article의 detail 페이지로 넘어감
-    // detailOn(event) {
-    //   // console.log(event)
-    //   this.$emit('go-detail', this.article.pid);
-    // },
-
     // 좋아요 체크
     likeCheck() {
-      if (this.sns.liked) {
-        this.sns.like_color = '#FF3300';
+      if (this.like.flag) {
+        this.likeColor = '#FF0000';
       } else {
-        this.sns.like_color = '#C4BCB8';
+        this.likeColor = '#C4BCB8';
       }
     },
 
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
-      if (this.sns.liked) {
-        this.sns.liked = false;
-        this.sns.like_color = '#C4BCB8';
-      } else {
-        this.sns.liked = true;
-        this.sns.like_color = '#FF3300';
-      }
+      // console.log(storage.getItem("User"))
+      
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("postid", this.article.pid);
+
+      http
+      .post('/like/post', formData)
+      .then((res) => {
+        // console.log(res.data)
+        this.like = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
 
   },
@@ -197,6 +211,12 @@ export default {
 
 .title-part {
   color: #464545;
+}
+
+.img-part {
+  width: 95%;
+  margin: 10px;
+  border-radius: 2px;
 }
 
 </style>

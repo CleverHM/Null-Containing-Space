@@ -28,13 +28,13 @@
           <div class="user-created-at">{{ article.date }}</div>
           <div class="user-count">
             <span>조회수</span>
-            <span class="ml-2">0</span>
+            <span class="ml-2">{{ article.viewCount }}</span>
           </div>
         </div>
 
         <!-- SNS 이미지 -->
         <div class="SNS-img">
-          <b-img :src="imgUrl" fluid alt="Fluid image" style="border-radius:2px;"></b-img>
+          <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
         </div>
 
         <!-- content 부분 -->
@@ -45,8 +45,8 @@
         <!-- 좋아요 부분 -->
         <div class="icon-part d-flex justify-content-center">
           <div>
-            <b-icon icon="heart-fill" font-scale="1.2" :color="like_color" @click="likeButton"></b-icon>
-            <span class="icon-heart-data">0</span>
+            <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
+            <span class="ml-2">{{ like.count }}</span>
           </div>
         </div>
         
@@ -97,14 +97,36 @@ export default {
     subNav,
     Comment,
   },
+
+  computed: {
+    // 좋아요 바뀌는 것 감지
+    likeChange() {
+      this.likeCheck();
+      return this.likeColor
+    },
+
+  },
   
   data() {
     return {
       imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      like_color: '',
-      liked: false,
+      like: {
+        flag: 0,
+        count: 0,
+      },
       udOn: false,
-      article: null,
+      article: {
+        content: "",
+        data: "",
+        file: "",
+        likeCount: 0,
+        pid: 0,
+        tags: [],
+        title: "",
+        userEmail:"",
+        userNickname: "",
+        viewCount: 0,
+      },
       comment: {
         content: "",
       },
@@ -141,8 +163,8 @@ export default {
         // console.log(res.data)
         // 받아온 데이터를 집어 넣기
         this.article = res.data
-        // console.log('check')
-        // console.log(this.article)
+        console.log('check')
+        console.log(this.article)
       })
       .catch((err) => {
         console.log(err)
@@ -173,18 +195,34 @@ export default {
       })
     },
 
-    // 좋아요 누름
-    likeButton(event) {
-      // console.log('liked')
-      if (this.liked) {
-        this.liked = false;
-        this.like_color = '#C4BCB8';
+    // 좋아요 체크
+    likeCheck() {
+      if (this.like.flag) {
+        this.likeColor = '#FF0000';
       } else {
-        this.liked = true;
-        this.like_color = '#FF3300';
+        this.likeColor = '#C4BCB8';
       }
     },
 
+    // 좋아요 누름
+    likeButton(event) {
+      // console.log('liked')
+      // console.log(storage.getItem("User"))
+      
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("postid", this.article.pid);
+
+      http
+      .post('/like/post', formData)
+      .then((res) => {
+        // console.log(res.data)
+        this.like = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     // 수정, 삭제 버튼
     udButton(event) {
       this.udOn = !this.udOn;
@@ -295,4 +333,9 @@ export default {
   margin: 20px;
 }
 
+.img-part {
+  width: 95%;
+  margin: 10px;
+  border-radius: 2px;
+}
 </style>
