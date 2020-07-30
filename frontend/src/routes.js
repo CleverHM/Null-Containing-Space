@@ -18,7 +18,7 @@ import Main from './views/Main.vue'
 
 import StudyList from './views/study/StudyList.vue'
 import StudyDetail from './views/study/StudyDetail.vue'
-import StudyMatching from './views/study/studyMatching.vue'
+import StudyMatching from './views/study/StudyMatching.vue'
 
 import Search from './views/search/Search.vue';
 
