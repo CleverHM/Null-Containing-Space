@@ -1,33 +1,43 @@
 package com.ssafy.pjt1.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FeedData {
 	private int pid;
 	private String email;
-	private String date;
+	private LocalDateTime date;
 	private String title;
 	private String userName;
-	private String fileName;
-	private String fileUrl;
+	private byte[] file;
 	private List<String> tags;
 
-	public FeedData(int pid, String email, String date, String title,String userName, String fileName, String fileUrl, List<String> tags) {
+	public FeedData(int pid, String email, LocalDateTime localDateTime, String title,String userName, byte[] file, List<String> tags) {
 		this.pid = pid;
 		this.email = email;
-		this.date = date;
+		this.date = localDateTime;
 		this.title = title;
 		this.userName = userName;
-		this.fileName = fileName;
-		this.fileUrl = fileUrl;
+		this.file = file;
 		this.tags = tags;
 	}
 
-	public String getDate() {
+
+	public byte[] getFile() {
+		return file;
+	}
+
+
+	public void setFile(byte[] file) {
+		this.file = file;
+	}
+
+
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -62,23 +72,7 @@ public class FeedData {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileUrl() {
-		return fileUrl;
-	}
-
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
-	}
-
+	
 	public List<String> getTags() {
 		return tags;
 	}
