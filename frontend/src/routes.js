@@ -21,7 +21,7 @@ import StudyDetail from './views/study/StudyDetail.vue'
 import StudyMatching from './views/study/StudyMatching.vue'
 
 import Search from './views/search/Search.vue';
-
+import Notice from './views/Notice.vue'
 
 export default [
     {
@@ -98,7 +98,11 @@ export default [
         name : 'Search',
         component : Search
     },
-
+    {
+        path : '/notice',
+        name : 'Notice',
+        component : Notice
+    },
     {
         path : '/components',
         name : 'Components',

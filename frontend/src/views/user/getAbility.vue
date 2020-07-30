@@ -2,9 +2,9 @@
   <div class="css-slider">
     <input id="slide-1" type="radio" name="slides" checked>
     <section class="slide slide-one">
-      <h2>안녕하세요 알골마스터님.<br/><br />
+      <h3>안녕하세요 알골마스터님.<br/><br/>
       <br>
-      </h2>
+      </h3>
 
       <nav>
         <!-- <label for="slide-3" class="prev">&#10094;</label> -->
@@ -14,7 +14,7 @@
 
     <input id="slide-2" type="radio" name="slides">
     <section class="slide slide-two">
-      <h2>아래의 언어들을 평가해주세요.</h2>
+      <h3>아래의 언어들을 평가해주세요.</h3>
       <checkAbility :ability="ability" v-for="ability in abilities.frontend" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-1" class="prev">&#10094; 이전</label>
@@ -24,7 +24,7 @@
 
     <input id="slide-3" type="radio" name="slides">
     <section class="slide slide-three">
-      <h2>아래의 언어들을 평가해주세요.</h2>
+      <h3>아래의 언어들을 평가해주세요.</h3>
       <checkAbility :ability="ability" v-for="ability in abilities.backend" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-2" class="prev">&#10094; 이전</label>
@@ -34,7 +34,7 @@
 
     <input id="slide-4" type="radio" name="slides">
     <section class="slide slide-four">
-      <h2>아래의 언어들을 평가해주세요.</h2>
+      <h3>아래의 언어들을 평가해주세요.</h3>
       <checkAbility :ability="ability" v-for="ability in abilities.database" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-3" class="prev">&#10094; 이전</label>
@@ -44,7 +44,7 @@
 
     <input id="slide-5" type="radio" name="slides">
     <section class="slide slide-four">
-      <h2>아래의 언어들을 평가해주세요.</h2>
+      <h3>아래의 언어들을 평가해주세요.</h3>
       <checkAbility :ability="ability" v-for="ability in abilities.framework" :key="ability.id"></checkAbility>
       <nav>
         <label for="slide-4" class="prev">&#10094; 이전</label>
@@ -54,12 +54,12 @@
 
     <input id="slide-6" type="radio" name="slides">
     <section class="slide slide-five">
-      <h2>감사합니다. <br>
+      <h3>감사합니다. <br>
       
-      </h2>
+      </h3>
       <nav>
         <label for="slide-5" class="prev">&#10094; 이전</label>
-        <label for="slide-1" class="next">&#10095; 완료</label>
+        <label for="slide-1" class="next">완료</label>
       </nav>
     </section>
     <header>
@@ -169,7 +169,7 @@ label {
   left: 100%;
   z-index: 10;
   padding: 8em 0px;
-  background-color: #ACCCC4;
+  background-color: #c6dfd6;
   background-size: cover;
   -webkit-transition: left 0s .75s;
   transition: left 0s .75s;
@@ -224,13 +224,14 @@ nav label {
 }
 
 .slide .prev, .slide .next { opacity: 0; }
-[id^="slide"]:checked + .slide .prev, [id^="slide"]:checked + .slide .next {
+[id^="slide"]:checked + .slide .prev,
+ [id^="slide"]:checked + .slide .next {
   opacity: 1;
   -webkit-transition: all .5s .5s;
   transition: all .5s .5s;
 }
 
-.slide h2 {
+.slide h3 {
   opacity: 0;
   -webkit-transform: translateY(100%);
   -ms-transform: translateY(100%);
@@ -248,7 +249,7 @@ input#slide-6:checked~header label#slide-6{
   background:#2e353b
   }
 
-[id^="slide"]:checked + .slide h2 {
+[id^="slide"]:checked + .slide h3 {
   opacity: 1;
   -webkit-transform: translateY(0);
   -ms-transform: translateY(0);

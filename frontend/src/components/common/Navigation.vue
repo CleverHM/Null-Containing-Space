@@ -3,13 +3,13 @@
         <div class="Navi">
             <p>{{ currentRouteName }}</p>
             <div>
-                <b-icon-envelope-open v-if="currentRouteName === 'FeedMain'" class="envelop-open-icon icons" scale="1.3"></b-icon-envelope-open>
+                <b-icon-envelope-open v-if="currentRouteName === 'FeedMain'" class="envelop-open-icon icons" scale="1.3" @click="goNotice"></b-icon-envelope-open>
                 <b-icon-arrow-left @click="goBack" v-if="currentRouteName != 'FeedMain'" class="arrow-left-icon icons" scale="1.3"></b-icon-arrow-left>
                 <b-icon-search class="icons search-icon mx-4" scale="1.3"></b-icon-search>
                 <b-icon-person-fill v-if="currentRouteName != 'profile'" class="icons person-icon" scale="1.3" @click="goProfile"></b-icon-person-fill>
 
                 <!-- 프로필페이지 dropdown -->
-                <b-icon-list v-if="currentRouteName === 'profile'"@click='toggleShow' class='list-icon'></b-icon-list>
+                <b-icon-list v-if="currentRouteName === 'profile'" @click='toggleShow' class='list-icon'></b-icon-list>
                     <div v-if='showMenu' class='menu'>
                         <div class='menu-item'>
                             <li class="menu-user m-3">알골마스터</li>
@@ -56,7 +56,7 @@ export default {
 
       },
       goNotice() {
-
+          this.$router.push("/notice")
       },
       goPageDropdown() {
           this.$router.push("/page")
