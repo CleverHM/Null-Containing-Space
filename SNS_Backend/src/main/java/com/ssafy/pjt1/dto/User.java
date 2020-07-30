@@ -39,25 +39,16 @@ public class User {
 	private int age;
 	private boolean gender; // 1이면 남자, 2이면 여자
 
-// 유저 : 유저 (N : N 관계 ) -> 유저가 팔로우 하는 유저들.
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "Userfollow", joinColumns = {
-			@JoinColumn(name = "From_id", referencedColumnName = "uid") }, inverseJoinColumns = {
-					@JoinColumn(name = "To_id", referencedColumnName = "uid") })
-	@JsonIgnore
-	private Set<User> followings = new HashSet<User>();
+	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
+	private Set<UserFollow> followings;
+	
+	@OneToMany(mappedBy = "to", cascade = CascadeType.ALL)	
+	private Set<UserFollow> followers;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<TagFollow> tagfollows;
 
-	@ManyToMany(mappedBy = "followings")
-	@JsonIgnore
-	private Set<User> followers = new HashSet<User>();
-
-// 유저  : 게시물 (N : N 관계) -> 유저가 팔로우 하는 태그들.
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Tagfollow", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "tag_id") })
-	private Set<Tag> tags = new HashSet<Tag>();
-
-// 유저  : 게시물 (1 : N 관계)
+	// 유저  : 게시물 (1 : N 단방향 관계)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<Post>();
 
@@ -126,19 +117,19 @@ public class User {
 		this.email = email;
 	}
 
-	public Set<User> getFollowers() {
+	public Set<UserFollow> getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(Set<User> followers) {
+	public void setFollowers(Set<UserFollow> followers) {
 		this.followers = followers;
 	}
 
-	public Set<User> getFollowing() {
+	public Set<UserFollow> getFollowings() {
 		return followings;
 	}
 
-	public void setFollowing(Set<User> followings) {
+	public void setFollowings(Set<UserFollow> followings) {
 		this.followings = followings;
 	}
 
@@ -174,11 +165,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Set<Tag> getTags() {
-		return tags;
+	public Set<TagFollow> getTagfollows() {
+		return tagfollows;
 	}
 
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
+	public void setTagfollows(Set<TagFollow> tagfollows) {
+		this.tagfollows = tagfollows;
 	}
 }
