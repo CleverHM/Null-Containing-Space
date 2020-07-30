@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -234,6 +235,7 @@ public class PostController {
         public FeedDetailData postDetail(@Valid @RequestBody String pid) throws IOException{
             FeedDetailData feedDetailData = null;
             
+            // 조회수 추가
             int currentPid = Integer.parseInt(pid);
             Optional<Post> optionalPost = postdao.findPostByPid(currentPid);
             List<String> list = new LinkedList<String>();
@@ -270,14 +272,18 @@ public class PostController {
 
         		int count = likeservice.likeCount(post);
                 
+        		
                 Date d = new Date();
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate().toString(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count);
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount());
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");
                // respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
             }
+            
+            post.setViewCount(post.getViewCount() + 1);
+            postdao.save(post);
             
             return feedDetailData;
         }
