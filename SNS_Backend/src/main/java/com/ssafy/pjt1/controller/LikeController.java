@@ -43,6 +43,12 @@ public class LikeController {
 	@PostMapping("/like/post")
 	@ApiOperation(value = "게시물 좋아요", notes = "사용자가 게시물을 좋아요 하는 기능을 구현")
 	public void userLikePost(@Valid @RequestParam String user, @Valid @RequestParam int postid) {
+		
+		// 좋아요 버튼 or 좋아요 취소 버튼 눌린 게시물을 들고옴.
+		Optional<Post> temp = postservice.findone(postid);
+		Post post = temp.get();
+		
+		post.getPostlikes().
 
 		// 유저 u가 게시물 p를 좋아요 하는거임.
 		Optional<User> U = userservice.findone(user);
