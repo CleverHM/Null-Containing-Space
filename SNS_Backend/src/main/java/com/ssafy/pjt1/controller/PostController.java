@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.pjt1.dao.PostDao;
-import com.ssafy.pjt1.dao.PostLikeDao;
 import com.ssafy.pjt1.dao.PostTagDao;
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dto.Files;
 import com.ssafy.pjt1.dto.Post;
+import com.ssafy.pjt1.dto.PostLike;
 import com.ssafy.pjt1.dto.PostTag;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
@@ -39,6 +38,7 @@ import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FeedDetailData;
 import com.ssafy.pjt1.service.LikeService;
+import com.ssafy.pjt1.service.PostService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -64,6 +64,8 @@ public class PostController {
     private PostTagDao posttagdao;
     @Autowired
 	private LikeService likeservice;
+    @Autowired
+    private PostService postservice;
     // 게시물 작성할때 같이 파일이 넘어옴.
     // 1. 이미지도 저장하고
     // 2. 게시물도 저장하고
@@ -217,8 +219,23 @@ public class PostController {
 
             		int count = likeservice.likeCount(postList.get(i));
                     
+            		// 내가 좋아요 했는가?
+            		boolean likeFlag = false;
+            		
+            		Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
+            		Post post = tempP.get();
+            		Set <PostLike> postlikes = post.getPostlikes();
+            		
+            		for(PostLike pl : postlikes) {
+            			// 이미 좋아요한 사람일 경우.
+            			if(pl.getUser().getUid() == user.getUid()) {
+            				likeFlag = true;
+            				break;
+            			}
+            		}
+            		
                     res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate().toString(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
-                            out, tag, count));
+                            out, tag, count, likeFlag));
                     //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
                 }else{
                     System.out.println("없는 파일");
