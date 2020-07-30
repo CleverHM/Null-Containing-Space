@@ -11,7 +11,7 @@
 
     <!-- SNS 이미지, 제목 부분 -->
     <div class="SNS-img">
-      <img id="img" src="../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/imagesYd5gCiscVXTfWq6IPdJj32IW989iAaRs.png">
+      <img id="img" src="../../../../SNS_Backend/src/main/resources/static/images4uZDwnye8bRMJ42B1RIfMqpbjcVCGalQ.png">
     </div>
 
     <!-- 제목 -->
@@ -60,6 +60,7 @@ export default {
       sns: {
         username: '알골마스터',
         data: '9시간 전',
+        imgurl: "",
         title: '.....ABCDEFGHIJK',
         hashtags: [
           { name: 'Python',
