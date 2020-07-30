@@ -51,6 +51,10 @@ public class User {
 	// 유저  : 게시물 (1 : N 단방향 관계)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<Post>();
+	
+	//유저 : 좋아요 (1 : N 관계)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
+	private Set<PostLike> postlikes;
 
 	@CreationTimestamp
 	@Column(updatable = false)
