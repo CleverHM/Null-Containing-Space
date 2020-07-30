@@ -8,12 +8,7 @@ import com.ssafy.pjt1.dto.User;
 
 public interface UserService {
 	Optional<User> login(String email, String password);
-
 	User signUp(User user);
-
-	void delete(User selectUser);
-
+	void delete(User selectUser, Set<Post> posts);
 	Optional<User> findone(String email);
-	
-	void delete1(Set<Post> posts);
 }

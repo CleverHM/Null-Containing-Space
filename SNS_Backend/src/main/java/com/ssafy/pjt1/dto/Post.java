@@ -14,8 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,16 +32,9 @@ public class Post {
 	private int pid;
 	private String title;
 	private String content;
-
-	//게시물 : 태그 (N : N 관계)
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "Posttag", joinColumns = {
-	@JoinColumn(name = "POST_ID") }, inverseJoinColumns = {
-	@JoinColumn(name = "TAG_ID")})
-	private Set<Tag> tags = new HashSet<Tag>();
-
+	
 	//게시물 : 유저 (N : 1 관계)
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
@@ -47,16 +42,19 @@ public class Post {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FILES_ID")
 	private Files files;
+	
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	private Set<PostTag> posttags;
 
 	public Post() {
 
 	}
-	
-	
-	public Post(String title, String content, Set<Tag> tags, User user, Files files) {
+	 
+	public Post(int pid, String title, String content, Set<PostTag> posttags, User user, Files files) {
+		this.pid = pid;
 		this.title = title;
 		this.content = content;
-		this.tags = tags;
+		this.posttags = posttags;
 		this.user = user;
 		this.files = files;
 	}
@@ -68,14 +66,16 @@ public class Post {
 		this.files = files;
 	}
 	
-	public Set<Tag> getTags() {
-		return tags;
+	
+	
+	public Set<PostTag> getPosttags() {
+		return posttags;
 	}
 
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
+	public void setPosttags(Set<PostTag> posttags) {
+		this.posttags = posttags;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -107,12 +107,13 @@ public class Post {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
-	public Files getImg() {
+	
+	public Files getFiles() {
 		return files;
 	}
 
-	public void setImg(Files files) {
+	public void setFiles(Files files) {
 		this.files = files;
 	}
+
 }
