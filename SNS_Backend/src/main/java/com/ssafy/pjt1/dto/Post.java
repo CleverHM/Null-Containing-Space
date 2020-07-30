@@ -1,21 +1,23 @@
 package com.ssafy.pjt1.dto;
 
-import java.time.LocalDateTime;
+import java.awt.Image;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.CreationTimestamp;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -41,34 +43,30 @@ public class Post {
 	@JoinColumn(name = "FILES_ID")
 	private Files files;
 	
-
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private Set<PostTag> posttags;
 
-	@CreationTimestamp
-	@Column(updatable = false)
-	private LocalDateTime createDate;
-	
 	public Post() {
 
 	}
 	 
-	public Post(int pid, String title, String content, User user, Files files, Set<PostTag> posttags,
-			LocalDateTime createDate) {
+	public Post(int pid, String title, String content, Set<PostTag> posttags, User user, Files files) {
 		this.pid = pid;
 		this.title = title;
 		this.content = content;
+		this.posttags = posttags;
 		this.user = user;
 		this.files = files;
-		this.posttags = posttags;
-		this.createDate = createDate;
 	}
+
 
 	public Post(String title, String content, Files files) {
 		this.title = title;
 		this.content = content;
 		this.files = files;
 	}
+	
+	
 	
 	public Set<PostTag> getPosttags() {
 		return posttags;
@@ -117,14 +115,5 @@ public class Post {
 	public void setFiles(Files files) {
 		this.files = files;
 	}
-	
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
-	}
-
 
 }

@@ -1,14 +1,9 @@
 package com.ssafy.pjt1.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,9 +12,6 @@ import javax.validation.Valid;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +27,9 @@ import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.PostTag;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
-import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
+import com.ssafy.pjt1.model.FeedDetailData;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -141,78 +133,47 @@ public class PostController {
 
 	}
 	
-	// 해당이메일 게시물 보내주기
-		@PostMapping("/post/getPost")
-		@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
-		public List<FeedData> getPost(@Valid @RequestBody String email) throws FileNotFoundException, IOException {
-
-			List<FeedData> res = new LinkedList<FeedData>();
-			
-			System.out.println(email);
-			List<Post> postList = new LinkedList<>();
-			Optional<User> optionalUser = userservice.findone(email);
-			User user = optionalUser.get();
-			
-			Set<UserFollow> followList = user.getFollowings();
-			
-			// 자기가 올린 게시문
-			Set<Post> myPost = user.getPosts();
-			postList.addAll(myPost);
-			
-			// 게시물 확인
-			System.out.println("==============내게시물==================");
-			for (int i = 0; i < postList.size(); i++) {
-				System.out.println(postList.get(i).getTitle());
-			}
-			// 팔로우 들의 게시문
-			for (UserFollow u : followList) {
-				Optional<User> optionalUser1 = userservice.findone(u.getTo().getEmail());
-				User user1 = optionalUser1.get();
-				Set<Post> followPost = user1.getPosts();
-				postList.addAll(followPost);
-			}
-			// 게시물 확인
-			System.out.println("==============내게시물+팔로우==================");
-			for (int i = 0; i < postList.size(); i++) {
-				System.out.println(postList.get(i).getTitle());
-				List<String> tag = new LinkedList<String>();
-
-				for (PostTag t : postList.get(i).getPosttags()) {
-					tag.add(t.getTag().getName());
-				}
-				Date d = new Date();
-				
-				// 이미지 만들기
-				byte[] reportBytes = null;
-				File result=new File(postList.get(i).getFiles().getFileurl() + postList.get(i).getFiles().getFilename());
-				
-				if(result.exists()){
-					System.out.println("있음");
-				    InputStream inputStream = new FileInputStream(postList.get(i).getFiles().getFileurl() + postList.get(i).getFiles().getFilename());
-				    String type=result.toURL().openConnection().guessContentTypeFromName(postList.get(i).getFiles().getFilename());
-
-				    byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
-
-				    HttpHeaders responseHeaders = new HttpHeaders();
-				    responseHeaders.add("content-disposition", "attachment; filename=" + postList.get(i).getFiles().getFilename());
-				    responseHeaders.add("Content-Type",type);
-				    
-				    res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
-				    		out, tag));
-				    //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
-				}else{
-					System.out.println("없는 파일");
-				   // respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
-				}
-				
-			}
-			
-			for (int i = 0; i < res.size(); i++) {
-				System.out.println("sdasd");
-				System.out.println(res.get(i).getFile());
-			}
-			return res;
-		}
+//	// 해당이메일 게시물 보내주기
+//		@PostMapping("/post/getPost")
+//		@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
+//		public List<FeedData> getPost(@Valid @RequestBody String email) {
+//
+//			System.out.println(email);
+//			List<Post> postList = new LinkedList<>();
+//			List<FeedData> res = new LinkedList<>();
+//			Optional<User> optionalUser = userservice.findone(email);
+//			User user = optionalUser.get();
+//			Set<User> followList = user.getFollowing();
+//			// 자기가 올린 게시문
+//			Set<Post> myPost = user.getPosts();
+//			postList.addAll(myPost);
+//			// 게시물 확인
+//			System.out.println("==============내게시물==================");
+//			for (int i = 0; i < postList.size(); i++) {
+//				System.out.println(postList.get(i).getTitle());
+//			}
+//			// 팔로우 들의 게시문
+//			for (User u : followList) {
+//				Optional<User> optionalUser1 = userservice.findone(u.getEmail());
+//				User user1 = optionalUser1.get();
+//				Set<Post> followPost = user1.getPosts();
+//				postList.addAll(followPost);
+//			}
+//			// 게시물 확인
+//			System.out.println("==============내게시물+팔로우==================");
+//			for (int i = 0; i < postList.size(); i++) {
+//				System.out.println(postList.get(i).getTitle());
+//				List<String> tag = new LinkedList<String>();
+//
+//				for (Tag t : postList.get(i).getTags()) {
+//					tag.add(t.getName());
+//				}
+//				Date d = new Date();
+//				res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),d.toString(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
+//						postList.get(i).getImg().getFilename(), postList.get(i).getImg().getFileurl(), tag));
+//			}
+//			return res;
+//		}
 //
 //		@PostMapping("/post/postDetail")
 //		@ApiOperation(value = "게시물 디테일 페이지", notes = "게시물 디테일 페이지 기능을 구현.")
