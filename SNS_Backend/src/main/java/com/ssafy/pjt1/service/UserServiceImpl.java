@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 	FollowService followservice;
 	
 	@Autowired
-	PostService postservice;
+	LikeService postservice;
 	
 	@Autowired
 	PostTagDao posttagdao;
@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Optional<User> findone(String email) {
-		System.out.println(email);
 		return userdao.findUserByEmail(email);
 	}
 

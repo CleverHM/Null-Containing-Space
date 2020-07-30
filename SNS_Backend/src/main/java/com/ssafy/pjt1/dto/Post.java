@@ -1,23 +1,21 @@
 package com.ssafy.pjt1.dto;
 
-import java.awt.Image;
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -43,9 +41,18 @@ public class Post {
 	@JoinColumn(name = "FILES_ID")
 	private Files files;
 	
+	//게시물 : 태그(1 : N 관계)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private Set<PostTag> posttags;
+	
+	//게시물 : 좋아요 (1 : N 관계)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)	
+	private Set<PostLike> postlikes;
 
+	@CreationTimestamp
+	@Column(updatable = false)
+	private LocalDateTime createDate;
+	
 	public Post() {
 
 	}
@@ -68,6 +75,14 @@ public class Post {
 	
 	
 	
+	public Set<PostLike> getPostlikes() {
+		return postlikes;
+	}
+
+	public void setPostlikes(Set<PostLike> postlikes) {
+		this.postlikes = postlikes;
+	}
+
 	public Set<PostTag> getPosttags() {
 		return posttags;
 	}
@@ -116,4 +131,12 @@ public class Post {
 		this.files = files;
 	}
 
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+	
 }
