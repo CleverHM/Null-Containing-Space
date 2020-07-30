@@ -157,8 +157,8 @@ export default {
   width:30px;
   height:30px;
 
-  border: 2px solid #ACCCC4;
-  color: #ACCCC4;
+  border: 2px solid #E2DFD8;
+  color: #E2DFD8;
   display: block;
   margin: 0 auto 10px auto;
   border-radius: 50%;
@@ -172,7 +172,7 @@ export default {
   position: absolute;
   width:100%;
   height: 3px;
-  background: #ACCCC4;
+  background: #E2DFD8;
   top: 15px;
   left: -50%;
   z-index: -1;
@@ -184,12 +184,12 @@ button.active{
   cursor : hand;
 }
 .progressbar button.active:before{
-border-color: #3aac5d;
-background: #3aac5d;
+border-color: #ACCCC4;
+background: #ACCCC4;
 color: white
 }
 .progressbar button.active:after{
- background: #3aac5d;
+ background: #ACCCC4;
 }
 
 
