@@ -11,7 +11,7 @@
 
     <!-- SNS 이미지, 제목 부분 -->
     <div class="SNS-img">
-      <img id="img" src="../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/imagesYd5gCiscVXTfWq6IPdJj32IW989iAaRs.png">
+      <b-img id="img" :src="imgReceive"></b-img>
     </div>
 
     <!-- 제목 -->
@@ -47,16 +47,21 @@ export default {
     article: Object,
   },
 
+  computed: {
+    imgReceive() {
+      return this.baseUrl + this.article.fileName;
+    },
+  },
 
   created() {
-    this.likeCheck()
-    this.imgUrl = `../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images${this.article.fileName}`
+    this.likeCheck();
   },
   
   data() {
     return {
       // 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      // imgUrl: '',
+      baseUrl: "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images",
+      imgUrl: '',
       sns: {
         username: '알골마스터',
         data: '9시간 전',
@@ -101,13 +106,6 @@ export default {
       }
     },
 
-    // img
-    imgUrl() {
-      var baseUrl = "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images";
-      var imgName = this.article.fileName;
-      return "'" + baseUrl + imgName + "'"
-    },
-    
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
