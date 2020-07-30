@@ -1,16 +1,14 @@
 package com.ssafy.pjt1.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
@@ -105,10 +104,12 @@ public class UserController {
 		ResponseEntity response = null;
 
 		if (user2.isPresent()) {
-			// userservice.delete(user2);
-			user2.ifPresent(selectUser -> {
-				userservice.delete(selectUser);
-			});
+			User select = user2.get();
+			
+			Set<Post> posts = select.getPosts();
+            userservice.delete1(posts);
+			
+	        userservice.delete(select);
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -139,6 +140,7 @@ public class UserController {
             String token = jwtservice.create(loginUser.getEmail(), loginUser.getNickname());
             res.setHeader("jwt-auth-token", token);
             
+            resultMap.put("token", token);
             resultMap.put("status", true);
             resultMap.put("email", loginUser.getEmail());
             resultMap.put("nickname", loginUser.getNickname());
@@ -155,7 +157,7 @@ public class UserController {
 	
 	@PostMapping("/account/findPasswordModify")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
-	public Object token(@Valid @RequestParam String email, @Valid @RequestParam String NewPassword) {
+	public Object token(@Valid @RequestParam String email, String NewPassword) {
 
 	    Optional<User> optionalUser = userservice.findone(email);
 
