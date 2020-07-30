@@ -30,6 +30,7 @@ public class Post {
 	private int pid;
 	private String title;
 	private String content;
+	private int viewCount;
 	
 	//게시물 : 유저 (N : 1 관계)
 	@ManyToOne
@@ -64,6 +65,7 @@ public class Post {
 		this.posttags = posttags;
 		this.user = user;
 		this.files = files;
+		this.viewCount = 0;
 	}
 
 
@@ -73,8 +75,14 @@ public class Post {
 		this.files = files;
 	}
 	
-	
-	
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
 	public Set<PostLike> getPostlikes() {
 		return postlikes;
 	}

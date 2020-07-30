@@ -74,7 +74,7 @@ import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import UserApi from "../../api/UserApi";
 import http from "../../util/http-common.js";
 
-const storage = window.localStorage;
+const storage = window.sessionStorage;
 
 export default {
   components: {
@@ -142,7 +142,7 @@ export default {
     onLogin() {
       if (this.isSubmit) {
 
-        storage.setItem("jwt-auth-token", "");
+        storage.setItem("token", "");
         storage.setItem("User", "");
         
         let msg = "";
@@ -158,11 +158,15 @@ export default {
           if(res.data.status) {
             console.log(res.data.email);
             msg = "로그인되었습니다.";
-            // console.log(res.data)
             // storage에 받아온 데이터 집어넣기
-            storage.setItem("jwt-auth-token", res.data.token)
+            storage.setItem("token", res.data.token)
+            console.log(storage)
+            var User = {
+              "email" : res.data.email,
+              "nickname" : res.data.nickname,
+            }
+            console.log(User, typeof(User))
             storage.setItem("User", res.data.email)
-            // console.log(storage)
           }
           alert(msg);
           this.moveFeed();
