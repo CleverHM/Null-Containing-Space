@@ -17,9 +17,10 @@ public class FeedDetailData {
     
     private int LikeCount;
     private int ViewCount;
+    private int likeFlag;
     
     public FeedDetailData(int pid, String title, String content, String date, List<String> tags, String userNickname,
-            String userEmail, byte[] file, int likeCount, int viewCount) {
+            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag) {
         this.pid = pid;
         this.title = title;
         this.content = content;
@@ -30,19 +31,24 @@ public class FeedDetailData {
         this.file = file;
         this.LikeCount = likeCount;
         this.ViewCount = viewCount;
+        this.likeFlag = likeFlag;
     }
-    
-    public int getViewCount() {
-		return ViewCount;
+
+	public int getLikeFlag() {
+		return likeFlag;
 	}
 
+	public void setLikeFlag(int likeFlag) {
+		this.likeFlag = likeFlag;
+	}
 
+	public int getViewCount() {
+		return ViewCount;
+	}
 
 	public void setViewCount(int viewCount) {
 		ViewCount = viewCount;
 	}
-
-
 
 	public int getPid() {
         return pid;

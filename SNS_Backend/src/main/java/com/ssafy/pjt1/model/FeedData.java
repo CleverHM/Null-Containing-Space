@@ -11,11 +11,11 @@ public class FeedData {
     private String title;
     private String userName;
     private byte[] file;
-    private boolean likeFlag;
+    private int likeFlag;
     
     private List<String> tags;
 
-    public FeedData(int pid, String email, String date, String title,String userName, byte[] file, List<String> tags, int likeCount, boolean likeFlag) {
+    public FeedData(int pid, String email, String date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag) {
         this.pid = pid;
         this.email = email;
         this.date = date;
@@ -27,12 +27,13 @@ public class FeedData {
         this.likeFlag = likeFlag;
     }
    
-	public boolean isLikeFlag() {
+
+	public int getLikeFlag() {
 		return likeFlag;
 	}
 
 
-	public void setLikeFlag(boolean likeFlag) {
+	public void setLikeFlag(int likeFlag) {
 		this.likeFlag = likeFlag;
 	}
 
