@@ -59,6 +59,7 @@ public class FollowController {
 		userfollow.setFrom(u1);
 		userfollow.setTo(u2);
 		followservice.followUser(userfollow);
+<<<<<<< HEAD
 	}
 	
 	@PostMapping("/unfollow/user")
@@ -75,6 +76,36 @@ public class FollowController {
 		followservice.unfollowUser(u1.getUid(), u2.getUid());
 	}
 	
+=======
+		
+		// u2의 팔로워 팔로잉 개수		
+		int cnt1 = followservice.followerCount(u2);
+		int cnt2 = followservice.followingCount(u2);
+		
+		System.out.println("팔로워 : " + cnt1 + "  팔로잉 : " + cnt2);
+	}
+	
+	@PostMapping("/unfollow/user")
+	@ApiOperation(value = "유저 언팔로우", notes = "사용자간 언팔로우 기능을 구현")
+	public void userUnfollow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
+
+		// u1이 u2 언팔로우하는거임.
+		Optional<User> U1 = userservice.findone(From);
+		Optional<User> U2 = userservice.findone(To);
+
+		User u1 = U1.get();
+		User u2 = U2.get();
+		
+		followservice.unfollowUser(u1.getUid(), u2.getUid());
+		
+		// u2의 팔로워 팔로잉 개수		
+		int cnt1 = followservice.followerCount(u2);
+		int cnt2 = followservice.followingCount(u2);
+		
+		System.out.println("팔로워 : " + cnt1 + "  팔로잉 : " + cnt2);
+	}
+	
+>>>>>>> backend
 
 	@GetMapping("/follow/user/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")

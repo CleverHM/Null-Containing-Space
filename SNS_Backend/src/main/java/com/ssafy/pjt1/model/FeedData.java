@@ -1,8 +1,10 @@
 package com.ssafy.pjt1.model;
 
+import java.io.File;
 import java.util.List;
 
 public class FeedData {
+<<<<<<< HEAD
 	private int pid;
 	private String email;
 	private String date;
@@ -50,41 +52,90 @@ public class FeedData {
 	public String getTitle() {
 		return title;
 	}
+=======
+    private int pid;
+    private int LikeCount;
+    private String email;
+    private String date;
+    private String title;
+    private String userName;
+    private byte[] file;
+    private List<String> tags;
 
-	public void setTitle(String title) {
-		this.title = title;
+    public FeedData(int pid, String email, String date, String title,String userName, byte[] file, List<String> tags, int likeCount) {
+        this.pid = pid;
+        this.email = email;
+        this.date = date;
+        this.title = title;
+        this.userName = userName;
+        this.file = file;
+        this.tags = tags;
+        this.LikeCount = likeCount;
+    }
+>>>>>>> backend
+
+    public int getLikeCount() {
+		return LikeCount;
 	}
 
-	public String getUserName() {
-		return userName;
+	public void setLikeCount(int likeCount) {
+		LikeCount = likeCount;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+	public String getDate() {
+        return date;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getFileUrl() {
-		return fileUrl;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
-	}
+    public int getPid() {
+        return pid;
+    }
 
-	public List<String> getTags() {
-		return tags;
-	}
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
 
-	public void setTags(List<String> tags) {
-		this.tags = tags;
-	}
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public byte[] getFile() {
+        return file;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 
 }
