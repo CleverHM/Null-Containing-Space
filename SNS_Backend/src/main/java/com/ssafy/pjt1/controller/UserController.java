@@ -105,11 +105,12 @@ public class UserController {
 
 		if (user2.isPresent()) {
 			User select = user2.get();
-			
+		
 			Set<Post> posts = select.getPosts();
-            userservice.delete1(posts);
 			
-	        userservice.delete(select);
+	        userservice.delete(select, posts);
+	        
+	        System.out.println("22222222222");
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
