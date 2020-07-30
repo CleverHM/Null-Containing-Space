@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -42,10 +41,6 @@ public class Post {
 	@JoinColumn(name = "FILES_ID")
 	private Files files;
 	
-<<<<<<< HEAD
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-	private Set<PostTag> posttags;
-=======
 	//게시물 : 태그(1 : N 관계)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private Set<PostTag> posttags;
@@ -53,7 +48,6 @@ public class Post {
 	//게시물 : 좋아요 (1 : N 관계)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
->>>>>>> backend
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -81,16 +75,6 @@ public class Post {
 	
 	
 	
-<<<<<<< HEAD
-	public Set<PostTag> getPosttags() {
-		return posttags;
-	}
-
-	public void setPosttags(Set<PostTag> posttags) {
-		this.posttags = posttags;
-	}
-
-=======
 	public Set<PostLike> getPostlikes() {
 		return postlikes;
 	}
@@ -107,7 +91,6 @@ public class Post {
 		this.posttags = posttags;
 	}
 
->>>>>>> backend
 	public User getUser() {
 		return user;
 	}
@@ -148,8 +131,6 @@ public class Post {
 		this.files = files;
 	}
 
-<<<<<<< HEAD
-=======
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
@@ -158,5 +139,4 @@ public class Post {
 		this.createDate = createDate;
 	}
 	
->>>>>>> backend
 }

@@ -1,20 +1,14 @@
 package com.ssafy.pjt1.service;
 
-<<<<<<< HEAD
-=======
 import java.util.Set;
 
->>>>>>> backend
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.pjt1.dao.TagFollowDao;
 import com.ssafy.pjt1.dao.UserFollowDao;
 import com.ssafy.pjt1.dto.TagFollow;
-<<<<<<< HEAD
-=======
 import com.ssafy.pjt1.dto.User;
->>>>>>> backend
 import com.ssafy.pjt1.dto.UserFollow;
 
 @Service
@@ -37,23 +31,6 @@ public class FollowServiceImpl implements FollowService {
 		userfollowdao.deleteRelation(from, to);
 	}
 
-<<<<<<< HEAD
-	// 회원 탈퇴시 팔로우 관계를 모두 삭제해주는 작업.
-	public void deleteUser(int userId) {
-		int from, to;
-		from = to = userId;
-		
-		// 회원 탈퇴시 유저간에 팔로우 관계를 끊어주는 작업.
-		userfollowdao.deleteByFrom(from);
-		System.out.println("deleteUser1");
-		userfollowdao.deleteByTo(to);
-		System.out.println("deleteUser2");
-		
-		// 회원 탈퇴시 유저가 팔로우한 태그들 관계를 끊어주는 작업.
-		tagfollowdao.deleteRelation(userId);
-		
-	}
-=======
 //	// 회원 탈퇴시 팔로우 관계를 모두 삭제해주는 작업.
 //	public void deleteUser(int userId) {
 //		int from, to;
@@ -69,7 +46,6 @@ public class FollowServiceImpl implements FollowService {
 //		tagfollowdao.deleteRelation(userId);
 //		
 //	}
->>>>>>> backend
 
 	// 태그 팔로우 기능.
 	@Override
@@ -82,8 +58,6 @@ public class FollowServiceImpl implements FollowService {
 	public TagFollow isFollowTag(int user, int tag) {
 		return tagfollowdao.findRelation(user, tag);
 	}
-<<<<<<< HEAD
-=======
 	
 	@Override
 	public int followerCount(User u) {
@@ -96,6 +70,5 @@ public class FollowServiceImpl implements FollowService {
 		Set<UserFollow> uf = u.getFollowings();
 		return uf.size();
 	}
->>>>>>> backend
 
 }

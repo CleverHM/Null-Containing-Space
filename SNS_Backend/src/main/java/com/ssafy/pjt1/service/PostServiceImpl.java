@@ -1,12 +1,5 @@
 package com.ssafy.pjt1.service;
 
-<<<<<<< HEAD
-import org.springframework.stereotype.Service;
-
-@Service
-public class PostServiceImpl implements PostService {
-
-=======
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +17,4 @@ public class PostServiceImpl implements PostService {
 	public Optional<Post> findone(int postid){
 		return postdao.findPostByPid(postid);	
 	}
->>>>>>> backend
 }
