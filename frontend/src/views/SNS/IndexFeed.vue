@@ -7,6 +7,7 @@
         <button v-for="tag in clicktags" :key="tag" class="btn-sort" style="background-color: #ACCCC4;" @click="tagRemove">{{ tag }}</button>
       </div>
 
+      <!-- 출력될 피드 게시물 - SNSItem으로 article 객체 데이터 넘겨줌 -->
       <SNSItem v-for="article in articles" :article="article" :key="article.title" @tag-add="tagAdd"/>
     </div>
     <!-- 작성 -->
@@ -56,7 +57,8 @@ export default {
       storage.getItem("User")
     )
     .then((res) => {
-      console.log(res.data)
+      // console.log(res.data)
+      // 받아온 데이터를 집어 넣기
       this.articles = res.data
       console.log('check')
       console.log(this.articles)
@@ -86,7 +88,7 @@ export default {
       // console.log(event.target.innerText)
       this.clicktags.splice(this.clicktags.indexOf(event.target.innerText),1)
       // console.log([...this.clicktags])
-    }
+    },
 
   },
 

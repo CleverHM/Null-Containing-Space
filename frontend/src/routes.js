@@ -3,7 +3,7 @@
 import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import findPassword from './views/user/FindPassword.vue'
-import getAbility2 from './views/user/getAbility2.vue'
+import getAbility from './views/user/getAbility.vue'
 
 import profile from './views/user/profile.vue'
 
@@ -21,7 +21,7 @@ import StudyDetail from './views/study/StudyDetail.vue'
 import StudyMatching from './views/study/StudyMatching.vue'
 
 import Search from './views/search/Search.vue';
-
+import Notice from './views/Notice.vue'
 
 export default [
     {
@@ -42,7 +42,7 @@ export default [
     {
         path : '/getAbility',
         name : 'getAbility',
-        component : getAbility2
+        component : getAbility
     },
     {
         path : '/user/profile',
@@ -79,9 +79,10 @@ export default [
     },
 
     {
-        path : '/feed/detail',
+        path : '/feed/:postId/detail',
         name : 'FeedDetail',
-        component : FeedDetail
+        component : FeedDetail,
+        props: true,
     },
     {
         path : '/feed/create',
@@ -92,21 +93,17 @@ export default [
         path : '/feed/comment',
         name : 'FeedComment',
         component : FeedComment
-    },
-    
-    {
-        path : '/feed/comment',
-        name : 'FeedComment',
-        component : FeedComment
-    },
-
-    
+    },   
     {
         path : '/search',
         name : 'Search',
         component : Search
     },
-
+    {
+        path : '/notice',
+        name : 'Notice',
+        component : Notice
+    },
     {
         path : '/components',
         name : 'Components',

@@ -3,26 +3,38 @@
     <div class="wrapB">
       <Navbar></Navbar>
       <subNav></subNav>
+
+      <!-- 수정삭제 부분 -->
+      <div v-if="udOn" class=" ud-part">
+        <li><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+        <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
+      </div>
+
       <div class="feedpage">
         <!-- title 부분 -->
-        <div class="page-title">
-          {{ article.title }}
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="page-title">
+            {{ article.title }}
+          </div>
+          <div>
+            <b-icon-three-dots-vertical @click="udButton"></b-icon-three-dots-vertical>
+          </div>
         </div>
 
         <!-- user 부분 -->
         <div class="user-part d-flex flex-row align-items-center">
           <div class="user-img"></div>
-          <div class="user-name">{{ article.username }}</div>
-          <div class="user-created-at">{{ article.created_at }}</div>
+          <div class="user-name">{{ article.userNickname }}</div>
+          <div class="user-created-at">{{ article.date }}</div>
           <div class="user-count">
             <span>조회수</span>
-            <span class="ml-2">0</span>
+            <span class="ml-2">{{ article.viewCount }}</span>
           </div>
         </div>
 
-        <!-- SNS 이미지, 제목 부분 -->
+        <!-- SNS 이미지 -->
         <div class="SNS-img">
-          <b-img :src="imgUrl" fluid alt="Fluid image" style="border-radius:2px;"></b-img>
+          <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
         </div>
 
         <!-- content 부분 -->
@@ -33,16 +45,16 @@
         <!-- 좋아요 부분 -->
         <div class="icon-part d-flex justify-content-center">
           <div>
-            <b-icon icon="heart-fill" font-scale="1.2" :color="like_color" @click="likeButton"></b-icon>
-            <span class="icon-heart-data">0</span>
+            <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
+            <span class="ml-2">{{ like.count }}</span>
           </div>
         </div>
         
         <hr>
         <!-- 해시태그 -->
         <div class="hash-tags d-flex flex-wrap">
-          <div v-for="hashtag in article.hashtags" :key="hashtag.id">
-            {{ hashtag.name }}</div>
+          <div v-for="hashtag in article.tags" :key="hashtag.id">
+            {{ hashtag }}</div>
         </div>
 
         <!-- 댓글 part -->
@@ -79,34 +91,41 @@ const storage = window.sessionStorage;
 
 export default {
   name: "detailFeed",
+  props: ["postId"],
   components: {
     Navbar,
     subNav,
     Comment,
   },
+
+  computed: {
+    // 좋아요 바뀌는 것 감지
+    likeChange() {
+      this.likeCheck();
+      return this.likeColor
+    },
+
+  },
   
   data() {
     return {
       imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      like_color: '',
-      liked: false,
+      like: {
+        flag: 0,
+        count: 0,
+      },
+      udOn: false,
       article: {
-        username: '알골마스터',
-        created_at: '2020-07-15',
-        title: '.....ABCDEFGHIJK',
-        content: 'Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome. Korean Lorem Ipsum in Hangul script is a mix of all Korean chars according to common frequency. Suggestions for improvement are welcome.',
-        hashtags: [
-          { name: 'Python',
-            id: '1' },
-          { name: 'Algorithm',
-            id: '2' },
-          { name: 'JavaScript',
-            id: '3' },
-          { name: 'Django',
-            id: '4' },
-          { name: 'Vue.js',
-            id: '5' },
-        ],
+        content: "",
+        data: "",
+        file: "",
+        likeCount: 0,
+        pid: 0,
+        tags: [],
+        title: "",
+        userEmail:"",
+        userNickname: "",
+        viewCount: 0,
       },
       comment: {
         content: "",
@@ -120,6 +139,7 @@ export default {
     } else {
       this.like_color = '#C4BCB8';
     }
+    this.dataReceive();
   },
 
   methods: {
@@ -131,6 +151,24 @@ export default {
       } else {
         this.commentSubmit()
       }
+    },
+
+    dataReceive() {
+      // console.log(this.postId)
+      http
+      .post('/post/postDetail', 
+        this.postId
+      )
+      .then((res) => {
+        // console.log(res.data)
+        // 받아온 데이터를 집어 넣기
+        this.article = res.data
+        console.log('check')
+        console.log(this.article)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     
     // 에러메세지
@@ -149,7 +187,7 @@ export default {
       })
       .then((res) => {
         console.log('SUCCESS!!');
-        this.$router.push("/feed/detail");
+        // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
         console.log(err);
@@ -157,17 +195,61 @@ export default {
       })
     },
 
+    // 좋아요 체크
+    likeCheck() {
+      if (this.like.flag) {
+        this.likeColor = '#FF0000';
+      } else {
+        this.likeColor = '#C4BCB8';
+      }
+    },
+
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
-      if (this.liked) {
-        this.liked = false;
-        this.like_color = '#C4BCB8';
-      } else {
-        this.liked = true;
-        this.like_color = '#FF3300';
-      }
+      // console.log(storage.getItem("User"))
+      
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("postid", this.article.pid);
+
+      http
+      .post('/like/post', formData)
+      .then((res) => {
+        // console.log(res.data)
+        this.like = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
+    // 수정, 삭제 버튼
+    udButton(event) {
+      var requestUser = storage.getItem("User")
+      if (requestUser === this.article.userEmail) {
+        this.udOn = !this.udOn;
+      }
+      // console.log(this.udOn)
+    },
+
+    // 글 삭제
+    deletePost() {
+      
+      http
+      .post("/post/postDelete",
+        this.article.pid
+      )
+      .then((res) => {
+        console.log('delete')
+        console.log(res.data)
+        this.$router.push({ name: 'FeedMain' });
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    },
+
   }
 }
 
@@ -263,5 +345,18 @@ export default {
   margin-bottom: 7px;
 }
 
+.ud-part {
+  position: float;
+  float: right;
+  background-color: #f7f7f7;
+}
+.ud-part > li {
+  margin: 20px;
+}
 
+.img-part {
+  width: 95%;
+  margin: 10px;
+  border-radius: 2px;
+}
 </style>

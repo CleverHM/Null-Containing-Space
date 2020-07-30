@@ -1,36 +1,37 @@
 <template>
   <div id="SNSItem">
-
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img"></div>
-      <div class="flex-column ml-1">
-        <div class="user-name">{{ article.username }}</div>
-        <div class="date-diff">{{ article.data }}</div>
+      <div class="flex-column">
+        <div class="user-name">{{ article.userName }}</div>
+        <div class="date-diff">{{ article.date }}</div>
       </div>
     </div>
 
     <!-- SNS 이미지, 제목 부분 -->
     <div class="SNS-img">
-      <b-img :src="imgUrl" fluid alt="Fluid image" @click="detailOn" style="border-radius:2px;"></b-img>
+      <router-link :to="{ name: 'FeedDetail', params: { postId: article.pid }}">
+        <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
+      </router-link>
     </div>
 
     <!-- 제목 -->
     <div class="SNS-content">
-      <span @click="detailOn">{{ article.title }}</span>
+      <router-link :to="{ name: 'FeedDetail', params: { postId: article.pid }}"><span class="title-part">{{ article.title }}</span></router-link>
     </div>
 
     <!-- 해시태그 -->
     <div class="hash-tags d-flex flex-wrap">
-      <div v-for="hashtag in article.hashtags" :key="hashtag.id" @click="tagOn">
-        {{ hashtag.name }}</div>
+      <div v-for="hashtag in article.tags" :key="hashtag.id" @click="tagOn">
+        {{ hashtag }}</div>
     </div>
     
     <!-- SNS 좋아요, 댓글수 부분  -->
     <div class="icon-part d-flex justify-content-around">
       <div>
-        <b-icon icon="heart-fill" font-scale="1.2" :color="article.like_color" @click="likeButton"></b-icon>
-        <span>0</span>
+        <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
+        <span>{{ like.count }}</span>
       </div>
       <div>
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
@@ -42,26 +43,45 @@
 </template>
 
 <script>
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
+
 export default {
   name: "SNSItemn",
   props: {
+    article: Object,
+  },
+
+  computed: {
+    // 좋아요 바뀌는 것 감지
+    likeChange() {
+      this.likeCheck();
+      return this.likeColor
+    },
 
   },
 
   created() {
-    if (this.article.liked) {
-      this.article.like_color = '#FF3300';
-    } else {
-      this.article.like_color = '#C4BCB8';
-    }
+    this.likeCheck();
+    // console.log(this.article.file)
+    this.imgUrl = this.article.file
   },
   
   data() {
     return {
-      imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      article: {
+      // 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
+      baseUrl: "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images",
+      likeColor: '',
+      like: {
+        flag: 0,
+        count: 0,
+      },
+      sns: {
         username: '알골마스터',
         data: '9시간 전',
+        imgurl: "",
         title: '.....ABCDEFGHIJK',
         hashtags: [
           { name: 'Python',
@@ -75,8 +95,6 @@ export default {
           { name: 'Vue.js',
             id: '5' },
         ],
-        liked: false,
-        like_color: '',
       }
     }
   },
@@ -88,23 +106,33 @@ export default {
       this.$emit('tag-add', event.target.innerText)
     },
 
-    // 클릭 시 해당 article의 detail 페이지로 넘어감
-    detailOn(event) {
-      // console.log(event)
-      this.$router.push({ name: 'FeedDetail' })
+    // 좋아요 체크
+    likeCheck() {
+      if (this.like.flag) {
+        this.likeColor = '#FF0000';
+      } else {
+        this.likeColor = '#C4BCB8';
+      }
     },
 
-    
     // 좋아요 누름
     likeButton(event) {
       // console.log('liked')
-      if (this.article.liked) {
-        this.article.liked = false;
-        this.article.like_color = '#C4BCB8';
-      } else {
-        this.article.liked = true;
-        this.article.like_color = '#FF3300';
-      }
+      // console.log(storage.getItem("User"))
+      
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("postid", this.article.pid);
+
+      http
+      .post('/like/post', formData)
+      .then((res) => {
+        // console.log(res.data)
+        this.like = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
 
   },
@@ -179,6 +207,16 @@ export default {
   font-weight: bold;
   font-size: 16px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.title-part {
+  color: #464545;
+}
+
+.img-part {
+  width: 95%;
+  margin: 10px;
+  border-radius: 2px;
 }
 
 </style>
