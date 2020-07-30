@@ -5,20 +5,30 @@ import java.util.List;
 public class FeedData {
 	private int pid;
 	private String email;
+	private String date;
 	private String title;
 	private String userName;
 	private String fileName;
 	private String fileUrl;
 	private List<String> tags;
 
-	public FeedData(int pid, String title,String email,String userName, String fileName, String fileUrl, List<String> tags) {
+	public FeedData(int pid, String email, String date, String title,String userName, String fileName, String fileUrl, List<String> tags) {
 		this.pid = pid;
 		this.email = email;
+		this.date = date;
 		this.title = title;
 		this.userName = userName;
 		this.fileName = fileName;
 		this.fileUrl = fileUrl;
 		this.tags = tags;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getEmail() {
