@@ -3,10 +3,22 @@
     <div class="wrapB">
       <Navbar></Navbar>
       <subNav></subNav>
+
+      <!-- 수정삭제 부분 -->
+      <div v-if="udOn" class="fixed ud-part">
+        <li><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+        <li><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
+      </div>
+
       <div class="feedpage">
         <!-- title 부분 -->
-        <div class="page-title">
-          {{ article.title }}
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="page-title">
+            {{ article.title }}
+          </div>
+          <div>
+            <b-icon-three-dots-vertical @click="udButton"></b-icon-three-dots-vertical>
+          </div>
         </div>
 
         <!-- user 부분 -->
@@ -20,7 +32,7 @@
           </div>
         </div>
 
-        <!-- SNS 이미지, 제목 부분 -->
+        <!-- SNS 이미지 -->
         <div class="SNS-img">
           <b-img :src="imgUrl" fluid alt="Fluid image" style="border-radius:2px;"></b-img>
         </div>
@@ -90,6 +102,7 @@ export default {
       imgUrl: 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
       like_color: '',
       liked: false,
+      udOn: false,
       article: {
         username: '알골마스터',
         created_at: '2020-07-15',
@@ -168,6 +181,13 @@ export default {
         this.like_color = '#FF3300';
       }
     },
+
+    // 수정, 삭제 버튼
+    udButton(event) {
+      this.udOn = !this.udOn;
+      // console.log(this.udOn)
+    }
+
   }
 }
 
@@ -263,5 +283,13 @@ export default {
   margin-bottom: 7px;
 }
 
+.ud-part {
+  position: float;
+  float: right;
+  background-color: #f7f7f7;
+}
+.ud-part > li {
+  margin: 20px;
+}
 
 </style>
