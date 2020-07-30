@@ -1,17 +1,20 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.pjt1.dao.PostLikeDao;
 import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.PostLike;
 import com.ssafy.pjt1.dto.User;
@@ -42,42 +45,73 @@ public class LikeController {
 	
 	@PostMapping("/like/post")
 	@ApiOperation(value = "게시물 좋아요", notes = "사용자가 게시물을 좋아요 하는 기능을 구현")
-	public void userLikePost(@Valid @RequestParam String user, @Valid @RequestParam int postid) {
-
-		// 유저 u가 게시물 p를 좋아요 하는거임.
-		Optional<User> U = userservice.findone(user);
-		Optional<Post> P = postservice.findone(postid);
-
-		User u = U.get();
-		Post p = P.get();
-
-		PostLike postlike = new PostLike();
-		postlike.setUser(u);
-		postlike.setPost(p);
-		likeservice.userLikePost(postlike);
+	public Object userLikePost(@Valid @RequestParam String email, @Valid @RequestParam int postid) {
+		int flag = 0;
+		int count = 0;
 		
-		// 게시물에 해당하는 좋아요 개수
-		int count = likeservice.likeCount(p);
+		// 좋아요 버튼 or 좋아요 취소 버튼 눌린 게시물을 들고옴.
+		Optional<User> tempU = userservice.findone(email);
+		User user = tempU.get();
 		
-		System.out.println(count);
+		Optional<Post> tempP = postservice.findone(postid);
+		Post post = tempP.get();
+		Set <PostLike> postlikes = post.getPostlikes();
+		
+		for(PostLike pl : postlikes) {
+			// 이미 좋아요한 사람일 경우.
+			if(pl.getUser().getUid() == pl.getUser().getUid()) {
+				flag = 1;
+				break;
+			}
+		}
+		
+		// 이미 좋아요한 사람일 경우.
+		if(flag == 1) {
+			// 유저 u가 게시물 p를 좋아요 취소하는거임.
+			Optional<User> U = userservice.findone(email);
+			Optional<Post> P = postservice.findone(postid);
+
+			User u = U.get();
+			Post p = P.get();
+
+			likeservice.userUnlikePost(u.getUid(), p.getPid());
+			
+			// 게시물에 해당하는 좋아요 개수
+			count = likeservice.likeCount(p);
+			
+			System.out.println(count);
+		}else {
+			// 유저 u가 게시물 p를 좋아요 하는거임.
+			Optional<User> U = userservice.findone(email);
+			Optional<Post> P = postservice.findone(postid);
+
+			User u = U.get();
+			Post p = P.get();
+
+			PostLike postlike = new PostLike();
+			postlike.setUser(u);
+			postlike.setPost(p);
+			likeservice.userLikePost(postlike);
+			
+			// 게시물에 해당하는 좋아요 개수
+			count = likeservice.likeCount(p);
+			
+			System.out.println(count);	
+		}
+		
+		
+		Map<String, Integer> resultMap = new HashMap<>();
+		resultMap.put("flag", flag);
+		resultMap.put("count", count);
+		
+		return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+
 	}
 	
-	@PostMapping("/unlike/post")
-	@ApiOperation(value = "게시물 좋아요 취소", notes = "사용자가 게시물을 좋아요 취소하는 기능을 구현")
-	public void userUnfollow(@Valid @RequestParam String user, @Valid @RequestParam int postid) {
-
-		// 유저 u가 게시물 p를 좋아요 취소하는거임.
-		Optional<User> U = userservice.findone(user);
-		Optional<Post> P = postservice.findone(postid);
-
-		User u = U.get();
-		Post p = P.get();
-
-		likeservice.userUnlikePost(u.getUid(), p.getPid());
-		
-		// 게시물에 해당하는 좋아요 개수
-		int count = likeservice.likeCount(p);
-		
-		System.out.println(count);
-	}
+//	@PostMapping("/unlike/post")
+//	@ApiOperation(value = "게시물 좋아요 취소", notes = "사용자가 게시물을 좋아요 취소하는 기능을 구현")
+//	public void userUnfollow(@Valid @RequestParam String user, @Valid @RequestParam int postid) {
+//
+//		
+//	}
 }
