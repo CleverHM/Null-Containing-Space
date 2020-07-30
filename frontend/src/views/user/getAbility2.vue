@@ -1,58 +1,38 @@
 <template>
-    <div>
-        <!-- PAGE ONE -->
-        <section id="page-1" class="page">
-            <h1>Css Transition</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat aliquid sed dolor, sunt possimus numquam deleniti repellendus ad adipisci cum natus molestiae consequatur deserunt porro beatae asperiores odio fuga quae quos debitis quaerat unde! Consequatur nulla dolore consectetur atque sapiente minus nobis recusandae exercitationem ad, illum, doloribus, fugiat laboriosam ratione.</p>  
-            <div>
-                <a href="#page-2" class="btn" @click="clickbtn">
-                Next Page <i class="fas fa-arrow-circle-down"></i>
-                </a>
-            </div>
-        </section>
+  <div class="css-slider">
+    <input id="slide-1" type="radio" name="slides" checked>
+    <section class="slide slide-one">
+      <h1>Pure CSS Slider</h1>
+      <nav>
+        <label for="slide-3" class="prev">&#10094;</label>
+        <label for="slide-2" class="next">&#10095;</label>
+      </nav>
+    </section>
 
-        <!-- PAGE TWO -->
-        <section id="page-2" class="page">
-            <h1>Page 2</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat aliquid sed dolor, sunt possimus numquam deleniti repellendus ad adipisci cum natus molestiae consequatur deserunt porro beatae asperiores odio fuga quae quos debitis quaerat unde! Consequatur nulla dolore consectetur atque sapiente minus nobis recusandae exercitationem ad, illum, doloribus, fugiat laboriosam ratione.</p>  
-            <div>
-                <a href="#page-1" class="btn btn-dark" @click="clickbtn">
-                Prev Page <i class="fas fa-arrow-circle-up"></i>
-                </a>
-                
-                <a href="#page-3" class="btn" @click="clickbtn">
-                Next Page <i class="fas fa-arrow-circle-down"></i>
-                </a>
-            </div>
-        </section>
+    <input id="slide-2" type="radio" name="slides">
+    <section class="slide slide-two">
+      <h1>Slide Two</h1>
+      <nav>
+        <label for="slide-1" class="prev">&#10094;</label>
+        <label for="slide-3" class="next">&#10095;</label>
+      </nav>
+    </section>
 
-        <!-- PAGE THREE -->
-        <section id="page-3" class="page">
-            <h1>Page 3</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat aliquid sed dolor, sunt possimus numquam deleniti repellendus ad adipisci cum natus molestiae consequatur deserunt porro beatae asperiores odio fuga quae quos debitis quaerat unde! Consequatur nulla dolore consectetur atque sapiente minus nobis recusandae exercitationem ad, illum, doloribus, fugiat laboriosam ratione.</p>  
-            <div>
-                <a href="#page-2" class="btn btn-dark" @click="clickbtn">
-                Prev Page <i class="fas fa-arrow-circle-up"></i>
-                </a>
-                
-                <a href="#page-4" class="btn" @click="clickbtn">
-                Next Page <i class="fas fa-arrow-circle-down"></i>
-                </a>
-            </div>
-        </section>
+    <input id="slide-3" type="radio" name="slides">
+    <section class="slide slide-three">
+      <h1>Slide Three</h1>
+      <nav>
+        <label for="slide-2" class="prev">&#10094;</label>
+        <label for="slide-1" class="next">&#10095;</label>
+      </nav>
+    </section>
 
-        <!-- PAGE FOUR -->
-        <section id="page-4" class="page">
-            <h1>Page 4</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat aliquid sed dolor, sunt possimus numquam deleniti repellendus ad adipisci cum natus molestiae consequatur deserunt porro beatae asperiores odio fuga quae quos debitis quaerat unde! Consequatur nulla dolore consectetur atque sapiente minus nobis recusandae exercitationem ad, illum, doloribus, fugiat laboriosam ratione.</p>  
-            <div>
-                <a href="#page-3" class="btn" @click="clickbtn">
-                Prev Page <i class="fas fa-arrow-circle-up"></i>
-                </a>
-            </div>  
-        </section>
-    
-    </div>
+    <header>
+      <label for="slide-1" id="slide-1"></label>
+      <label for="slide-2" id="slide-2"></label>
+      <label for="slide-3" id="slide-3"></label>
+    </header>
+  </div>
 </template>
 
 <script>
@@ -60,118 +40,106 @@
 export default {
     name: 'getAbility2',
     methods: {
-        clickbtn() {
-            if (this.hash !== '') {
-                event.preventDefault();
-                const hash = this.hash;
-                
-                $('html, body').animate({
-                scrollTop: $(hash).offset().top
-                },800)
-            }
-        },
+       
     }
 
 }
 </script>
 
 <style>
-:root {
-  --page-1-color: steelblue;
-  --page-2-color: tan;
-  --page-3-color: teal;
-  --page-4-color: slateblue;
-  --animation-speed: 1.2s;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.4;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* PAGE COLORS */
-#page-1 {
-  background: var(--page-1-color);  
-}
-
-#page-2 {
-  background: var(--page-2-color)
-}
-#page-3 {
-  background: var(--page-3-color)
-}
-#page-4 {
-  background: var(--page-4-color)
-}
-
-.page {
-  display: flex;
-  flex-direction: column;
+.css-slider {
   height: 100vh;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 4rem;
-}
-
-.page h1 {
-  font-size: 4rem;
-  line-height: 1.2;
-  margin: 1rem;
-}
-
-.page p {
-  font-size: 1.3rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background: #f4f4f4;
-  color: #333;
-  text-decoration: none;
-  border: none;
-  margin-top: 1rem;
-  font-size: 1.1rem;
-  transition: all .3s ease-in;
-}
-
-.btn:hover,
-.btn-dark {
-  background: #333;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
   color: #fff;
+  text-align: center;
+}
+label {
+  cursor: pointer;
+  display: inline-block;
+}
+.slide {
+  height: 100%;
+  width: 100%;
+  max-width: 1920px;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 10;
+  padding: 8em 0px;
+  background-color: #ACCCC4;
+  background-position: 50% 50%;
+  background-size: cover;
+  -webkit-transition: left 0s .75s;
+  transition: left 0s .75s;
 }
 
-.btn-dark:hover {
-  background: #f4f4f4;
-  color: #333;
+[id^="slide"]:checked + .slide {
+  left: 0;
+  z-index: 100;
+  -webkit-transition: left .65s ease-out;
+  transition: left .65s ease-out;
 }
 
-/* PAGE ANIMATION */
+header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 900;
+  width: 100%;
+}
+header label {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin: 20px 10px;
+}
+nav {
+  position: absolute;
+  top: 50%;
+  margin-top: -42px;
+  z-index: 900;
+  width: 100%;
+}
+nav label { font-size: 50px; }
 
-#page-1 h1 {
-  transform: translateY(-1200px);
-  animation: heading var(--animation-speed) forwards ease-in;
+header label:hover { background: #2e353b; }
+
+.prev {
+  position: absolute;
+  left: 10px;
 }
 
-#page-1 p {
-  transform: translateX(-1800px);
-  animation: text var(--animation-speed) forwards ease-in 1s;
+.next {
+  position: absolute;
+  right: 10px;
 }
 
-@keyframes heading {
-  to {
-    transform: translateY(0);
-  }
+.slide .prev, .slide .next { opacity: 0; }
+[id^="slide"]:checked + .slide .prev, [id^="slide"]:checked + .slide .next {
+  opacity: 1;
+  -webkit-transition: all .5s .5s;
+  transition: all .5s .5s;
 }
 
-@keyframes text {
-  to {
-    transform: translateY(0);
-  }
+.slide h1 {
+  opacity: 0;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: -webkit-transform .5s .5s, opacity .5s;
+  transition: transform .5s .5s, opacity .5s;
+}
+
+[id^="slide"]:checked + .slide h1 {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-transition: all .5s .5s;
+  transition: all .5s .5s;
 }
 </style>
