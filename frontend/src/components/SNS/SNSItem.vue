@@ -65,6 +65,7 @@ export default {
       sns: {
         username: '알골마스터',
         data: '9시간 전',
+        imgurl: "",
         title: '.....ABCDEFGHIJK',
         hashtags: [
           { name: 'Python',
