@@ -138,7 +138,7 @@ public class PostController {
 			for (Tag t : postList.get(i).getTags()) {
 				tag.add(t.getName());
 			}
-			res.add(new FeedData(postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
+			res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getTitle(), postList.get(i).getUser().getEmail(), postList.get(i).getUser().getNickname(),
 					postList.get(i).getImg().getFilename(), postList.get(i).getImg().getFileurl(), tag));
 		}
 		return res;
