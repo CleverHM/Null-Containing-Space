@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.pjt1.dto.Post;
+import com.ssafy.pjt1.dto.PostTag;
 
-public interface PostDao extends JpaRepository<Post, Integer>{
+public interface PostTagDao extends JpaRepository<PostTag, Integer> {
 	@Transactional
     @Modifying
     @Query(value="delete from posttag where post_id=:pid", nativeQuery=true)
-    void deletetag(@Param("pid") int pid);
+    void deleteUser2(@Param("pid") int pid);
 }

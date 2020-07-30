@@ -33,9 +33,4 @@ public interface UserDao extends JpaRepository<User, Integer> {
     @Modifying
     @Query(value="delete from tagfollow where user_id=:uid", nativeQuery=true)
     void deletetag(@Param("uid") int uid);
-    
-    @Transactional
-    @Modifying
-    @Query(value="delete from posttag where post_id=:pid", nativeQuery=true)
-    void deleteposttag(@Param("pid") int pid);
 }

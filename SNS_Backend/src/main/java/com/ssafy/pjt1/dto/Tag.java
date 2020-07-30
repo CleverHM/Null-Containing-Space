@@ -13,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 @Entity
 @Table(name = "Tag")
@@ -26,23 +28,22 @@ public class Tag {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
 	private int tid;
-
+	
 	private String name;
-
-	@ManyToMany(mappedBy = "tags", cascade = CascadeType.REMOVE)
-	private Set<User> users;
-
-	@ManyToMany(mappedBy = "tags")
-	private Set<Post> posts;
-
+	
+	@OneToMany(mappedBy = "tag")
+	private Set<TagFollow> tagfollows;
+	
+	@OneToMany(mappedBy = "tag")
+	private Set<PostTag> posttags;
+	
 	public Tag() {
-
+	
 	}
-
+	
 	public Tag(String name) {
 		this.name = name;
-		this.users = new HashSet<User>();
-		this.posts = new HashSet<Post>();
+		this.tagfollows = new HashSet<TagFollow>();
 	}
 
 	public int getTid() {
@@ -61,20 +62,22 @@ public class Tag {
 		this.name = name;
 	}
 
-	public Set<User> getUsers() {
-		return users;
+	public Set<TagFollow> getTagfollows() {
+		return tagfollows;
 	}
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
+	public void setTagfollows(Set<TagFollow> tagfollows) {
+		this.tagfollows = tagfollows;
+	}
+	
+	
+	public Set<PostTag> getPosttags() {
+		return posttags;
 	}
 
-	public Set<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(Set<Post> posts) {
-		this.posts = posts;
+	
+	public void setPosttags(Set<PostTag> posttags) {
+		this.posttags = posttags;
 	}
 
 	@Override
@@ -91,4 +94,5 @@ public class Tag {
 	public int hashCode() {
 		return Objects.hash(tid);
 	}
+	
 }
