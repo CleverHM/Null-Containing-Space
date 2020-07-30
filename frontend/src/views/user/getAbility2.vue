@@ -3,9 +3,10 @@
     <input id="slide-1" type="radio" name="slides" checked>
     <section class="slide slide-one">
       <h1>Pure CSS Slider</h1>
+      <checkAbility :ability="ability" v-for="ability in abilities" :key="ability.id"></checkAbility>
       <nav>
-        <label for="slide-3" class="prev">&#10094;</label>
-        <label for="slide-2" class="next">&#10095;</label>
+        <!-- <label for="slide-3" class="prev">&#10094;</label> -->
+        <label for="slide-2" class="next">다음 &#10095;</label>
       </nav>
     </section>
 
@@ -13,8 +14,8 @@
     <section class="slide slide-two">
       <h1>Slide Two</h1>
       <nav>
-        <label for="slide-1" class="prev">&#10094;</label>
-        <label for="slide-3" class="next">&#10095;</label>
+        <label for="slide-1" class="prev">&#10094; 이전</label>
+        <label for="slide-3" class="next">다음 &#10095;</label>
       </nav>
     </section>
 
@@ -22,23 +23,93 @@
     <section class="slide slide-three">
       <h1>Slide Three</h1>
       <nav>
-        <label for="slide-2" class="prev">&#10094;</label>
-        <label for="slide-1" class="next">&#10095;</label>
+        <label for="slide-2" class="prev">&#10094; 이전</label>
+        <label for="slide-4" class="next">다음 &#10095;</label>
       </nav>
     </section>
 
+    <input id="slide-4" type="radio" name="slides">
+    <section class="slide slide-four">
+      <h1>Slide Four</h1>
+      <nav>
+        <label for="slide-3" class="prev">&#10094; 이전</label>
+        <label for="slide-5" class="next">다음 &#10095;</label>
+      </nav>
+    </section>
+
+    <input id="slide-5" type="radio" name="slides">
+    <section class="slide slide-five">
+      <h1>Slide five</h1>
+      <nav>
+        <label for="slide-4" class="prev">&#10094; 이전</label>
+        <label for="slide-1" class="next">&#10095; 완료</label>
+      </nav>
+    </section>
     <header>
       <label for="slide-1" id="slide-1"></label>
       <label for="slide-2" id="slide-2"></label>
       <label for="slide-3" id="slide-3"></label>
+      <label for="slide-4" id="slide-4"></label>
+      <label for="slide-5" id="slide-5"></label>
     </header>
   </div>
 </template>
 
 <script>
-
+import checkAbility from '../../components/user/checkAbility.vue';
 export default {
     name: 'getAbility2',
+    components: {
+      checkAbility,
+    },
+     data() {
+        return {
+            abilities: [
+          { name: 'html',
+            id: '1',
+            score: 2},
+          { name: 'css',
+            id: '2',
+            score: 2},
+          { name: 'JavaScript',
+            id: '3' ,
+            score: 2},
+          { name: 'cpp',
+            id: '4',
+            score: 2 },
+          { name: 'java',
+            id: '5' ,
+            score: 2},
+        { name: 'Python',
+            id: '6' ,
+            score: 2},
+        { name: 'php',
+            id: '7' ,
+            score: 2},
+        { name: 'sql',
+            id: '8' ,
+            score: 2},
+        { name: 'nosql',
+            id: '9' ,
+            score: 2},
+        { name: 'spring',
+            id: '10',
+            score: 2 },
+        { name: 'django',
+            id: '11',
+            score: 2 },
+        { name: 'bootstrap',
+            id: '12',
+            score: 2 },
+        { name: 'vue',
+            id: '13',
+            score: 2 },
+        { name: 'react',
+            id: '14',
+            score: 2 },
+            ],
+    }
+    },
     methods: {
        
     }
@@ -47,19 +118,22 @@ export default {
 </script>
 
 <style>
+/* 전체 화면 style */
 .css-slider {
   height: 100vh;
   width: 100vw;
-  position: relative;
+  position: absolute;
+  top: 0;
   overflow: hidden;
   background: #fff;
-  color: #fff;
+  color: #000;
   text-align: center;
 }
 label {
   cursor: pointer;
   display: inline-block;
 }
+
 .slide {
   height: 100%;
   width: 100%;
@@ -70,12 +144,10 @@ label {
   z-index: 10;
   padding: 8em 0px;
   background-color: #ACCCC4;
-  background-position: 50% 50%;
   background-size: cover;
   -webkit-transition: left 0s .75s;
   transition: left 0s .75s;
 }
-
 [id^="slide"]:checked + .slide {
   left: 0;
   z-index: 100;
@@ -85,7 +157,7 @@ label {
 
 header {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   z-index: 900;
   width: 100%;
@@ -97,16 +169,17 @@ header label {
   height: 15px;
   margin: 20px 10px;
 }
+header label:hover { background: #2e353b; }
+
 nav {
   position: absolute;
-  top: 50%;
+  bottom: 10%;
   margin-top: -42px;
   z-index: 900;
   width: 100%;
 }
 nav label { font-size: 50px; }
 
-header label:hover { background: #2e353b; }
 
 .prev {
   position: absolute;
@@ -133,6 +206,14 @@ header label:hover { background: #2e353b; }
   -webkit-transition: -webkit-transform .5s .5s, opacity .5s;
   transition: transform .5s .5s, opacity .5s;
 }
+
+input#slide-1:checked~header label#slide-1,
+input#slide-2:checked~header label#slide-2,
+input#slide-3:checked~header label#slide-3,
+input#slide-4:checked~header label#slide-4,
+input#slide-5:checked~header label#slide-5{
+  background:#2e353b
+  }
 
 [id^="slide"]:checked + .slide h1 {
   opacity: 1;
