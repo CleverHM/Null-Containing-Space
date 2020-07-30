@@ -7,7 +7,7 @@
       <!-- 수정삭제 부분 -->
       <div v-if="udOn" class=" ud-part">
         <li><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
-        <li><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
+        <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
       </div>
 
       <div class="feedpage">
@@ -187,7 +187,7 @@ export default {
       })
       .then((res) => {
         console.log('SUCCESS!!');
-        this.$router.push("/feed/detail");
+        // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
         console.log(err);
@@ -225,9 +225,30 @@ export default {
     },
     // 수정, 삭제 버튼
     udButton(event) {
-      this.udOn = !this.udOn;
+      var requestUser = storage.getItem("User")
+      if (requestUser === this.article.userEmail) {
+        this.udOn = !this.udOn;
+      }
       // console.log(this.udOn)
-    }
+    },
+
+    // 글 삭제
+    deletePost() {
+      
+      http
+      .post("/post/postDelete",
+        this.article.pid
+      )
+      .then((res) => {
+        console.log('delete')
+        console.log(res.data)
+        this.$router.push({ name: 'FeedMain' });
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    },
 
   }
 }
