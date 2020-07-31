@@ -28,7 +28,7 @@ public class CustomMailSender {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-		helper.setSubject("블라블라 SNS 회원가입을 위한 인증번호 입니다.");
+		helper.setSubject("NULL 담을 공간 - 회원가입을 위한 인증번호 입니다.");
 
 		helper.setTo(email);
 
@@ -51,7 +51,7 @@ public class CustomMailSender {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-		helper.setSubject("블라블라 SNS 비밀번호 변경을 위한 인증번호 입니다.");
+		helper.setSubject("NULL 담을 공간 - 비밀번호 변경을 위한 인증번호 입니다.");
 
 		helper.setTo(email);
 

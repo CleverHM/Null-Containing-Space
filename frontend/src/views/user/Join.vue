@@ -126,10 +126,7 @@ export default {
         tel : this.user.tel
       })
       .then(({data}) => {
-        if(data == "success") {
-          msg = "complete";
-        }
-        alert(msg);
+        alert("회원가입 완료!");
         this.moveLogin();
       });
     },
