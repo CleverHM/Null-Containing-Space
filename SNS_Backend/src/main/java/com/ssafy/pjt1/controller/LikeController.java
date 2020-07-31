@@ -46,7 +46,7 @@ public class LikeController {
 	@PostMapping("/like/post")
 	@ApiOperation(value = "게시물 좋아요", notes = "사용자가 게시물을 좋아요 하는 기능을 구현")
 	public Object userLikePost(@Valid @RequestParam String email, @Valid @RequestParam int postid) {
-		int likeFlag = 0;
+		int likeFlag = 1;
 		int count = 0;
 		
 		// 좋아요 버튼 or 좋아요 취소 버튼 눌린 게시물을 들고옴.
@@ -60,13 +60,14 @@ public class LikeController {
 		for(PostLike pl : postlikes) {
 			// 이미 좋아요한 사람일 경우.
 			if(pl.getUser().getUid() == user.getUid()) {
-				likeFlag = 1;
+				likeFlag = 0;
 				break;
 			}
 		}
 		
 		// 이미 좋아요한 사람일 경우.
-		if(likeFlag == 1) {
+		if(likeFlag == 0) {
+			likeFlag = 1;
 			// 유저 u가 게시물 p를 좋아요 취소하는거임.
 			Optional<User> U = userservice.findone(email);
 			Optional<Post> P = postservice.findone(postid);
@@ -81,6 +82,7 @@ public class LikeController {
 			
 			System.out.println(count);
 		}else {
+			likeFlag = 0;
 			// 유저 u가 게시물 p를 좋아요 하는거임.
 			Optional<User> U = userservice.findone(email);
 			Optional<Post> P = postservice.findone(postid);

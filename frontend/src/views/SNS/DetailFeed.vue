@@ -132,14 +132,14 @@ export default {
   },
 
   created() {
-    this.likeCheck();
     this.dataReceive();
+    this.likeCheck();
   },
 
   methods: {
     // 좋아요 체크
     likeCheck() {
-      if (this.article.likeFlag) {
+      if (!this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
         this.likeColor = '#C4BCB8';
@@ -215,7 +215,9 @@ export default {
       .then((res) => {
         // console.log(res.data)
         this.article.likeCount = res.data.count
+        console.log(this.article.likeCount)
         this.article.likeFlag = res.data.flag
+        console.log(this.article.likeFlag)
       })
       .catch((err) => {
         console.log(err)
