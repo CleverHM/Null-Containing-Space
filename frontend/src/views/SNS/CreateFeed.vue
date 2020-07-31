@@ -1,0 +1,319 @@
+<template>
+  <div id="createFeed">
+    <Navbar></Navbar>
+    <!-- <subNav></subNav> -->
+    <div class="feed-form">
+      <!-- 제목 -->
+      <div class="inputForm">
+        <input v-model="article.title" id="title" placeholder="제목(3글자 이상 입력해주세요)" type="text" />
+      </div>
+
+      <!-- 본문 -->
+      <div class="textareaForm">
+        <div class="textlength">{{ article.content.length }}/</div>
+        <textarea class="d-flex flex-fill" v-model="article.content" placeholder="게시글 본문을 적어주세요."/>
+      </div>
+
+      <!-- 이미지 -->
+      <div class="mx-1">
+        <b-form-group style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
+          <b-form-file 
+            v-model="file"
+            placeholder="이미지를 업로드해주세요."
+            :state="Boolean(file)"
+            id="file"
+            ref="file"
+            v-on:change="handleFileUpload()"
+            accept="image/*"
+            size="sm"
+            style="border-color: #000;">
+          </b-form-file>
+        </b-form-group>
+      </div>
+
+      <!-- 해시태그 -->
+
+      <!-- 해시태그 작성 -->
+      <div class="mx-1 mb-2">
+        <input v-model="hashtag"
+         @keyup.space="addhashtag(hashtag)" 
+         @keyup.enter="addhashtag(hashtag)" 
+         @keyup.delete="removetag(hashtag)" 
+         placeholder="해시태그를 입력해주세요." 
+         type="text" />
+      </div>
+      <div class="displaytags" v-if="article.hashtags.length">
+      입력 태그 : 
+      <button class="btn-tags" v-for="tag in article.hashtags" :key="tag" @click="tagRemove">{{ tag }}</button>
+      </div>
+      
+
+    </div>
+
+    <!-- 작성 -->
+    <div class="article-submit fixed-bottom d-flex justify-content-center align-content-center">
+      <button @click="articleSubmit">작성하기</button>
+    </div>
+  </div>
+</template>
+
+<script>
+import Navbar from '../../components/common/Navigation.vue'
+// import subNav from '../../components/common/subnav.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
+
+export default {
+  name: "CreateFeed",
+  components: {
+    Navbar,
+    // subNav,
+  },
+  data() {
+    return {
+      maxLength: 1000,
+      file: null,
+      article: {
+        title: "",
+        content: "",
+        hashtags: [],
+      },
+      hashtag: "",
+    }
+  },
+
+  methods: {
+    // 글 작성
+    articleSubmit() {
+    
+      if (this.article.title === "") {
+        this.errorMsg();
+      } else {
+        this.submitOn();
+      }
+    },
+
+    errorMsg() {
+      alert('제목을 입력하세요.')
+    },
+
+    submitOn() {
+      console.log('submit');
+
+      // 파일 axios 보내기
+      console.log(this.file)
+      let formData = new FormData();
+      formData.append("files", this.file);
+      formData.append("email", storage.getItem("User"));
+      formData.append("title", this.article.title);
+      formData.append("content", this.article.content);
+      formData.append("hashtags", this.article.hashtags);
+      console.log(formData)
+      // 파일 업로드 axios 요청
+      http
+      .post("/post/create",
+        formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+      .then((res) => {
+        console.log('SUCCESS!!');
+        this.$router.push("/feed");
+      })
+      .catch((err) => {
+        console.log(err)
+        console.log('FAILURE!!');
+      })
+          
+    },
+
+    moveFeed() {
+      this.$router.push({ name: 'FeedMain' });
+    },
+    addhashtag(hashtag) {
+      hashtag = hashtag.replace(/(\s*)/g, "")
+      if (hashtag && hashtag !="" && hashtag != " ") {
+        var isDouble = this.article.hashtags.find(function(n){
+          return hashtag === n
+        })
+      console.log(isDouble)
+      if (!isDouble) {
+        this.article.hashtags.push(hashtag)
+      }
+      }
+      
+      this.hashtag = ""
+
+    },
+    // 해시태그 작성중 backspace키 누르면
+    removetag(hashtag) {
+      if (!hashtag) {
+        this.article.hashtags.pop()
+      }
+      
+    },
+    // 태그 클릭하면 -
+    tagRemove(event) {
+      console.log(event.target.innerText)
+      console.log(this.article.hashtags)
+      console.log(this.article.hashtags.indexOf(event.target.innerText))
+      this.article.hashtags.splice(this.article.hashtags.indexOf(event.target.innerText),1)
+      // console.log([...this.clicktags])
+    },
+    
+    // 파일 업로드
+    handleFileUpload() {
+      console.log(this.$refs.file.$refs.input.files)
+      this.file = this.$refs.file.$refs.input.files[0];
+      console.log(this.file)
+    },
+
+  },
+  
+  watch:{
+    contents : function(value){
+      let length = this.maxLength;
+      value = value.length > length ? value.substr(0, length) : value;
+
+      this.contents = value;
+    }
+  },
+}
+</script>
+
+<style scoped>
+.feed-form {
+  margin-top: 85px;
+  margin-bottom: 50px;
+}
+
+.input-with-label{
+  width: 100%;
+}
+.inputForm{
+  margin: 0px 5px 10px 5px;
+  
+}
+input {
+  padding: 0 10px 0 10px;
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid black;
+}
+input::placeholder {
+  font-size: 13px;
+}
+.textareaForm{
+  margin: 0px 5px 10px 5px;
+  border: none;
+}
+.textareaForm textarea {
+  padding: 0 10px 0 10px;
+}
+.textlength{
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+.hashtags::placeholder{
+   color: red;
+}
+.btn-tags{
+  border-radius: 10px;
+  margin: 3px;
+  padding: 1px 5px 1px 5px;
+  background-color: #C4BCB8;
+  font-weight:bold;
+  color: #f7f7f7;
+}
+.displaytags{
+  padding: 0px 10px 0 10px;
+}
+.textarea-wrap {
+  width: 100%;
+  float: left;
+  position: relative;
+  border: 1px solid #000;
+  padding: 15px 15px 10px;
+  margin-bottom: 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.textarea-wrap span {
+  font-size: 0.857em;
+  margin-top: 4px;
+  color: #707070;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    overflow: auto;
+    resize: vertical;
+    text-rendering: auto;
+    color: -internal-light-dark(black, white);
+    background-color: #f7f7f7;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: textarea;
+    -webkit-rtl-ordering: logical;
+    flex-direction: column;
+    resize: auto;
+    cursor: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+    padding: 2px;
+}
+
+.textarea-wrap label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: grey;
+    background-color: #f7f7f7;
+    background-clip: padding-box;
+    border: 1px solid #000;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.badge-secondary {
+    color: #fff;
+    background-color: #ACCCC4;
+}
+
+.article-submit {
+  height: 40px;
+}
+
+.article-submit button {
+  color: white;
+  width: 100%;
+  background-color: #464545;
+  font-size: 14px;
+}
+
+</style>

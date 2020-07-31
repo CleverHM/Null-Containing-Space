@@ -1,8 +1,11 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
-import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.pjt1.CustomMailSender;
-import com.ssafy.pjt1.dto.Auth;
+import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
 import com.ssafy.pjt1.model.SignupRequest;
-import com.ssafy.pjt1.service.AuthService;
+import com.ssafy.pjt1.service.JwtService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,52 +39,36 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class UserController {
+	@Autowired
+	private UserService userservice;
 	
 	@Autowired
-	CustomMailSender customMailSender;
+	private JwtService jwtservice;
 
-	@Autowired
-	UserService userservice;
 
-	@Autowired
-	AuthService authservice;
+// Create
+	@PostMapping("/account/signup")
+	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
 
-	private String num;
+	public Object signup(@Valid @RequestBody SignupRequest request) {
 
-	@PostMapping("/account/loginMailSend")
-	@ApiOperation(value = "회원가입시 인증 메일 전송", notes = "회원가입시 인증 메일 전송 기능 구현")
-	public void loginMailSend(@Valid @RequestParam String email) throws MessagingException {
-		// 이메일 보내기
-		customMailSender.sendMail(email);
-	}
-	
-	@PostMapping("/account/loginMailConfirm")
-	@ApiOperation(value = "회원가입시 메일인증", notes = "회원가입시 메일인증 기능 구현")
-	public Object loginMailConfirm(@Valid @RequestParam String email, @Valid @RequestParam String authNum){
+		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
+				request.getTel(), request.getAge(), request.isGender());
+		User user2 = userservice.signUp(user1);
 
-		// 확인 하기
-		
-		Optional<Auth> flag = authservice.findone(email);
-
-		flag.ifPresent(selectUser -> {
-			num = selectUser.getAuth_number();
-		});
-
-		if (flag != null) {
-			if (num.equals(authNum)) {
-				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "success";
-				System.out.println(num);
-				return new ResponseEntity<>(result, HttpStatus.OK);
-			} else {
-				System.out.println("실패");
-				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-			}
-		} else {
+		if (user2 == null) {
 			System.out.println("실패");
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
+			System.out.println("성공");
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
+
 	}
 
 	@PostMapping("/account/modify")
@@ -98,6 +84,7 @@ public class UserController {
 		});
 
 		if (legacyUser.isPresent()) {
+			
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -117,10 +104,13 @@ public class UserController {
 		ResponseEntity response = null;
 
 		if (user2.isPresent()) {
-			// userservice.delete(user2);
-			user2.ifPresent(selectUser -> {
-				userservice.delete(selectUser);
-			});
+			User select = user2.get();
+		
+			Set<Post> posts = select.getPosts();
+			
+	        userservice.delete(select, posts);
+	        
+	        System.out.println("22222222222");
 			final BasicResponse result = new BasicResponse();
 			result.status = true;
 			result.data = "success";
@@ -135,51 +125,59 @@ public class UserController {
 	}
 
 	@PostMapping("/account/login")
-	@ApiOperation(value = "로그인 ", notes = "로그인 기능을 구현")
-	public Object login(@Valid @RequestBody LoginRequest request) {
+    @ApiOperation(value = "로그인 ", notes = "로그인 기능을 구현")
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request, HttpServletResponse res) {
+        
+        System.out.println("email: " + request.getEmail());
+        System.out.println("pass: " + request.getPassword());
+        
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        Optional<User> userOpt = userservice.login(request.getEmail(), request.getPassword());
 
-		System.out.println("email: " + request.getEmail());
-		System.out.println("pass: " + request.getPassword());
 
-		Optional<User> userOpt = userservice.login(request.getEmail(), request.getPassword());
+        if (userOpt.isPresent()) {
+            User loginUser = userOpt.get();
+            String token = jwtservice.create(loginUser.getEmail(), loginUser.getNickname());
+            res.setHeader("jwt-auth-token", token);
+            
+            resultMap.put("token", token);
+            resultMap.put("status", true);
+            resultMap.put("email", loginUser.getEmail());
+            resultMap.put("nickname", loginUser.getNickname());
+            status = HttpStatus.ACCEPTED;
+            
+            System.out.println("로그인 성공");
+        } else {
+            resultMap.put("message", "로그인 실패");
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
 
-		ResponseEntity response = null;
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+	
+	@PostMapping("/account/findPasswordModify")
+	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
+	public Object token(@Valid @RequestParam String email, String NewPassword) {
 
-		if (userOpt.isPresent()) {
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			response = new ResponseEntity<>(result, HttpStatus.OK);
-			System.out.println("성공");
-		} else {
-			response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-			System.out.println("실패");
-		}
+	    Optional<User> optionalUser = userservice.findone(email);
 
-		return response;
+	    if (optionalUser.isPresent()) {
+	        User user = optionalUser.get();
+	        user.setPassword(NewPassword);
+	        userservice.signUp(user);
+	        final BasicResponse result = new BasicResponse();
+	        result.status = true;
+	        result.data = "success";
+	       
+	        return new ResponseEntity<>(result, HttpStatus.OK);
+	        
+	    } else {
+	        final BasicResponse result = new BasicResponse();
+	        result.status = false;
+	        result.data = "fail";
+	        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+	    }
 	}
 
-	// Create
-	@PostMapping("/account/signup")
-	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
-
-	public Object signup(@Valid @RequestBody SignupRequest request) {
-
-		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail());
-		User user2 = userservice.signUp(user1);
-
-		if (user2 == null) {
-			System.out.println("실패");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		} else {
-			System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
-			System.out.println("성공");
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		}
-
-	}
 }

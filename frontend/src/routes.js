@@ -1,38 +1,33 @@
 
 
-import testLogin from './views/user/testLogin.vue'
-// import Login from './views/user/Login.vue'
-// import Join from './views/user/Join.vue'
-import Join1 from './views/user/join1.vue'
-import Join2 from './views/user/join2.vue'
-import Join from './views/user/joinForm.vue'
-import findPassword1 from './views/user/FindPassword1.vue'
-import findPassword2 from './views/user/FindPassword2.vue'
-import findPassword3 from './views/user/FindPassword3.vue'
+import Login from './views/user/Login.vue'
+import Join from './views/user/Join.vue'
+import findPassword from './views/user/FindPassword.vue'
+import getAbility from './views/user/getAbility.vue'
 
 import profile from './views/user/profile.vue'
 
 import FeedMain from './views/SNS/IndexFeed.vue'
+import FeedDetail from './views/SNS/DetailFeed.vue'
+import FeedCreate from './views/SNS/CreateFeed.vue'
+import FeedComment from './views/SNS/CommentFeed.vue'
+
 import Components from './views/Components.vue'
 
 import Main from './views/Main.vue'
 
+import StudyList from './views/study/StudyList.vue'
+import StudyDetail from './views/study/StudyDetail.vue'
+import StudyMatching from './views/study/StudyMatching.vue'
+
+import Search from './views/search/Search.vue';
+import Notice from './views/Notice.vue'
 
 export default [
     {
         path : '/',
-        name : 'testLogin',
-        component : testLogin
-    },
-    {
-        path : '/user/join/email',
-        name : 'Join1',
-        component : Join1
-    },
-    {
-        path : '/user/join/email/confirm',
-        name : 'Join2',
-        component : Join2
+        name : 'Login',
+        component : Login
     },
     {
         path : '/user/join',
@@ -40,39 +35,78 @@ export default [
         component : Join
     },
     {
-        path : '/find/password/email',
-        name : 'findPassword1',
-        component : findPassword1
+        path : '/find/password',
+        name : 'findPassword',
+        component : findPassword
     },
     {
-        path : '/find/password/question',
-        name : 'findPassword2',
-        component : findPassword2
+        path : '/getAbility',
+        name : 'getAbility',
+        component : getAbility
     },
     {
-        path : '/find/password/',
-        name : 'findPassword3',
-        component : findPassword3
-    },
-    {
-        path : '/user/profile/',
+        path : '/user/profile',
         name : 'profile',
         component : profile
     },
+
     {
-        path : '/main/',
+        path : '/main',
         name : 'Main',
         component : Main
     },
+
     {
-        path : '/feed/',
+        path : '/study/list',
+        name : 'StudyList',
+        component : StudyList
+    },
+    {
+        path : '/study/detail',
+        name : 'StudyDetail',
+        component : StudyDetail
+    },
+    {
+        path : '/study/matching',
+        name : 'StudyMatching',
+        component : StudyMatching
+    },
+
+    {
+        path : '/feed',
         name : 'FeedMain',
         component : FeedMain
+    },
+
+    {
+        path : '/feed/:postId/detail',
+        name : 'FeedDetail',
+        component : FeedDetail,
+        props: true,
+    },
+    {
+        path : '/feed/create',
+        name : 'FeedCreate',
+        component : FeedCreate
+    },
+    {
+        path : '/feed/comment',
+        name : 'FeedComment',
+        component : FeedComment
+    },   
+    {
+        path : '/search',
+        name : 'Search',
+        component : Search
+    },
+    {
+        path : '/notice',
+        name : 'Notice',
+        component : Notice
     },
     {
         path : '/components',
         name : 'Components',
         component : Components
     },
-    
 ]

@@ -24,7 +24,7 @@ public class CustomMailSender {
 	@Autowired
 	AuthService authservice;
 
-	public void sendMail(String email) throws MessagingException {
+	public void SingUpSendMail(String email) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -47,11 +47,34 @@ public class CustomMailSender {
 
 	}
 
+	public void passwordUpdateSendMail(String email) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+		helper.setSubject("블라블라 SNS 비밀번호 변경을 위한 인증번호 입니다.");
+
+		helper.setTo(email);
+
+		String msg = makeAuth();
+		Context context = new Context();
+		context.setVariable("test_key", "인증 번호: " + msg);
+
+		// db넣기
+		Auth auth = new Auth(email, msg);
+		authservice.insert(auth);
+
+		String html = templateEngine.process("mail-template", context);
+		helper.setText(html, true);
+
+		javaMailSender.send(message);
+
+	}
+
 	static String makeAuth() {
 		String auth = "";
 
 		for (int i = 0; i < 5; i++) {
-			auth += (int)(Math.random() * 100);
+			auth += (int) (Math.random() * 100);
 		}
 
 		return auth;

@@ -1,18 +1,14 @@
-
-
 <template>
   <div class="user" id="login">
     <div class="wrapC">
-      <h1>
-        로그인을 하고 나면
-        <br />좋은 일만 있을 거예요.
-      </h1>
+      <Logo :component="component" />
 
       <div class="input-with-label">
         <input
           v-model="email"
           v-bind:class="{error : error.email, complete:!error.email&&email.length!==0}"
-          @keyup.enter="Login"
+          @keyup="checkEmailForm"
+          @keyup.enter="onLogin"
           id="email"
           placeholder="이메일을 입력하세요."
           type="text"
@@ -27,7 +23,8 @@
           type="password"
           v-bind:class="{error : error.password, complete:!error.password&&password.length!==0}"
           id="password"
-          @keyup.enter="Login"
+          @keyup="checkPasswordForm"
+          @keyup.enter="onLogin"
           placeholder="비밀번호를 입력하세요."
         />
         <label for="password">비밀번호</label>
@@ -56,6 +53,7 @@
         </div>
         <div class="wrap">
           <p>비밀번호를 잊으셨나요?</p>
+          <router-link to="/find/password" class="btn--text">비밀번호 찾기</router-link>
         </div>
         <div class="wrap">
           <p>아직 회원이 아니신가요?</p>
@@ -70,15 +68,31 @@
 import "../../components/css/user.scss";
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
+import Logo from "../../components/user/Logo.vue";
 import KakaoLogin from "../../components/user/snsLogin/Kakao.vue";
 import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import UserApi from "../../api/UserApi";
 import http from "../../util/http-common.js";
 
+const storage = window.sessionStorage;
+
 export default {
   components: {
+    Logo,
     KakaoLogin,
     GoogleLogin
+  },
+  data: () => {
+    return {
+      email: "",
+      password: "",
+      passwordSchema: new PV(),
+      error: {
+        email: false,
+        password: false
+      },
+      isSubmit: false,
+    };
   },
   created() {
     this.component = this;
@@ -93,108 +107,84 @@ export default {
       .has()
       .letters();
   },
-  watch: {
-    password: function(v) {
-      this.checkForm();
-    },
-    email: function(v) {
-      this.checkForm();
-    }
-  },
   methods: {
-
-    checkForm() {
-      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
+    setInfo(status, token, info) {
+      this.status = status
+      this.token = token
+      this.info = info
+    },
+    checkEmailForm() {
+      if (this.email.length >= 0 && !EmailValidator.validate(this.email)){
         this.error.email = "이메일 형식이 아닙니다.";
-      else this.error.email = false;
-
-      if (
+      } else {
+        this.error.email = ""
+      }
+        
+    },
+    checkPasswordForm() {
+       if (
         this.password.length >= 0 &&
         !this.passwordSchema.validate(this.password)
-      )
+      ){
         this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다.";
-      else this.error.password = false;
-
-      let isSubmit = true;
+      } else {
+        this.error.password = ""
+      }
+        
+      
+      this.isSubmit = true;
       Object.values(this.error).map(v => {
-        if (v) isSubmit = false;
+        if (v) this.isSubmit = false;
       });
-      this.isSubmit = isSubmit;
-
     },
 
+    // 로그인 요청 - 토큰 받아서 local storage에 넣기
     onLogin() {
-
-      console.log(this.isSubmit);
-
       if (this.isSubmit) {
 
-        console.log("c");
-
-        console.log(this.email);
-        console.log(this.password);
-
+        storage.setItem("token", "");
+        storage.setItem("User", "");
+        
         let msg = "";
-
+        
         http
-        .post("/login", {
+        .post("/account/login", {
           email : this.email,
           password : this.password,
-        })
-        .then(({data}) => {
-          console.log(data);
-          if(data.data == "success") {
-            msg = "complete";
-             console.log("22222222");
+        },
+        )
+        .then((res) => {
+          console.log(res)
+          if(res.data.status) {
+            console.log(res.data.email);
+            msg = "로그인되었습니다.";
+            // storage에 받아온 데이터 집어넣기
+            storage.setItem("token", res.data.token)
+            console.log(storage)
+            var User = {
+              "email" : res.data.email,
+              "nickname" : res.data.nickname,
+            }
+            console.log(User, typeof(User))
+            storage.setItem("User", res.data.email)
           }
           alert(msg);
           this.moveFeed();
         })
-        ;
-      
-
-        //요청 후에는 버튼 비활성화
-        // this.isSubmit = false;
-
-        // UserApi.requestLogin(
-        //   data,
-        //   res => {
-        //     //통신을 통해 전달받은 값 콘솔에 출력
-        //     //console.log(res);
-
-        //     //요청이 끝나면 버튼 활성화
-        //     this.isSubmit = true;
-
-        //     this.$router.push("/main");
-        //   },
-        //   error => {
-        //     //요청이 끝나면 버튼 활성화
-        //     this.isSubmit = true;
-        //   }
-        // );
+        .catch((err) => {
+          console.log(err)
+          this.error.password = "로그인 정보가 일치하지 않습니다. 다시 입력하세요.";
+        })
+        
     
     }
   },
 
   moveFeed(){
-        console.log("22222222222");
-        this.$router.push("/feed/main");
+        this.$router.push("/feed");
   },
 },
-
-  data: () => {
-    return {
-      email: "",
-      password: "",
-      passwordSchema: new PV(),
-      error: {
-        email: false,
-        passowrd: false
-      },
-      isSubmit: false,
-      component: this
-    };
-  }
+ 
 };
 </script>
 

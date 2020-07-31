@@ -5,7 +5,7 @@
             <div class="d-flex align-items-center">
                 <div id="profileImg"></div>
                 <div class="ml-3 flex-fill">
-                    <p class="mb-1 profileName">알골마스터</p>
+                    <p class="mb-1 profileName">sdfsdf</p>
                     <div class="follow mb-2">
                         <button class="follower">0<br>팔로워</button>
                         <button class="following">1<br>팔로잉</button>
@@ -88,6 +88,10 @@ import TagBadge from '../../components/common/TagBadge.vue'
 import TabComponent from '../../components/common/TabComponent.vue'
 import Tabs from 'vue-tabs-with-active-line';
 
+const storage = window.sessionStorage;
+console.log(storage.getItem("token"))
+// var User = JSON.parse(storage.getItem('User'));
+// console.log(User)
 const TABS = [{
     title: 'Tab 1',
     value: 'tab1',
@@ -108,6 +112,7 @@ export default {
     },
     data : () => {
         return {
+            
             blogLink : "dsdfsdfsfd",
             gitLink : "",
             tabs: TABS,
@@ -163,7 +168,7 @@ export default {
 
 .tabs {
   position: relative;
-  margin: 0 auto;
+  top: 20px;
 }
 
 .tabs__item {

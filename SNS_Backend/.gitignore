@@ -12,6 +12,8 @@ target/
 .settings
 .springBeans
 .sts4-cache
+target/classes/META-INF/maven/com.ssafy/SNS_Backend/pom.properties
+.class
 
 ### IntelliJ IDEA ###
 .idea
@@ -31,3 +33,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/.metadata/
+
+target/classes/com/ssafy/pjt1/controller/UserController.class
+target/classes/META-INF/maven/com.ssafy/SNS_Backend/pom.properties
+target/classes/com/*
