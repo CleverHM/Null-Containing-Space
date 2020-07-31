@@ -220,7 +220,7 @@ public class PostController {
             		int count = likeservice.likeCount(postList.get(i));
                     
             		// 내가 좋아요 했는가?
-            		int likeFlag = 1;
+            		int likeFlag = 0;
             		
             		Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
             		Post post = tempP.get();
@@ -229,7 +229,7 @@ public class PostController {
             		for(PostLike pl : postlikes) {
             			// 이미 좋아요한 사람일 경우.
             			if(pl.getUser().getUid() == user.getUid()) {
-            				likeFlag = 0;
+            				likeFlag = 1;
             				break;
             			}
             		}
@@ -294,7 +294,7 @@ public class PostController {
         		int count = likeservice.likeCount(post);
                 
         		// 내가 좋아요 했는가?
-        		int likeFlag = 1;
+        		int likeFlag = 0;
         		
         		Optional<Post> tempP = postservice.findone(post.getPid());
         		Post pp = tempP.get();
@@ -303,7 +303,7 @@ public class PostController {
         		for(PostLike pl : postlikes) {
         			// 이미 좋아요한 사람일 경우.
         			if(pl.getUser().getUid() == user.getUid()) {
-        				likeFlag = 0;
+        				likeFlag = 1;
         				break;
         			}
         		}

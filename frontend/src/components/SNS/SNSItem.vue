@@ -86,7 +86,7 @@ export default {
 
     // 좋아요 체크
     likeCheck() {
-      if (!this.article.likeFlag) {
+      if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
         this.likeColor = '#C4BCB8';
