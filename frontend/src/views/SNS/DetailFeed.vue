@@ -132,8 +132,8 @@ export default {
   },
 
   created() {
-    this.likeCheck();
     this.dataReceive();
+    this.likeCheck();
   },
 
   methods: {
