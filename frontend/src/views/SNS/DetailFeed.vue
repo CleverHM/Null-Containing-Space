@@ -139,6 +139,7 @@ export default {
   methods: {
     // 좋아요 체크
     likeCheck() {
+      console.log(this.article.likeFlag)
       if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
