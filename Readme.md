@@ -2,7 +2,7 @@
 
 ## Description
 
-해당 프로젝트는 SW 개발자들을 위한 모바일 웹 사이트를 구현합니다. 다양한 사이트에 퍼져있는 SW 공모전 정보들을 모아 사용자에게 추천합니다. 사이트를 통해 공모전과 스터디의 팀원을 구할 수 있고, 정보에서 사용자의 팔로우에 따른 뉴스피드를 볼 수 있도록 편의를 제공하고 있습니다.
+해당 프로젝트는 개발자들을 위한 모바일 웹 사이트를 구현합니다. 사이트에서는 입력받은 정보를 바탕으로 스터디 팀원들을 매칭해줍니다. 스터디마다 실시간 채팅방이 만들어집니다. 사용자는 자신의 팔로우한 사람들의 게시글로 구성된 뉴스피드를 볼 수 있습니다.
 
 
 
@@ -63,18 +63,18 @@ PJT/
 
 ### :black_medium_square: document
 
-| 디렉토리 이름 | 기술                                           |
-| ------------- | ---------------------------------------------- |
-| backend/      | backend 관련 md 파일들을 정의합니다.           |
-| frontend/     | frontend 관련 md 파일들을 정의합니다.          |
-| images/       | README에 사용할 image 파일들이 저장됩니다.     |
-| wireframe/    | 프로젝트의 wireframe 관련 파일들이 저장됩니다. |
+| 디렉토리 이름 | 기술                                               |
+| ------------- | -------------------------------------------------- |
+| backend/      | backend 관련 md 파일들을 정의합니다.               |
+| frontend/     | frontend 관련 md 파일들을 정의합니다.              |
+| DB/           | Database 관련 파일들이 저장됩니다.                 |
+| document/     | README를 비롯한 프로젝트 관련 파일들이 저장됩니다. |
 
 
 
 ## wireFrame
 
-![wireFrame](./document/images/wireframe.png)
+![wireFrame](C:/Users/multicampus/Desktop/s03p12d105/document/images/wireframe.png)
 
 
 
