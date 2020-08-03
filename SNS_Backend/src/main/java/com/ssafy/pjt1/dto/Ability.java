@@ -47,6 +47,27 @@ public class Ability {
 	@OneToOne(mappedBy = "ability")
 	private User user;
 
+	public Ability(int aid, int back_cpp, int back_java, int back_python, int back_php, int front_html, int front_css,
+			int front_javascript, int db_sql, int db_nosql, int frame_spring, int frame_django, int frame_bootstrap,
+			int frame_vue, int frame_react, int algo) {
+		this.aid = aid;
+		this.back_cpp = back_cpp;
+		this.back_java = back_java;
+		this.back_python = back_python;
+		this.back_php = back_php;
+		this.front_html = front_html;
+		this.front_css = front_css;
+		this.front_javascript = front_javascript;
+		this.db_sql = db_sql;
+		this.db_nosql = db_nosql;
+		this.frame_spring = frame_spring;
+		this.frame_django = frame_django;
+		this.frame_bootstrap = frame_bootstrap;
+		this.frame_vue = frame_vue;
+		this.frame_react = frame_react;
+		this.algo = algo;
+	}
+
 	public Ability(int back_cpp, int back_java, int back_python, int back_php, int front_html, int front_css,
 			int front_javascript, int db_sql, int db_nosql, int frame_spring, int frame_django, int frame_bootstrap,
 			int frame_vue, int frame_react, int algo) {
@@ -66,6 +87,8 @@ public class Ability {
 		this.frame_react = frame_react;
 		this.algo = algo;
 	}
+
+
 
 	public int getAlgo() {
 		return algo;

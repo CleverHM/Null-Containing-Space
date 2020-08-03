@@ -59,7 +59,7 @@ public class MatchingServiceImpl implements MatchingService{
 		// 테스트
 		User u = null;
 		Ability ab = null;
-		testdata(u, ab);
+//		testdata(u, ab);
 
 		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬
 		init();
@@ -248,42 +248,42 @@ public class MatchingServiceImpl implements MatchingService{
 		ablist.put("algo", temp);
 	}
 	
-	// 임의 값 생성
-	public void testdata(User u, Ability ab) {
-		u = new User(1, "a", "123", "a", "a", "a", 16, true);
-		ab = new Ability(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1);
-		u.setAbility(ab);
-		users.add(u);
-
-		u = new User(2, "b", "123", "b", "b", "b", 13, false);
-		ab = new Ability(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
-		u.setAbility(ab);
-		users.add(u);
-
-		u = new User(3, "c", "123", "c", "c", "c", 19, true);
-		ab = new Ability(2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3);
-		u.setAbility(ab);
-		users.add(u);
-
-		u = new User(4, "d", "123", "d", "d", "d", 22, false);
-		ab = new Ability(3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 1);
-		u.setAbility(ab);
-		users.add(u);
-
-		u = new User(5, "e", "123", "e", "e", "e", 21, true);
-		ab = new Ability(2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2);
-		u.setAbility(ab);
-		users.add(u);
-
-		u = new User(6, "f", "123", "f", "f", "f", 25, false);
-		ab = new Ability(2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 3);
-		u.setAbility(ab);
-		users.add(u);
-
-		u = new User(7, "g", "123", "g", "g", "g", 28, true);
-		ab = new Ability(2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4);
-		u.setAbility(ab);
-		users.add(u);
-	}
+//	// 임의 값 생성
+//	public void testdata(User u, Ability ab) {
+//		u = new User(1, "a", "123", "a", "a", "a", 16, true);
+//		ab = new Ability(1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1);
+//		u.setAbility(ab);
+//		users.add(u);
+//
+//		u = new User(2, "b", "123", "b", "b", "b", 13, false);
+//		ab = new Ability(2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
+//		u.setAbility(ab);
+//		users.add(u);
+//
+//		u = new User(3, "c", "123", "c", "c", "c", 19, true);
+//		ab = new Ability(3, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3);
+//		u.setAbility(ab);
+//		users.add(u);
+//
+//		u = new User(4, "d", "123", "d", "d", "d", 22, false);
+//		ab = new Ability(4, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 1);
+//		u.setAbility(ab);
+//		users.add(u);
+//
+//		u = new User(5, "e", "123", "e", "e", "e", 21, true);
+//		ab = new Ability(5, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2);
+//		u.setAbility(ab);
+//		users.add(u);
+//
+//		u = new User(6, "f", "123", "f", "f", "f", 25, false);
+//		ab = new Ability(6, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 3);
+//		u.setAbility(ab);
+//		users.add(u);
+//
+//		u = new User(7, "g", "123", "g", "g", "g", 28, true);
+//		ab = new Ability(7, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4);
+//		u.setAbility(ab);
+//		users.add(u);
+//	}
 
 }
