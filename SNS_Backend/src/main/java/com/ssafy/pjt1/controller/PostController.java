@@ -234,7 +234,7 @@ public class PostController {
             			}
             		}
             		
-                    res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate().toString(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
+                    res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
                             out, tag, count, likeFlag));
                     //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
                 }else{
@@ -309,7 +309,7 @@ public class PostController {
         		}
         		
                 Date d = new Date();
-                feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate().toString(), 
+                feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
                         list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag);
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
