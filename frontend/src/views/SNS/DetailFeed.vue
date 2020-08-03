@@ -5,7 +5,7 @@
 
       <!-- 수정삭제 부분 -->
       <div v-if="udOn" class="ud-part">
-        <router-link :to="{ name: 'FeedUpdate', params: { postId: postId }}">
+        <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}">
           <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
         </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
@@ -143,7 +143,6 @@ export default {
   methods: {
     // 좋아요 체크
     likeCheck() {
-      console.log(this.article.likeFlag)
       if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
@@ -227,7 +226,6 @@ export default {
 
     // 댓글 작성
     commentSubmit() {
-      console.log("comment submit!")
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("content", this.comment.content);
@@ -256,7 +254,6 @@ export default {
       http
       .post('/like/post', formData)
       .then((res) => {
-        // console.log(res.data)
         this.article.likeCount = res.data.count
         this.article.likeFlag = res.data.flag
       })
@@ -270,7 +267,6 @@ export default {
       if (requestUser === this.article.userEmail) {
         this.udOn = !this.udOn;
       }
-      // console.log(this.udOn)
     },
 
     // 글 삭제

@@ -17,9 +17,9 @@
       <div class="mx-1">
         <b-form-group style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
           <b-form-file 
-            v-model="file"
+            v-model="article.file"
             placeholder="이미지를 업로드해주세요."
-            :state="Boolean(file)"
+            :state="Boolean(article.file)"
             id="file"
             ref="file"
             v-on:change="handleFileUpload()"
@@ -28,6 +28,9 @@
             style="border-color: #000;">
           </b-form-file>
         </b-form-group>
+      </div>
+      <div v-if="updateCheck">
+        <img :src="'data:image/png;base64, ' + updateImage" alt="image" class="img-part" style="width: 50px;">
       </div>
 
       <!-- 해시태그 -->
@@ -65,34 +68,70 @@ const storage = window.sessionStorage;
 
 export default {
   name: "CreateFeed",
+  props: ["pId"],
   components: {
     Navbar,
   },
   data() {
     return {
       maxLength: 1000,
-      file: null,
       article: {
         title: "",
         content: "",
         hashtags: [],
+        file: null,
       },
+      updateCheck: false,
+      updateImage: '',
       hashtag: "",
     }
   },
 
   created() {
     if (this.$route.name === 'FeedUpdate') {
-      console.log('글 수정')
+      this.updateCheck = true,
+      this.bringPost(this.pId);
     }
   },
 
   methods: {
+    // 글 수정일 경우
+    bringPost() {
+      var postId = parseInt(this.pId) // string -> 정수 변환
+      console.log(postId)
+
+      http
+      .post('/post/modifyData', postId)
+      .then((res) => {
+        console.log(res.data)
+        // 직접 값 집어넣기
+        this.article.title = res.data.title
+        this.article.content = res.data.content
+        this.article.hashtags = res.data.tags
+        // console.log(res.data.file)
+
+        // base64 image -> file object
+        // var base64ImageString = '';
+        // for (var i in res.data.file.data) {
+        //     var tmpInt = res.data.file.data[i];
+        //     base64ImageString += String.fromCharCode(tmpInt);
+        // }
+        // document.getElementById('#myImg').src = base64ImageString;
+        // console.log(base64ImageString)
+        this.updateImage = res.data.file
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+
     // 글 작성
     articleSubmit() {
-    
       if (this.article.title === "") {
         this.errorMsg();
+      } else if (this.$route.name === 'FeedUpdate') {
+        console.log('글 수정')
       } else {
         this.submitOn();
       }
@@ -103,12 +142,9 @@ export default {
     },
 
     submitOn() {
-      console.log('submit');
-
       // 파일 axios 보내기
-      console.log(this.file)
       let formData = new FormData();
-      formData.append("files", this.file);
+      formData.append("files", this.article.file);
       formData.append("email", storage.getItem("User"));
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);

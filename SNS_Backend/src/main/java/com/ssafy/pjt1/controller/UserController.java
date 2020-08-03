@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +22,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.pjt1.dto.Ability;
 import com.ssafy.pjt1.dto.Post;
+import com.ssafy.pjt1.dto.Profile;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.AbilityRequest;
 import com.ssafy.pjt1.model.BasicResponse;
@@ -97,8 +102,31 @@ public class UserController {
 
 	@PostMapping("/account/modify")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object update(@Valid @RequestParam String email, String nickname, String blog, String git, String intro,
-			String password) {
+	public Object update(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro,
+			String password) throws Exception {
+		// 프로필 사진 업로드 시작!
+		Profile img = new Profile();
+
+		String sourceFileName = profile.getOriginalFilename();
+		System.out.println(sourceFileName);
+		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+		File destinationFile;
+		String destinationFileName;
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+
+		do {
+			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
+			destinationFile = new File(fileUrl + destinationFileName);
+		} while (destinationFile.exists());
+
+		destinationFile.getParentFile().mkdirs();
+		profile.transferTo(destinationFile);
+
+		img.setFilename(destinationFileName);
+		img.setFileOriname(sourceFileName);
+		img.setFileurl(fileUrl);
+
+		// 회원 수정 시작!
 		System.out.println(email);
 		Optional<User> legacyUser = userservice.findone(email);
 
@@ -109,6 +137,8 @@ public class UserController {
 		originUser.setGitaddr(git);
 		originUser.setIntro(intro);
 		originUser.setPassword(password);
+		// User : Profile 정보 이어주기
+		originUser.setProfile(img);
 		userservice.signUp(originUser);
 		if (legacyUser.isPresent()) {
 

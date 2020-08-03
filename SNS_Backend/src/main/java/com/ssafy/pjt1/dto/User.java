@@ -69,6 +69,11 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ABILITY_ID")
 	private Ability ability;
+	
+	//유저 : 프로필사진(1 : 1 관계)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "PROFILE_ID")
+	private Profile profile;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -129,7 +134,13 @@ public class User {
 		this.createDate = createDate;
 	}
 
-	
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 	public boolean isMatchok() {
 		return matchok;
 	}
