@@ -70,8 +70,6 @@ export default {
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.article.date)
     this.diffTime = this.dateCheck(postDate);
-    // console.log(this.article.file)
-    this 
   },
   
   data() {
@@ -84,7 +82,6 @@ export default {
   methods: {
     // tag 클릭하면 화면 상단에 filtering 걸린 태그를 출력하기 위해서 상단 컴포넌트로 올려줌
     tagOn(event) {
-      // console.log(event.target.innerText)
       this.$emit('tag-add', event.target.innerText)
     },
 
@@ -99,8 +96,6 @@ export default {
 
     // 좋아요 누름
     likeButton(event) {
-      // console.log('liked')
-      // console.log(storage.getItem("User"))
       
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
@@ -109,7 +104,6 @@ export default {
       http
       .post('/like/post', formData)
       .then((res) => {
-        // console.log(res.data)
         this.article.likeCount = res.data.count
         this.article.likeFlag = res.data.flag
       })
@@ -121,7 +115,6 @@ export default {
     
     // 날짜 체크
     dateCheck(date) {
-      console.log(date)
       var diff = now - date
       var diff_sec = Math.floor(diff / 1000)
       var diff_min = Math.floor(diff_sec / 60)

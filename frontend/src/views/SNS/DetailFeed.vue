@@ -2,7 +2,6 @@
   <div id="detailFeed">
     <div class="wrapB">
       <Navbar></Navbar>
-      <subNav></subNav>
 
       <!-- 수정삭제 부분 -->
       <div v-if="udOn" class=" ud-part">
@@ -63,8 +62,7 @@
 
         <!-- 댓글 part -->
         <div class="comment-part">
-          <Comment></Comment>
-          <Comment></Comment>
+          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id"></Comment>
         </div>
 
         <!-- 댓글 작성창 -->
@@ -85,9 +83,8 @@
 </template>
 
 <script>
-import Navbar from '../../components/common/Navigation.vue'
-import subNav from '../../components/common/subnav.vue'
-import Comment from '../../components/SNS/SNSCommentItem.vue'
+import Navbar from '../../components/common/Navigation.vue';
+import Comment from '../../components/SNS/SNSCommentItem.vue';
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -99,7 +96,6 @@ export default {
   props: ["postId"],
   components: {
     Navbar,
-    subNav,
     Comment,
   },
 
@@ -140,12 +136,6 @@ export default {
   created() {
     this.dataReceive();
     this.likeCheck();
-
-    // var now = new Date();
-    // console.log('시간---')
-    // console.log(now.getDate())
-    // console.log(now.getHours())
-
   },
 
   methods: {
@@ -170,7 +160,6 @@ export default {
     },
 
     dataReceive() {
-      // console.log(this.postId)
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("pid", this.postId);
@@ -179,12 +168,9 @@ export default {
       http
       .post('/post/postDetail', formData)
       .then((res) => {
-        // console.log(res.data)
         // 받아온 데이터를 집어 넣기
         this.article = res.data
-        console.log('check')
-        console.log(this.article)
-        console.log('시간')
+        console.log(res.data)
 
         // 받아온 시간(string) - date (형식 변환)
         var postDate = new Date(this.article.date)
@@ -205,12 +191,6 @@ export default {
       var diff_day = Math.floor(diff_hour / 24)
       var diff_month = Math.floor(diff_day / 30)
       var diff_year = Math.floor(diff_month / 12)
-      // console.log(diff_sec, '초')
-      // console.log(diff_min, '분')
-      // console.log(diff_hour, '시간')
-      // console.log(diff_day, '일')
-      // console.log(diff_month, '달')
-      // console.log(diff_year, '년')
 
       if (diff_year > 0) {
         var calyear = diff_year + '년 전'
@@ -243,14 +223,16 @@ export default {
     // 댓글 작성
     commentSubmit() {
       console.log("comment submit!")
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("content", this.comment.content);
+      formData.append("pid", this.article.pid)
       
       http
-      .post('url', {
-        content: this.comment.content,
-        email: storage.getItem("User"),
-      })
+      .post('/reply/create', formData)
       .then((res) => {
-        console.log('SUCCESS!!');
+        console.log('comment SUCCESS!!');
+        this.dataReceive();
         // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
