@@ -310,7 +310,7 @@ public class PostController {
         		
                 Date d = new Date();
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag);
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag, post.getReplies());
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");
