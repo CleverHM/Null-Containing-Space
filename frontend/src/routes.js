@@ -107,6 +107,11 @@ export default [
         component : FeedCreate
     },
     {
+        path : '/feed/update',
+        name : 'FeedUpdate',
+        component : FeedCreate
+    },
+    {
         path : '/feed/comment',
         name : 'FeedComment',
         component : FeedComment
