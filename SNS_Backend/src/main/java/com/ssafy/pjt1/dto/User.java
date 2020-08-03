@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -41,6 +42,7 @@ public class User {
 	private String gitaddr;
 	private String blogaddr;
 	private String intro;
+	private boolean matchok;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
 	private Set<UserFollow> followings;
@@ -62,6 +64,11 @@ public class User {
 	//유저 : 좋아요 (1 : N 관계)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
+	
+	// 유저 : 능력(1: 1 관계)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ABILITY_ID")
+	private Ability ability;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -78,6 +85,18 @@ public class User {
 	}
 
 	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
+		this.nickname = nickname;
+		this.password = password;
+		this.email = email;
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
+	}
+	
+	//매칭시스템 테스트데이터용 생성자
+	public User(int uid, String nickname, String password, String email, String name, String tel, int age, boolean gender) {
+		this.uid = uid;
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
@@ -111,7 +130,22 @@ public class User {
 	}
 
 	
-	
+	public boolean isMatchok() {
+		return matchok;
+	}
+
+	public void setMatchok(boolean matchok) {
+		this.matchok = matchok;
+	}
+
+	public Ability getAbility() {
+		return ability;
+	}
+
+	public void setAbility(Ability ability) {
+		this.ability = ability;
+	}
+
 	public String getGitaddr() {
 		return gitaddr;
 	}
