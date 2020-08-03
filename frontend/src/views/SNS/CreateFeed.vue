@@ -1,7 +1,6 @@
 <template>
   <div id="createFeed">
     <Navbar></Navbar>
-    <!-- <subNav></subNav> -->
     <div class="feed-form">
       <!-- 제목 -->
       <div class="inputForm">
@@ -81,6 +80,12 @@ export default {
         hashtags: [],
       },
       hashtag: "",
+    }
+  },
+
+  created() {
+    if (this.$route.name === 'FeedUpdate') {
+      console.log('글 수정')
     }
   },
 

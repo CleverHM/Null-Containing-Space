@@ -6,7 +6,9 @@
 
       <!-- 수정삭제 부분 -->
       <div v-if="udOn" class=" ud-part">
-        <li><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+        <router-link :to="{ name: 'FeedUpdate', params: { postId: postId }}">
+          <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+        </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
       </div>
 
@@ -357,5 +359,10 @@ export default {
   width: 95%;
   margin: 10px;
   border-radius: 2px;
+}
+
+.update-button {
+  color: #464545;
+  margin: 20px;
 }
 </style>
