@@ -104,31 +104,32 @@ public class UserController {
 
 	}
 
-	@PostMapping("/account/modify")
-	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object update(@Valid @RequestParam String email, @RequestBody User user) {
+    @PostMapping("/account/modify")
+    @ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
+    public Object update(@Valid @RequestParam String email, String nickname, String blog, String git, String intro, String password ) {
+        System.out.println(email);
+        Optional<User> legacyUser = userservice.findone(email);
 
-		Optional<User> legacyUser = userservice.findone(email);
-
-		User originUser = legacyUser.get();
-		
-		legacyUser.ifPresent(selectUser -> {
-			selectUser.setNickname(user.getNickname());
-			selectUser.setPassword(user.getPassword());
-			userservice.signUp(selectUser);
-		});
-
-		if (legacyUser.isPresent()) {
-			
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		} else {
-			System.out.println("실패");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-	}
+        User originUser = legacyUser.get();
+        
+        
+        originUser.setNickname(nickname);
+        originUser.setBlogaddr(blog);
+        originUser.setGitaddr(git);
+        originUser.setIntro(intro);
+        originUser.setPassword(password);
+        userservice.signUp(originUser);
+        if (legacyUser.isPresent()) {
+            
+            final BasicResponse result = new BasicResponse();
+            result.status = true;
+            result.data = "success";
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            System.out.println("실패");
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 
 	@PutMapping("/account/delete")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
