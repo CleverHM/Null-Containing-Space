@@ -22,10 +22,10 @@ public class FeedDetailData {
     private int ViewCount;
     private int likeFlag;
     
-    private List<Reply> replies;
+    private List<ReplyData> replies;
     
     public FeedDetailData(int pid, String title, String content, Date date, List<String> tags, String userNickname,
-            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<Reply> replies) {
+            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies) {
         this.pid = pid;
         this.title = title;
         this.content = content;
@@ -40,11 +40,11 @@ public class FeedDetailData {
         this.replies = replies;
     }
 
-	public List<Reply> getReplies() {
+	public List<ReplyData> getReplies() {
 		return replies;
 	}
 
-	public void setReplies(List<Reply> replies) {
+	public void setReplies(List<ReplyData> replies) {
 		this.replies = replies;
 	}
 
