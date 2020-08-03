@@ -42,6 +42,7 @@ public class User {
 	private String gitaddr;
 	private String blogaddr;
 	private String intro;
+	private boolean matchok;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
 	private Set<UserFollow> followings;
@@ -64,6 +65,10 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
 	
+	// 유저 : 능력(1: 1 관계)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ABILITY_ID")
+	private Ability ability;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -102,7 +107,9 @@ public class User {
 	}
 	
 	public User(int uid, String nickname, String password, String email, String name, String tel, int age,
-			boolean gender, String gitaddr, String blogaddr, String intro ,LocalDateTime createDate) {
+			boolean gender, String gitaddr, String blogaddr, String intro, Set<UserFollow> followings,
+			Set<UserFollow> followers, Set<TagFollow> tagfollows, Set<Post> posts, Set<PostLike> postlikes,
+			LocalDateTime createDate) {
 		this.uid = uid;
 		this.nickname = nickname;
 		this.password = password;
@@ -114,15 +121,30 @@ public class User {
 		this.gitaddr = gitaddr;
 		this.blogaddr = blogaddr;
 		this.intro = intro;
+		this.followings = followings;
+		this.followers = followers;
+		this.tagfollows = tagfollows;
+		this.posts = posts;
+		this.postlikes = postlikes;
 		this.createDate = createDate;
 	}
-//	public Ability getAbility() {
-//		return ability;
-//	}
-//
-//	public void setAbility(Ability ability) {
-//		this.ability = ability;
-//	}
+
+	
+	public boolean isMatchok() {
+		return matchok;
+	}
+
+	public void setMatchok(boolean matchok) {
+		this.matchok = matchok;
+	}
+
+	public Ability getAbility() {
+		return ability;
+	}
+
+	public void setAbility(Ability ability) {
+		this.ability = ability;
+	}
 
 	public String getGitaddr() {
 		return gitaddr;

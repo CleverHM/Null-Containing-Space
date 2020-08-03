@@ -16,7 +16,7 @@ public class ReplyData {
 		this.createData = createData;
 		this.uid = uid;
 	}
-	
+
 	public int getUid() {
 		return uid;
 	}
