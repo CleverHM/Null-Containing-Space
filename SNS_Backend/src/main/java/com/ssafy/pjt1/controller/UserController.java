@@ -45,7 +45,28 @@ public class UserController {
 	@Autowired
 	private JwtService jwtservice;
 
+// 중복 체크
+	@PostMapping("/account/nickNameDuplicate")
+	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
 
+	public Object nickNameDuplicate(@Valid @RequestBody String nickname) {
+		Optional<User> optionaluser = userservice.duplNick(nickname);
+		
+		if (optionaluser.isPresent()) {
+			System.out.println("실패");
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "닉네임이 중복 되었습니다.";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		} else {
+			System.out.println("성공");
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+	
 // Create
 	@PostMapping("/account/signup")
 	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
@@ -54,12 +75,16 @@ public class UserController {
 
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
 				request.getTel(), request.getAge(), request.isGender());
-		User user2 = userservice.signUp(user1);
-
-		if (user2 == null) {
+		
+		Optional<User> optionaluser = userservice.duplNick(request.getNickname());
+		
+		System.out.println(optionaluser.get().getNickname());
+		
+		if (optionaluser.isPresent()) {
 			System.out.println("실패");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("닉네임이 중복 되었습니다.", HttpStatus.NOT_FOUND);
 		} else {
+			User user2 = userservice.signUp(user1);
 			System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
 			System.out.println("성공");
 			final BasicResponse result = new BasicResponse();
@@ -77,6 +102,8 @@ public class UserController {
 
 		Optional<User> legacyUser = userservice.findone(email);
 
+		User originUser = legacyUser.get();
+		
 		legacyUser.ifPresent(selectUser -> {
 			selectUser.setNickname(user.getNickname());
 			selectUser.setPassword(user.getPassword());

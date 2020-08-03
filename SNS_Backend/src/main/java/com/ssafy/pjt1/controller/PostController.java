@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +39,7 @@ import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FeedDetailData;
+import com.ssafy.pjt1.model.ReplyData;
 import com.ssafy.pjt1.service.LikeService;
 import com.ssafy.pjt1.service.PostService;
 import com.ssafy.pjt1.service.UserService;
@@ -234,7 +237,7 @@ public class PostController {
             			}
             		}
             		
-                    res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate().toString(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
+                    res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
                             out, tag, count, likeFlag));
                     //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
                 }else{
@@ -243,7 +246,14 @@ public class PostController {
                 }
                 
             }
-            
+            Collections.sort(res, new Comparator<FeedData>() {
+
+				@Override
+				public int compare(FeedData o1, FeedData o2) {
+					// TODO Auto-generated method stub
+					return o2.getPid() - o1.getPid();
+				}
+			});
             return res;
         }
 //
@@ -308,9 +318,14 @@ public class PostController {
         			}
         		}
         		
-                Date d = new Date();
-                feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate().toString(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag);
+        		List<ReplyData> reply = new LinkedList<ReplyData>();
+        		
+        		for(int i = 0; i <  post.getReplies().size(); i ++) {
+        			reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(), post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate()));
+        		}
+        		
+                feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag,reply);
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");

@@ -1,11 +1,14 @@
 package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,10 +52,15 @@ public class Post {
 	//게시물 : 좋아요 (1 : N 관계)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
+	
+	//게시물 : 댓글 (1 : N 관계)
+	@JsonIgnore
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+	private List<Reply> replies;
 
 	@CreationTimestamp
 	@Column(updatable = false)
-	private LocalDateTime createDate;
+	private Date createDate;
 	
 	public Post() {
 
@@ -75,6 +83,16 @@ public class Post {
 		this.files = files;
 	}
 	
+	
+	
+	public List<Reply> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<Reply> replies) {
+		this.replies = replies;
+	}
+
 	public int getViewCount() {
 		return viewCount;
 	}
@@ -139,11 +157,11 @@ public class Post {
 		this.files = files;
 	}
 
-	public LocalDateTime getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(LocalDateTime createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 	
