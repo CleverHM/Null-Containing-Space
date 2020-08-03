@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -244,7 +246,14 @@ public class PostController {
                 }
                 
             }
-            
+            Collections.sort(res, new Comparator<FeedData>() {
+
+				@Override
+				public int compare(FeedData o1, FeedData o2) {
+					// TODO Auto-generated method stub
+					return o2.getPid() - o1.getPid();
+				}
+			});
             return res;
         }
 //
