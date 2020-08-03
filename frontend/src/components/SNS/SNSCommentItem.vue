@@ -6,7 +6,10 @@
         <div class="comment-img"></div>
         <div class="comment-name ml-2">{{ reply.who }}</div>
       </div>
-      <div class="comment-date">{{ diffTime }}</div>
+      <div class="d-flex flex-row">
+        <div class="comment-date">{{ diffTime }}</div>
+        <b-icon-x v-if="userCheck" class="ml-2" @click="commentDelete"></b-icon-x>
+      </div>
     </div>
     <!-- 내용 -->
     <div class="comment-content">
@@ -37,11 +40,11 @@ export default {
   data() {
     return {
       diffTime: "",
+      userCheck: true,
     }
   },
 
   methods: {
-    
     // 날짜 체크
     dateCheck(date) {
       var diff = now - date
@@ -75,7 +78,20 @@ export default {
       }
     },
 
-  }
+    // 댓글 삭제
+    commentDelete() {
+      http
+      .post('/reply/delete', this.reply.rid)
+      .then((res) =>{
+        this.$emit('delete-reply')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
+
+
+  },
 
 }
 </script>
@@ -108,6 +124,8 @@ export default {
 .comment-content {
   font-size: 14px;
   color: #464545;
+  width: 98%;
+  white-space: normal;
+  word-break: break-all;
 }
-
 </style>

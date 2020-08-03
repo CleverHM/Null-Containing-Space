@@ -40,9 +40,9 @@
           <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
         </div>
 
-        <!-- content 부분 -->
-        <div class="page-content">
-          {{ article.content }}
+        <!-- content 부분. -->
+        <!-- content에 <br/>를 넣었으므로 {{}}이 아닌 v-html로 출력 -->
+        <div class="page-content" v-html="article.content">
         </div>
 
         <!-- 좋아요 부분 -->
@@ -62,7 +62,7 @@
 
         <!-- 댓글 part -->
         <div class="comment-part">
-          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id"></Comment>
+          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id" @delete-reply="refreshOn()"></Comment>
         </div>
 
         <!-- 댓글 작성창 -->
@@ -71,6 +71,7 @@
             placeholder="댓글을 작성해주세요."
             class="flex-fill"
             style="border:none;"
+            maxlength="255" 
             @keyup.enter="commentOn"/>
           <button class="px-3" @click="commentOn">
             작성
@@ -90,6 +91,7 @@ import axios from 'axios';
 
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
+
 
 export default {
   name: "detailFeed",
@@ -176,6 +178,9 @@ export default {
         var postDate = new Date(this.article.date)
         this.article.date = postDate
         this.article.diffTime = this.dateCheck(this.article.date);
+
+        // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
+        this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
       })
       .catch((err) => {
         console.log(err)
@@ -231,9 +236,8 @@ export default {
       http
       .post('/reply/create', formData)
       .then((res) => {
-        console.log('comment SUCCESS!!');
+        this.comment.content = "";
         this.dataReceive();
-        // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
         console.log(err);
@@ -279,13 +283,17 @@ export default {
       )
       .then((res) => {
         console.log('delete')
-        console.log(res.data)
         this.$router.push({ name: 'FeedMain' });
       })
       .catch((err) => {
         console.log(err)
       })
 
+    },
+
+    // 댓글 삭제
+    refreshOn() {
+      this.dataReceive();
     },
 
   }
