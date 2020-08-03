@@ -97,3 +97,6 @@
   - 개인 능력치 Dto, Dao, Service, Controller 병합(Spring)
   - 회원정보 수정에서 프로필사진 추가 기능 구현(Spring)
 - 김호한
+  - 게시물 Vue 데이터 전달 (Spring)
+  - 게시물 Update 기능 구현 (Spring)
+  - 댓글수/회원 수정/댓글 UID 전달 구현 (Spring)
