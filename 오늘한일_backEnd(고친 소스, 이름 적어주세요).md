@@ -92,4 +92,8 @@
   - 도커에 Maria-db 컨테이너 설치.
   - 도커에 스프링부트 jar 파일 업로드 작업중.
 - 박상현
+  - 댓글 Dto, Dao, Service, Controller 구현(Spring)
+  - 댓글 C, D 구현(Spring)
+  - 개인 능력치 Dto, Dao, Service, Controller 병합(Spring)
+  - 회원정보 수정에서 프로필사진 추가 기능 구현(Spring)
 - 김호한
