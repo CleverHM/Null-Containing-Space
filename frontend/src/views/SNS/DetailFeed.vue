@@ -24,10 +24,12 @@
         </div>
 
         <!-- user 부분 -->
-        <div class="user-part d-flex flex-row align-items-center">
-          <div class="user-img"></div>
-          <div class="user-name">{{ article.userNickname }}</div>
-          <div class="user-created-at">{{ article.date }}</div>
+        <div class="user-part d-flex flex-row align-items-center justify-content-between">
+          <div class="d-flex flex-row align-items-center user-low-part">
+            <div class="user-img"></div>
+            <div class="user-name">{{ article.userNickname }}</div>
+            <div class="user-diff-time">{{ article.diffTime }}</div>
+          </div>
           <div class="user-count">
             <span>조회수</span>
             <span class="ml-2">{{ article.viewCount }}</span>
@@ -127,6 +129,7 @@ export default {
         userEmail:"",
         userNickname: "",
         viewCount: 0,
+        diffTime: "",
       },
       comment: {
         content: "",
@@ -138,10 +141,10 @@ export default {
     this.dataReceive();
     this.likeCheck();
 
-    var now = new Date();
-    console.log('시간---')
-    console.log(now.getDate())
-    console.log(now.getHours())
+    // var now = new Date();
+    // console.log('시간---')
+    // console.log(now.getDate())
+    // console.log(now.getHours())
 
   },
 
@@ -181,12 +184,55 @@ export default {
         this.article = res.data
         console.log('check')
         console.log(this.article)
-        console.log('타입체크')
-        console.log(typeof(this.article.date))
+        console.log('시간')
+
+        // 받아온 시간(string) - date (형식 변환)
+        var postDate = new Date(this.article.date)
+        this.article.date = postDate
+        this.article.diffTime = this.dateCheck(this.article.date);
       })
       .catch((err) => {
         console.log(err)
       })
+    },
+
+    // 날짜 체크
+    dateCheck(date) {
+      var diff = now - date
+      var diff_sec = Math.floor(diff / 1000)
+      var diff_min = Math.floor(diff_sec / 60)
+      var diff_hour = Math.floor(diff_min / 60)
+      var diff_day = Math.floor(diff_hour / 24)
+      var diff_month = Math.floor(diff_day / 30)
+      var diff_year = Math.floor(diff_month / 12)
+      // console.log(diff_sec, '초')
+      // console.log(diff_min, '분')
+      // console.log(diff_hour, '시간')
+      // console.log(diff_day, '일')
+      // console.log(diff_month, '달')
+      // console.log(diff_year, '년')
+
+      if (diff_year > 0) {
+        var calyear = diff_year + '년 전'
+        return calyear
+      } else if (diff_month > 0) {
+        var calmonth = diff_month + '달 전'
+        return calmonth
+      } else if (diff_day > 0) {
+        var calday = diff_day + '일 전'
+        return calday
+      } else if (diff_hour > 0) {
+        var calhour = diff_hour + '시간 전'
+        return calhour
+      } else if (diff_min > 0) {
+        var calmin = diff_min + '분 전'
+        return calmin
+      } else if(diff_sec > 0) {
+        var caltime = diff_sec + '초 전'
+        return caltime
+      } else {
+        return '0초 전'
+      }
     },
     
     // 에러메세지
@@ -290,6 +336,9 @@ export default {
 
 .user-part > div {
   margin-top: 5px;
+}
+
+.user-low-part > div {
   margin-right: 13px;
 }
 
@@ -300,7 +349,7 @@ export default {
   font-size: 14px;
 }
 
-.user-created-at {
+.user-diff-time {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #E2DFD8;
   font-size: 14px;
