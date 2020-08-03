@@ -7,56 +7,42 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
-@Table(name = "Files")
+@Table(name = "Profile")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Files {
+public class Profile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
-	private int fid;
+	private int pfid;
 	
 	private String filename;
 	private String fileOriname;
 	private String fileurl;
-	private MultipartFile file;
 	
-	//이미지 : 게시물(1 : 1 관계)
-	@OneToOne(mappedBy = "files")
-	private Post post;
-	
-	
-	public Files() {
-		
-	}
+	//프로필 사진 : 유저(1 : 1관계)
+	@OneToOne(mappedBy = "profile")
+	private User user;
 
-	public Files(int fid, String filename, String fileOriname, String fileurl, MultipartFile file) {
-		this.fid = fid;
+	public Profile() {}
+	
+	public Profile(int pfid, String filename, String fileOriname, String fileurl, User user) {
+		this.pfid = pfid;
 		this.filename = filename;
 		this.fileOriname = fileOriname;
 		this.fileurl = fileurl;
-		this.file = file;
+		this.user = user;
 	}
 	
-	public MultipartFile getFile() {
-		return file;
+	public int getPfid() {
+		return pfid;
 	}
 
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
-
-	public int getFid() {
-		return fid;
-	}
-
-	public void setFid(int fid) {
-		this.fid = fid;
+	public void setPfid(int pfid) {
+		this.pfid = pfid;
 	}
 
 	public String getFilename() {
@@ -82,14 +68,12 @@ public class Files {
 	public void setFileurl(String fileurl) {
 		this.fileurl = fileurl;
 	}
-	
-	public Post getPost() {
-		return post;
+
+	public User getUser() {
+		return user;
 	}
 
-
-	public void setPost(Post post) {
-		this.post = post;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
 }
