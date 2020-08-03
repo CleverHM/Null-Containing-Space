@@ -321,7 +321,7 @@ public class PostController {
         		List<ReplyData> reply = new LinkedList<ReplyData>();
         		
         		for(int i = 0; i <  post.getReplies().size(); i ++) {
-        			reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(), post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(), post.getReplies().get(i).getUser().getUid()));
+        			reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(), post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(), post.getReplies().get(i).getUser().getEmail()));
         		}
         		
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 

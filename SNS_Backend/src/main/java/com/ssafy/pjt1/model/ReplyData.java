@@ -4,25 +4,25 @@ import java.util.Date;
 
 public class ReplyData {
 	private int rid;
-	private int uid;
+	private String email;
 	private String content;
 	private String who;
 	private Date createData;
 	
-	public ReplyData(int rid, String content, String who, Date createData, int uid) {
+	public ReplyData(int rid, String content, String who, Date createData, String email) {
 		this.rid = rid;
 		this.content = content;
 		this.who = who;
 		this.createData = createData;
-		this.uid = uid;
+		this.email = email;
 	}
 
-	public int getUid() {
-		return uid;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public int getRid() {
