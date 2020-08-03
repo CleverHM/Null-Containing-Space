@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -73,6 +75,7 @@ public class PostController {
     // 1. 이미지도 저장하고
     // 2. 게시물도 저장하고
 
+// create
     @PostMapping("/post/create")
     @ApiOperation(value = "유저 게시물작성", notes = "게시물 작성 기능을 구현.")
     public void userPost(@Valid @RequestParam MultipartFile files, String email, String title, String content,
@@ -148,7 +151,7 @@ public class PostController {
 
     }
     
-
+// 삭제
     @PostMapping("/post/postDelete")
     @ApiOperation(value = "게시물 삭제", notes = "게시물  삭제 기능을 구현.")
     public void postDelete(@Valid @RequestBody String pid) {
@@ -160,6 +163,138 @@ public class PostController {
         
         postdao.delete(p);
     }
+    
+// update 정보 주기
+    @PostMapping("/post/modifyData")
+    @ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
+    public FeedDetailData modifyData(@Valid @RequestBody int pid) throws MalformedURLException, IOException {
+    
+        // 조회수 추가
+        Optional<Post> optionalPost = postdao.findPostByPid(pid);
+        List<String> list = new LinkedList<String>();
+        
+        FeedDetailData feedDetailData = null;
+        Post post = optionalPost.get();
+        
+        System.out.println(post.getPid());
+        System.out.println(post.getTitle());
+        System.out.println(post.getContent());
+        
+        for(PostTag t : post.getPosttags()) {
+            System.out.println(t.getTag().getName());
+            list.add(t.getTag().getName());
+        }
+        
+//        System.out.println(post.getTags());
+        System.out.println(post.getUser().getEmail());
+        
+        // 이미지
+        byte[] reportBytes = null;
+        File result=new File(post.getFiles().getFileurl() + post.getFiles().getFilename());
+        
+        if(result.exists()){
+            System.out.println("있음");
+            InputStream inputStream = new FileInputStream(post.getFiles().getFileurl() + post.getFiles().getFilename());
+            String type=result.toURL().openConnection().guessContentTypeFromName(post.getFiles().getFilename());
+
+            byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add("content-disposition", "attachment; filename=" + post.getFiles().getFilename());
+            responseHeaders.add("Content-Type",type);
+            
+
+    		int count = likeservice.likeCount(post);
+          
+    		
+    		List<ReplyData> reply = new LinkedList<ReplyData>();
+    		
+    		for(int i = 0; i <  post.getReplies().size(); i ++) {
+    			reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(), post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(), post.getReplies().get(i).getUser().getEmail()));
+    		}
+    		
+            feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
+                    list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), 1 ,reply, reply.size());
+        }else{
+            System.out.println("없는 파일");
+        }
+        
+        post.setViewCount(post.getViewCount() + 1);
+        postdao.save(post);
+        
+        return feedDetailData;
+    }
+    
+	@PostMapping("/post/modify")
+	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
+	public void modify(@Valid @RequestParam int pid, MultipartFile files, String email ,String title, String content,
+			String[] hashtags) throws MalformedURLException, IOException {
+
+		// 게시물 삭제
+		 postdao.deleteById(pid);
+		
+		// 파일 업로드 시작!
+		Files img = new Files();
+
+		String sourceFileName = files.getOriginalFilename();
+		System.out.println(sourceFileName);
+		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+		File destinationFile;
+		String destinationFileName;
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+
+		do {
+			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
+			destinationFile = new File(fileUrl + destinationFileName);
+		} while (destinationFile.exists());
+
+		destinationFile.getParentFile().mkdirs();
+		files.transferTo(destinationFile);
+
+		img.setFilename(destinationFileName);
+		img.setFileOriname(sourceFileName);
+		img.setFileurl(fileUrl);
+
+        // 게시물 업로드 시작!
+        Post post = new Post();
+        Optional<User> u = userservice.findone(email);
+        User pUser = u.get();
+		
+        post.setUser(pUser);
+		post.setTitle(title);
+		post.setContent(content);
+		// Post : Files 정보이어주기
+		post.setFiles(img);
+		
+		 for (int i = 0; i < hashtags.length; i++) {
+	            Optional<Tag> optionalTag = tagdao.findTagByName(hashtags[i]);
+
+	            // 태그가 테이블에 존재하지 않는 경우.
+	            if (!optionalTag.isPresent()) {
+	                Tag t = new Tag(hashtags[i]);
+	                tagdao.save(t);
+	                // Post : Tag 정보 이어주기.
+	                PostTag temp = new PostTag();
+	                temp.setPost(post);
+	                temp.setTag(t);
+	                posttagdao.save(temp);
+	            }
+
+	            // 태그가 테이블에 존재하는 경우.
+	            else {
+	                Tag t = optionalTag.get();
+	                System.out.println("태그 있음");
+	                // Post : Tag 정보 이어주기.
+	                PostTag temp = new PostTag();
+	                temp.setPost(post);
+	                temp.setTag(t);
+	                posttagdao.save(temp);
+	            }
+	        }
+
+		postdao.save(post);
+		
+	}
     
     // 해당이메일 게시물 보내주기
         @PostMapping("/post/getPost")
