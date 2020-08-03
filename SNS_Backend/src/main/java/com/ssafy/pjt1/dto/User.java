@@ -42,7 +42,7 @@ public class User {
 	private String gitaddr;
 	private String blogaddr;
 	private String intro;
-	private boolean match;
+	private boolean matchok;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
 	private Set<UserFollow> followings;
@@ -66,7 +66,8 @@ public class User {
 	private Set<PostLike> postlikes;
 	
 	// 유저 : 능력(1: 1 관계)
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ABILITY_ID")
 	private Ability ability;
 
 	@CreationTimestamp
@@ -129,12 +130,12 @@ public class User {
 	}
 
 	
-	public boolean isMatch() {
-		return match;
+	public boolean isMatchok() {
+		return matchok;
 	}
 
-	public void setMatch(boolean match) {
-		this.match = match;
+	public void setMatchok(boolean matchok) {
+		this.matchok = matchok;
 	}
 
 	public Ability getAbility() {
