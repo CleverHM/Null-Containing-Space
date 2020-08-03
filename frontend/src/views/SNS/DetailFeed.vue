@@ -321,6 +321,8 @@ export default {
   color: #464545;
   font-weight: bold;
   font-size: 20px;
+  white-space: normal;
+  word-break: break-all;
 }
 
 .user-part > div {

@@ -35,7 +35,7 @@
       </div>
       <div>
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
-        <span>0</span>
+        <span>{{ article.replyCount }}</span>
       </div>
     </div>
 
@@ -219,14 +219,14 @@ export default {
   font-weight: bold;
   font-size: 16px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  width: 98%;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
 }
 
 .title-part {
   color: #464545; 
-  width: 98%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
 }
 
 .img-part {

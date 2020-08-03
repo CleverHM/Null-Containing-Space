@@ -22,6 +22,7 @@
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
+const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
 
 
@@ -35,12 +36,16 @@ export default {
     // 받아온 시간(string) - date (형식 변환)
     var postDate = new Date(this.reply.createData)
     this.diffTime = this.dateCheck(postDate);
+    console.log(this.reply)
+    if (this.reply.uid === storage.getItem("User")) {
+      this.userCheck = true;
+    }
   },
 
   data() {
     return {
       diffTime: "",
-      userCheck: true,
+      userCheck: false,
     }
   },
 
