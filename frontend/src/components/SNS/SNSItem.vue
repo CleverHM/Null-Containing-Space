@@ -2,10 +2,10 @@
   <div id="SNSItem">
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
-      <div class="user-img"></div>
+      <div class="user-img mr-2"></div>
       <div class="flex-column">
         <div class="user-name">{{ article.userName }}</div>
-        <div class="date-diff">{{ article.date }}</div>
+        <div class="date-diff">{{ diffTime }}</div>
       </div>
     </div>
 
@@ -47,6 +47,7 @@ import http from "../../util/http-common.js";
 import axios from 'axios';
 
 const storage = window.sessionStorage;
+var now = new Date(); // 현재 시간 받아오기
 
 export default {
   name: "SNSItemn",
@@ -65,15 +66,18 @@ export default {
 
   created() {
     this.likeCheck();
+
+    // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
+    var postDate = new Date(this.article.date)
+    this.diffTime = this.dateCheck(postDate);
     // console.log(this.article.file)
-    this.imgUrl = this.article.file
+    this 
   },
   
   data() {
     return {
-      // 'https://cdn.pixabay.com/photo/2020/07/10/20/45/sparrow-5392119__340.jpg',
-      baseUrl: "../../../../../../../../s03p12d105/SNS_Backend/src/main/resources/static/images",
       likeColor: '',
+      diffTime: '',
     }
   },
 
@@ -114,6 +118,41 @@ export default {
       })
     },
 
+    
+    // 날짜 체크
+    dateCheck(date) {
+      console.log(date)
+      var diff = now - date
+      var diff_sec = Math.floor(diff / 1000)
+      var diff_min = Math.floor(diff_sec / 60)
+      var diff_hour = Math.floor(diff_min / 60)
+      var diff_day = Math.floor(diff_hour / 24)
+      var diff_month = Math.floor(diff_day / 30)
+      var diff_year = Math.floor(diff_month / 12)
+
+      if (diff_year > 0) {
+        var calyear = diff_year + '년 전'
+        return calyear
+      } else if (diff_month > 0) {
+        var calmonth = diff_month + '달 전'
+        return calmonth
+      } else if (diff_day > 0) {
+        var calday = diff_day + '일 전'
+        return calday
+      } else if (diff_hour > 0) {
+        var calhour = diff_hour + '시간 전'
+        return calhour
+      } else if (diff_min > 0) {
+        var calmin = diff_min + '분 전'
+        return calmin
+      } else if(diff_sec > 0) {
+        var caltime = diff_sec + '초 전'
+        return caltime
+      } else {
+        return '0초 전'
+      }
+    },
+
   },
 
 }
@@ -144,6 +183,7 @@ export default {
 }
 
 .date-diff {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #C4BCB8;
   font-size: 14px;
 }

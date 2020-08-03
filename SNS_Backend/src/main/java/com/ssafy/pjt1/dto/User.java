@@ -38,6 +38,9 @@ public class User {
 	private String tel;
 	private int age;
 	private boolean gender; // 1이면 남자, 2이면 여자
+	private String gitaddr;
+	private String blogaddr;
+	private String intro;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
 	private Set<UserFollow> followings;
@@ -51,6 +54,10 @@ public class User {
 	// 유저  : 게시물 (1 : N 단방향 관계)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<Post>();
+	
+	// 유저  : 댓글 (1 : N 단방향 관계)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Reply> replys = new HashSet<Reply>();
 	
 	//유저 : 좋아요 (1 : N 관계)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
@@ -78,6 +85,63 @@ public class User {
 		this.tel = tel;
 		this.age = age;
 		this.gender = gender;
+	}
+	
+	public User(int uid, String nickname, String password, String email, String name, String tel, int age,
+			boolean gender, String gitaddr, String blogaddr, String intro, Set<UserFollow> followings,
+			Set<UserFollow> followers, Set<TagFollow> tagfollows, Set<Post> posts, Set<PostLike> postlikes,
+			LocalDateTime createDate) {
+		this.uid = uid;
+		this.nickname = nickname;
+		this.password = password;
+		this.email = email;
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
+		this.gitaddr = gitaddr;
+		this.blogaddr = blogaddr;
+		this.intro = intro;
+		this.followings = followings;
+		this.followers = followers;
+		this.tagfollows = tagfollows;
+		this.posts = posts;
+		this.postlikes = postlikes;
+		this.createDate = createDate;
+	}
+
+	
+	
+	public String getGitaddr() {
+		return gitaddr;
+	}
+
+	public void setGitaddr(String gitaddr) {
+		this.gitaddr = gitaddr;
+	}
+
+	public String getBlogaddr() {
+		return blogaddr;
+	}
+
+	public void setBlogaddr(String blogaddr) {
+		this.blogaddr = blogaddr;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public Set<Reply> getReplys() {
+		return replys;
+	}
+
+	public void setReplys(Set<Reply> replys) {
+		this.replys = replys;
 	}
 
 	public Set<Post> getPosts() {
