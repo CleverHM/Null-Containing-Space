@@ -18,7 +18,8 @@
                 <input v-model="user.nickname" 
                 id="nickname"
                 type="text"/>
-                <button>중복체크</button>
+                <div class="errorMsg" v-if="error.nickname">{{ error.nickname }}</div>
+                <button @click="isDuplicate">중복체크</button>
             </div>
 
             <!-- git 주소 -->
@@ -43,22 +44,22 @@
                 id="Introduce" />
             </div>
             <!-- 비밀번호 수정 버튼 -->
-            <div class="input-form">
+            <div class="input-form" id="password-form">
                 <label for="email">비밀번호 수정</label>
                 <input
                 id="password"
                 type="text"
                 disabled />
-                <button id="btn-password">비밀번호 수정</button>
+                <button>비밀번호 수정</button>
             </div>
             <!-- 회원탈퇴 버튼 -->
-            <div class="input-form">
+            <div class="input-form" id="delete-form">
                 <label for="nickname">회원탈퇴</label>
                 <input 
                 id="delete"
                 type="text"
                 disabled/>
-                <button id="btn-delete">회원탈퇴</button>
+                <button>회원탈퇴</button>
             </div>
             <!-- 수정 완료 버튼 -->
             <button id="complete">수정</button>
@@ -86,9 +87,17 @@ export default {
                 gitUrl: "http://github.com/hello/",
                 blogUrl: "http://hello.github.io/",
                 Intoduce: "",
-            }
+            },
+            error: {
+                nickname: "",
+            },
         }
-        
+    },
+    methods: {
+        isDuplicate() {
+            
+
+        },
     },
 }
 </script>
@@ -100,34 +109,36 @@ export default {
 }
 .input-form {
     position: relative;
-    margin: 0 20px 20px 20px;
+    margin: 0 20px 30px 20px;
     height: 50px;
 }
 input[type="text"]{
     padding-left: 80px;
     width: 100%;
-    border: 0;
-    border-bottom: 1px solid #464545;
+    border: 1px solid #464545;
+    border-radius: 3px;
 }
 input[type="text"]:focus{
     border: 0;
     border-bottom: 1.2px solid #464545;
 }
 .input-form button{
-    padding: 3px 5px 3px 5px;
+    padding: 4px 6px 4px 6px;
     position: absolute;
     background-color: #464545;
     border-radius: 3px;
     color: #f7f7f7;
-    bottom: 13px;
-    right: 15px;
+    bottom: 8.5px;
+    right: 11px;
 }
 .input-form label {
     position: absolute;
     padding: 0;
     margin: 0;
-    font-size: 16px;
-    top: 13px; 
+    font-size: 13px;
+    font-weight: bold;
+    top: 18px; 
+    left: 13px;
 }
 .textarea-form{
     position: relative;
@@ -136,6 +147,7 @@ input[type="text"]:focus{
 .textarea-form textarea{
     resize: none;
     background-color: #EDECEA;
+    border: 1px solid #464545;
     border-radius: 3px;
     width: 100%;
     height: 100px;
@@ -146,8 +158,13 @@ input[type="text"]:focus{
 #password, #delete{
     border: 0;
 }
-#btn-password, #btn-delete{
+#delete-form > button,
+#password-form > button{
     background-color: #D52602;
+}
+#delete-form > label,
+#password-form > label{
+    font-size: 16px;
 }
 #complete{
     width: 100%;
