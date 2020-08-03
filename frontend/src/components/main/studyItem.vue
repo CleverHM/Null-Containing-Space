@@ -1,8 +1,8 @@
 <template>
     <div id="studyItem" class="mt-3 w-100">
-        <p class="studyTitle">알고리즘 스터디 (3/5)</p>
-        <p class="studySubject">스터디 범위 : List ~ BFS </p>
-        <p class="studyDate"> 기간 : 2020.07.15 ~ 2020.08.31</p>
+        <div class="studyTitle">알고리즘 스터디 (3/5)</div>
+        <div class="studySubject">스터디 범위 : List ~ BFS </div>
+        <div class="studyDate"> 기간 : 2020.07.15 ~ 2020.08.31</div>
         <div class="mt-2 d-flex justify-content-end">
             <button class="btn-detail">상세페이지</button>
             <button class="btn-contact ml-4">컨택하기</button>

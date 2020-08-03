@@ -2,7 +2,6 @@
     <div id="Main">
         <Navbar></Navbar>
         <subNav></subNav>
-        <subNav2></subNav2>
         <!-- 공모전 !-->
         <div id="competition" class="mx-2">
             <h5 class="pt-3">공모전</h5>
@@ -34,7 +33,6 @@
 <script>
 import Navbar from '../components/common/Navigation.vue'
 import subNav from '../components/common/subnav.vue'
-import subNav2 from '../components/common/subnav2.vue'
 import competitionItem from "../components/main/competitionItem.vue"
 import studyItem from "../components/main/studyItem.vue"
 
@@ -43,7 +41,6 @@ export default {
   components: {
       Navbar,
       subNav,
-      subNav2,
       competitionItem,
       studyItem,
   },

@@ -2,7 +2,6 @@
   <div class="feed newsfeed">
     <Navbar></Navbar>
     <subNav></subNav>
-    <subNav2></subNav2>
     <div class="wrapB">
       <div class="d-flex justify-content-end align-items-center">
         <button v-for="tag in clicktags" :key="tag" class="btn-sort" style="background-color: #ACCCC4;" @click="tagRemove">{{ tag }}</button>
@@ -23,7 +22,6 @@ import "../../components/css/feed/newsfeed.scss";
 import SNSItem from "../../components/SNS/SNSItem.vue";
 import Navbar from '../../components/common/Navigation.vue';
 import subNav from '../../components/common/subnav.vue';
-import subNav2 from '../../components/common/subnav2.vue';
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -37,7 +35,6 @@ export default {
     SNSItem,
     Navbar,
     subNav,
-    subNav2,
   },
   data() {
     return {

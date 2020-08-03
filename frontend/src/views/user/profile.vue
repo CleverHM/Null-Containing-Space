@@ -1,6 +1,8 @@
 <template>
-    <div id="profile" class="px-4" style="top:0;">
+    <div style="top:0;">
         <Navbar></Navbar>
+        <subNav></subNav>
+
         <div id="baseProfile" class="mb-4">
             <div class="d-flex align-items-center">
                 <div id="profileImg"></div>
@@ -84,6 +86,7 @@
 
 <script>
 import Navbar from '../../components/common/Navigation.vue'
+import subNav from '../../components/common/subnav.vue'
 import TagBadge from '../../components/common/TagBadge.vue'
 import TabComponent from '../../components/common/TabComponent.vue'
 import Tabs from 'vue-tabs-with-active-line';
@@ -107,6 +110,7 @@ export default {
     name: "profile",
     components:{
         Navbar,
+        subNav,
         TagBadge,
         Tabs,
     },
