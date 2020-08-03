@@ -2,7 +2,6 @@
   <div id="detailFeed">
     <div class="wrapB">
       <Navbar></Navbar>
-      <subNav></subNav>
 
       <!-- 수정삭제 부분 -->
       <div v-if="udOn" class=" ud-part">
@@ -63,8 +62,7 @@
 
         <!-- 댓글 part -->
         <div class="comment-part">
-          <Comment></Comment>
-          <Comment></Comment>
+          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id"></Comment>
         </div>
 
         <!-- 댓글 작성창 -->
@@ -85,9 +83,8 @@
 </template>
 
 <script>
-import Navbar from '../../components/common/Navigation.vue'
-import subNav from '../../components/common/subnav.vue'
-import Comment from '../../components/SNS/SNSCommentItem.vue'
+import Navbar from '../../components/common/Navigation.vue';
+import Comment from '../../components/SNS/SNSCommentItem.vue';
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -99,7 +96,6 @@ export default {
   props: ["postId"],
   components: {
     Navbar,
-    subNav,
     Comment,
   },
 
@@ -174,6 +170,7 @@ export default {
       .then((res) => {
         // 받아온 데이터를 집어 넣기
         this.article = res.data
+        console.log(res.data)
 
         // 받아온 시간(string) - date (형식 변환)
         var postDate = new Date(this.article.date)
@@ -226,14 +223,16 @@ export default {
     // 댓글 작성
     commentSubmit() {
       console.log("comment submit!")
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("content", this.comment.content);
+      formData.append("pid", this.article.pid)
       
       http
-      .post('url', {
-        content: this.comment.content,
-        email: storage.getItem("User"),
-      })
+      .post('/reply/create', formData)
       .then((res) => {
-        console.log('SUCCESS!!');
+        console.log('comment SUCCESS!!');
+        this.dataReceive();
         // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
