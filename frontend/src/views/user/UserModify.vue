@@ -18,7 +18,9 @@
                 <input v-model="user.nickname" 
                 id="nickname"
                 type="text"/>
-                <div class="errorMsg" v-if="error.nickname">{{ error.nickname }}</div>
+                <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
+                <div class="Success" v-else><i class="fas fa-exclamation-triangle"></i>사용할 수 있는 닉네임입니다.</div>
+
                 <button @click="isDuplicate">중복체크</button>
             </div>
 
@@ -70,6 +72,7 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
+import http from "@/util/http-common.js";
 
 
 export default {
@@ -94,9 +97,18 @@ export default {
         }
     },
     methods: {
-        isDuplicate() {
-
-
+       isDuplicate() {
+        http
+        .post("/account/nickNameDuplicate", this.user.nickname)
+        .then((data) => {
+            console.log(data.data)
+            if (data.data.status) {
+            this.error.nickname=""
+            }
+        })
+        .catch((err) => {
+            this.err.nickname="사용할 수 없는 닉네임입니다."
+        })
         },
     },
 }
@@ -173,5 +185,9 @@ input[type="text"]:focus{
     height: 50px;
     border-radius: 3px;
 
+}
+.Success{
+  font-size: 13px;
+  color: green;
 }
 </style>
