@@ -1,13 +1,13 @@
 package com.ssafy.pjt1.model;
 
-import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 public class FeedData {
     private int pid;
     private int LikeCount;
     private String email;
-    private String date;
+    private Date date;
     private String title;
     private String userName;
     private byte[] file;
@@ -15,7 +15,7 @@ public class FeedData {
     
     private List<String> tags;
 
-    public FeedData(int pid, String email, String date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag) {
+    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag) {
         this.pid = pid;
         this.email = email;
         this.date = date;
@@ -46,11 +46,11 @@ public class FeedData {
 		LikeCount = likeCount;
 	}
 
-	public String getDate() {
+	public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

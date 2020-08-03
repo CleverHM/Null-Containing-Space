@@ -1,6 +1,7 @@
 package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -52,7 +53,7 @@ public class Post {
 
 	@CreationTimestamp
 	@Column(updatable = false)
-	private LocalDateTime createDate;
+	private Date createDate;
 	
 	public Post() {
 
@@ -139,11 +140,11 @@ public class Post {
 		this.files = files;
 	}
 
-	public LocalDateTime getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(LocalDateTime createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 	
