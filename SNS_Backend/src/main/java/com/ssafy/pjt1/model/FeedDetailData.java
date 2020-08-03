@@ -23,9 +23,10 @@ public class FeedDetailData {
     private int likeFlag;
     
     private List<ReplyData> replies;
+    private int replyCount;
     
     public FeedDetailData(int pid, String title, String content, Date date, List<String> tags, String userNickname,
-            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies) {
+            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies, int repltcount) {
         this.pid = pid;
         this.title = title;
         this.content = content;
@@ -38,7 +39,16 @@ public class FeedDetailData {
         this.ViewCount = viewCount;
         this.likeFlag = likeFlag;
         this.replies = replies;
+        this.replyCount = repltcount;
     }
+
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
+	}
 
 	public List<ReplyData> getReplies() {
 		return replies;
