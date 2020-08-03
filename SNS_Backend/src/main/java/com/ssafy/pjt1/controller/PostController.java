@@ -104,7 +104,6 @@ public class PostController {
         img.setFilename(destinationFileName);
         img.setFileOriname(sourceFileName);
         img.setFileurl(fileUrl);
-        img.setFile(files);
 
         // 게시물 업로드 시작!
         Post post = new Post();
@@ -215,7 +214,7 @@ public class PostController {
     		}
     		
             feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
-                    list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), 1 ,reply, reply.size(), post.getFiles().getFile());
+                    list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), 1 ,reply, reply.size());
         }else{
             System.out.println("없는 파일");
         }
@@ -461,7 +460,7 @@ public class PostController {
         		}
         		
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag,reply, reply.size(), post.getFiles().getFile());
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag,reply, reply.size());
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");
