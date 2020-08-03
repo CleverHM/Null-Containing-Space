@@ -238,7 +238,7 @@ public class PostController {
             		}
             		
                     res.add( new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),postList.get(i).getCreateDate(),postList.get(i).getTitle(), postList.get(i).getUser().getNickname(),
-                            out, tag, count, likeFlag));
+                            out, tag, count, likeFlag, postList.get(i).getReplies().size() ));
                     //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
                 }else{
                     System.out.println("없는 파일");
@@ -321,11 +321,11 @@ public class PostController {
         		List<ReplyData> reply = new LinkedList<ReplyData>();
         		
         		for(int i = 0; i <  post.getReplies().size(); i ++) {
-        			reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(), post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate()));
+        			reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(), post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(), post.getUser().getUid()));
         		}
         		
                 feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),post.getCreateDate(), 
-                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag,reply);
+                        list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), likeFlag,reply, reply.size());
                 //respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
             }else{
                 System.out.println("없는 파일");
