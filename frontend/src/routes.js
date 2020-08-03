@@ -116,7 +116,8 @@ export default [
     {
         path : '/feed/update',
         name : 'FeedUpdate',
-        component : FeedCreate
+        component : FeedCreate,
+        props: true,
     },
     {
         path : '/feed/comment',

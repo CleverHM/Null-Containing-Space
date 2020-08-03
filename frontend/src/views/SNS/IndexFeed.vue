@@ -45,7 +45,7 @@ export default {
 
   created() {
     console.log('feed창')
-    console.log(storage.getItem("User"))
+    // console.log(storage.getItem("User"))
     // var email = storage.getItem("User")
     // let formData = new FormData();
     // formData.append("email", storage.getItem("User"));
