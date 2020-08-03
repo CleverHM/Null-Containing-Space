@@ -36,8 +36,7 @@ export default {
     // 받아온 시간(string) - date (형식 변환)
     var postDate = new Date(this.reply.createData)
     this.diffTime = this.dateCheck(postDate);
-    console.log(this.reply)
-    if (this.reply.uid === storage.getItem("User")) {
+    if (this.reply.email === storage.getItem("User")) {
       this.userCheck = true;
     }
   },
