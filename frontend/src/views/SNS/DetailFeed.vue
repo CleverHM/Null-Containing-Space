@@ -19,7 +19,7 @@
             {{ article.title }}
           </div>
           <div>
-            <b-icon-three-dots-vertical @click="udButton"></b-icon-three-dots-vertical>
+            <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
           </div>
         </div>
 
@@ -90,6 +90,7 @@ import http from "../../util/http-common.js";
 import axios from 'axios';
 
 const storage = window.sessionStorage;
+var now = new Date(); // 현재 시간 받아오기
 
 export default {
   name: "detailFeed",
@@ -116,7 +117,7 @@ export default {
       udOn: false,
       article: {
         content: "",
-        data: "",
+        date: "",
         file: "",
         likeCount: 0,
         likeFlag: 0,
@@ -136,6 +137,12 @@ export default {
   created() {
     this.dataReceive();
     this.likeCheck();
+
+    var now = new Date();
+    console.log('시간---')
+    console.log(now.getDate())
+    console.log(now.getHours())
+
   },
 
   methods: {
@@ -174,6 +181,8 @@ export default {
         this.article = res.data
         console.log('check')
         console.log(this.article)
+        console.log('타입체크')
+        console.log(typeof(this.article.date))
       })
       .catch((err) => {
         console.log(err)
@@ -259,7 +268,7 @@ export default {
 
 <style scope>
 .feedpage {
-  margin: 85px 5px 55px 5px;
+  margin: 70px 5px 55px 5px;
   padding: 10px;
   background-color: white;
   border-radius: 10px;
@@ -347,7 +356,6 @@ export default {
 }
 
 .ud-part {
-  position: float;
   float: right;
   background-color: #f7f7f7;
 }
