@@ -5,6 +5,7 @@ import Join from './views/user/Join.vue'
 import findPassword from './views/user/FindPassword.vue'
 import getAbility from './views/user/getAbility.vue'
 import profile from './views/user/profile.vue'
+import UserModify from './views/user/UserModify.vue'
 
 // Feed
 import FeedMain from './views/SNS/IndexFeed.vue'
@@ -55,6 +56,11 @@ export default [
         path : '/user/profile',
         name : 'profile',
         component : profile
+    },
+    {
+        path : '/user/modify',
+        name : 'UserModify',
+        component : UserModify
     },
     // Main
     {
