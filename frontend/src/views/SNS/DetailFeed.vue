@@ -241,7 +241,6 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-        console.log('ERROR!!');
       })
     },
 
@@ -304,7 +303,7 @@ export default {
 
 <style scope>
 .feedpage {
-  margin: 70px 5px 55px 5px;
+  margin: 65px 5px 55px 5px;
   padding: 10px;
   background-color: white;
   border-radius: 10px;

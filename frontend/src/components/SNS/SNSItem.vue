@@ -222,7 +222,11 @@ export default {
 }
 
 .title-part {
-  color: #464545;
+  color: #464545; 
+  width: 98%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .img-part {
