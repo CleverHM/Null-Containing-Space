@@ -1,6 +1,8 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -18,12 +20,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt1.dto.Ability;
 import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.User;
+import com.ssafy.pjt1.model.AbilityRequest;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
 import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.JwtService;
+import com.ssafy.pjt1.service.MatchingService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +49,9 @@ public class UserController {
 	
 	@Autowired
 	private JwtService jwtservice;
+	
+	@Autowired
+	MatchingService matchingservice;
 
 // 중복 체크
 	@PostMapping("/account/nickNameDuplicate")
@@ -205,6 +213,38 @@ public class UserController {
 	        result.data = "fail";
 	        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 	    }
+	}
+	
+	@PostMapping("/account/ability")
+	@ApiOperation(value = "개인 능력치 입력", notes = "개인 능력치 입력 구현")
+	public void getAbility(@Valid @RequestParam String email, @RequestBody AbilityRequest request) {
+		List<Integer> list = new ArrayList<>();
+		list = request.getAbility();
+
+		Optional<User> u = userservice.findone(email);
+		User user = u.get();
+		
+		Ability abt = new Ability(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5), list.get(6),list.get(7),list.get(8),list.get(9), list.get(10), list.get(11),list.get(12), list.get(13),list.get(14));
+		user.setAbility(abt);
+		
+		userservice.signUp(user);
+	}
+	
+	
+	@PostMapping("/account/matching")
+	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
+	public Object matchingAlgo(@Valid @RequestBody AbilityRequest request) {
+//		Optional<User> u = userservice.findone(email);
+
+
+//		matchingservice.match(request.getBack(), request.getFront(),request.getDatabase(),request.getFrame(),request.getAlgo());
+		
+
+		ResponseEntity response = null;
+
+
+
+		return response;
 	}
 
 }
