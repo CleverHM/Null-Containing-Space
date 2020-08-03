@@ -140,12 +140,6 @@ export default {
   created() {
     this.dataReceive();
     this.likeCheck();
-
-    // var now = new Date();
-    // console.log('시간---')
-    // console.log(now.getDate())
-    // console.log(now.getHours())
-
   },
 
   methods: {
@@ -170,7 +164,6 @@ export default {
     },
 
     dataReceive() {
-      // console.log(this.postId)
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("pid", this.postId);
@@ -179,12 +172,8 @@ export default {
       http
       .post('/post/postDetail', formData)
       .then((res) => {
-        // console.log(res.data)
         // 받아온 데이터를 집어 넣기
         this.article = res.data
-        console.log('check')
-        console.log(this.article)
-        console.log('시간')
 
         // 받아온 시간(string) - date (형식 변환)
         var postDate = new Date(this.article.date)
@@ -205,12 +194,6 @@ export default {
       var diff_day = Math.floor(diff_hour / 24)
       var diff_month = Math.floor(diff_day / 30)
       var diff_year = Math.floor(diff_month / 12)
-      // console.log(diff_sec, '초')
-      // console.log(diff_min, '분')
-      // console.log(diff_hour, '시간')
-      // console.log(diff_day, '일')
-      // console.log(diff_month, '달')
-      // console.log(diff_year, '년')
 
       if (diff_year > 0) {
         var calyear = diff_year + '년 전'

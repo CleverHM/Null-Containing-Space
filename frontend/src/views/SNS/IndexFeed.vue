@@ -8,7 +8,7 @@
       </div>
 
       <!-- 출력될 피드 게시물 - SNSItem으로 article 객체 데이터 넘겨줌 -->
-      <SNSItem v-for="article in articles" :article="article" :key="article.title" @tag-add="tagAdd"/>
+      <SNSItem v-for="article in articles" :article="article" :key="article.pid" @tag-add="tagAdd"/>
     </div>
     <!-- 작성 -->
     <button class="createArticle" @click="articleSubmit"><b-icon-pencil-square></b-icon-pencil-square></button>
