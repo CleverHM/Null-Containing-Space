@@ -3,7 +3,7 @@ package com.ssafy.pjt1.model;
 import java.util.Date;
 import java.util.List;
 
-import com.ssafy.pjt1.dto.Reply;
+import org.springframework.web.multipart.MultipartFile;
 
 public class FeedDetailData {
     int pid;
@@ -25,8 +25,10 @@ public class FeedDetailData {
     private List<ReplyData> replies;
     private int replyCount;
     
+    private MultipartFile mfile;
+    
     public FeedDetailData(int pid, String title, String content, Date date, List<String> tags, String userNickname,
-            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies, int repltcount) {
+            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies, int repltcount, MultipartFile mf) {
         this.pid = pid;
         this.title = title;
         this.content = content;
@@ -40,7 +42,16 @@ public class FeedDetailData {
         this.likeFlag = likeFlag;
         this.replies = replies;
         this.replyCount = repltcount;
+        this.mfile = mf;
     }
+
+	public MultipartFile getMfile() {
+		return mfile;
+	}
+
+	public void setMfile(MultipartFile mfile) {
+		this.mfile = mfile;
+	}
 
 	public int getReplyCount() {
 		return replyCount;
