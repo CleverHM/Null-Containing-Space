@@ -1,27 +1,34 @@
 
-
+// User
 import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import findPassword from './views/user/FindPassword.vue'
 import getAbility from './views/user/getAbility.vue'
-
 import profile from './views/user/profile.vue'
 
+// Feed
 import FeedMain from './views/SNS/IndexFeed.vue'
 import FeedDetail from './views/SNS/DetailFeed.vue'
 import FeedCreate from './views/SNS/CreateFeed.vue'
 import FeedComment from './views/SNS/CommentFeed.vue'
 
-import Components from './views/Components.vue'
-
+// Main
 import Main from './views/Main.vue'
+import Search from './views/search/Search.vue';
+import Notice from './views/Notice.vue'
 
+// study
 import StudyList from './views/study/StudyList.vue'
 import StudyDetail from './views/study/StudyDetail.vue'
 import StudyMatching from './views/study/StudyMatching.vue'
 
-import Search from './views/search/Search.vue';
-import Notice from './views/Notice.vue'
+// team
+import teamMatch from './views/team/teamMatch.vue'
+import Specs from './views/team/Specification.vue'
+import createTeam from './views/team/createTeam.vue'
+
+
+import Components from './views/Components.vue'
 
 export default [
     {
@@ -49,13 +56,23 @@ export default [
         name : 'profile',
         component : profile
     },
-
+    // Main
     {
         path : '/main',
         name : 'Main',
         component : Main
     },
-
+    {
+        path : '/search',
+        name : 'Search',
+        component : Search
+    },
+    {
+        path : '/notice',
+        name : 'Notice',
+        component : Notice
+    },
+    // Study
     {
         path : '/study/list',
         name : 'StudyList',
@@ -71,7 +88,7 @@ export default [
         name : 'StudyMatching',
         component : StudyMatching
     },
-
+    // Feed
     {
         path : '/feed',
         name : 'FeedMain',
@@ -94,16 +111,24 @@ export default [
         name : 'FeedComment',
         component : FeedComment
     },   
+    // Team
     {
-        path : '/search',
-        name : 'Search',
-        component : Search
-    },
+        path : '/team/create',
+        name : 'createTeam',
+        component : createTeam
+    }, 
     {
-        path : '/notice',
-        name : 'Notice',
-        component : Notice
-    },
+        path : '/team/specs',
+        name : 'Specs',
+        component : Specs
+    }, 
+    {
+        path : '/team/match',
+        name : 'teamMatch',
+        component : teamMatch
+    }, 
+
+    // Component
     {
         path : '/components',
         name : 'Components',

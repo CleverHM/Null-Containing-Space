@@ -1,7 +1,7 @@
 <template>
     <div class="subbutton d-flex fixed-top justify-content-between">
         <button class="study-button">
-            공모전/스터디
+            프로젝트
         </button>
         <button class="info-button">
             SNS
