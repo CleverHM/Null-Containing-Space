@@ -4,7 +4,7 @@
       <Navbar></Navbar>
 
       <!-- 수정삭제 부분 -->
-      <div v-if="udOn" class=" ud-part">
+      <div v-if="udOn" class="ud-part">
         <router-link :to="{ name: 'FeedUpdate', params: { postId: postId }}">
           <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
         </router-link>
