@@ -58,7 +58,6 @@
 
 <script>
 import Navbar from '../../components/common/Navigation.vue'
-// import subNav from '../../components/common/subnav.vue'
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -68,7 +67,6 @@ export default {
   name: "CreateFeed",
   components: {
     Navbar,
-    // subNav,
   },
   data() {
     return {
