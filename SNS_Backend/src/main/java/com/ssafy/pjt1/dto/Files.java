@@ -7,8 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -24,7 +22,6 @@ public class Files {
 	private String filename;
 	private String fileOriname;
 	private String fileurl;
-	private MultipartFile file;
 	
 	//이미지 : 게시물(1 : 1 관계)
 	@OneToOne(mappedBy = "files")
@@ -35,20 +32,11 @@ public class Files {
 		
 	}
 
-	public Files(int fid, String filename, String fileOriname, String fileurl, MultipartFile file) {
+	public Files(int fid, String filename, String fileOriname, String fileurl) {
 		this.fid = fid;
 		this.filename = filename;
 		this.fileOriname = fileOriname;
 		this.fileurl = fileurl;
-		this.file = file;
-	}
-	
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
 	}
 
 	public int getFid() {
