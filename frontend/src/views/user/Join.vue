@@ -1,25 +1,25 @@
 <template>
-  <div class="JoinView">
-    <div class="progress-container">
-      <ul class="progressbar">
-        <button id="Step1" :disable="!isActiveStep1" :class="{'active':isActiveStep1}">이메일 입력</button>
-        <button id="Step2" :disable="!isActiveStep2" :class="{'active':isActiveStep2}">이메일 인증</button>
-        <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">회원가입 폼 작성</button>
-      </ul>
-    </div>
-
-    <div v-if="isActiveStep2">
-      <div v-if="isActiveStep3">
-        <Join3 @ConfirmJoin="Join" :user="user"></Join3>
+  <div id="JoinView">
+      <div class="progress-container">
+        <ul class="progressbar">
+          <button id="Step1" :disable="!isActiveStep1" :class="{'active':isActiveStep1}">이메일 입력</button>
+          <button id="Step2" :disable="!isActiveStep2" :class="{'active':isActiveStep2}">이메일 인증</button>
+          <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">회원가입 폼 작성</button>
+        </ul>
       </div>
+
+      <div v-if="isActiveStep2">
+        <div v-if="isActiveStep3">
+          <Join3 @ConfirmJoin="Join" :user="user"></Join3>
+        </div>
+        <div v-else>
+          <Join2 @ConfirmCode="Gostep3" @Resend="resend" :email="user.email" :ErrorMessage="ErrorMsg.auth"></Join2>
+        </div>
+      </div>
+
       <div v-else>
-        <Join2 @ConfirmCode="Gostep3" @Resend="resend" :email="user.email" :ErrorMessage="ErrorMsg.auth"></Join2>
+        <Join1 @ConfirmEmail="Gostep2" :ErrorMessage="ErrorMsg.email"></Join1>
       </div>
-    </div>
-
-    <div v-else>
-      <Join1 @ConfirmEmail="Gostep2" :ErrorMessage="ErrorMsg.email"></Join1>
-    </div>
 
   </div>
 </template>
@@ -52,8 +52,8 @@ export default {
       },
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : false,
-      isActiveStep3 : false,
+      isActiveStep2 : true,
+      isActiveStep3 : true,
       ErrorMsg: {
         email: "",
         auth: "",
@@ -139,6 +139,9 @@ export default {
 </script>
 
 <style scoped>
+#JoinView{
+  width: 100vw;
+}
 .progress-container{
   width:100%;
   position: absolute;
@@ -150,10 +153,10 @@ export default {
 }
 .progressbar button{
   float: left;
-  width: 33.333%;
+  width: 33.3333%;
   position: relative;
   text-align: center;
-  border: 0;
+  border: 0;  
   outline: 0;
   cursor: default;
 }
