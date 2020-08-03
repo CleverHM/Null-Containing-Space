@@ -17,7 +17,7 @@
                             <li class="menu-tiem"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>회원 등급</li>
                             <hr>
                             <li class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
-                            <li class="menu-tiem"><b-icon-pencil scale="1.1" class="mr-2"/>회원정보 수정</li>
+                            <li class="menu-tiem" @click="goModifyUser"><b-icon-pencil scale="1.1" class="mr-2"/>회원정보 수정</li>
                         </div>
                     </div>
                 <!-- <b-icon-question-circle-fill v-if="currentRouteName === 'profile'" class="icons question-circle-icon" scale="1.3"></b-icon-question-circle-fill> -->
@@ -53,8 +53,9 @@ export default {
       goPageDropdown() {
           this.$router.push("/page")
       },
-
-      
+      goModifyUser() {
+          this.$router.push("/user/modify")
+      },
       toggleShow: function() {
           this.showMenu = !this.showMenu;
       },
