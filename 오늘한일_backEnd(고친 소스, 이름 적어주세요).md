@@ -110,3 +110,6 @@
   - User Dto 수정(Spring)
   - User삭제 Controller 수정(Spring)
 - 김호한
+  - 게시판 업데이트 사진 부분 완료 (Spring)
+  - 해쉬태그를 이용한 게시물 정렬 기능 구현 완료 (Spring)
+  - 프로필 사진 추가 (Spring)
