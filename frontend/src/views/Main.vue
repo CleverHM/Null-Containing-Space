@@ -23,7 +23,7 @@ import TeamIn from '../components/team/TeamIn.vue'
 import TeamOut from '../components/team/TeamOut.vue'
 
 export default {
-  name:"main",
+  name:"Main",
   components: {
       Navbar,
       subNav,

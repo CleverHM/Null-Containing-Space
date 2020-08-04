@@ -1,8 +1,8 @@
 <template>
     <div style="top:0">
-        <Navbar></Navbar>
+        <Navbar :showMenu="showMenu" @toggleShow="toggleMenu"></Navbar>
         <subNav></subNav>
-        <div id="profile">
+        <div id="profile" @click="noshowMenu">
             <div id="baseProfile" style="height: 150px;">
                 <!-- 프로필 이미지  -->
                 <div class="profileImg"></div>
@@ -14,8 +14,10 @@
                         <button class="follower">0<br>팔로워</button>
                         <button class="following">1<br>팔로잉</button>
                     </div>
-                    <button class="btn-follow" v-if="false">팔로우</button>
-                    <button class="btn-follow" v-else>회원정보수정</button>
+                    <div class="profile-btns">
+                        <button class="btn-follow" v-if="false">팔로우</button>
+                        <button class="btn-follow" v-else>회원정보수정</button>
+                    </div>
                 </div>
             </div>
 
@@ -118,7 +120,8 @@ export default {
     },
     data : () => {
         return {
-            
+            // navigation dropdown
+            showMenu: false,
             blogLink : "dsdfsdfsfd",
             gitLink : "",
             tabs: TABS,
@@ -128,6 +131,12 @@ export default {
     methods : {
          handleClick(newTab) {
         this.currentTab = newTab;
+        },
+        noshowMenu() {
+          this.showMenu = false;
+        },
+        toggleMenu(isshow) {
+          this.showMenu = isshow;
         },
     }
 
@@ -161,9 +170,11 @@ export default {
 .follow button {
   width: 50%;
 }
+.profile-btns {
+  padding: 0 0 0 135px;
+}
 .btn-follow{
-    margin-left: 15px;
-    width: 63%;
+    width: 100%;
     background-color: #464545;
     border-radius: 3px;
     color: #f7f7f7;
