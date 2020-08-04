@@ -18,8 +18,8 @@
         <b-form-group style="font-family: 'NanumBarunGothic', sans-serif; font-weight: bold;  font-size:13px;">
           <b-form-file 
             v-model="article.file"
-            placeholder="이미지를 업로드해주세요."
-            :state="Boolean(article.file)"
+            :placeholder="image.placeholder"
+            :state="image.state"
             id="file"
             ref="file"
             v-on:change="handleFileUpload()"
@@ -30,6 +30,7 @@
         </b-form-group>
       </div>
       <div v-if="updateCheck">
+        <!-- 임시로 원래 들어간 이미지 띄우기 -->
         <img :src="'data:image/png;base64, ' + updateImage" alt="image" class="img-part" style="width: 50px;">
       </div>
 
@@ -72,6 +73,20 @@ export default {
   components: {
     Navbar,
   },
+  computed: {
+    // image 파일을 보여줘야하는가?
+    updateCheck() {
+      this.imageInformation();
+      if (this.article.file) {
+        return false
+      } else if (this.$route.name === 'FeedUpdate') {
+        return true
+      } else {
+        return false
+      }
+    },
+  },
+
   data() {
     return {
       maxLength: 1000,
@@ -81,43 +96,53 @@ export default {
         hashtags: [],
         file: null,
       },
-      updateCheck: false,
+      // 이미지 상태 관련
+      image: {
+        state: false,
+        placeholder: '',
+      },
       updateImage: '',
+      notchangeImage: false, // 게시글 수정에서 이미지가 업데이트 되었는지 여부
       hashtag: "",
     }
   },
 
   created() {
     if (this.$route.name === 'FeedUpdate') {
-      this.updateCheck = true,
       this.bringPost(this.pId);
     }
   },
 
   methods: {
-    // 글 수정일 경우
+    // 이미지 정보 상태 체크
+    imageInformation() {
+      // 파일이 들어갔을 때 / 게시글 수정으로 들어왔을 때 / 전부 아닐 때
+      if (this.article.file) {
+        this.image.state = true
+        this.image.placeholder = '이미지를 등록해주세요'
+        this.notchangeImage = false
+      } else if (this.$route.name === 'FeedUpdate') {
+        this.image.state = true
+        this.image.placeholder = 'Before_Image.png'
+        this.notchangeImage = true
+      } else {
+        this.image.state = false
+        this.image.placeholder = '이미지를 등록해주세요'
+        this.notchangeImage = false
+      }
+    },
+
+    // 글 수정일 경우 처음 기존 데이터 가져오기
     bringPost() {
       var postId = parseInt(this.pId) // string -> 정수 변환
-      console.log(postId)
 
       http
       .post('/post/modifyData', postId)
       .then((res) => {
-        console.log(res.data)
         // 직접 값 집어넣기
         this.article.title = res.data.title
         this.article.content = res.data.content
         this.article.hashtags = res.data.tags
-        // console.log(res.data.file)
-
-        // base64 image -> file object
-        // var base64ImageString = '';
-        // for (var i in res.data.file.data) {
-        //     var tmpInt = res.data.file.data[i];
-        //     base64ImageString += String.fromCharCode(tmpInt);
-        // }
-        // document.getElementById('#myImg').src = base64ImageString;
-        // console.log(base64ImageString)
         this.updateImage = res.data.file
 
       })
@@ -132,6 +157,7 @@ export default {
         this.errorMsg();
       } else if (this.$route.name === 'FeedUpdate') {
         console.log('글 수정')
+        this.submitModify();
       } else {
         this.submitOn();
       }
@@ -139,6 +165,53 @@ export default {
 
     errorMsg() {
       alert('제목을 입력하세요.')
+    },
+
+    // 수정 사항을 저장하기 위한 요청 2단계로 나눔
+    submitModify() {
+      var postId = parseInt(this.pId)
+
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("title", this.article.title);
+      formData.append("content", this.article.content);
+      formData.append("hashtags", this.article.hashtags);
+      formData.append("pid", postId);
+
+      // 이미지 변화가 없을 때 / 있을 때
+      if (this.notchangeImage) {
+        
+        http
+        .post("/post/modifyFalse", formData)
+        .then((res) => {
+          this.$router.push({ name: 'FeedDetail', params: { postId: postId }});
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      } else {
+
+        formData.append("files", this.article.file);
+
+        http
+        .post("/post/modifyTrue", 
+          formData,
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+        .then((res) => {
+          this.$router.push({ name: 'FeedDetail', params: { postId: postId }});
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      }
+
     },
 
     submitOn() {
