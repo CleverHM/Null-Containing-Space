@@ -6,29 +6,30 @@
             <div id="baseProfile" style="height: 150px;">
                 <!-- 프로필 이미지  -->
                 <div class="profileImg">
-                  <img src="@/assets/images/test.jpg">
+                  <img v-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
+                  <img v-else src="@/assets/images/profile_default.png">
                 </div>
                 <!-- 이름/팔로우 -->
                 <div class="profileInfo">
                     <!-- 닉네임 -->
-                    <div class="profileName">알골마스터</div>
+                    <div class="profileName">{{ User.nickname }}</div>
                     <div class="follow">
-                        <button class="follower">0<br>팔로워</button>
-                        <button class="following">1<br>팔로잉</button>
+                        <button class="follower">{{ User.followercount }}<br>팔로워</button>
+                        <button class="following">{{ User.followingcount }}<br>팔로잉</button>
                     </div>
                     <div class="profile-btns">
-                        <button class="btn-follow" v-if="false">팔로우</button>
-                        <button class="btn-follow" v-else @click="goUserModify">회원정보수정</button>
+                        <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
+                        <button class="btn-follow" v-else>팔로우</button>
                     </div>
                 </div>
             </div>
 
             <!-- 블로그 & 깃 !-->
-            <button :class="[{'btn-on' : blogLink}, {'btn-off' : !blogLink}]">
+            <button :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]">
             <i class="fab fa-blogger fa-2x"></i>
             <br><p>BLOG</p>
             </button>
-            <button :class="[{'btn-on' : gitLink}, {'btn-off' : !gitLink}]">
+            <button :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
             <i class="fab fa-git-square fa-2x"></i>
             <br><p>GIT</p>
             </button>
@@ -48,12 +49,12 @@
           <div v-if="currentTab === 'tab1'">
             
             <!-- 자기소개 !-->
-            <div id="introduce" class="my-3">
-            안녕하세요 알골마스터입니다. <br />
-            잘지내보아요.<br/><br/>
-
-            관심 분야<br/>
-            ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+            <div id="introduce" class="my-3" v-if="User.Introduce">
+            {{ User.Introduce }}
+            </div>
+            <div id="introduce" class="my-3" v-else>
+            자기소개가 없습니다. <br>
+            회원정보수정에서 자기소개를 추가해주세요.
             </div>
 
             <!-- 태그 뱃지 !-->
@@ -63,7 +64,7 @@
 
           </div>
           <div v-if="currentTab === 'tab2'">
-            ability
+            {{ User.ability }}
           </div>
         
         </div>
@@ -104,13 +105,26 @@ export default {
     created() {
       this.getUserInfo()
     },
+    computed: {
+      isMe() {
+        return storage.NickName === this.User.nickname
+      }
+    },
     data : () => {
         return {
+            User: {
+              nickname: null,
+              followingcount: 0,
+              followercount: 0,
+              blogURL: null,
+              GitURL: null,
+              Introduce: null,
+              profileURL: null,
+              ability: null,
+            },
             // navigation dropdown
             showMenu: false,
             nickname: storage.NickName,
-            blogLink : "dsdfsdfsfd",
-            gitLink : "",
             tabs: TABS,
             currentTab: 'tab1',
         }
@@ -121,8 +135,17 @@ export default {
           InputData.append("nickname", this.nickname)
           http
           .post("/account/myPage", InputData)
-          .then((data) => {
+          .then(({data}) => {
             console.log(data)
+            this.User.nickname = data.nickname
+            this.User.Introduce = data.intro
+            this.User.profileURL = data.file
+            this.User.followingcount = data.followingCnt
+            this.User.followercount = data.followerCnt;
+            this.User.blogURL = data.blogaddr
+            this.User.GitURL = data.gitaddr
+            this.User.ability = data.abt
+            console.log(this.User)
           })
           .catch((err) => {
             console.log(err)

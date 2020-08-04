@@ -13,7 +13,7 @@
             <div class="name"><small>알림</small></div>
         </button>
         <button class="navbtn">
-        <router-link :to="{ name: 'profile', params: { postId: nickname }}">
+        <router-link class="navbtn" :to="{ name: 'profile', params: { postId: nickname }}">
             <b-icon-person-circle></b-icon-person-circle><br />
             <div class="name"><small>프로필</small></div>
         </router-link>
@@ -60,6 +60,7 @@ export default {
     background-color: #EDECEA;
 }
 .navbtn{
+    color: #464545;
     padding-top: 3px;
     width: 25%;
 }

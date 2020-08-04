@@ -1,9 +1,9 @@
 
 // User
 import Login from './views/user/Login.vue'
-import Join from './views/user/getAbility.vue'
+import getAbility from './views/user/getAbility.vue'
 import findPassword from './views/user/FindPassword.vue'
-import getAbility from './views/user/Join.vue'
+import Join from './views/user/Join.vue'
 import profile from './views/user/profile.vue'
 import UserModify from './views/user/UserModify.vue'
 
