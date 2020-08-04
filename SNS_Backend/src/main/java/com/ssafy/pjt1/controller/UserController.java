@@ -96,6 +96,28 @@ public class UserController {
 	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
+		Profile img = new Profile();
+
+		String sourceFileName = "standard.PNG";
+		System.out.println(sourceFileName);
+		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+		File destinationFile;
+		String destinationFileName;
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+
+		do {
+			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
+			destinationFile = new File(fileUrl + destinationFileName);
+		} while (destinationFile.exists());
+
+		destinationFile.getParentFile().mkdirs();
+		//profile.transferTo(destinationFile);
+
+		img.setFilename(destinationFileName);
+		img.setFileOriname(sourceFileName);
+		img.setFileurl(fileUrl);
+		
+		
 		List<Integer> list = request.getAbility();
 		
 		Ability abt = new Ability(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5),
@@ -103,7 +125,7 @@ public class UserController {
 				list.get(13), list.get(14));
 		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt);
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img);
 
 		User user2 = userservice.signUp(user1);
 		System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
