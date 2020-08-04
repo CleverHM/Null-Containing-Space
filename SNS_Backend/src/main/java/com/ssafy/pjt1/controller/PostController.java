@@ -654,11 +654,17 @@ public class PostController {
 
     		}
             
-    		Set<FeedData> dupl = new HashSet<FeedData>(res);
+
+    		List<FeedData> res1 = new LinkedList<FeedData>();
+    		for(int i = 0; i < res.size(); i++) {
+    			for(int k = 0; k < res1.size(); k++) {
+    				if(res1.get(k).getPid() != res.get(i).getPid()) {
+    					res1.add(res.get(i));
+    				}
+    			}
+    		}
     		
-    		List<FeedData> result = new LinkedList<FeedData>(dupl);
-    		
-    		Collections.sort(result, new Comparator<FeedData>() {
+    		Collections.sort(res1, new Comparator<FeedData>() {
 
     			@Override
     			public int compare(FeedData o1, FeedData o2) {
@@ -667,7 +673,7 @@ public class PostController {
     			}
     		});
             
-            return result;
+            return res1;
         }
 
 }
