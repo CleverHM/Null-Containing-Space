@@ -1,6 +1,10 @@
 package com.ssafy.pjt1.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +18,7 @@ import javax.validation.Valid;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,11 +32,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.pjt1.dto.Ability;
 import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.Profile;
+import com.ssafy.pjt1.dto.TagFollow;
 import com.ssafy.pjt1.dto.User;
-import com.ssafy.pjt1.model.AbilityRequest;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
+import com.ssafy.pjt1.model.MachingRequest;
+import com.ssafy.pjt1.model.MyPageData;
 import com.ssafy.pjt1.model.SignupRequest;
+import com.ssafy.pjt1.service.FollowService;
 import com.ssafy.pjt1.service.JwtService;
 import com.ssafy.pjt1.service.MatchingService;
 import com.ssafy.pjt1.service.UserService;
@@ -57,6 +65,9 @@ public class UserController {
 
 	@Autowired
 	MatchingService matchingservice;
+	
+	@Autowired
+	FollowService followservice; 
 
 // 중복 체크
 	@PostMapping("/account/nickNameDuplicate")
@@ -85,9 +96,14 @@ public class UserController {
 	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
-
+		List<Integer> list = request.getAbility();
+		
+		Ability abt = new Ability(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5),
+				list.get(6), list.get(7), list.get(8), list.get(9), list.get(10), list.get(11), list.get(12),
+				list.get(13), list.get(14));
+		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender());
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt);
 
 		User user2 = userservice.signUp(user1);
 		System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
@@ -237,26 +253,9 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/ability")
-	@ApiOperation(value = "개인 능력치 입력", notes = "개인 능력치 입력 구현")
-	public void getAbility(@Valid @RequestParam String email, @RequestBody AbilityRequest request) {
-		List<Integer> list = new ArrayList<>();
-		list = request.getAbility();
-
-		Optional<User> u = userservice.findone(email);
-		User user = u.get();
-
-		Ability abt = new Ability(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5),
-				list.get(6), list.get(7), list.get(8), list.get(9), list.get(10), list.get(11), list.get(12),
-				list.get(13), list.get(14));
-		user.setAbility(abt);
-
-		userservice.signUp(user);
-	}
-
 	@PostMapping("/account/matching")
 	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public Object matchingAlgo(@Valid @RequestBody AbilityRequest request) {
+	public Object matchingAlgo(@Valid @RequestBody MachingRequest request) {
 //		Optional<User> u = userservice.findone(email);
 
 //		matchingservice.match(request.getBack(), request.getFront(),request.getDatabase(),request.getFrame(),request.getAlgo());
@@ -264,6 +263,67 @@ public class UserController {
 		ResponseEntity response = null;
 
 		return response;
+	}
+	
+	@PostMapping("/account/myPage")
+    @ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
+    public MyPageData myPageDetail(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException{
+		List<String> tag = new ArrayList<>();
+		List<Integer> abt = new ArrayList<>();
+		
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+		
+		System.out.println(user.getEmail());
+		
+		int followercnt = followservice.followerCount(user);
+		int followingcnt = followservice.followingCount(user);
+		
+		System.out.println(followercnt + ", " + followingcnt);
+		
+		if(user.getTagfollows().size()!=0) {	
+			for(TagFollow t : user.getTagfollows()) { 
+				System.out.print(t.getTag().getName() + " ");
+				tag.add(t.getTag().getName());
+			}
+		}
+		abt.add(user.getAbility().getBack_cpp());
+		abt.add(user.getAbility().getBack_java());
+		abt.add(user.getAbility().getBack_python());
+		abt.add(user.getAbility().getBack_php());
+		abt.add(user.getAbility().getFront_html());
+		abt.add(user.getAbility().getFront_css());
+		abt.add(user.getAbility().getFront_javascript());
+		abt.add(user.getAbility().getDb_sql());
+		abt.add(user.getAbility().getDb_nosql());
+		abt.add(user.getAbility().getFrame_spring());
+		abt.add(user.getAbility().getFrame_django());
+		abt.add(user.getAbility().getFrame_bootstrap());
+		abt.add(user.getAbility().getFrame_vue());
+		abt.add(user.getAbility().getFrame_react());
+		
+		MyPageData mypage = null;
+		
+		 // 이미지
+        byte[] reportBytes = null;
+        File result=new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
+        
+        if(result.exists()){
+            System.out.println("있음");
+            InputStream inputStream = new FileInputStream(user.getProfile().getFileurl() + user.getProfile().getFilename());
+            String type=result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+
+            byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
+            responseHeaders.add("Content-Type",type);
+		
+            mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(), user.getIntro(), tag, abt, out);
+        }
+        else System.out.println("프로필 파일 없음");
+        
+		return mypage;
 	}
 
 }
