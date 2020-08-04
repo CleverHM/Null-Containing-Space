@@ -3,6 +3,8 @@ package com.ssafy.pjt1.model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.ToString;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -38,8 +40,53 @@ public class SignupRequest {
     @ApiModelProperty(required = true)
     @NotNull
     boolean gender;
+    
+    @ApiModelProperty(required = true)
+    private String gitaddr;
+    @ApiModelProperty(required = true)
+	private String blogaddr;
+    @ApiModelProperty(required = true)
+	private String intro;
+    
+    @ApiModelProperty(required = true)
+    @NotNull
+    List<Integer> ability;
+    
 
-    public String getName() {
+    
+    public String getGitaddr() {
+		return gitaddr;
+	}
+
+	public void setGitaddr(String gitaddr) {
+		this.gitaddr = gitaddr;
+	}
+
+	public String getBlogaddr() {
+		return blogaddr;
+	}
+
+	public void setBlogaddr(String blogaddr) {
+		this.blogaddr = blogaddr;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public List<Integer> getAbility() {
+		return ability;
+	}
+
+	public void setAbility(List<Integer> ability) {
+		this.ability = ability;
+	}
+
+	public String getName() {
 		return name;
 	}
 
