@@ -26,6 +26,18 @@ public class MyPageData {
 		this.abt = abt;
 		this.file = file;
 	}
+	
+	public MyPageData(String nickname, int followerCnt, int followingCnt, String blogaddr, String gitaddr, String intro,
+			List<String> tag, List<Integer> abt) {
+		this.nickname = nickname;
+		this.followerCnt = followerCnt;
+		this.followingCnt = followingCnt;
+		this.blogaddr = blogaddr;
+		this.gitaddr = gitaddr;
+		this.intro = intro;
+		this.tag = tag;
+		this.abt = abt;
+	}
 
 	public String getNickname() {
 		return nickname;

@@ -88,7 +88,7 @@ public class User {
 		this.password = password;
 		this.email = email;
 	}
-
+	
 	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile) {
 		this.nickname = nickname;
 		this.password = password;
