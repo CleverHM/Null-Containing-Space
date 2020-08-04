@@ -6,11 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -549,7 +548,7 @@ public class PostController {
         // 해당이메일 게시물 보내주기
         @PostMapping("/post/getHashtagPost")
         @ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-        public List<FeedData> getHashtagPost(@Valid @RequestParam String email, String[] hashtag) throws MalformedURLException, IOException {
+        public Set<FeedData> getHashtagPost(@Valid @RequestParam String email, String[] hashtag) throws MalformedURLException, IOException {
             
             System.out.println(email);
             
@@ -673,8 +672,10 @@ public class PostController {
     				return o2.getPid() - o1.getPid();
     			}
     		});
+    		
+    		Set<FeedData> unique = new LinkedHashSet<>(res1);
             
-            return res1;
+            return unique;
         }
 
 }
