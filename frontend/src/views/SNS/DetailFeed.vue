@@ -243,9 +243,6 @@ export default {
 
     // 좋아요 누름
     likeButton(event) {
-      // console.log('liked')
-      // console.log(storage.getItem("User"))
-      
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("postid", this.article.pid);
