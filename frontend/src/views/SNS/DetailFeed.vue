@@ -4,8 +4,8 @@
       <Navbar></Navbar>
 
       <!-- 수정삭제 부분 -->
-      <div v-if="udOn" class=" ud-part">
-        <router-link :to="{ name: 'FeedUpdate', params: { postId: postId }}">
+      <div v-if="udOn" class="ud-part">
+        <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}">
           <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
         </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
@@ -40,9 +40,9 @@
           <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
         </div>
 
-        <!-- content 부분 -->
-        <div class="page-content">
-          {{ article.content }}
+        <!-- content 부분. -->
+        <!-- content에 <br/>를 넣었으므로 {{}}이 아닌 v-html로 출력 -->
+        <div class="page-content" v-html="article.content">
         </div>
 
         <!-- 좋아요 부분 -->
@@ -62,7 +62,7 @@
 
         <!-- 댓글 part -->
         <div class="comment-part">
-          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id"></Comment>
+          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id" @delete-reply="refreshOn()"></Comment>
         </div>
 
         <!-- 댓글 작성창 -->
@@ -71,6 +71,7 @@
             placeholder="댓글을 작성해주세요."
             class="flex-fill"
             style="border:none;"
+            maxlength="255" 
             @keyup.enter="commentOn"/>
           <button class="px-3" @click="commentOn">
             작성
@@ -90,6 +91,7 @@ import axios from 'axios';
 
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
+
 
 export default {
   name: "detailFeed",
@@ -141,7 +143,6 @@ export default {
   methods: {
     // 좋아요 체크
     likeCheck() {
-      console.log(this.article.likeFlag)
       if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
@@ -176,6 +177,9 @@ export default {
         var postDate = new Date(this.article.date)
         this.article.date = postDate
         this.article.diffTime = this.dateCheck(this.article.date);
+
+        // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
+        this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
       })
       .catch((err) => {
         console.log(err)
@@ -222,7 +226,6 @@ export default {
 
     // 댓글 작성
     commentSubmit() {
-      console.log("comment submit!")
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("content", this.comment.content);
@@ -231,13 +234,11 @@ export default {
       http
       .post('/reply/create', formData)
       .then((res) => {
-        console.log('comment SUCCESS!!');
+        this.comment.content = "";
         this.dataReceive();
-        // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
         console.log(err);
-        console.log('ERROR!!');
       })
     },
 
@@ -253,7 +254,6 @@ export default {
       http
       .post('/like/post', formData)
       .then((res) => {
-        // console.log(res.data)
         this.article.likeCount = res.data.count
         this.article.likeFlag = res.data.flag
       })
@@ -267,7 +267,6 @@ export default {
       if (requestUser === this.article.userEmail) {
         this.udOn = !this.udOn;
       }
-      // console.log(this.udOn)
     },
 
     // 글 삭제
@@ -279,13 +278,17 @@ export default {
       )
       .then((res) => {
         console.log('delete')
-        console.log(res.data)
         this.$router.push({ name: 'FeedMain' });
       })
       .catch((err) => {
         console.log(err)
       })
 
+    },
+
+    // 댓글 삭제
+    refreshOn() {
+      this.dataReceive();
     },
 
   }
@@ -296,7 +299,7 @@ export default {
 
 <style scope>
 .feedpage {
-  margin: 70px 5px 55px 5px;
+  margin: 65px 5px 55px 5px;
   padding: 10px;
   background-color: white;
   border-radius: 10px;
@@ -314,6 +317,8 @@ export default {
   color: #464545;
   font-weight: bold;
   font-size: 20px;
+  white-space: normal;
+  word-break: break-all;
 }
 
 .user-part > div {
