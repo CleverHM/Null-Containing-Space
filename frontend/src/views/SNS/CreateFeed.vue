@@ -234,12 +234,10 @@ export default {
         }
       )
       .then((res) => {
-        console.log('SUCCESS!!');
-        this.$router.push("/feed");
+        this.moveFeed();
       })
       .catch((err) => {
         console.log(err)
-        console.log('FAILURE!!');
       })
           
     },
@@ -271,18 +269,18 @@ export default {
     },
     // 태그 클릭하면 -
     tagRemove(event) {
-      console.log(event.target.innerText)
-      console.log(this.article.hashtags)
-      console.log(this.article.hashtags.indexOf(event.target.innerText))
+      // console.log(event.target.innerText)
+      // console.log(this.article.hashtags)
+      // console.log(this.article.hashtags.indexOf(event.target.innerText))
       this.article.hashtags.splice(this.article.hashtags.indexOf(event.target.innerText),1)
       // console.log([...this.clicktags])
     },
     
     // 파일 업로드
     handleFileUpload() {
-      console.log(this.$refs.file.$refs.input.files)
+      // console.log(this.$refs.file.$refs.input.files)
       this.file = this.$refs.file.$refs.input.files[0];
-      console.log(this.file)
+      // console.log(this.file)
     },
 
   },

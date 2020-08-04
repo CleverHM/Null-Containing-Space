@@ -8,6 +8,7 @@
             </div>
             <div id="subject-check" class="d-flex flex-column">
                 <div class="check-part d-flex flex-row">
+                    <input type="checkbox">
                     <div class="check-btn"></div>
                     <div>웹 기술 프로젝트</div>
                 </div>
