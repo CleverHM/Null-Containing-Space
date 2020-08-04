@@ -25,11 +25,20 @@
             </div>
 
             <!-- 블로그 & 깃 !-->
-            <button :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]">
+            <button v-if="User.blogURL" :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]">
             <i class="fab fa-blogger fa-2x"></i>
             <br><p>BLOG</p>
             </button>
-            <button :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
+            <button v-else :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]" disabled>
+            <i class="fab fa-blogger fa-2x"></i>
+            <br><p>BLOG</p>
+            </button>
+
+            <button v-if="User.GitURL" :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
+            <i class="fab fa-git-square fa-2x"></i>
+            <br><p>GIT</p>
+            </button>
+            <button v-else :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]" disabled>
             <i class="fab fa-git-square fa-2x"></i>
             <br><p>GIT</p>
             </button>
@@ -136,16 +145,16 @@ export default {
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
-            console.log(data)
-            this.User.nickname = data.nickname
-            this.User.Introduce = data.intro
-            this.User.profileURL = data.file
-            this.User.followingcount = data.followingCnt
-            this.User.followercount = data.followerCnt;
-            this.User.blogURL = data.blogaddr
-            this.User.GitURL = data.gitaddr
-            this.User.ability = data.abt
-            console.log(this.User)
+              console.log(data)
+              this.User.nickname = data.nickname
+              this.User.Introduce = data.intro
+              this.User.profileURL = data.file
+              this.User.followingcount = data.followingCnt
+              this.User.followercount = data.followerCnt;
+              this.User.blogURL = data.blogaddr
+              this.User.GitURL = data.gitaddr
+              this.User.ability = data.abt
+              console.log(this.User)
           })
           .catch((err) => {
             console.log(err)
@@ -220,8 +229,13 @@ export default {
 .btn-off{
     width:50%;
     font-size: 18px;
-    color: #E2DFD8;
-    
+    color: #E2DFD8;   
+}
+.btn-off:visited{
+  border: 0;
+}
+.btn-off:active{
+  border: 0;
 }
 #introduce {
   white-space: normal;
