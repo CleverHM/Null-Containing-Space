@@ -55,6 +55,7 @@ export default {
         storage.getItem("User")
       )
       .then((res) => {
+        console.log(res.data)
         this.articles = res.data
       })
       .catch((err) => {
@@ -68,11 +69,14 @@ export default {
       formData.append("email", storage.getItem("User"));
       formData.append("hashtag", this.clicktags);
 
+      console.log('해시', this.clicktags)
+
       http
       .post('/post/getHashtagPost', 
         formData
       )
       .then((res) => {
+        console.log(res.data)
         this.articles = res.data
       })
       .catch((err) => {

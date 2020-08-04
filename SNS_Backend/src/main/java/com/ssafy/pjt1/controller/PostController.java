@@ -51,7 +51,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
+		@ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
@@ -228,8 +228,8 @@ public class PostController {
 
 	@PostMapping("/post/modifyTrue")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public void modifytrue(@Valid @RequestParam int pid, MultipartFile files, String email, String title, String content,
-			String[] hashtags) throws MalformedURLException, IOException {
+	public void modifytrue(@Valid @RequestParam int pid, MultipartFile files, String email, String title,
+			String content, String[] hashtags) throws MalformedURLException, IOException {
 
 		Optional<Post> p = postdao.findById(pid);
 		Post post = p.get();
@@ -266,13 +266,13 @@ public class PostController {
 		post.setContent(content);
 		// Post : Files 정보이어주기
 		post.setFiles(img);
-	
+
 		// 기존꺼지우기
 		posttagdao.deletePosttag(pid);
 
 		Set<PostTag> pt = post.getPosttags();
 		pt = post.getPosttags();
-		
+
 		for (int i = 0; i < hashtags.length; i++) {
 			Optional<Tag> optionalTag = tagdao.findTagByName(hashtags[i]);
 
@@ -300,15 +300,15 @@ public class PostController {
 				pt.add(temp);
 			}
 		}
-		
+
 		post.setPosttags(pt);
 		postdao.save(post);
 	}
 
 	@PostMapping("/post/modifyFalse")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public void modifyfalse(@Valid @RequestParam int pid, String email, String title, String content,
-			String[] hashtags) throws MalformedURLException, IOException {
+	public void modifyfalse(@Valid @RequestParam int pid, String email, String title, String content, String[] hashtags)
+			throws MalformedURLException, IOException {
 
 		Optional<Post> p = postdao.findById(pid);
 		Post post = p.get();
@@ -321,13 +321,13 @@ public class PostController {
 		post.setUser(pUser);
 		post.setTitle(title);
 		post.setContent(content);
-	
+
 		// 기존꺼지우기
 		posttagdao.deletePosttag(pid);
 
 		Set<PostTag> pt = post.getPosttags();
 		pt = post.getPosttags();
-		
+
 		for (int i = 0; i < hashtags.length; i++) {
 			Optional<Tag> optionalTag = tagdao.findTagByName(hashtags[i]);
 
@@ -355,11 +355,10 @@ public class PostController {
 				pt.add(temp);
 			}
 		}
-		
+
 		post.setPosttags(pt);
 		postdao.save(post);
 	}
-
 
 	// 해당이메일 게시물 보내주기
 	@PostMapping("/post/getPost")
@@ -544,138 +543,151 @@ public class PostController {
 
 		return feedDetailData;
 	}
+
 //        
-        // 해당이메일 게시물 보내주기
-        @PostMapping("/post/getHashtagPost")
-        @ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-        public Set<FeedData> getHashtagPost(@Valid @RequestParam String email, String[] hashtag) throws MalformedURLException, IOException {
-            
-            System.out.println(email);
-            
+	// 해당이메일 게시물 보내주기
+	@PostMapping("/post/getHashtagPost")
+	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
+	public Set<FeedData> getHashtagPost(@Valid @RequestParam String email, String[] hashtag)
+			throws MalformedURLException, IOException {
 
-    		List<FeedData> res = new LinkedList<FeedData>();
+		System.out.println(email);
 
-    		System.out.println(email);
-    		List<Post> postList = new LinkedList<>();
-    		Optional<User> optionalUser = userservice.findone(email);
-    		User user = optionalUser.get();
+		List<FeedData> res = new LinkedList<FeedData>();
 
-    		Set<UserFollow> followList = user.getFollowings();
+		System.out.println(email);
+		List<Post> postList = new LinkedList<>();
+		Optional<User> optionalUser = userservice.findone(email);
+		User user = optionalUser.get();
 
-    		// 자기가 올린 게시문
-    		Set<Post> myPost = user.getPosts();
-    		postList.addAll(myPost);
+		Set<UserFollow> followList = user.getFollowings();
 
-    		// 게시물 확인
-    		System.out.println("==============내게시물==================");
-    		for (int i = 0; i < postList.size(); i++) {
-    			System.out.println(postList.get(i).getTitle());
-    		}
-    		// 팔로우 들의 게시문
-    		for (UserFollow u : followList) {
-    			Optional<User> optionalUser1 = userservice.findone(u.getTo().getEmail());
-    			User user1 = optionalUser1.get();
-    			Set<Post> followPost = user1.getPosts();
-    			postList.addAll(followPost);
-    		}
-    		
-    		// 태그들 포함 여부
-            List<Post> hasftagPostList = new LinkedList<>();
-            // Iterator<Post> iterator = myPost.iterator();
-            for (Post p : postList) {
-                System.out.println("=================");
-                for (int i = 0; i < hashtag.length; i++) {
-                    for (PostTag t : p.getPosttags()) {
-                        if (hashtag[i].equals(t.getTag().getName())) {
-                            hasftagPostList.add(p);
-                        }
-                    }
-                }
-            }
-    		
-    		// 게시물 확인
-    		System.out.println("==============내게시물+팔로우==================");
-    		for (int i = 0; i < hasftagPostList.size(); i++) {
-    			System.out.println(hasftagPostList.get(i).getTitle());
-    			List<String> tag = new LinkedList<String>();
+		// 자기가 올린 게시문
+		Set<Post> myPost = user.getPosts();
+		postList.addAll(myPost);
 
-    			for (PostTag t : hasftagPostList.get(i).getPosttags()) {
-    				tag.add(t.getTag().getName());
-    			}
-    			Date d = new Date();
+		// 게시물 확인
+		System.out.println("==============내게시물==================");
+		for (int i = 0; i < postList.size(); i++) {
+			System.out.println(postList.get(i).getTitle());
+		}
+		// 팔로우 들의 게시문
+		for (UserFollow u : followList) {
+			Optional<User> optionalUser1 = userservice.findone(u.getTo().getEmail());
+			User user1 = optionalUser1.get();
+			Set<Post> followPost = user1.getPosts();
+			postList.addAll(followPost);
+		}
 
-    			// 이미지 만들기
-    			byte[] reportBytes = null;
-    			File result = new File(hasftagPostList.get(i).getFiles().getFileurl() + hasftagPostList.get(i).getFiles().getFilename());
+		// 태그들 포함 여부
+		List<Post> hasftagPostList = new LinkedList<>();
+		// Iterator<Post> iterator = myPost.iterator();
 
-    			if (result.exists()) {
-    				System.out.println("있음");
-    				InputStream inputStream = new FileInputStream(
-    						hasftagPostList.get(i).getFiles().getFileurl() + hasftagPostList.get(i).getFiles().getFilename());
-    				String type = result.toURL().openConnection()
-    						.guessContentTypeFromName(postList.get(i).getFiles().getFilename());
+		System.out.println("=======넣는 중==========");
+		for (Post p : postList) {
+			end : for (PostTag t : p.getPosttags()) {
+				for (int i = 0; i < hashtag.length; i++) {
+					if (hashtag[i].equals(t.getTag().getName())) {
+						hasftagPostList.add(p);
+						break end;
+					}
+				}
+			}
+		}
 
-    				System.out.println(type);
+		System.out.println("=================");
+		// 리스트 확인
+		System.out.println("=======최종 리스트==========");
 
-    				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+		for (int i = 0; i < hasftagPostList.size(); i++) {
+			System.out.println(hasftagPostList.get(i).getPid());
+		}
 
-    				HttpHeaders responseHeaders = new HttpHeaders();
-    				responseHeaders.add("content-disposition",
-    						"attachment; filename=" + hasftagPostList.get(i).getFiles().getFilename());
-    				responseHeaders.add("Content-Type", type);
+		System.out.println("=================");
 
-    				int count = likeservice.likeCount(hasftagPostList.get(i));
+		// 게시물 확인
+		System.out.println("==============내게시물+팔로우==================");
+		for (int i = 0; i < hasftagPostList.size(); i++) {
+			System.out.println(hasftagPostList.get(i).getTitle());
+			List<String> tag = new LinkedList<String>();
 
-    				// 내가 좋아요 했는가?
-    				int likeFlag = 0;
+			for (PostTag t : hasftagPostList.get(i).getPosttags()) {
+				tag.add(t.getTag().getName());
+			}
+			Date d = new Date();
 
-    				Optional<Post> tempP = postservice.findone(hasftagPostList.get(i).getPid());
-    				Post post = tempP.get();
-    				Set<PostLike> postlikes = post.getPostlikes();
+			// 이미지 만들기
+			byte[] reportBytes = null;
+			File result = new File(
+					hasftagPostList.get(i).getFiles().getFileurl() + hasftagPostList.get(i).getFiles().getFilename());
 
-    				for (PostLike pl : postlikes) {
-    					// 이미 좋아요한 사람일 경우.
-    					if (pl.getUser().getUid() == user.getUid()) {
-    						likeFlag = 1;
-    						break;
-    					}
-    				}
+			if (result.exists()) {
+				System.out.println("있음");
+				InputStream inputStream = new FileInputStream(hasftagPostList.get(i).getFiles().getFileurl()
+						+ hasftagPostList.get(i).getFiles().getFilename());
+				String type = result.toURL().openConnection()
+						.guessContentTypeFromName(postList.get(i).getFiles().getFilename());
 
-    				res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
-    						hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
-    						hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-    						hasftagPostList.get(i).getReplies().size()));
-    				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
-    			} else {
-    				System.out.println("없는 파일");
-    				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
-    			}
+				System.out.println(type);
 
-    		}
-            
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-    		List<FeedData> res1 = new LinkedList<FeedData>();
-    		res1.add(res.get(0));
-    		for(int i = 1; i < res.size(); i++) {
-    			for(int k = 0; k < res1.size(); k++) {
-    				if(res1.get(k).getPid() != res.get(i).getPid()) {
-    					res1.add(res.get(i));
-    				}
-    			}
-    		}
-    		
-    		Collections.sort(res1, new Comparator<FeedData>() {
+				HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.add("content-disposition",
+						"attachment; filename=" + hasftagPostList.get(i).getFiles().getFilename());
+				responseHeaders.add("Content-Type", type);
 
-    			@Override
-    			public int compare(FeedData o1, FeedData o2) {
-    				// TODO Auto-generated method stub
-    				return o2.getPid() - o1.getPid();
-    			}
-    		});
-    		
-    		Set<FeedData> unique = new LinkedHashSet<>(res1);
-            
-            return unique;
-        }
+				int count = likeservice.likeCount(hasftagPostList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(hasftagPostList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
+						hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
+						hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+						hasftagPostList.get(i).getReplies().size()));
+				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+			} else {
+				System.out.println("없는 파일");
+				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
+			}
+
+		}
+
+		List<FeedData> res1 = new LinkedList<FeedData>();
+		res1.add(res.get(0));
+		for (int i = 1; i < res.size(); i++) {
+			for (int k = 0; k < res1.size(); k++) {
+				if (res1.get(k).getPid() != res.get(i).getPid()) {
+					res1.add(res.get(i));
+				}
+			}
+		}
+
+		Collections.sort(res1, new Comparator<FeedData>() {
+
+			@Override
+			public int compare(FeedData o1, FeedData o2) {
+				// TODO Auto-generated method stub
+				return o2.getPid() - o1.getPid();
+			}
+		});
+
+		Set<FeedData> unique = new LinkedHashSet<>(res1);
+
+		return unique;
+	}
 
 }
