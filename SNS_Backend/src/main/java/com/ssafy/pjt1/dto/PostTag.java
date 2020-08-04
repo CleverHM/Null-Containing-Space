@@ -21,7 +21,7 @@ public class PostTag {
 	@JsonIgnore
 	private int ptid;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "POST_ID")
 	private Post post;
 	
