@@ -25,7 +25,7 @@
             </div>
 
             <!-- 블로그 & 깃 !-->
-            <button v-if="User.blogURL" :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]">
+            <button v-if="User.blogURL != null" :class="[{'btn-on' : User.blogURL===null}, {'btn-off' : User.blogURL != null}]">
             <i class="fab fa-blogger fa-2x"></i>
             <br><p>BLOG</p>
             </button>
@@ -34,7 +34,7 @@
             <br><p>BLOG</p>
             </button>
 
-            <button v-if="User.GitURL" :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
+            <button v-if="User.GitURL != null" :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
             <i class="fab fa-git-square fa-2x"></i>
             <br><p>GIT</p>
             </button>
@@ -58,7 +58,7 @@
           <div v-if="currentTab === 'tab1'">
             
             <!-- 자기소개 !-->
-            <div id="introduce" class="my-3" v-if="User.Introduce">
+            <div id="introduce" class="my-3" v-if="User.Introduce === null">
             {{ User.Introduce }}
             </div>
             <div id="introduce" class="my-3" v-else>
@@ -190,12 +190,14 @@ export default {
     float: left;
     height: 120px;
     width: 120px;
-    background-color: black;
+    background-color: #f7f7f7;
     border-radius: 100%;
     overflow: hidden;
 }
 .profileImg img {
+  margin: 0;
   width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 .profileName{
