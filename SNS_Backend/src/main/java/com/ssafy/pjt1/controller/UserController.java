@@ -192,14 +192,14 @@ public class UserController {
 
 	@PutMapping("/account/delete")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
-	public Object delete(@Valid @RequestBody SignupRequest request) {
-		Optional<User> user2 = userservice.findone(request.getEmail());
+	public Object delete(@Valid @RequestParam String nickname) {
+		Optional<User> user2 = userservice.findtwo(nickname);
 
 		System.out.println(user2.toString());
 		ResponseEntity response = null;
 
 		if (user2.isPresent()) {
-			User select = user2.get();
+			User select = user2.get(); 
 
 			Set<Post> posts = select.getPosts();
 
