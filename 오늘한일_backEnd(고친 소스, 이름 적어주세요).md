@@ -106,4 +106,7 @@
 - 조대흠
   - 서버 배포 작업 ing(현재 외부에서 ip주소로 접근불가능함)
 - 박상현
+  - MyPage Controller 구현(Spring)
+  - User Dto 수정(Spring)
+  - User삭제 Controller 수정(Spring)
 - 김호한

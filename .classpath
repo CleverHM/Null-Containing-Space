@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="SNS_Backend/src/main/java"/>
+	<classpathentry kind="src" path="SNS_Backend/src/test/java/com/ssafy/pjt1"/>
+	<classpathentry kind="lib" path="SNS_Backend/bin/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
