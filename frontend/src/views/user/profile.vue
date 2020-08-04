@@ -1,86 +1,90 @@
 <template>
-    <div style="top:0;">
-        <Navbar></Navbar>
+    <div style="top:0">
+        <Navbar :showMenu="showMenu" @toggleShow="toggleMenu"></Navbar>
         <subNav></subNav>
-
-        <div id="baseProfile" class="mb-4">
-            <div class="d-flex align-items-center">
-                <div id="profileImg"></div>
-                <div class="ml-3 flex-fill">
-                    <p class="mb-1 profileName">sdfsdf</p>
-                    <div class="follow mb-2">
+        <div id="profile" @click="noshowMenu">
+            <div id="baseProfile" style="height: 150px;">
+                <!-- 프로필 이미지  -->
+                <div class="profileImg"></div>
+                <!-- 이름/팔로우 -->
+                <div class="profileInfo">
+                    <!-- 닉네임 -->
+                    <div class="profileName">알골마스터</div>
+                    <div class="follow">
                         <button class="follower">0<br>팔로워</button>
                         <button class="following">1<br>팔로잉</button>
                     </div>
-                    <button class="btn-follow">팔로우</button>
+                    <div class="profile-btns">
+                        <button class="btn-follow" v-if="false">팔로우</button>
+                        <button class="btn-follow" v-else>회원정보수정</button>
+                    </div>
                 </div>
             </div>
+
+            <!-- 블로그 & 깃 !-->
+            <button :class="[{'btn-on' : blogLink}, {'btn-off' : !blogLink}]">
+            <i class="fab fa-blogger fa-2x"></i>
+            <br><p>BLOG</p>
+            </button>
+            <button :class="[{'btn-on' : gitLink}, {'btn-off' : !gitLink}]">
+            <i class="fab fa-git-square fa-2x"></i>
+            <br><p>GIT</p>
+            </button>
+
+            <!-- 자기소개 !-->
+    <pre id="introduce" class="my-3">
+    안녕하세요 알골마스터입니다.
+    잘지내보아요.
+
+    관심 분야
+    ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+    </pre>
+
+            <!-- 태그 뱃지 !-->
+            <TagBadge></TagBadge>
+            <TagBadge></TagBadge>
+            <TagBadge></TagBadge>
+
+
+            <!-- 공모전 / SNS 관리 !-->
+            <tabs
+          :tabs="tabs"
+          :currentTab="currentTab"
+          :wrapper-class="'default-tabs'"
+          :tab-class="'default-tabs__item'"
+          :tab-active-class="'default-tabs__item_active'"
+          :line-class="'default-tabs__active-line'"
+          @onClick="handleClick"
+        />
+        <div class="content">
+          <div v-if="currentTab === 'tab1'">
+            Sed ut perspiciatis unde omnis iste natus error sit
+            voluptatem accusantium doloremque laudantium, totam rem aperiam,
+            eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+            dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
+            aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+            voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
+            quia dolor sit amet, consectetur, adipisci velit, sed quia non
+            numquam eius modi tempora incidunt ut labore
+            et dolore magnam aliquam quaerat voluptatem.
+          </div>
+          <div v-if="currentTab === 'tab2'">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+          </div>
+          <div v-if="currentTab === 'tab3'">
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+            occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+            mollitia animi, id est laborum et dolorum fuga.
+          </div>
         </div>
 
-        <!-- 블로그 & 깃 !-->
-        <button :class="[{'btn-on' : blogLink}, {'btn-off' : !blogLink}]">
-        <i class="fab fa-blogger fa-2x"></i>
-        <br><p>BLOG</p>
-        </button>
-        <button :class="[{'btn-on' : gitLink}, {'btn-off' : !gitLink}]">
-        <i class="fab fa-git-square fa-2x"></i>
-        <br><p>GIT</p>
-        </button>
-
-        <!-- 자기소개 !-->
-<pre id="introduce" class="my-3">
-안녕하세요 알골마스터입니다.
-잘지내보아요.
-
-관심 분야
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-</pre>
-
-        <!-- 태그 뱃지 !-->
-        <TagBadge></TagBadge>
-        <TagBadge></TagBadge>
-        <TagBadge></TagBadge>
-
-
-        <!-- 공모전 / SNS 관리 !-->
-        <tabs
-      :tabs="tabs"
-      :currentTab="currentTab"
-      :wrapper-class="'default-tabs'"
-      :tab-class="'default-tabs__item'"
-      :tab-active-class="'default-tabs__item_active'"
-      :line-class="'default-tabs__active-line'"
-      @onClick="handleClick"
-    />
-    <div class="content">
-      <div v-if="currentTab === 'tab1'">
-        Sed ut perspiciatis unde omnis iste natus error sit
-        voluptatem accusantium doloremque laudantium, totam rem aperiam,
-        eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-        dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-        aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-        quia dolor sit amet, consectetur, adipisci velit, sed quia non
-        numquam eius modi tempora incidunt ut labore
-        et dolore magnam aliquam quaerat voluptatem.
-      </div>
-      <div v-if="currentTab === 'tab2'">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </div>
-      <div v-if="currentTab === 'tab3'">
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-        voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-        occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-        mollitia animi, id est laborum et dolorum fuga.
-      </div>
     </div>
-
-
     </div>
 </template>
 
@@ -116,7 +120,8 @@ export default {
     },
     data : () => {
         return {
-            
+            // navigation dropdown
+            showMenu: false,
             blogLink : "dsdfsdfsfd",
             gitLink : "",
             tabs: TABS,
@@ -127,6 +132,12 @@ export default {
          handleClick(newTab) {
         this.currentTab = newTab;
         },
+        noshowMenu() {
+          this.showMenu = false;
+        },
+        toggleMenu(isshow) {
+          this.showMenu = isshow;
+        },
     }
 
 
@@ -135,29 +146,41 @@ export default {
 </script>
 
 <style scoped>
-#profileImg{
+#profile{
+  margin: 70px 20px 50px 20px;
+}
+.baseProfile {
+  position: relative;
+}
+.profileImg{
+    float: left;
     height: 120px;
     width: 120px;
     background-color: black;
 }
 .profileName{
+    padding: 0 0 5px 135px;
     font-size: 20px;
     font-weight: bold;
 }
-.follower{
-    width:50%;
+.follow{
+  padding-left: 135px;
+  margin: 5px 0 10px 0;
 }
-.following{
-    width:50%;
-
+.follow button {
+  width: 50%;
+}
+.profile-btns {
+  padding: 0 0 0 135px;
 }
 .btn-follow{
-    width:100%;
+    width: 100%;
     background-color: #464545;
     border-radius: 3px;
     color: #f7f7f7;
 
 }
+/* git, blog url */
 .btn-on{
     width:50%;
     font-size: 18px;
