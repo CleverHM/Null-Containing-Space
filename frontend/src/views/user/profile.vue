@@ -5,7 +5,9 @@
         <div id="profile" @click="noshowMenu">
             <div id="baseProfile" style="height: 150px;">
                 <!-- 프로필 이미지  -->
-                <div class="profileImg"></div>
+                <div class="profileImg">
+                  <img src="@/assets/images/test.jpg">
+                </div>
                 <!-- 이름/팔로우 -->
                 <div class="profileInfo">
                     <!-- 닉네임 -->
@@ -16,7 +18,7 @@
                     </div>
                     <div class="profile-btns">
                         <button class="btn-follow" v-if="false">팔로우</button>
-                        <button class="btn-follow" v-else>회원정보수정</button>
+                        <button class="btn-follow" v-else @click="goUserModify">회원정보수정</button>
                     </div>
                 </div>
             </div>
@@ -46,7 +48,7 @@
             <TagBadge></TagBadge>
 
 
-            <!-- 공모전 / SNS 관리 !-->
+            <!-- 개발 능력 !-->
             <tabs
           :tabs="tabs"
           :currentTab="currentTab"
@@ -138,6 +140,9 @@ export default {
         toggleMenu(isshow) {
           this.showMenu = isshow;
         },
+        goUserModify() {
+          this.$router.push({name: 'UserModify'})
+        }
     }
 
 
@@ -157,6 +162,12 @@ export default {
     height: 120px;
     width: 120px;
     background-color: black;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.profileImg img {
+  width: 100%;
+  object-fit: cover;
 }
 .profileName{
     padding: 0 0 5px 135px;
