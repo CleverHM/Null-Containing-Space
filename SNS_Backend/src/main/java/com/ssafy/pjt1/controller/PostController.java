@@ -654,7 +654,11 @@ public class PostController {
 
     		}
             
-    		Collections.sort(res, new Comparator<FeedData>() {
+    		Set<FeedData> dupl = new HashSet<FeedData>(res);
+    		
+    		List<FeedData> result = new LinkedList<FeedData>(dupl);
+    		
+    		Collections.sort(result, new Comparator<FeedData>() {
 
     			@Override
     			public int compare(FeedData o1, FeedData o2) {
@@ -663,7 +667,7 @@ public class PostController {
     			}
     		});
             
-            return res;
+            return result;
         }
 
 }
