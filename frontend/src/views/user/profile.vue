@@ -78,6 +78,7 @@ import subNav from '../../components/common/subnav.vue'
 import TagBadge from '../../components/common/TagBadge.vue'
 import TabComponent from '../../components/common/TabComponent.vue'
 import Tabs from 'vue-tabs-with-active-line';
+import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
 console.log(storage.getItem("token"))
@@ -100,10 +101,14 @@ export default {
         TagBadge,
         Tabs,
     },
+    created() {
+      this.getUserInfo()
+    },
     data : () => {
         return {
             // navigation dropdown
             showMenu: false,
+            nickname: storage.NickName,
             blogLink : "dsdfsdfsfd",
             gitLink : "",
             tabs: TABS,
@@ -111,8 +116,20 @@ export default {
         }
     },
     methods : {
-         handleClick(newTab) {
-        this.currentTab = newTab;
+        getUserInfo() {
+          var InputData = new FormData();
+          InputData.append("nickname", this.nickname)
+          http
+          .post("/account/myPage", InputData)
+          .then((data) => {
+            console.log(data)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        },
+        handleClick(newTab) {
+          this.currentTab = newTab;
         },
         noshowMenu() {
           this.showMenu = false;
@@ -162,7 +179,7 @@ export default {
   width: 50%;
 }
 .profile-btns {
-  padding: 0 0 0 135px;
+  padding: 0 10px 0 135px;
 }
 .btn-follow{
     width: 100%;

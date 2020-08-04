@@ -56,7 +56,8 @@ export default [
     {
         path : '/user/profile',
         name : 'profile',
-        component : profile
+        component : profile,
+        props: true,
     },
     {
         path : '/user/modify',
