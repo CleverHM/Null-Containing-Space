@@ -52,8 +52,8 @@ export default {
       },
       authNum : "",
       isActiveStep1 : true,
-      isActiveStep2 : true,
-      isActiveStep3 : true,
+      isActiveStep2 : false,
+      isActiveStep3 : false,
       ErrorMsg: {
         email: "",
         auth: "",
