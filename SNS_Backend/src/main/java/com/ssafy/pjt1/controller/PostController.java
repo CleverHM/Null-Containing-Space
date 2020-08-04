@@ -656,7 +656,8 @@ public class PostController {
             
 
     		List<FeedData> res1 = new LinkedList<FeedData>();
-    		for(int i = 0; i < res.size(); i++) {
+    		res1.add(res.get(0));
+    		for(int i = 1; i < res.size(); i++) {
     			for(int k = 0; k < res1.size(); k++) {
     				if(res1.get(k).getPid() != res.get(i).getPid()) {
     					res1.add(res.get(i));
