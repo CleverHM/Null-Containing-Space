@@ -12,16 +12,25 @@
             <b-icon-bell-fill></b-icon-bell-fill><br />
             <div class="name"><small>알림</small></div>
         </button>
-        <button class="navbtn" @click="goProfile">
+        <button class="navbtn">
+        <router-link class="navbtn" :to="{ name: 'profile', params: { postId: nickname }}">
             <b-icon-person-circle></b-icon-person-circle><br />
             <div class="name"><small>프로필</small></div>
+        </router-link>
+            
         </button>
     </div>
 </template>
 
 <script>
+const storage=window.sessionStorage;
 export default {
     name: 'subnav',
+    data() {
+        return {
+            nickname: storage.getItem("NickName"),
+        }
+    },
     methods: {
         goProject() {
             this.$router.push("/main")
@@ -51,6 +60,7 @@ export default {
     background-color: #EDECEA;
 }
 .navbtn{
+    color: #464545;
     padding-top: 3px;
     width: 25%;
 }

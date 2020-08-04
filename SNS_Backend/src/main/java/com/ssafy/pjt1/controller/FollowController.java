@@ -1,6 +1,13 @@
 package com.ssafy.pjt1.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -8,6 +15,7 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +33,8 @@ import com.ssafy.pjt1.dto.TagFollow;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.FeedData;
+import com.ssafy.pjt1.model.FollowList;
 import com.ssafy.pjt1.service.FollowService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -64,19 +74,19 @@ public class FollowController {
 
 		// 먼저 post의 좋아요 개수를 받는다
 		for (UserFollow pl : followings) {
-			//System.out.println(pl.getFrom().getEmail());
+			// System.out.println(pl.getFrom().getEmail());
 			System.out.println(pl.getTo().getEmail());
 			if (pl.getTo().getEmail().equals(To)) {
 				followFlag = 1;
 				break;
 			}
 		}
-		
+
 		int followerCnt = 0;
 		int followingCnt = 0;
-		
+
 		System.out.println(followFlag);
-		
+
 		// 이미 팔로우한 사람이 없는 경우.
 		if (followFlag == 0) {
 //			// u1이 u2 팔로우하는거임.
@@ -94,7 +104,7 @@ public class FollowController {
 			// u2의 팔로워 팔로잉 개수
 			followerCnt = followservice.followerCount(u1);
 			followingCnt = followservice.followingCount(u1);
-			followingCnt = followingCnt +1;
+			followingCnt = followingCnt + 1;
 			System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		} else {
 			// u1이 u2 언팔로우하는거임.
@@ -109,16 +119,16 @@ public class FollowController {
 			// u2의 팔로워 팔로잉 개수
 			followerCnt = followservice.followerCount(u1);
 			followingCnt = followservice.followingCount(u1);
-			followingCnt = followingCnt -1;
+			followingCnt = followingCnt - 1;
 			System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		}
 
-        Map<String, Integer> resultMap = new HashMap<>();
-        resultMap.put("flag", followFlag);
-        resultMap.put("followerCnt", followerCnt);
-        resultMap.put("followingCnt", followingCnt);
-        
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+		Map<String, Integer> resultMap = new HashMap<>();
+		resultMap.put("flag", followFlag);
+		resultMap.put("followerCnt", followerCnt);
+		resultMap.put("followingCnt", followingCnt);
+
+		return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping("/unfollow/user")
@@ -143,29 +153,75 @@ public class FollowController {
 
 	@GetMapping("/follow/user/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	public void userFollowList(@Valid @RequestParam String nickname) {
+	public List<FollowList> userFollowList(@Valid @RequestParam String nickname, int flag) throws IOException {
 
 		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
+		// flag : 1 -> 팔로잉 / 2 -> 팔로워
+
+		List<FollowList> list = new LinkedList<FollowList>();
+
 		Optional<User> U1 = userservice.findtwo(nickname);
 		User u1 = U1.get();
 
-		Set<UserFollow> followers = u1.getFollowers();
+		if (flag == 1) {
+			System.out.println("팔로잉");
 
-		System.out.println("팔로워");
+			Set<UserFollow> followings = u1.getFollowings();
 
-		for (UserFollow uf : followers) {
-			System.out.println(uf.getFrom().getEmail());
+			for (UserFollow uf : followings) {
+				System.out.println(uf.getTo().getEmail());
+
+				byte[] reportBytes = null;
+				File result = new File(uf.getTo().getProfile().getFileurl() + uf.getTo().getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("있음");
+					InputStream inputStream = new FileInputStream(
+							uf.getTo().getProfile().getFileurl() + uf.getTo().getProfile().getFilename());
+
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+					list.add(new FollowList(out, uf.getTo().getNickname()));
+					// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+				} else {
+					list.add(new FollowList(reportBytes, uf.getTo().getNickname()));
+					System.out.println("없는 파일");
+					// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
+				}
+			}
+
+		} else {
+			System.out.println("-----------------------------------------");
+			Set<UserFollow> followers = u1.getFollowers();
+
+			System.out.println("팔로워");
+
+			for (UserFollow uf : followers) {
+				System.out.println(uf.getFrom().getEmail());
+
+				byte[] reportBytes = null;
+				File result = new File(
+						uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("있음");
+					InputStream inputStream = new FileInputStream(
+							uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
+
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+					list.add(new FollowList(out, uf.getFrom().getNickname()));
+					// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+				} else {
+					list.add(new FollowList(reportBytes, uf.getFrom().getNickname()));
+					System.out.println("없는 파일");
+					// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
+				}
+			}
+
 		}
 
-		System.out.println("-----------------------------------------");
-
-		System.out.println("팔로잉");
-
-		Set<UserFollow> followings = u1.getFollowings();
-
-		for (UserFollow uf : followings) {
-			System.out.println(uf.getTo().getEmail());
-		}
+		return list;
 
 	}
 

@@ -144,6 +144,7 @@ export default {
 
         storage.setItem("token", "");
         storage.setItem("User", "");
+        storage.setItem("NickName", "");
         
         let msg = "";
         
@@ -167,6 +168,7 @@ export default {
             }
             console.log(User, typeof(User))
             storage.setItem("User", res.data.email)
+            storage.setItem("NickName", res.data.nickname)
           }
           alert(msg);
           this.moveFeed();

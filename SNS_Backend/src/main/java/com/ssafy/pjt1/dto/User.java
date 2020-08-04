@@ -88,8 +88,8 @@ public class User {
 		this.password = password;
 		this.email = email;
 	}
-
-	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability) {
+	
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
@@ -101,6 +101,7 @@ public class User {
 		this.blogaddr = blogaddr;
 		this.intro = intro;
 		this.ability = ability;
+		this.profile = profile;
 	}
 	
 	//매칭시스템 테스트데이터용 생성자
@@ -290,3 +291,5 @@ public class User {
 		this.tagfollows = tagfollows;
 	}
 }
+
+
