@@ -44,31 +44,42 @@ export default {
   },
 
   created() {
-    console.log('feed창')
-    // console.log(storage.getItem("User"))
-    // var email = storage.getItem("User")
-    // let formData = new FormData();
-    // formData.append("email", storage.getItem("User"));
-
-    // console.log(formData.get("email"))
-    // let email = storage.getItem("User");
-    http
-    .post('/post/getPost', 
-      storage.getItem("User")
-    )
-    .then((res) => {
-      // console.log(res.data)
-      // 받아온 데이터를 집어 넣기
-      this.articles = res.data
-      console.log('check')
-      console.log(this.articles)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    this.bringList();
   },
 
   methods: {
+    // 피드 가져오기 (해시태그 x)
+    bringList() {
+      http
+      .post('/post/getPost', 
+        storage.getItem("User")
+      )
+      .then((res) => {
+        this.articles = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+
+    // 해시태그 있을 때 피드 가져오기
+    bringListHash() {
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("hashtag", this.clicktags);
+
+      http
+      .post('/post/getHashtagPost', 
+        formData
+      )
+      .then((res) => {
+        this.articles = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+
     // 글 작성하기
     articleSubmit() {
       this.$router.push({ name: 'FeedCreate' });
@@ -76,18 +87,20 @@ export default {
 
     // 태그 클릭하면 +. 중복은 제거
     tagAdd(inputValue) {
-      // console.log(inputValue);
       if ( this.clicktags.indexOf(inputValue) < 0 ) {
         this.clicktags.push(inputValue)
       }
-      // console.log([...this.clicktags])
+      this.bringListHash();
     },
 
     // 태그 클릭하면 -
     tagRemove(event) {
-      // console.log(event.target.innerText)
       this.clicktags.splice(this.clicktags.indexOf(event.target.innerText),1)
-      // console.log([...this.clicktags])
+      if (this.clicktags.length === 0) {
+        this.bringList();
+      } else {
+        this.bringListHash();
+      }
     },
 
   },
