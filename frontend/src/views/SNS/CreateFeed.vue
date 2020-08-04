@@ -222,7 +222,6 @@ export default {
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
-      console.log(formData)
       // 파일 업로드 axios 요청
       http
       .post("/post/create",
@@ -269,18 +268,12 @@ export default {
     },
     // 태그 클릭하면 -
     tagRemove(event) {
-      // console.log(event.target.innerText)
-      // console.log(this.article.hashtags)
-      // console.log(this.article.hashtags.indexOf(event.target.innerText))
       this.article.hashtags.splice(this.article.hashtags.indexOf(event.target.innerText),1)
-      // console.log([...this.clicktags])
     },
     
     // 파일 업로드
     handleFileUpload() {
-      // console.log(this.$refs.file.$refs.input.files)
       this.file = this.$refs.file.$refs.input.files[0];
-      // console.log(this.file)
     },
 
   },
