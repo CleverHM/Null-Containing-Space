@@ -1,31 +1,32 @@
 <template>
   <div id="detailFeed">
-    <div class="wrapB">
+    <div class="wrapB" style="position: relative;">
       <Navbar></Navbar>
 
       <!-- 수정삭제 부분 -->
+      <div class="ud-button">
+        <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
+      </div>
       <div v-if="udOn" class="ud-part">
         <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}">
           <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
         </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
       </div>
-
       <div class="feedpage">
         <!-- title 부분 -->
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
           <div class="page-title">
             {{ article.title }}
-          </div>
-          <div>
-            <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
           </div>
         </div>
 
         <!-- user 부분 -->
         <div class="user-part d-flex flex-row align-items-center justify-content-between">
           <div class="d-flex flex-row align-items-center user-low-part">
-            <div class="user-img"></div>
+            <div class="user-img">
+              <img src="@/assets/images/default_image.png" alt="user_default_image">
+            </div>
             <div class="user-name">{{ article.userNickname }}</div>
             <div class="user-diff-time">{{ article.diffTime }}</div>
           </div>
@@ -152,7 +153,6 @@ export default {
 
     // 댓글 작성 버튼 눌림
     commentOn() {
-      console.log(this.comment.content)
       if (this.comment.content === "") {
         this.errorMsg();
       } else {
@@ -171,7 +171,6 @@ export default {
       .then((res) => {
         // 받아온 데이터를 집어 넣기
         this.article = res.data
-        console.log(res.data)
 
         // 받아온 시간(string) - date (형식 변환)
         var postDate = new Date(this.article.date)
@@ -244,9 +243,6 @@ export default {
 
     // 좋아요 누름
     likeButton(event) {
-      // console.log('liked')
-      // console.log(storage.getItem("User"))
-      
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("postid", this.article.pid);
@@ -277,7 +273,6 @@ export default {
         this.article.pid
       )
       .then((res) => {
-        console.log('delete')
         this.$router.push({ name: 'FeedMain' });
       })
       .catch((err) => {
@@ -306,10 +301,16 @@ export default {
 }
 
 .user-img {
-  background-color: #C4BCB8;
+  display: block;
+  background-color: #EDECEA;
   border-radius: 50%;
   width: 30px;
   height: 30px;
+  overflow: hidden;
+}
+
+.user-img > img {
+  width: 100%;
 }
 
 .page-title {
@@ -317,6 +318,7 @@ export default {
   color: #464545;
   font-weight: bold;
   font-size: 20px;
+  width: 92%;
   white-space: normal;
   word-break: break-all;
 }
@@ -390,13 +392,23 @@ export default {
   margin-right: 10px;
   margin-bottom: 7px;
 }
-
+.up-parent{
+  position: relative;
+}
 .ud-part {
-  float: right;
+  position: absolute;
+  right: 15px;
+  top: 40px;
   background-color: #f7f7f7;
+  border-radius: 3px;
 }
 .ud-part > li {
   margin: 20px;
+}
+.ud-button {
+  position: absolute;
+  right: 25px;
+  top: 13px;
 }
 
 .img-part {
