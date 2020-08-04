@@ -1,31 +1,32 @@
 <template>
   <div id="detailFeed">
-    <div class="wrapB">
+    <div class="wrapB" style="position: relative;">
       <Navbar></Navbar>
 
       <!-- 수정삭제 부분 -->
-      <div v-if="udOn" class=" ud-part">
-        <router-link :to="{ name: 'FeedUpdate', params: { postId: postId }}">
+      <div class="ud-button">
+        <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
+      </div>
+      <div v-if="udOn" class="ud-part">
+        <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}">
           <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
         </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
       </div>
-
       <div class="feedpage">
         <!-- title 부분 -->
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
           <div class="page-title">
             {{ article.title }}
-          </div>
-          <div>
-            <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
           </div>
         </div>
 
         <!-- user 부분 -->
         <div class="user-part d-flex flex-row align-items-center justify-content-between">
           <div class="d-flex flex-row align-items-center user-low-part">
-            <div class="user-img"></div>
+            <div class="user-img">
+              <img src="@/assets/images/default_image.png" alt="user_default_image">
+            </div>
             <div class="user-name">{{ article.userNickname }}</div>
             <div class="user-diff-time">{{ article.diffTime }}</div>
           </div>
@@ -40,9 +41,9 @@
           <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
         </div>
 
-        <!-- content 부분 -->
-        <div class="page-content">
-          {{ article.content }}
+        <!-- content 부분. -->
+        <!-- content에 <br/>를 넣었으므로 {{}}이 아닌 v-html로 출력 -->
+        <div class="page-content" v-html="article.content">
         </div>
 
         <!-- 좋아요 부분 -->
@@ -62,7 +63,7 @@
 
         <!-- 댓글 part -->
         <div class="comment-part">
-          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id"></Comment>
+          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id" @delete-reply="refreshOn()"></Comment>
         </div>
 
         <!-- 댓글 작성창 -->
@@ -71,6 +72,7 @@
             placeholder="댓글을 작성해주세요."
             class="flex-fill"
             style="border:none;"
+            maxlength="255" 
             @keyup.enter="commentOn"/>
           <button class="px-3" @click="commentOn">
             작성
@@ -90,6 +92,7 @@ import axios from 'axios';
 
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
+
 
 export default {
   name: "detailFeed",
@@ -141,7 +144,6 @@ export default {
   methods: {
     // 좋아요 체크
     likeCheck() {
-      console.log(this.article.likeFlag)
       if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
@@ -151,7 +153,6 @@ export default {
 
     // 댓글 작성 버튼 눌림
     commentOn() {
-      console.log(this.comment.content)
       if (this.comment.content === "") {
         this.errorMsg();
       } else {
@@ -170,12 +171,14 @@ export default {
       .then((res) => {
         // 받아온 데이터를 집어 넣기
         this.article = res.data
-        console.log(res.data)
 
         // 받아온 시간(string) - date (형식 변환)
         var postDate = new Date(this.article.date)
         this.article.date = postDate
         this.article.diffTime = this.dateCheck(this.article.date);
+
+        // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
+        this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
       })
       .catch((err) => {
         console.log(err)
@@ -222,7 +225,6 @@ export default {
 
     // 댓글 작성
     commentSubmit() {
-      console.log("comment submit!")
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("content", this.comment.content);
@@ -231,13 +233,11 @@ export default {
       http
       .post('/reply/create', formData)
       .then((res) => {
-        console.log('comment SUCCESS!!');
+        this.comment.content = "";
         this.dataReceive();
-        // this.$router.push(`/feed/${article.pid}/detail`);
       })
       .catch((err) => {
         console.log(err);
-        console.log('ERROR!!');
       })
     },
 
@@ -253,7 +253,6 @@ export default {
       http
       .post('/like/post', formData)
       .then((res) => {
-        // console.log(res.data)
         this.article.likeCount = res.data.count
         this.article.likeFlag = res.data.flag
       })
@@ -267,7 +266,6 @@ export default {
       if (requestUser === this.article.userEmail) {
         this.udOn = !this.udOn;
       }
-      // console.log(this.udOn)
     },
 
     // 글 삭제
@@ -278,14 +276,17 @@ export default {
         this.article.pid
       )
       .then((res) => {
-        console.log('delete')
-        console.log(res.data)
         this.$router.push({ name: 'FeedMain' });
       })
       .catch((err) => {
         console.log(err)
       })
 
+    },
+
+    // 댓글 삭제
+    refreshOn() {
+      this.dataReceive();
     },
 
   }
@@ -296,17 +297,23 @@ export default {
 
 <style scope>
 .feedpage {
-  margin: 70px 5px 55px 5px;
+  margin: 65px 5px 55px 5px;
   padding: 10px;
   background-color: white;
   border-radius: 10px;
 }
 
 .user-img {
-  background-color: #C4BCB8;
+  display: block;
+  background-color: #EDECEA;
   border-radius: 50%;
   width: 30px;
   height: 30px;
+  overflow: hidden;
+}
+
+.user-img > img {
+  width: 100%;
 }
 
 .page-title {
@@ -314,6 +321,9 @@ export default {
   color: #464545;
   font-weight: bold;
   font-size: 20px;
+  width: 92%;
+  white-space: normal;
+  word-break: break-all;
 }
 
 .user-part > div {
@@ -385,13 +395,23 @@ export default {
   margin-right: 10px;
   margin-bottom: 7px;
 }
-
+.up-parent{
+  position: relative;
+}
 .ud-part {
-  float: right;
+  position: absolute;
+  right: 15px;
+  top: 40px;
   background-color: #f7f7f7;
+  border-radius: 3px;
 }
 .ud-part > li {
   margin: 20px;
+}
+.ud-button {
+  position: absolute;
+  right: 25px;
+  top: 13px;
 }
 
 .img-part {

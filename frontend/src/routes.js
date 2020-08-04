@@ -27,6 +27,7 @@ import StudyMatching from './views/study/StudyMatching.vue'
 import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
+import memberForm from './views/team/memberForm.vue'
 
 
 import Components from './views/Components.vue'
@@ -115,7 +116,8 @@ export default [
     {
         path : '/feed/update',
         name : 'FeedUpdate',
-        component : FeedCreate
+        component : FeedCreate,
+        props: true,
     },
     {
         path : '/feed/comment',
@@ -137,7 +139,12 @@ export default [
         path : '/team/match',
         name : 'teamMatch',
         component : teamMatch
-    }, 
+    },
+    {
+        path: '/team/member',
+        name: 'memberForm',
+        component: memberForm
+    },
 
     // Component
     {
