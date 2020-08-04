@@ -57,7 +57,7 @@ public class FollowController {
 		int followFlag = 0;
 
 		// from의 팔로우 리스트 확인
-		Optional<User> tempU = userservice.findone(From);
+		Optional<User> tempU = userservice.findtwo(From);
 		User user = tempU.get();
 
 		Set<UserFollow> followings = user.getFollowings();
@@ -80,8 +80,8 @@ public class FollowController {
 		// 이미 팔로우한 사람이 없는 경우.
 		if (followFlag == 0) {
 //			// u1이 u2 팔로우하는거임.
-			Optional<User> U1 = userservice.findone(From);
-			Optional<User> U2 = userservice.findone(To);
+			Optional<User> U1 = userservice.findtwo(From);
+			Optional<User> U2 = userservice.findtwo(To);
 
 			User u1 = U1.get();
 			User u2 = U2.get();
@@ -98,8 +98,8 @@ public class FollowController {
 			System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		} else {
 			// u1이 u2 언팔로우하는거임.
-			Optional<User> U1 = userservice.findone(From);
-			Optional<User> U2 = userservice.findone(To);
+			Optional<User> U1 = userservice.findtwo(From);
+			Optional<User> U2 = userservice.findtwo(To);
 
 			User u1 = U1.get();
 			User u2 = U2.get();
@@ -126,8 +126,8 @@ public class FollowController {
 	public void userUnfollow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
 
 		// u1이 u2 언팔로우하는거임.
-		Optional<User> U1 = userservice.findone(From);
-		Optional<User> U2 = userservice.findone(To);
+		Optional<User> U1 = userservice.findtwo(From);
+		Optional<User> U2 = userservice.findtwo(To);
 
 		User u1 = U1.get();
 		User u2 = U2.get();
@@ -143,10 +143,10 @@ public class FollowController {
 
 	@GetMapping("/follow/user/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	public void userFollowList(@Valid @RequestParam String email) {
+	public void userFollowList(@Valid @RequestParam String nickname) {
 
 		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
-		Optional<User> U1 = userservice.findone(email);
+		Optional<User> U1 = userservice.findtwo(nickname);
 		User u1 = U1.get();
 
 		Set<UserFollow> followers = u1.getFollowers();
@@ -171,7 +171,7 @@ public class FollowController {
 
 	@PostMapping("/follow/tag")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
-	public void tagFollow(@Valid @RequestParam String email, @Valid @RequestParam String tagname) {
+	public void tagFollow(@Valid @RequestParam String nickname, @Valid @RequestParam String tagname) {
 		Optional<Tag> optionalTag = tagdao.findTagByName(tagname);
 
 		// 태그가 테이블에 존재하지 않는 경우.
@@ -179,7 +179,7 @@ public class FollowController {
 			Tag t = new Tag(tagname);
 			tagdao.save(t);
 
-			Optional<User> optionalUser = userdao.findUserByEmail(email);
+			Optional<User> optionalUser = userservice.findtwo(nickname);
 			User u = optionalUser.get();
 
 			TagFollow tf = new TagFollow();
@@ -195,7 +195,7 @@ public class FollowController {
 
 			System.out.println("태그 있음");
 
-			Optional<User> optionalUser = userdao.findUserByEmail(email);
+			Optional<User> optionalUser = userservice.findtwo(nickname);
 			User u = optionalUser.get();
 
 			// 태그가 테이블에 존재하나, 유저가 팔로우 하지않은 태그일 경우.
