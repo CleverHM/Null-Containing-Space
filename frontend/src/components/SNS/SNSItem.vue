@@ -2,7 +2,9 @@
   <div id="SNSItem">
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
-      <div class="user-img mr-2"></div>
+      <div class="user-img mr-2">
+        <img src="@/assets/images/default_image.png" alt="user_default_image">
+      </div>
       <div class="flex-column">
         <div class="user-name">{{ article.userName }}</div>
         <div class="date-diff">{{ diffTime }}</div>
@@ -162,10 +164,16 @@ export default {
 }
 
 .user-img {
-  background-color: #C4BCB8;
+  display: block;
+  background-color: #EDECEA;
   border-radius: 50%;
   width: 50px;
   height: 50px;
+  overflow: hidden;
+}
+
+.user-img > img {
+  width: 100%;
 }
 
 .user-name {
