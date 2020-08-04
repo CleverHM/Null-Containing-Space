@@ -234,12 +234,10 @@ export default {
         }
       )
       .then((res) => {
-        console.log('SUCCESS!!');
-        this.$router.push("/feed");
+        this.moveFeed();
       })
       .catch((err) => {
         console.log(err)
-        console.log('FAILURE!!');
       })
           
     },
