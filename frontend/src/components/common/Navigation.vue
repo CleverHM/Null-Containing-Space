@@ -44,16 +44,14 @@ export default {
   },
   methods: {
       goBack(){
-          this.$router.go(-1)
+          if (this.currentRouteName === 'FeedDetail'){
+              this.$router.push({ name: 'FeedMain'})
+          } else {
+              this.$router.go(-1)
+          }
       },
       goSearch(){
 
-      },
-      goPageDropdown() {
-          this.$router.push("/page")
-      },
-      goModifyUser() {
-          this.$router.push("/user/modify")
       },
       toggleShow: function() {
           this.showMenu = !this.showMenu;
