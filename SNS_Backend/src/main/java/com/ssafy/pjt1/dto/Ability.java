@@ -47,6 +47,8 @@ public class Ability {
 	@OneToOne(mappedBy = "ability")
 	private User user;
 
+	public Ability() {}
+	
 	public Ability(int aid, int back_cpp, int back_java, int back_python, int back_php, int front_html, int front_css,
 			int front_javascript, int db_sql, int db_nosql, int frame_spring, int frame_django, int frame_bootstrap,
 			int frame_vue, int frame_react, int algo) {

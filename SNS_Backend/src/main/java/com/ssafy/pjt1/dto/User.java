@@ -89,7 +89,7 @@ public class User {
 		this.email = email;
 	}
 
-	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
@@ -97,6 +97,10 @@ public class User {
 		this.tel = tel;
 		this.age = age;
 		this.gender = gender;
+		this.gitaddr = gitaddr;
+		this.blogaddr = blogaddr;
+		this.intro = intro;
+		this.ability = ability;
 	}
 	
 	//매칭시스템 테스트데이터용 생성자
