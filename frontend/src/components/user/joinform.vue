@@ -81,7 +81,7 @@
           placeholder="ex) 알골마스터"
           type="text"/>
           <div class="Warning" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
-          <div class="Success" v-else><i class="fas fa-exclamation-triangle"></i>사용할 수 있는 닉네임입니다.</div>
+          <div class="Success" v-if="error.nicknameSuccess"><i class="fas fa-exclamation-triangle"></i>사용할 수 있는 닉네임입니다.</div>
           <button @click="isDuplicate">중복체크</button>
       </div>
    
@@ -116,6 +116,7 @@ export default {
       error: {
         password: false,
         nickname: false,
+        nicknameSuccess: false,
         passwordConfirm: false,
         age: false,
         tel: false,
@@ -196,11 +197,13 @@ export default {
       .then((data) => {
         console.log(data.data)
         if (data.data.status) {
-          this.error.nickname=""
+          this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
+          this.error.nickname=false
         }
       })
       .catch((err) => {
-        this.err.nickname="사용할 수 없는 닉네임입니다."
+        this.error.nickname="사용할 수 없는 닉네임입니다."
+        this.error.nicknameSuccess=false;
       })
     },
     // 회원 가입
@@ -216,7 +219,7 @@ export default {
 #JoinForm{
     position: relative;
     width: 100%;
-    padding: 70px 10px 50px 10px;
+    padding: 0 10px 50px 10px;
 }
 h5 {
    margin: 0 20px 30px 20px;
