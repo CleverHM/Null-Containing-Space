@@ -33,20 +33,6 @@
             <br><p>GIT</p>
             </button>
 
-            <!-- 자기소개 !-->
-    <pre id="introduce" class="my-3">
-    안녕하세요 알골마스터입니다.
-    잘지내보아요.
-
-    관심 분야
-    ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-    </pre>
-
-            <!-- 태그 뱃지 !-->
-            <TagBadge></TagBadge>
-            <TagBadge></TagBadge>
-            <TagBadge></TagBadge>
-
 
             <!-- 개발 능력 !-->
             <tabs
@@ -60,30 +46,26 @@
         />
         <div class="content">
           <div v-if="currentTab === 'tab1'">
-            Sed ut perspiciatis unde omnis iste natus error sit
-            voluptatem accusantium doloremque laudantium, totam rem aperiam,
-            eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-            dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-            aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-            voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-            quia dolor sit amet, consectetur, adipisci velit, sed quia non
-            numquam eius modi tempora incidunt ut labore
-            et dolore magnam aliquam quaerat voluptatem.
+            
+            <!-- 자기소개 !-->
+            <div id="introduce" class="my-3">
+            안녕하세요 알골마스터입니다. <br />
+            잘지내보아요.<br/><br/>
+
+            관심 분야<br/>
+            ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+            </div>
+
+            <!-- 태그 뱃지 !-->
+            <TagBadge></TagBadge>
+            <TagBadge></TagBadge>
+            <TagBadge></TagBadge>
+
           </div>
           <div v-if="currentTab === 'tab2'">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
+            ability
           </div>
-          <div v-if="currentTab === 'tab3'">
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-            occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-            mollitia animi, id est laborum et dolorum fuga.
-          </div>
+        
         </div>
 
     </div>
@@ -102,15 +84,13 @@ console.log(storage.getItem("token"))
 // var User = JSON.parse(storage.getItem('User'));
 // console.log(User)
 const TABS = [{
-    title: 'Tab 1',
+    title: 'Introduce',
     value: 'tab1',
-    }, {
-    title: 'Tab 2',
+    },{
+    title: 'Ability',
     value: 'tab2',
-    }, {
-    title: 'Tab 3',
-    value: 'tab3',
-}];
+    },
+];
 
 export default {
     name: "profile",
@@ -203,7 +183,10 @@ export default {
     color: #E2DFD8;
     
 }
-
+#introduce {
+  white-space: normal;
+  word-break: break-all;
+}
 .tabs {
   position: relative;
   top: 20px;
