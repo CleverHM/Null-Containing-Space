@@ -12,4 +12,5 @@ public interface UserService {
 	void delete(User selectUser, Set<Post> posts);
 	Optional<User> duplNick(String nickName);
 	Optional<User> findone(String email);
+	Optional<User> findtwo(String nickname);
 }
