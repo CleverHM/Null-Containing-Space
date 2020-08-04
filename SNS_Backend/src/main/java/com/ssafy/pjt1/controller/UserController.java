@@ -343,7 +343,10 @@ public class UserController {
 		
             mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(), user.getIntro(), tag, abt, out);
         }
-        else System.out.println("프로필 파일 없음");
+        else {
+        	mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(), user.getIntro(), tag, abt, reportBytes);
+        	System.out.println("프로필 파일 없음");
+        }
         
 		return mypage;
 	}
