@@ -215,7 +215,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 /* 전체 화면 style */
 .css-slider {
   height: 100vh;
