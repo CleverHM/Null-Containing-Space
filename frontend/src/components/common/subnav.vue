@@ -12,12 +12,9 @@
             <b-icon-bell-fill></b-icon-bell-fill><br />
             <div class="name"><small>알림</small></div>
         </button>
-        <button class="navbtn">
-        <router-link class="navbtn" :to="{ name: 'profile', params: { postId: nickname }}">
+        <button class="navbtn" @click="goProfile">
             <b-icon-person-circle></b-icon-person-circle><br />
             <div class="name"><small>프로필</small></div>
-        </router-link>
-            
         </button>
     </div>
 </template>
@@ -33,16 +30,16 @@ export default {
     },
     methods: {
         goProject() {
-            this.$router.push("/main")
+            this.$router.push({name: 'Main'}).catch(()=>{})
         },
         goFeed() {
-            this.$router.push("/feed")
+            this.$router.push({name: 'FeedMain'}).catch(()=>{})
         },
         goNotice() {
-            this.$router.push("/notice")
+            this.$router.push({name: 'Notice'}).catch(()=>{})
         },
         goProfile() {
-            this.$router.push("/user/profile")
+            this.$router.push({ name: 'profile', params: { postId: this.nickname }}).catch(()=>{})
         },
         
     }
