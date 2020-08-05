@@ -1,5 +1,5 @@
 <template>
-    <div id="memberForm">
+    <div id="SubjectForm">
         <Navbar></Navbar>
         <subNav/>
         <div class="subject-part">
@@ -19,10 +19,11 @@
                 </div>
 
                 <!-- 없으면 실시간 반영이 안됨... -->
-                <span style="display:none">{{ subjectCheck.length }}</span>
+                <span style="display:none">{{ subjectCheck }}</span>
             </div>
             <div class="d-flex justify-content-center">
-                <button class="submit-button">팀원 등록하기</button>
+                <button v-if="!leader" class="submit-button" @click="moveMain">팀원 등록하기</button>
+                <button v-if="leader" class="submit-button" @click="moveLeader">팀 세부사항 기입하기</button>
             </div>
         </div>
     </div>
@@ -33,29 +34,50 @@ import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
 
 export default {
-    name: "memberForm",
+    name: "SubjectForm",
     components: {
         Navbar,
         subNav,
     },
+    props: [
+        'beforeSubject'
+        ],
     data() {
         return {
-            subjectCheck: [],
+            subjectCheck: 0,
             subjects: [
                 '웹 기술 프로젝트',
                 '웹 디자인 프로젝트',
                 'IOT 프로젝트',
             ],
             subjectLength: 0,
-            isClick: [
-                false, false, false, false, false,
-                false, false, false, false, false,
-            ]
+            isClick: [],
+            leader: false,
         }
     },
 
     created() {
+        
+        if (this.$route.name === 'SubjectForm') {
+            this.leader = false
+        } else {
+            this.leader = true
+        }
+
         this.subjectLength = this.subjects.length
+
+        // 처음에 subject 개수만큼 채워두기
+        var step;
+        for (step = 0 ; step < this.subjectLength; step++) {
+            this.isClick.push(false)
+        }
+        if (this.beforeSubject == undefined) {
+            this.isClick[0] = true
+            this.subjectCheck = 1
+        } else {
+            this.isClick[this.beforeSubject - 1] = true
+            this.subjectCheck = this.beforeSubject
+        }
     },
 
     methods: {
@@ -65,16 +87,28 @@ export default {
             if (!event.target.id) {
                 idx = event.target.parentElement.id
             }
+
+
             this.isClick[idx] = !this.isClick[idx]
 
-            // id 값과 동일한 subjects의 인덱스 값이 해당 부분의 value이므로 받아서 넣어준다.
-            var sub = this.subjects[idx]
+            // id 값과 동일한 subjects의 인덱스 값이 해당 부분의 value이므로 받아서 넣어준다. 1부터 시작하므로 + 1을 넣어줌
             if (this.isClick[idx]) {
-                this.subjectCheck.push(sub)
+                var beforeidx = this.subjectCheck;
+                this.isClick[beforeidx - 1] = false
+                this.subjectCheck = Number(idx) + 1
             } else {
-                this.subjectCheck.pop(sub)
+                this.subjectCheck = Number(idx) + 1
             }
+        },
+
+        moveMain() {
+            console.log('팀원 등록')
+        },
+
+        moveLeader() {
+            this.$router.push({ name: 'LeaderForm', params: { subjectCheck: this.subjectCheck }});
         }
+
     }
 
 }

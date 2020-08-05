@@ -36,6 +36,7 @@ export default {
   name:"NavBar",
   props: [
       'showMenu',
+      'subjectCheck', // LeaderForm에서 가지고있는 subject 정보
   ],
   computed: {
       currentRouteName() {
@@ -44,8 +45,10 @@ export default {
   },
   methods: {
       goBack(){
-          if (this.currentRouteName === 'FeedDetail'){
+          if (this.currentRouteName === 'FeedDetail') {
               this.$router.push({ name: 'FeedMain'})
+          } else if (this.currentRouteName === 'LeaderForm') {
+              this.$router.push({ name: 'LeaderbeforeForm', params: { beforeSubject: this.subjectCheck }});
           } else {
               this.$router.go(-1)
           }
