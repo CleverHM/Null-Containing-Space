@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -69,6 +70,11 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFILE_ID")
 	private Profile profile;
+	
+	//team : 유저 (1 : N 관계)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -132,6 +138,14 @@ public class User {
 		this.posts = posts;
 		this.postlikes = postlikes;
 		this.createDate = createDate;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
 	public Profile getProfile() {
