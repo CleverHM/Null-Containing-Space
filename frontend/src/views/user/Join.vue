@@ -142,6 +142,8 @@ export default {
 <style scoped>
 #JoinView{
   width: 100vw;
+  background-color: #c6dfd6;
+
 }
 .progress-container{
   width:100%;
