@@ -6,7 +6,11 @@
         <img src="@/assets/images/default_image.png" alt="user_default_image">
       </div>
       <div class="flex-column">
-        <div class="user-name">{{ article.userName }}</div>
+        <div class="user-name" style="color: #464545;">
+          <router-link :to="{ name: 'profile', params: { nickname: article.userName }}" style="color: #464545;">
+            {{ article.userName }}
+          </router-link>
+        </div>
         <div class="date-diff">{{ diffTime }}</div>
       </div>
     </div>

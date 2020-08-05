@@ -20,20 +20,26 @@
 </template>
 
 <script>
+const storage=window.sessionStorage;
 export default {
     name: 'subnav',
+    data() {
+        return {
+            nickname: storage.getItem("NickName"),
+        }
+    },
     methods: {
         goProject() {
-            this.$router.push("/main")
+            this.$router.push({name: 'Main'}).catch(()=>{})
         },
         goFeed() {
-            this.$router.push("/feed")
+            this.$router.push({name: 'FeedMain'}).catch(()=>{})
         },
         goNotice() {
-            this.$router.push("/notice")
+            this.$router.push({name: 'Notice'}).catch(()=>{})
         },
         goProfile() {
-            this.$router.push("/user/profile")
+            this.$router.push({ name: 'profile', params: { postId: this.nickname }}).catch(()=>{})
         },
         
     }
@@ -51,6 +57,7 @@ export default {
     background-color: #EDECEA;
 }
 .navbtn{
+    color: #464545;
     padding-top: 3px;
     width: 25%;
 }
