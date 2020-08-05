@@ -19,10 +19,10 @@
                 </div>
 
                 <!-- 없으면 실시간 반영이 안됨... -->
-                <span style="color:white">{{ subjectCheck.length }}</span>
+                <span style="display:none">{{ subjectCheck.length }}</span>
             </div>
             <div class="d-flex justify-content-center">
-                <button class="check-button">팀원 등록하기</button>
+                <button class="submit-button">팀원 등록하기</button>
             </div>
         </div>
     </div>
@@ -146,9 +146,10 @@ export default {
     color: #464545;
 }
 
-.check-button {
+.submit-button {
     margin-top: 20px;
     padding: 10px;
+    color: white;
     background-color: #ACCCC4;
     border-radius: 10px;
 }
