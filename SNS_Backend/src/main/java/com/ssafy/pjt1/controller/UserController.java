@@ -69,6 +69,28 @@ public class UserController {
 	@Autowired
 	FollowService followservice; 
 
+	// eamil 중복 체크
+		@PostMapping("/account/emailDuplicate")
+		@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
+
+		public Object emailDuplicate(@Valid @RequestBody String email) {
+			Optional<User> optionaluser = userservice.findone(email);
+
+			if (optionaluser.isPresent()) {
+				System.out.println("실패");
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.data = "이멩일이 중복 되었습니다.";
+				return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			} else {
+				System.out.println("성공");
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
+		}
+	
 // 중복 체크
 	@PostMapping("/account/nickNameDuplicate")
 	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
