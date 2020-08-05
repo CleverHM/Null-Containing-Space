@@ -138,9 +138,9 @@ public class UserController {
 
 	}
 
-	@PostMapping("/account/modify")
+	@PostMapping("/account/modifyTrue")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object update(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
+	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
 
@@ -188,6 +188,34 @@ public class UserController {
 		}
 	}
 
+	@PostMapping("/account/modifyFalse")
+	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
+	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro) throws Exception {
+		// 회원 수정 시작!
+		System.out.println(email);
+		Optional<User> legacyUser = userservice.findone(email);
+
+		User originUser = legacyUser.get();
+
+		originUser.setNickname(nickname);
+		originUser.setBlogaddr(blog);
+		originUser.setGitaddr(git);
+		originUser.setIntro(intro);
+		userservice.signUp(originUser);
+		
+		if (legacyUser.isPresent()) {
+
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			System.out.println("실패");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	
 	@PutMapping("/account/delete")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
 	public Object delete(@Valid @RequestParam String nickname) {
