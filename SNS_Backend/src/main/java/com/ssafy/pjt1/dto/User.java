@@ -72,7 +72,7 @@ public class User {
 	private Profile profile;
 	
 	//team : 유저 (1 : N 관계)
-	@ManyToOne
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "TEAM_ID")
 	private Team team;
 
