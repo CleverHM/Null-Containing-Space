@@ -15,6 +15,17 @@
                     (필요한 기술을 클릭해주세요)
                 </span>
             </div>
+            <!-- 전체 선택 취소하기 위한 버튼 -->
+            <div class="button-all">
+                <div v-for="i in 5" :key="i + '^'" :id="i + '^'">
+                    <div @click="clickAll"
+                    :class="{boxCheckOn: basic.clickTFAll[i-1], boxCheckOff: !basic.clickTFAll[i-1]}">
+                    </div>
+                    <div @click="clickAll">{{ basic.techalllist[i-1] }}</div>
+                    <div style="display: none;">{{ basic.clickTFAll[i-1] }}</div>
+                </div>
+            </div>
+
             <div v-for="n in 4" :key="n-1" :id="n + '/'" class="mx-1 mb-2">
                 <div class="displaytags">
                     {{ team.techName[n-1] }}
@@ -91,6 +102,31 @@ export default {
                 ],
                 techLen: [],
             },
+            basic: {
+                // 전체 클릭 시
+                clicktechAll: [
+                    [], [], [], [],
+                ],
+                clickAll: [
+                    [], [], [], [], 
+                ],
+
+                // 전체 취소 시
+                clicktechNo: [
+                    [], [], [], [],
+                ],
+                clickNo: [
+                    [], [], [], [],
+                ],
+
+                // 클릭 상태
+                techalllist: [
+                    '전체', 'Back', 'Front', 'DB', 'Frame',
+                ],
+                clickTFAll: [
+                    false, false, false, false, false,
+                ],
+            },
         }
     },
 
@@ -103,8 +139,16 @@ export default {
             this.team.techLen.push(checkLen);
             for (step2 = 0; step2 < checkLen; step2++) {
                 this.team.click[step].push(false)
+
+                // 전체 선택을 위한 All 배열 만들기
+                this.basic.clickAll[step].push(true)
+                this.basic.clicktechAll[step].push(step2)
             }
         }
+
+        // 빈 배열 값 복사 (이중배열 deep copy)
+        this.basic.clickNo = this.team.click.slice();
+        console.log(this.basic.clickNo)
     },
 
     methods: {
@@ -112,15 +156,60 @@ export default {
         // 클릭한 기술 가져오기
         clickTech(event) {
             // 이중 배열의 m, n 순으로 가져오기 (배열에서는 [n][m]임)
+            // console.log(event.target.innerText)
             var sidx = Number(event.target.id.split(',')[0]) - 1
             var pidx = Number(event.target.parentElement.parentElement.id.split('/')[0]) - 1
             this.team.click[pidx][sidx] = !this.team.click[pidx][sidx]
             // true면 넣기 / false면 빼기
             if (this.team.click[pidx][sidx]) {
-                this.team.clicktech[pidx].push(event.target.innerText)
+                this.team.clicktech[pidx].push(sidx)
             } else {
-                this.team.clicktech[pidx].splice(this.team.clicktech[pidx].indexOf(event.target.innerText),1)
+                this.team.clicktech[pidx].splice(this.team.clicktech[pidx].indexOf(sidx),1)
             }
+            console.log(this.team.clicktech)
+        },
+
+        clickAll(event) {
+            var cidx = Number(event.target.parentElement.id.split('^')[0] - 1)
+
+            // true - false를 변경
+            this.basic.clickTFAll[cidx] = !this.basic.clickTFAll[cidx]
+            console.log(cidx)
+            console.log(this.basic.clickTFAll[cidx])
+
+            if (cidx == 0) {
+                if (this.basic.clickTFAll[cidx]) {
+                    this.team.click = this.basic.clickAll.slice();
+                    this.team.clicktech = this.basic.clicktechAll.slice();
+                    this.basic.clickTFAll = [true, true, true, true, true]
+                } else {
+                    this.team.click = this.basic.clickNo.slice();
+                    this.team.clicktech = this.team.clicktechNo.slice();
+                    this.basic.clickTFAll = [false, false, false, false, false]
+                }
+            } else {
+                if (this.basic.clickTFAll[cidx]) {
+                    this.team.click[cidx-1] = this.basic.clickAll[cidx-1]
+                    this.team.clicktech[cidx-1] = this.basic.clicktechAll[cidx-1]
+                    
+                    console.log(this.team.click[cidx-1])
+                    console.log(this.team.clicktech[cidx-1])
+                } else {
+                    console.log('들어왔니?')
+                    console.log('가져올값',this.basic.clickNo[cidx-1])
+                    this.team.click[cidx-1] = this.basic.clickNo[cidx-1]
+                    console.log('넣은값', this.team.click[cidx-1])
+                    console.log('가져올값2',this.team.clicktechNo[cidx-1])
+                    this.team.clicktech[cidx-1] = this.team.clicktechNo[cidx-1]
+                    console.log('넣은값', this.team.clicktech[cidx-1])
+
+                    this.basic.clickTFAll[0] = false
+                    console.log(this.team.click[cidx-1])
+                    console.log(this.team.clicktech[cidx-1])
+                    console.log(this.basic.clickTFAll[0])
+                } 
+            }
+            console.log(this.basic.clickNo)
         },
 
         // 팀 개설 제출
@@ -164,6 +253,7 @@ export default {
     margin: 0px 5px 10px 5px;
 }
 
+
 .team-use {
     margin: 20px 10px 10px 10px;
     color: #464545;
@@ -177,6 +267,41 @@ export default {
     font-size: 14px;
     margin-left: 15px;
     font-weight: normal;
+}
+
+
+.button-all {
+    display: inline-block;
+    margin: 10px 10px 0px 10px;
+    color: #464545;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.button-all > div {
+    display: inline-block;
+    margin: 5px 10px 5px 0px;
+}
+
+.button-all > div > div {
+    display: inline-block;
+    margin-left: 5px;
+    text-align: center;
+}
+
+.boxCheckOff {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #464545;
+}
+
+.boxCheckOn {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #464545;
+    background-color: #464545;
 }
 
 input {
