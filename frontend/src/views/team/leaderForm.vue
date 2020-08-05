@@ -5,7 +5,7 @@
         <div class="team-form">
             <!-- 프로젝트 이름 -->
             <div class="inputForm">
-                <input v-model="team.title" id="title" placeholder="프로젝트 이름(3글자 이상 입력해주세요)" type="text" />
+                <input v-model="team.title" id="title" placeholder="프로젝트 팀 이름(3글자 이상 입력해주세요)" type="text" />
             </div>
 
             <!-- 프로젝트 기술 -->
@@ -17,18 +17,18 @@
             </div>
             <div v-for="n in 4" :key="n-1" :id="n + '/'" class="mx-1 mb-2">
                 <div class="displaytags">
-                    {{ hashcate[n-1] }}
+                    {{ team.techName[n-1] }}
                 </div>
                 <div class="button-area">
-                    <div v-for="m in basic.techLen[n-1]"
-                        :key="basic.techs[n-1][m-1]"
+                    <div v-for="m in team.techLen[n-1]"
+                        :key="team.techs[n-1][m-1]"
                         :id="m + ','"
-                        :class="{checkOn: basic.click[n-1][m-1], checkOff: !basic.click[n-1][m-1]}"
+                        :class="{checkOn: team.click[n-1][m-1], checkOff: !team.click[n-1][m-1]}"
                         @click="clickTech">
-                        {{ basic.techs[n-1][m-1] }}
+                        {{ team.techs[n-1][m-1] }}
                     </div>
                 </div>
-                <div style="display:none">{{ team.clicktech[n-1]}}</div>
+                <div style="display:none">{{ team.clicktech[n-1] }}</div>
             </div>
 
             
@@ -46,7 +46,7 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <button class="submit-button">팀 개설하기</button>
+                <button class="submit-button" @click="teamCreate">팀 개설하기</button>
             </div>
 
         </div>
@@ -72,16 +72,13 @@ export default {
         return {
             team: {
                 title: '',
-                // front - back - db - frame 순
+                techName: [
+                    'Backend', 'Frontend', 'DataBase', 'Fremework',
+                ],
                 clicktech: [
                     [], [], [], [],
                 ],
                 content: '',
-            },
-            hash: [
-                '', '', '', '',
-            ],
-            basic: {
                 techs: [
                     ['cpp', 'java', 'python', 'php',],
                     ['html', 'css', 'javascript', ],
@@ -94,9 +91,6 @@ export default {
                 ],
                 techLen: [],
             },
-            hashcate: [
-                'Backend', 'Frontend', 'DataBase', 'Fremework',
-            ],
         }
     },
 
@@ -105,10 +99,10 @@ export default {
         var step2;
         var checkLen;
         for (step = 0; step < 4; step++) {
-            checkLen = this.basic.techs[step].length;
-            this.basic.techLen.push(checkLen);
+            checkLen = this.team.techs[step].length;
+            this.team.techLen.push(checkLen);
             for (step2 = 0; step2 < checkLen; step2++) {
-                this.basic.click[step].push(false)
+                this.team.click[step].push(false)
             }
         }
     },
@@ -120,13 +114,37 @@ export default {
             // 이중 배열의 m, n 순으로 가져오기 (배열에서는 [n][m]임)
             var sidx = Number(event.target.id.split(',')[0]) - 1
             var pidx = Number(event.target.parentElement.parentElement.id.split('/')[0]) - 1
-            this.basic.click[pidx][sidx] = !this.basic.click[pidx][sidx]
+            this.team.click[pidx][sidx] = !this.team.click[pidx][sidx]
             // true면 넣기 / false면 빼기
-            if (this.basic.click[pidx][sidx]) {
+            if (this.team.click[pidx][sidx]) {
                 this.team.clicktech[pidx].push(event.target.innerText)
             } else {
                 this.team.clicktech[pidx].splice(this.team.clicktech[pidx].indexOf(event.target.innerText),1)
             }
+        },
+
+        // 팀 개설 제출
+        teamCreate() {
+            var step;
+            var techList = new Array();
+
+            // 기술들을 하나의 리스트(true/false)로 변환한다.
+            // 1. 기술 4개(back - front - db - framework)의 리스트를 하나의 리스트로 합치기
+            for (step = 0; step < 4; step++) {
+                techList = techList.concat(this.team.click[step])
+            }
+
+            // 2. 원래 ability의 algo가 있으므로 algo는 true로 보내준다.
+            techList = techList.concat(true)
+
+            console.log(techList)
+            // 보내줘야할 데이터들을 formData 안에 넣는다.
+            let formData = new FormData();
+            formData.append("title", this.team.title);
+            formData.append("subject", this.subjectCheck);
+            formData.append("tech", techList);
+            formData.append("content", this.team.content)
+            
         }
         
     }
