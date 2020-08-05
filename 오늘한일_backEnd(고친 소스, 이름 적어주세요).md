@@ -117,6 +117,7 @@
 ## 2020. 08. 05
 
 - 조대흠
+  - 서버 배포 작업(도커)
 - 박상현
 - 김호한
   - Team Create, Delete, join 구현(Spring)
