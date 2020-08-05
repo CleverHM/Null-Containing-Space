@@ -298,6 +298,26 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@PostMapping("/account/tokenAuth")
+	@ApiOperation(value = "토큰 확인 ", notes = "토큰 확인을 구현")
+	public Object login(@Valid @RequestParam String token) {
+
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		System.out.println(jwtservice.isUsable(token));
+		if (jwtservice.isUsable(token)) {
+			resultMap.put("message", "인증 성공");
+			status = HttpStatus.ACCEPTED;
+
+			System.out.println("로그인 성공");
+		} else {
+			resultMap.put("message", "로그인 실패");
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
 	@PostMapping("/account/findPasswordModify")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
