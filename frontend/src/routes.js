@@ -1,4 +1,3 @@
-
 // User
 import Login from './views/user/Login.vue'
 import getAbility from './views/user/Join/getAbility.vue'
@@ -55,27 +54,32 @@ export default [
     {
         path : '/user/step1',
         name : 'step1',
-        component : step1
+        component : step1,
+        props: true
     },    
     {
         path : '/user/step2',
         name : 'step2',
-        component : step2
+        component : step2,
+        props: true
     },    
     {
         path : '/user/step3',
         name : 'step3',
-        component : step3
+        component : step3,
+        props: true
     },    
     {
         path : '/user/step4',
         name : 'step4',
-        component : step4
+        component : step4,
+        props: true
     },
     {
         path : '/user/step5',
         name : 'step5',
-        component : step5
+        component : step5,
+        props: true
     },
     {
         path : '/find/password',

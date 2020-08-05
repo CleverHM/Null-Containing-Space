@@ -2,7 +2,7 @@
     <div class="css-slider">
         <section class="slide slide-four">
           <Join4 :ability="ability" v-for="ability in abilities" :key="ability.id"></Join4>
-
+          <button id="btn-join">입력</button>
         </section>
 
         <header>
@@ -149,5 +149,16 @@ header div:hover {
 }
 header div#slide-4{
   background-color: #464545;
+}
+#btn-join{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  background-color: #464545;
+  height: 50px;
+  border-radius: 3px;
+  color: #f7f7f7;
+  font-weight: bold;
+  width:100%;
 }
 </style>
