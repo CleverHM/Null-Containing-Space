@@ -33,7 +33,8 @@ import StudyMatching from './views/study/StudyMatching.vue'
 import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
-import memberForm from './views/team/memberForm.vue'
+import SubjectForm from './views/team/subjectForm.vue'
+import leaderForm from './views/team/leaderForm.vue'
 
 
 import Components from './views/Components.vue'
@@ -175,10 +176,24 @@ export default [
         component : teamMatch
     },
     {
-        path: '/team/member',
-        name: 'memberForm',
-        component: memberForm
+        path: '/team/subject',
+        name: 'SubjectForm',
+        component: SubjectForm,
     },
+    {
+        path: '/team/leader1',
+        name: 'LeaderbeforeForm',
+        component: SubjectForm,
+        props: true,
+
+    },
+    {
+        path: '/team/leader2',
+        name: 'LeaderForm',
+        component: leaderForm,
+        props: true,
+    },
+
 
     // Component
     {
