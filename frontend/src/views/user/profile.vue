@@ -6,29 +6,39 @@
             <div id="baseProfile" style="height: 150px;">
                 <!-- 프로필 이미지  -->
                 <div class="profileImg">
-                  <img src="@/assets/images/test.jpg">
+                  <img v-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
+                  <img v-else src="@/assets/images/profile_default.png">
                 </div>
                 <!-- 이름/팔로우 -->
                 <div class="profileInfo">
                     <!-- 닉네임 -->
-                    <div class="profileName">알골마스터</div>
+                    <div class="profileName">{{ User.nickname }}</div>
                     <div class="follow">
-                        <button class="follower">0<br>팔로워</button>
-                        <button class="following">1<br>팔로잉</button>
+                        <button class="follower">{{ User.followercount }}<br>팔로워</button>
+                        <button class="following">{{ User.followingcount }}<br>팔로잉</button>
                     </div>
                     <div class="profile-btns">
-                        <button class="btn-follow" v-if="false">팔로우</button>
-                        <button class="btn-follow" v-else @click="goUserModify">회원정보수정</button>
+                        <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
+                        <button class="btn-follow" v-else>팔로우</button>
                     </div>
                 </div>
             </div>
 
             <!-- 블로그 & 깃 !-->
-            <button :class="[{'btn-on' : blogLink}, {'btn-off' : !blogLink}]">
+            <button v-if="User.blogURL != null" :class="[{'btn-on' : User.blogURL===null}, {'btn-off' : User.blogURL != null}]">
             <i class="fab fa-blogger fa-2x"></i>
             <br><p>BLOG</p>
             </button>
-            <button :class="[{'btn-on' : gitLink}, {'btn-off' : !gitLink}]">
+            <button v-else :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]" disabled>
+            <i class="fab fa-blogger fa-2x"></i>
+            <br><p>BLOG</p>
+            </button>
+
+            <button v-if="User.GitURL != null" :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
+            <i class="fab fa-git-square fa-2x"></i>
+            <br><p>GIT</p>
+            </button>
+            <button v-else :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]" disabled>
             <i class="fab fa-git-square fa-2x"></i>
             <br><p>GIT</p>
             </button>
@@ -48,12 +58,12 @@
           <div v-if="currentTab === 'tab1'">
             
             <!-- 자기소개 !-->
-            <div id="introduce" class="my-3">
-            안녕하세요 알골마스터입니다. <br />
-            잘지내보아요.<br/><br/>
-
-            관심 분야<br/>
-            ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+            <div id="introduce" class="my-3" v-if="User.Introduce === null">
+            {{ User.Introduce }}
+            </div>
+            <div id="introduce" class="my-3" v-else>
+            자기소개가 없습니다. <br>
+            회원정보수정에서 자기소개를 추가해주세요.
             </div>
 
             <!-- 태그 뱃지 !-->
@@ -63,7 +73,7 @@
 
           </div>
           <div v-if="currentTab === 'tab2'">
-            ability
+            {{ User.ability }}
           </div>
         
         </div>
@@ -78,6 +88,7 @@ import subNav from '../../components/common/subnav.vue'
 import TagBadge from '../../components/common/TagBadge.vue'
 import TabComponent from '../../components/common/TabComponent.vue'
 import Tabs from 'vue-tabs-with-active-line';
+import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
 console.log(storage.getItem("token"))
@@ -100,19 +111,57 @@ export default {
         TagBadge,
         Tabs,
     },
+    created() {
+      this.getUserInfo()
+    },
+    computed: {
+      isMe() {
+        return storage.NickName === this.User.nickname
+      }
+    },
     data : () => {
         return {
+            User: {
+              nickname: null,
+              followingcount: 0,
+              followercount: 0,
+              blogURL: null,
+              GitURL: null,
+              Introduce: null,
+              profileURL: null,
+              ability: null,
+            },
             // navigation dropdown
             showMenu: false,
-            blogLink : "dsdfsdfsfd",
-            gitLink : "",
+            nickname: storage.NickName,
             tabs: TABS,
             currentTab: 'tab1',
         }
     },
     methods : {
-         handleClick(newTab) {
-        this.currentTab = newTab;
+        getUserInfo() {
+          var InputData = new FormData();
+          InputData.append("nickname", this.nickname)
+          http
+          .post("/account/myPage", InputData)
+          .then(({data}) => {
+              console.log(data)
+              this.User.nickname = data.nickname
+              this.User.Introduce = data.intro
+              this.User.profileURL = data.file
+              this.User.followingcount = data.followingCnt
+              this.User.followercount = data.followerCnt;
+              this.User.blogURL = data.blogaddr
+              this.User.GitURL = data.gitaddr
+              this.User.ability = data.abt
+              console.log(this.User)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        },
+        handleClick(newTab) {
+          this.currentTab = newTab;
         },
         noshowMenu() {
           this.showMenu = false;
@@ -141,12 +190,14 @@ export default {
     float: left;
     height: 120px;
     width: 120px;
-    background-color: black;
+    background-color: #f7f7f7;
     border-radius: 100%;
     overflow: hidden;
 }
 .profileImg img {
+  margin: 0;
   width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 .profileName{
@@ -162,7 +213,7 @@ export default {
   width: 50%;
 }
 .profile-btns {
-  padding: 0 0 0 135px;
+  padding: 0 10px 0 135px;
 }
 .btn-follow{
     width: 100%;
@@ -180,8 +231,13 @@ export default {
 .btn-off{
     width:50%;
     font-size: 18px;
-    color: #E2DFD8;
-    
+    color: #E2DFD8;   
+}
+.btn-off:visited{
+  border: 0;
+}
+.btn-off:active{
+  border: 0;
 }
 #introduce {
   white-space: normal;

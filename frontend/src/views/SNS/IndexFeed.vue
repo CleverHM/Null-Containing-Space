@@ -55,7 +55,7 @@ export default {
         storage.getItem("User")
       )
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         this.articles = res.data
       })
       .catch((err) => {
@@ -76,7 +76,7 @@ export default {
         formData
       )
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         this.articles = res.data
       })
       .catch((err) => {
