@@ -140,8 +140,7 @@ public class UserController {
 
 	@PostMapping("/account/modify")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object update(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro,
-			String password) throws Exception {
+	public Object update(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
 
@@ -174,7 +173,6 @@ public class UserController {
 		originUser.setBlogaddr(blog);
 		originUser.setGitaddr(git);
 		originUser.setIntro(intro);
-		originUser.setPassword(password);
 		// User : Profile 정보 이어주기
 		originUser.setProfile(img);
 		userservice.signUp(originUser);
