@@ -100,3 +100,16 @@
   - 게시물 Vue 데이터 전달 (Spring)
   - 게시물 Update 기능 구현 (Spring)
   - 댓글수/회원 수정/댓글 UID 전달 구현 (Spring)
+
+## 2020. 08. 04
+
+- 조대흠
+  - 서버 배포 작업 ing(현재 외부에서 ip주소로 접근불가능함)
+- 박상현
+  - MyPage Controller 구현(Spring)
+  - User Dto 수정(Spring)
+  - User삭제 Controller 수정(Spring)
+- 김호한
+  - 게시판 업데이트 사진 부분 완료 (Spring)
+  - 해쉬태그를 이용한 게시물 정렬 기능 구현 완료 (Spring)
+  - 프로필 사진 추가 (Spring)

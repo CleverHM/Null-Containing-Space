@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="button-part d-flex justify-content-around">
-            <button class="teamCreate">팀장으로 시작</button>
+            <button class="teamCreate" @click="moveLeader">팀장으로 시작</button>
             <button class="teamSignup" @click="moveMember">팀원으로 시작</button>
         </div>
     </div>
@@ -22,9 +22,15 @@
 export default {
   name: "teamOut",
   methods: {
-      moveMember() {
-        this.$router.push({ name: 'memberForm'});
+
+      moveLeader() {
+        this.$router.push({ name: 'LeaderForm'});
       },
+      
+      moveMember() {
+        this.$router.push({ name: 'MemberForm'});
+      },
+
   }
 
 }

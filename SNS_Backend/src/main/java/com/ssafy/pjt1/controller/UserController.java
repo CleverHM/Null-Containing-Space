@@ -69,6 +69,28 @@ public class UserController {
 	@Autowired
 	FollowService followservice; 
 
+	// eamil 중복 체크
+		@PostMapping("/account/emailDuplicate")
+		@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
+
+		public Object emailDuplicate(@Valid @RequestBody String email) {
+			Optional<User> optionaluser = userservice.findone(email);
+
+			if (optionaluser.isPresent()) {
+				System.out.println("실패");
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.data = "이멩일이 중복 되었습니다.";
+				return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			} else {
+				System.out.println("성공");
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
+		}
+	
 // 중복 체크
 	@PostMapping("/account/nickNameDuplicate")
 	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
@@ -138,10 +160,9 @@ public class UserController {
 
 	}
 
-	@PostMapping("/account/modify")
+	@PostMapping("/account/modifyTrue")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object update(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro,
-			String password) throws Exception {
+	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
 
@@ -174,7 +195,6 @@ public class UserController {
 		originUser.setBlogaddr(blog);
 		originUser.setGitaddr(git);
 		originUser.setIntro(intro);
-		originUser.setPassword(password);
 		// User : Profile 정보 이어주기
 		originUser.setProfile(img);
 		userservice.signUp(originUser);
@@ -190,6 +210,34 @@ public class UserController {
 		}
 	}
 
+	@PostMapping("/account/modifyFalse")
+	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
+	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro) throws Exception {
+		// 회원 수정 시작!
+		System.out.println(email);
+		Optional<User> legacyUser = userservice.findone(email);
+
+		User originUser = legacyUser.get();
+
+		originUser.setNickname(nickname);
+		originUser.setBlogaddr(blog);
+		originUser.setGitaddr(git);
+		originUser.setIntro(intro);
+		userservice.signUp(originUser);
+		
+		if (legacyUser.isPresent()) {
+
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			System.out.println("실패");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	
 	@PutMapping("/account/delete")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
 	public Object delete(@Valid @RequestParam String nickname) {

@@ -28,6 +28,7 @@ import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import memberForm from './views/team/memberForm.vue'
+import leaderForm from './views/team/leaderForm.vue'
 
 
 import Components from './views/Components.vue'
@@ -143,9 +144,15 @@ export default [
     },
     {
         path: '/team/member',
-        name: 'memberForm',
+        name: 'MemberForm',
         component: memberForm
     },
+    {
+        path: '/team/leader',
+        name: 'LeaderForm',
+        component: leaderForm
+    },
+
 
     // Component
     {

@@ -1,4 +1,4 @@
-﻿package com.ssafy.pjt1.dto;
+package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -38,7 +39,7 @@ public class User {
 	private String name;
 	private String tel;
 	private int age;
-	private boolean gender; // 1이면 남자, 2이면 여자
+	private boolean gender;
 	private String gitaddr;
 	private String blogaddr;
 	private String intro;
@@ -52,28 +53,28 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<TagFollow> tagfollows;
-
-	// 유저  : 게시물 (1 : N 단방향 관계)
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<Post>();
 	
-	// 유저  : 댓글 (1 : N 단방향 관계)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Reply> replys = new HashSet<Reply>();
-	
-	//유저 : 좋아요 (1 : N 관계)
+		
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
-	
-	// 유저 : 능력(1: 1 관계)
+		
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ABILITY_ID")
 	private Ability ability;
-	
-	//유저 : 프로필사진(1 : 1 관계)
+		
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFILE_ID")
 	private Profile profile;
+	
+	//team : 유저 (1 : N 관계)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -104,7 +105,7 @@ public class User {
 		this.profile = profile;
 	}
 	
-	//매칭시스템 테스트데이터용 생성자
+		
 	public User(int uid, String nickname, String password, String email, String name, String tel, int age, boolean gender) {
 		this.uid = uid;
 		this.nickname = nickname;
@@ -137,6 +138,14 @@ public class User {
 		this.posts = posts;
 		this.postlikes = postlikes;
 		this.createDate = createDate;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
 	public Profile getProfile() {
