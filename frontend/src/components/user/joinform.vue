@@ -1,5 +1,5 @@
 <template>
-  <div id="JoinForm" class="user">
+  <div id="JoinForm" ref="JoinForm">
       <h5 class="mb-4">
       아래의 회원가입 폼을 작성하세요.
       </h5>
@@ -7,7 +7,7 @@
       <!-- 이메일(수정불가) -->
       <div class="input-form" id="email-form">
           <label for="email">이메일</label>
-          <input v-model="user.email" 
+          <input v-model="FormUser.email" 
           id="email"
           type="text"
           disabled />
@@ -16,7 +16,7 @@
       <!-- 비밀번호 입력 -->
       <div class="input-form" id="password-form">
           <label for="password">비밀번호</label>
-          <input v-model="user.password" 
+          <input v-model="FormUser.password" 
           @keyup="checkpassword"
           id="password"
           type="password"
@@ -38,7 +38,7 @@
       <!-- 이름 -->
       <div class="input-form" id="name-form">
           <label for="email">이름</label>
-          <input v-model="user.name" 
+          <input v-model="FormUser.name" 
           id="name"
           type="text"
           placeholder="홍길동" />
@@ -47,14 +47,14 @@
       <!-- 성별 !-->
       <div id="gender-form">
         <div>성별</div>
-        <button class="btn-gender" :class="{'isClick' :male}" @click="selectmale" id="Male">남자</button>
-        <button class="btn-gender" :class="{'isClick' : female}" @click="selectfemale" id="Female">여자</button>
+        <button class="btn-gender" :class="{'isClick' : isMale}" @click="selectmale" id="Male">남자</button>
+        <button class="btn-gender" :class="{'isClick' : isFemale}" @click="selectfemale" id="Female">여자</button>
       </div>
-        
+
       <!-- 나이 !-->     
       <div class="input-form" id="age-form">
           <label for="email">나이</label>
-          <input v-model="user.age"
+          <input v-model="FormUser.age"
           @keyup="checkage" 
           id="age"
           placeholder="25"
@@ -64,7 +64,7 @@
       <!-- 휴대폰 번호 !-->
       <div class="input-form">
         <label for="tel">휴대폰</label>
-        <input v-model="user.tel"
+        <input v-model="FormUser.tel"
         @keyup="ChangeTelForm(user.tel)"
         id="tel"
         placeholder="'-'를 제외하고 입력하세요."
@@ -76,7 +76,7 @@
       <!-- 닉네임 -->
       <div class="input-form">
           <label for="nickname">닉네임</label>
-          <input v-model="user.nickname" 
+          <input v-model="FormUser.nickname" 
           id="nickname"
           placeholder="ex) 알골마스터"
           type="text"/>
@@ -84,35 +84,26 @@
           <div class="Success" v-if="error.nicknameSuccess"><i class="fas fa-exclamation-triangle"></i>사용할 수 있는 닉네임입니다.</div>
           <button @click="isDuplicate">중복체크</button>
       </div>
-   
 
-    <button id="btn-join" @click="join">가입하기</button>
+      <button id="btn-join" @click="join">가입하기</button>
   </div>
 </template>
 
 <script>
-import http from "@/util/http-common.js";
-
-const passwordReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
-const ageReg = /^[1-9]{1}$|^[1-4]{1}[0-9]{1}$|^100$/
-
-
 export default {
   name: 'Join3',
   props: {
-    user:{
+    User: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
-    return{
-      tel: "",
+    return {
+      FormUser: this.User,
       passwordConfirm: "",
-      isTerm: false,
-      isLoading: false,
-      male: true,
-      female : false,
+      isMale: true,
+      isFemale: false,
       error: {
         password: false,
         nickname: false,
@@ -122,94 +113,7 @@ export default {
         tel: false,
       },
       isSubmit: false,
-      passwordType: "password",
-      passwordConfirmType: "password",
-      termPopup: false,
-    }
-  },
-  methods: {
-    // 성별 선택
-    selectmale() {
-      this.male = true;
-      this.female = false;
-      this.user.gender = true;
-    },
-    selectfemale() {
-      this.male = false;
-      this.female = true;
-      this.user.gender = false;
-    },
-    // 휴대폰 번호 체크 
-     ChangeTelForm(inputNum){
-      var phoneNum = inputNum.replace(/[^0-9]/g, '');
-      console.log("before change", phoneNum)
-      var tmp = '';
-      if (phoneNum.length < 4){
-        tmp = phoneNum
-      } else if (phoneNum.length < 7){
-        tmp += phoneNum.substr(0, 3);
-        tmp += '-'
-        tmp += phoneNum.substr(3);
-      } else if (phoneNum.length < 11) {
-        tmp += phoneNum.substr(0, 3);
-        tmp += '-'
-        tmp += phoneNum.substr(3, 3);
-        tmp += '-'
-        tmp += phoneNum.substr(6);
-      }else {
-        tmp += phoneNum.substr(0, 3);
-        tmp += '-'
-        tmp += phoneNum.substr(3, 4);
-        tmp += '-'
-        tmp += phoneNum.substr(7);
-      }
-      this.user.tel = tmp
-    },
-    // 비밀번호 체크
-    checkpassword(){
-      if (this.user.password.match(passwordReg) != null){
-        this.error.password = false;
-      } else {
-        this.error.password = true;
-      }
-    },
-    // 비밀번호확인 체크
-    checkpasswordconfirm(){
-      if (this.user.password === this.passwordConfirm){
-        this.error.passwordConfirm = false;
-      } else {
-        this.error.passwordConfirm = true;
-      }
-    },
-    // 나이 체크
-    checkage(){
-      if (this.user.age.match(ageReg) != null){
-        this.error.age = false;
-      } else {
-        this.error.age = true;
-      }
 
-    },
-    // 닉네임 중복 체크
-    isDuplicate() {
-      http
-      .post("/account/nickNameDuplicate", this.user.nickname)
-      .then((data) => {
-        console.log(data.data)
-        if (data.data.status) {
-          this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
-          this.error.nickname=false
-        }
-      })
-      .catch((err) => {
-        this.error.nickname="사용할 수 없는 닉네임입니다."
-        this.error.nicknameSuccess=false;
-      })
-    },
-    // 회원 가입
-    join(){
-      console.log("hello")
-      this.$emit("ConfirmJoin", this.user)
     }
   }
 }
@@ -220,9 +124,6 @@ export default {
     position: relative;
     width: 100%;
     padding: 0 10px 50px 10px;
-}
-h5 {
-   margin: 0 20px 30px 20px;
 }
 .input-form {
     position: relative;
@@ -236,7 +137,8 @@ input[type="password"]{
     border: 1px solid #464545;
     border-radius: 3px;
 }
-input[type="text"]:focus{
+input[type="text"]:focus,
+input[type="password"]:focus{
     border: 0;
     border-bottom: 1.2px solid #464545;
 }
@@ -255,16 +157,21 @@ input[type="text"]:focus{
     margin: 0;
     font-size: 13px;
     font-weight: bold;
-    top: 18px; 
+    top: 17px; 
     left: 13px;
 }
 #gender-form {
-  width: 100%;
   margin: 0 20px 10px 20px;
+  padding: 0 40px 0 0;
+  width: 100%;
 
 }
+#gender-form > div {
+  text-align: left;
+  margin-bottom: 10px;
+}
 .btn-gender{
-  width: 45%;
+  width: 50%;
   height: 50px;
   border: 1px solid #464545;
   margin-bottom: 16px;  
@@ -294,4 +201,3 @@ input[type="text"]:focus{
   width:100%;
 }
 </style>
-

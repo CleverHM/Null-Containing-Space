@@ -38,6 +38,7 @@ import leaderForm from './views/team/leaderForm.vue'
 
 
 import Components from './views/Components.vue'
+import test from './views/test.vue'
 
 export default [
     // User
