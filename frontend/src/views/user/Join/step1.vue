@@ -1,7 +1,7 @@
 <template>
     <div class="css-slider">
         <section class="slide slide-one">
-            <Join1></Join1>
+            <Join1 :errorMsg="ErrorMessage" @CompleteStep1="confirmEmail"></Join1>
         </section>
 
         <header>
@@ -16,29 +16,46 @@
 
 <script>
 import Join1 from '@/components/user/step1.vue'
-
+import http from "@/util/http-common.js";
 export default {
     name: 'step1',
     components: {
         Join1,
     },
+    data() {
+      return {
+        ErrorMessage: "",
+      }
+    },
     methods: {
-    gostep1() {
-      this.$router.push({name: 'step1'}).catch(()=>{})
+        confirmEmail(email) {
+          http
+          .post("/account/emailDuplicate", email)
+          .then(({data}) => {
+            console.log(data)
+            this.$router.push({name: 'step2', params: {email: email}})
+          })
+          .catch((err) => {
+            this.ErrorMessage = "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요."
+          })
+              
+        },
+        gostep1() {
+          this.$router.push({name: 'step1'}).catch(()=>{})
+        },
+        gostep2() {
+          this.$router.push({name: 'step2'}).catch(()=>{})
+        },
+        gostep3() {
+          this.$router.push({name: 'step3'}).catch(()=>{})
+        },
+        gostep4() {
+          this.$router.push({name: 'step4'}).catch(()=>{})
+        },
+        gostep5() {
+          this.$router.push({name: 'step5'}).catch(()=>{})
+        },
     },
-    gostep2() {
-      this.$router.push({name: 'step2'}).catch(()=>{})
-    },
-    gostep3() {
-      this.$router.push({name: 'step3'}).catch(()=>{})
-    },
-    gostep4() {
-      this.$router.push({name: 'step4'}).catch(()=>{})
-    },
-    gostep5() {
-      this.$router.push({name: 'step5'}).catch(()=>{})
-    },
-  },
     
 }
 </script>

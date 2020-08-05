@@ -16,13 +16,31 @@
 
 <script>
 import Join2 from '@/components/user/step2.vue'
-
+import http from "@/util/http-common.js";
 export default {
     name: 'step1',
     components: {
         Join2,
     },
+    props: [
+      'email'
+    ],
+    created() {
+      this.sendEmail()
+    },
+    data() {
+      return {
+        authNum: "",
+      }
+    },
     methods: {
+    sendEmail() {
+      http
+      .post("/auth/loginMailSend", this.email)
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     gostep1() {
       this.$router.push({name: 'step1'}).catch(()=>{})
     },
