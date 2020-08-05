@@ -24,11 +24,11 @@ export default {
   methods: {
 
       moveLeader() {
-        this.$router.push({ name: 'LeaderForm'});
+        this.$router.push({ name: 'LeaderbeforeForm'});
       },
       
       moveMember() {
-        this.$router.push({ name: 'MemberForm'});
+        this.$router.push({ name: 'SubjectForm'});
       },
 
   }

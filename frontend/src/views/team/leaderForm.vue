@@ -1,6 +1,6 @@
 <template>
     <div id="leaderForm">
-        <Navbar></Navbar>
+        <Navbar :subjectCheck="subjectCheck"></Navbar>
         <subNav/>
         <div class="team-form">
             <!-- 프로젝트 이름 -->
@@ -61,6 +61,8 @@ import subNav from '../../components/common/subnav.vue'
 export default {
     name: "leaderForm",
 
+    props: ['subjectCheck'],
+
     components: {
         Navbar,
         subNav,
@@ -71,9 +73,6 @@ export default {
             team: {
                 title: '',
                 // front - back - db - frame 순
-                hashtags: [
-                    ['html', 'css', ], ['java', 'python', ], ['mariaDB', 'mysql', ], ['spring', 'django', ],
-                ],
                 clicktech: [
                     [], [], [], [],
                 ],
@@ -84,10 +83,11 @@ export default {
             ],
             basic: {
                 techs: [
-                    ['javascript', 'jquery', 'html', 'css', 'vanilaJs', ],
-                    ['java', 'python', ],
-                    ['mysql', 'mariaDB',  ],
-                    ['spring', 'django', 'vue.js', ],
+                    ['cpp', 'java', 'python', 'php',],
+                    ['html', 'css', 'javascript', ],
+                    ['sql', 'nosql',  ],
+                    ['spring', 'django', 'bootstrap', 'vue', 'react', ],
+                    // 마지막에 algo는 보내줄 땐 반드시 true로 보낼 것
                 ],
                 click: [
                     [], [], [], [], 
@@ -95,7 +95,7 @@ export default {
                 techLen: [],
             },
             hashcate: [
-                'Frontend', 'Backend', 'DataBase','Fremework',
+                'Backend', 'Frontend', 'DataBase', 'Fremework',
             ],
         }
     },
