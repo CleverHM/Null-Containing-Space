@@ -69,6 +69,28 @@ public class UserController {
 	@Autowired
 	FollowService followservice; 
 
+	// eamil 중복 체크
+		@PostMapping("/account/emailDuplicate")
+		@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
+
+		public Object emailDuplicate(@Valid @RequestBody String email) {
+			Optional<User> optionaluser = userservice.findone(email);
+
+			if (optionaluser.isPresent()) {
+				System.out.println("실패");
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.data = "이멩일이 중복 되었습니다.";
+				return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			} else {
+				System.out.println("성공");
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "success";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
+		}
+	
 // 중복 체크
 	@PostMapping("/account/nickNameDuplicate")
 	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
@@ -125,7 +147,7 @@ public class UserController {
 				list.get(13), list.get(14));
 		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img);
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false);
 
 		User user2 = userservice.signUp(user1);
 		System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
@@ -138,9 +160,9 @@ public class UserController {
 
 	}
 
-	@PostMapping("/account/modify")
+	@PostMapping("/account/modifyTrue")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object update(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
+	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
 
@@ -188,6 +210,34 @@ public class UserController {
 		}
 	}
 
+	@PostMapping("/account/modifyFalse")
+	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
+	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro) throws Exception {
+		// 회원 수정 시작!
+		System.out.println(email);
+		Optional<User> legacyUser = userservice.findone(email);
+
+		User originUser = legacyUser.get();
+
+		originUser.setNickname(nickname);
+		originUser.setBlogaddr(blog);
+		originUser.setGitaddr(git);
+		originUser.setIntro(intro);
+		userservice.signUp(originUser);
+		
+		if (legacyUser.isPresent()) {
+
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} else {
+			System.out.println("실패");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	
 	@PutMapping("/account/delete")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
 	public Object delete(@Valid @RequestParam String nickname) {
@@ -248,6 +298,26 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@PostMapping("/account/tokenAuth")
+	@ApiOperation(value = "토큰 확인 ", notes = "토큰 확인을 구현")
+	public Object login(@Valid @RequestParam String token) {
+
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		System.out.println(jwtservice.isUsable(token));
+		if (jwtservice.isUsable(token)) {
+			resultMap.put("message", "인증 성공");
+			status = HttpStatus.ACCEPTED;
+
+			System.out.println("로그인 성공");
+		} else {
+			resultMap.put("message", "로그인 실패");
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
 	@PostMapping("/account/findPasswordModify")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
@@ -273,18 +343,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/matching")
-	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public Object matchingAlgo(@Valid @RequestBody MachingRequest request) {
-//		Optional<User> u = userservice.findone(email);
 
-//		matchingservice.match(request.getBack(), request.getFront(),request.getDatabase(),request.getFrame(),request.getAlgo());
-
-		ResponseEntity response = null;
-
-		return response;
-	}
-	
 	@PostMapping("/account/myPage")
     @ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
     public MyPageData myPageDetail(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException{

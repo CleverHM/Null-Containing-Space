@@ -117,6 +117,7 @@ export default {
       let msg = "";
       http
       .post("/account/signup", {
+        ability: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         age : this.user.age,
         email : this.user.email,
         gender : this.user.gender,
@@ -141,6 +142,8 @@ export default {
 <style scoped>
 #JoinView{
   width: 100vw;
+  background-color: #c6dfd6;
+
 }
 .progress-container{
   width:100%;

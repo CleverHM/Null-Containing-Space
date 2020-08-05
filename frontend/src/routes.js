@@ -1,9 +1,15 @@
 
 // User
 import Login from './views/user/Login.vue'
-import Join from './views/user/getAbility.vue'
+import getAbility from './views/user/Join/getAbility.vue'
+import step1 from './views/user/Join/step1.vue'
+import step2 from './views/user/Join/step2.vue'
+import step3 from './views/user/Join/step3.vue'
+import step4 from './views/user/Join/step4.vue'
+import step5 from './views/user/Join/step5.vue'
+
 import findPassword from './views/user/FindPassword.vue'
-import getAbility from './views/user/Join.vue'
+import Join from './views/user/Join.vue'
 import profile from './views/user/profile.vue'
 import UserModify from './views/user/UserModify.vue'
 
@@ -27,12 +33,15 @@ import StudyMatching from './views/study/StudyMatching.vue'
 import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
-import memberForm from './views/team/memberForm.vue'
+import SubjectForm from './views/team/subjectForm.vue'
+import leaderForm from './views/team/leaderForm.vue'
 
 
 import Components from './views/Components.vue'
+import test from './views/test.vue'
 
 export default [
+    // User
     {
         path : '/',
         name : 'Login',
@@ -42,6 +51,31 @@ export default [
         path : '/user/join',
         name : 'Join',
         component : Join
+    },
+    {
+        path : '/user/step1',
+        name : 'step1',
+        component : step1
+    },    
+    {
+        path : '/user/step2',
+        name : 'step2',
+        component : step2
+    },    
+    {
+        path : '/user/step3',
+        name : 'step3',
+        component : step3
+    },    
+    {
+        path : '/user/step4',
+        name : 'step4',
+        component : step4
+    },
+    {
+        path : '/user/step5',
+        name : 'step5',
+        component : step5
     },
     {
         path : '/find/password',
@@ -56,7 +90,8 @@ export default [
     {
         path : '/user/profile',
         name : 'profile',
-        component : profile
+        component : profile,
+        props: true,
     },
     {
         path : '/user/modify',
@@ -141,10 +176,23 @@ export default [
         component : teamMatch
     },
     {
-        path: '/team/member',
-        name: 'memberForm',
-        component: memberForm
+        path: '/team/subject',
+        name: 'SubjectForm',
+        component: SubjectForm,
     },
+    {
+        path: '/team/leader1',
+        name: 'LeaderbeforeForm',
+        component: SubjectForm,
+
+    },
+    {
+        path: '/team/leader2',
+        name: 'LeaderForm',
+        component: leaderForm,
+        props: true,
+    },
+
 
     // Component
     {
