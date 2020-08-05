@@ -1,7 +1,7 @@
 <template>
     <div class="css-slider">
         <section class="slide slide-one">
-            <Join1 :errorMsg="ErrorMessage" @CompleteStep1="confirmEmail"></Join1>
+            <Join1 @CompleteStep1="NextStep"></Join1>
         </section>
 
         <header>
@@ -22,23 +22,9 @@ export default {
     components: {
         Join1,
     },
-    data() {
-      return {
-        ErrorMessage: "",
-      }
-    },
     methods: {
-        confirmEmail(email) {
-          http
-          .post("/account/emailDuplicate", email)
-          .then(({data}) => {
-            console.log(data)
-            this.$router.push({name: 'step2', params: {email: email}})
-          })
-          .catch((err) => {
-            this.ErrorMessage = "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요."
-          })
-              
+        NextStep(email) {
+            this.$router.push({name: 'step2', params: {email: email}}) 
         },
         gostep1() {
           this.$router.push({name: 'step1'}).catch(()=>{})

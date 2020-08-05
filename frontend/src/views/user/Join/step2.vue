@@ -1,7 +1,7 @@
 <template>
     <div class="css-slider">
         <section class="slide slide-one">
-            <Join2></Join2>
+            <Join2 :email="email" @CompleteStep2="NextStep"></Join2>
         </section>
 
         <header>
@@ -28,11 +28,6 @@ export default {
     created() {
       this.sendEmail()
     },
-    data() {
-      return {
-        authNum: "",
-      }
-    },
     methods: {
     sendEmail() {
       http
@@ -40,6 +35,10 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+    },
+    NextStep(email) {
+        this.$router.push({name: 'step3', params: {email: email}}) 
+
     },
     gostep1() {
       this.$router.push({name: 'step1'}).catch(()=>{})

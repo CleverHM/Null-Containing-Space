@@ -9,7 +9,7 @@
       <div class="input-form">
           <input @keyup.enter="confirmEmail" v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
           <label for="email">이메일</label>
-          <div id="ErrorMsg">{{ errorMsg }}</div>
+          <div id="ErrorMsg">{{ ErrorMessage }}</div>
       </div>
       
       <button class="btn-input" @click="confirmEmail">입력</button>
@@ -21,19 +21,8 @@ import http from "@/util/http-common.js";
 // 이메일 체크 정규식
 var EmailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 export default {
-  props: {
-    errorMsg: {
-      type: String,
-    }
-  },
   created() {
     this.linkName = this.$route.name
-    this.ErrorMessage = this.errorMsg
-  },
-  watch: {
-    errorMsg: () => {
-      this.ErrorMessage = this.errorMsg
-    }
   },
   data : () => {
     return {
@@ -51,10 +40,16 @@ export default {
     // 데이터베이스에 이메일이 있는지 확인하고 다음페이지로 이동시키기
     confirmEmail() {
         if (this.email.match(EmailregExp) != null){
-          this.errorMsg = ""
-          this.$emit("CompleteStep1", this.email)
+          http
+          .post("/account/emailDuplicate", this.email)
+          .then(({data}) => {
+            this.$emit("CompleteStep1", this.email)
+          })
+          .catch((err) => {
+            this.ErrorMessage = "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요."
+          })
         }else {
-          this.errorMsg = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
+          this.ErrorMessage = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
         }
         
     },
@@ -106,7 +101,6 @@ input[type="text"]:focus{
   width:100%;
 }
 #ErrorMsg{
-  text-align: center !important;
   color : #D91120;
 }
 
