@@ -147,7 +147,7 @@ public class UserController {
 				list.get(13), list.get(14));
 		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img);
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false);
 
 		User user2 = userservice.signUp(user1);
 		System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
