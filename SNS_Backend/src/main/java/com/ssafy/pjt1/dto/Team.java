@@ -31,6 +31,7 @@ public class Team {
 	private String title;
 	private String teamIntro;
 	private int memberCnt;
+	private int preferProject; //0 : 웹기술, 1 : 웹디자인, 2 : IOT 
 	
 	@OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<User> users = new HashSet<User>();
@@ -44,9 +45,29 @@ public class Team {
 	}
 	
 	public Team(String title, String teamIntro, int memberCnt) {
+		super();
 		this.title = title;
 		this.teamIntro = teamIntro;
 		this.memberCnt = memberCnt;
+	}
+
+	public Team(int teamid, String title, String teamIntro, int memberCnt, int preferProject) {
+		super();
+		this.teamid = teamid;
+		this.title = title;
+		this.teamIntro = teamIntro;
+		this.memberCnt = memberCnt;
+		this.preferProject = preferProject;
+	}
+
+	
+
+	public int getPreferProject() {
+		return preferProject;
+	}
+
+	public void setPreferProject(int preferProject) {
+		this.preferProject = preferProject;
 	}
 
 	public int getTeamid() {

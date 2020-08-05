@@ -343,18 +343,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/matching")
-	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public Object matchingAlgo(@Valid @RequestBody MachingRequest request) {
-//		Optional<User> u = userservice.findone(email);
 
-//		matchingservice.match(request.getBack(), request.getFront(),request.getDatabase(),request.getFrame(),request.getAlgo());
-
-		ResponseEntity response = null;
-
-		return response;
-	}
-	
 	@PostMapping("/account/myPage")
     @ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
     public MyPageData myPageDetail(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException{

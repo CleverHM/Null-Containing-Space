@@ -45,7 +45,7 @@ public class TeamController {
 	
 	@PostMapping("/team/join")
 	@ApiOperation(value = "팀 가입", notes = "팀 가입 기능을 구현")
-	public void nickNameDuplicate(@Valid @RequestParam String nickname, int teamid) {
+	public void teamjoin(@Valid @RequestParam String nickname, int teamid) {
 		System.out.println(nickname);
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		Optional<Team> optionalTeam = teamservice.findone(teamid);
@@ -55,6 +55,20 @@ public class TeamController {
 		
 		// 팀: 유저 이어주기
 		user.setTeam(team);
+		
+		userservice.signUp(user);
+	}
+	
+	@PostMapping("/team/leave")
+	@ApiOperation(value = "팀 탈퇴", notes = "팀 탈퇴 기능을 구현")
+	public void teamleave(@Valid @RequestParam String nickname) {
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		Team team = optionalUser.get().getTeam();
+		
+		User user = optionalUser.get();
+		
+		// 팀: 유저 끊어주기
+		
 		
 		userservice.signUp(user);
 	}

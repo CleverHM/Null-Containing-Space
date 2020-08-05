@@ -16,13 +16,11 @@ public class TeamServiceImpl implements TeamService{
 	
 	@Override
 	public Team join(Team team) {
-		// TODO Auto-generated method stub
 		return teamDao.save(team);
 	}
 
 	@Override
 	public Optional<Team> findone(int teamid) {
-		// TODO Auto-generated method stub
 		return teamDao.findById(teamid);
 	}
 
