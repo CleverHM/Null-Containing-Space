@@ -1,18 +1,22 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt1.dto.Team;
+import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.service.MatchingService;
+import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,17 +32,45 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 public class MatchingController {
 	@Autowired
+	private UserService userservice;
+	@Autowired
 	private MatchingService matchingservice;
 	
-//	@PostMapping("/match/teammember")
-//	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-//	public Object matchingAlgo(@Valid @RequestParam String email, String teamName, List<Boolean> preferProject, List<Boolean> preferTech) {
-//		Optional<User> u = userservice.findone(email);
-//
-////		matchingservice.match(request.getBack(), request.getFront(),request.getDatabase(),request.getFrame(),request.getAlgo());
-//
-//		ResponseEntity response = null;
-//
-//		return response;
-//	}
+	@PostMapping("/match/teammember")
+	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
+	public Object matchingAlgo(@Valid @RequestParam String nickname) {
+		List<String> preferTech = new ArrayList<>();
+		List<User> userlist = new ArrayList<>();
+		
+		Optional<User> u = userservice.findtwo(nickname);
+		
+		Team team = u.get().getTeam();
+		
+		if(team.isBack_cpp()==true) preferTech.add("cpp");
+		if(team.isBack_java()==true) preferTech.add("java");
+		if(team.isBack_python()==true) preferTech.add("pyhton");
+		if(team.isBack_php()==true) preferTech.add("php");
+		if(team.isFront_html()==true) preferTech.add("html");
+		if(team.isFront_css()==true) preferTech.add("css");
+		if(team.isFront_javascript()==true) preferTech.add("javascript");
+		if(team.isDb_sql()==true) preferTech.add("sql");
+		if(team.isDb_nosql()==true) preferTech.add("nosql");
+		if(team.isFrame_spring()==true) preferTech.add("spring");
+		if(team.isFrame_django()==true) preferTech.add("django");
+		if(team.isFrame_bootstrap()==true) preferTech.add("bootstrap");
+		if(team.isFrame_vue()==true) preferTech.add("vue");
+		if(team.isFrame_react()==true) preferTech.add("react");
+		if(team.getAlgo()==true) preferTech.add("algo");
+		
+
+		List<Integer> matching_user_id = matchingservice.match(preferTech);
+		
+		for(Integer i : matching_user_id) {
+			u = userservice.findthree(i);
+			userlist.add(u.get());
+		}
+		
+		Object response = null;
+		return response;
+	}
 }

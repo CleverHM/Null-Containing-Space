@@ -53,7 +53,7 @@ public class MatchingServiceImpl implements MatchingService{
 	static List<User> users = new ArrayList<>();
 	
 	
-	public List<Integer> match(List<String> back, List<String> front, List<String> database, List<String> frame, String algo){
+	public List<Integer> match(List<String> preferTech){
 		List<Integer> matching_user_id = new ArrayList<>();
 		
 		// 테스트
@@ -66,12 +66,8 @@ public class MatchingServiceImpl implements MatchingService{
 
 		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
 		
-		for(String s : back) lan.add(s);
-		for(String s : front) lan.add(s);
-		for(String s : database) lan.add(s);
-		for(String s : frame) lan.add(s);
-		lan.add(algo);
-		
+		for(String s : preferTech) lan.add(s);
+
 		pick();	
 		
 		// 

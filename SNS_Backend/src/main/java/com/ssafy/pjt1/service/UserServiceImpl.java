@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public Optional<User> findthree(int id) {
+		return userdao.findUserByUid(id);
+	}
+	
+	@Override
 	public Optional<User> duplNick(String nickName) {
 		return userdao.findUserByNickname(nickName);
 	}
