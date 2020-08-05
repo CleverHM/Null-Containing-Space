@@ -147,7 +147,7 @@ public class UserController {
 				list.get(13), list.get(14));
 		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img);
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false);
 
 		User user2 = userservice.signUp(user1);
 		System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
@@ -298,6 +298,26 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@PostMapping("/account/tokenAuth")
+	@ApiOperation(value = "토큰 확인 ", notes = "토큰 확인을 구현")
+	public Object login(@Valid @RequestParam String token) {
+
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		System.out.println(jwtservice.isUsable(token));
+		if (jwtservice.isUsable(token)) {
+			resultMap.put("message", "인증 성공");
+			status = HttpStatus.ACCEPTED;
+
+			System.out.println("로그인 성공");
+		} else {
+			resultMap.put("message", "로그인 실패");
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
 	@PostMapping("/account/findPasswordModify")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
@@ -323,18 +343,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/matching")
-	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public Object matchingAlgo(@Valid @RequestBody MachingRequest request) {
-//		Optional<User> u = userservice.findone(email);
 
-//		matchingservice.match(request.getBack(), request.getFront(),request.getDatabase(),request.getFrame(),request.getAlgo());
-
-		ResponseEntity response = null;
-
-		return response;
-	}
-	
 	@PostMapping("/account/myPage")
     @ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
     public MyPageData myPageDetail(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException{
