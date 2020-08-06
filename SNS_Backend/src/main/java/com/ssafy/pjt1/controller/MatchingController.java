@@ -64,13 +64,13 @@ public class MatchingController {
 		if(team.getAlgo()==true) preferTech.add("algo");
 		
 
-		List<Integer> matching_user_id = matchingservice.match(team.getPreferProject(),preferTech);
-		
-		for(Integer i : matching_user_id) {
-			u = userservice.findthree(i);
-			userlist.add(u.get());
-		}
-		
+//		List<Integer> matching_user_id = matchingservice.match(team.getPreferProject(),preferTech);
+//		
+//		for(Integer i : matching_user_id) {
+//			u = userservice.findthree(i);
+//			userlist.add(u.get());
+//		}
+//		
 		Object response = null;
 		return response;
 	}

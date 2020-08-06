@@ -50,10 +50,10 @@
                         프로젝트 요약
                     </div>
                     <div style="font-weight: lighter; font-size:13px;">
-                        {{ team.content.length }}/
+                        {{ team.intro.length }}/
                     </div>
                 </div>
-                <textarea class="d-flex flex-fill" v-model="team.content" placeholder="프로젝트와 관련된 내용을 적어주세요."/>
+                <textarea class="d-flex flex-fill" v-model="team.intro" placeholder="프로젝트와 관련된 내용을 적어주세요."/>
             </div>
 
             <div class="d-flex justify-content-center">
@@ -68,6 +68,10 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
     name: "createTeam",
@@ -89,7 +93,7 @@ export default {
                 clicktech: [
                     [], [], [], [],
                 ],
-                content: '',
+                intro: '',
                 techs: [
                     ['cpp', 'java', 'python', 'php',],
                     ['html', 'css', 'javascript', ],
@@ -236,12 +240,23 @@ export default {
             console.log(techList)
             // 보내줘야할 데이터들을 formData 안에 넣는다.
             let formData = new FormData();
+            formData.append("nickname", storage.getItem("NickName"));
             formData.append("title", this.team.title);
-            formData.append("subject", this.subjectCheck);
-            formData.append("tech", techList);
-            formData.append("content", this.team.content)
+            formData.append("teamintro", this.team.intro);
+            formData.append("prePro", this.subjectCheck);
+            formData.append("preTech", techList);
+            formData.append("cnt", 5);  // 인원수 (디폴트 5)
+
+            http
+            .post("/team/create", formData)
+            .then((res) => {
+                console.log('완료')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
             
-        }
+        },
         
     }
 

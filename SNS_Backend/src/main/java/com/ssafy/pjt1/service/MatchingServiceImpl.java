@@ -41,233 +41,233 @@ public class MatchingServiceImpl implements MatchingService{
 	 * 15. algo
 	 */
 	
-	@Autowired
-	static UserDao userdao;
-	
-	static Map<String, List<User> > ablist = new HashMap<>();
-	static Map<Integer, Integer> priority = new HashMap<>();
-	static List<String> lan = new ArrayList<>();
-	
-	// 모든 유저
-	static List<User> tusers = userdao.findAll();
-	// 선호하지 않는 사람
-	static List<User> users = new ArrayList<>();
-	// 선호하는 사람
-	static List<User> users2 = new ArrayList<>();
-	
-	public List<Integer> match(int preferProject, List<String> preferTech){
-		List<Integer> matching_user_id = new ArrayList<>();
-		
-		// 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
-		for(User u : tusers) 
-			if(u.isMatchok() == true) {
-				if(preferProject != u.getPreferProject()) users.add(u); 
-				else users2.add(u);
-			}
-		
-		// 선호하는 사람들 먼저 선별
-		pick1(matching_user_id);
-
-		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
-		pick2();
-
-		//언어들 중에서 더 잘하는 사람을 선별(3차)
-		pick3(preferTech);	
-		
-		//비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
-		pick4(matching_user_id);
-		
-		
-		return matching_user_id; 
-	}
-	
-	public void pick4(List<Integer> matching_user_id) {
-		List<Integer> pricnt[] = new ArrayList[lan.size()*3 + 1];
-		for(int i=0;i<lan.size()*3+1;i++) pricnt[i] = new ArrayList<Integer>();
-		
-		for(Integer key : priority.keySet()) pricnt[priority.get(key)].add(key);
-		
-		int total = 5;
-		for(int i=lan.size(); i>=0; i--) {
-			int n = pricnt[i].size();
-			
-			if(n <= total) {
-				for(Integer k : pricnt[i]) matching_user_id.add(k);
-				
-				total -= n;
-			}
-			else {
-				int a[] = new int[total];
-				
-				for(int j=0; j<n; j++) {
-					a[i] = (int)(Math.random()*n);
-					
-					for(int k=0; k<j; k++) 
-						if(a[i] == a[j]) j--;
-					
-				}
-				for(int j=0;j<total;j++) matching_user_id.add(pricnt[i].get(a[j]));
-			}
-		}
-		
-	}
-	
-	public void pick3(List<String> preferTech) {
-		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
-		for(String s : preferTech) lan.add(s);
-		
-		String str;
-		int x;
-		for(int i=0;i<lan.size();i++) {
-			for (int j = 0; j < 3; j++) {
-				str = lan.get(i);
-				x = ablist.get(str).get(j).getUid();
-
-				if (priority.get(x) == null) priority.put(x, 1);
-				else priority.put(x, priority.get(x) + 1);
-			}
-		}
-			
-	}
-	
-
-	public void pick2() {
-		List<User> temp = new ArrayList<>();
-		
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getBack_cpp()-s2.getAbility().getBack_cpp();
-			}});
-		
-		ablist.put("cpp", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getBack_java()-s2.getAbility().getBack_java();
-			}});
-		ablist.put("java", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getBack_python()-s2.getAbility().getBack_python();
-			}});
-		ablist.put("python", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getBack_php()-s2.getAbility().getBack_php();
-			}});
-		ablist.put("php", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFront_html()-s2.getAbility().getFront_html();
-			}});
-		ablist.put("html", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFront_css()-s2.getAbility().getFront_css();
-			}});
-		ablist.put("css", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFront_javascript()-s2.getAbility().getFront_javascript();
-			}});
-		ablist.put("javascript", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getDb_sql()-s2.getAbility().getDb_sql();
-			}});
-		ablist.put("sql", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getDb_nosql()-s2.getAbility().getDb_nosql();
-			}});
-		ablist.put("nosql", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFrame_spring()-s2.getAbility().getFrame_spring();
-			}});
-		ablist.put("spring", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFrame_django()-s2.getAbility().getFrame_django();
-			}});
-		ablist.put("django", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFrame_bootstrap()-s2.getAbility().getFrame_bootstrap();
-			}});
-		ablist.put("bootstrap", temp);
-		
-		temp.clear();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFrame_vue()-s2.getAbility().getFrame_vue();
-			}});
-		ablist.put("vue", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getFrame_react()-s2.getAbility().getFrame_react();
-			}});
-		ablist.put("react", temp);
-		
-		temp = new ArrayList<>();
-		for(User u : users) temp.add(u);
-		Collections.sort(temp, new Comparator<User>(){
-			public int compare(User s1, User s2) {
-				return s1.getAbility().getAlgo()-s2.getAbility().getAlgo();
-			}});
-		ablist.put("algo", temp);
-	}
-	
-	public void pick1(List<Integer> matching_user_id) {
-		int total = 5;
-		int n = users.size();
-		
-		int a[] = new int[total];
-		
-		for(int i=0; i<n; i++) {
-			a[i] = (int)(Math.random()*n);
-			
-			for(int j=0; j<i; j++) 
-				if(a[i] == a[j]) i--;
-			
-		}
-		for(int i=0;i<total;i++) matching_user_id.add(users.get(a[i]).getUid());
-	}
+//	@Autowired
+//	static UserDao userdao;
+//	
+//	static Map<String, List<User> > ablist = new HashMap<>();
+//	static Map<Integer, Integer> priority = new HashMap<>();
+//	static List<String> lan = new ArrayList<>();
+//	
+//	// 모든 유저
+//	static List<User> tusers = userdao.findAll();
+//	// 선호하지 않는 사람
+//	static List<User> users = new ArrayList<>();
+//	// 선호하는 사람
+//	static List<User> users2 = new ArrayList<>();
+//	
+//	public List<Integer> match(int preferProject, List<String> preferTech){
+//		List<Integer> matching_user_id = new ArrayList<>();
+//		
+//		// 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
+//		for(User u : tusers) 
+//			if(u.isMatchok() == true) {
+//				if(preferProject != u.getPreferProject()) users.add(u); 
+//				else users2.add(u);
+//			}
+//		
+//		// 선호하는 사람들 먼저 선별
+//		pick1(matching_user_id);
+//
+//		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
+//		pick2();
+//
+//		//언어들 중에서 더 잘하는 사람을 선별(3차)
+//		pick3(preferTech);	
+//		
+//		//비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
+//		pick4(matching_user_id);
+//		
+//		
+//		return matching_user_id; 
+//	}
+//	
+//	public void pick4(List<Integer> matching_user_id) {
+//		List<Integer> pricnt[] = new ArrayList[lan.size()*3 + 1];
+//		for(int i=0;i<lan.size()*3+1;i++) pricnt[i] = new ArrayList<Integer>();
+//		
+//		for(Integer key : priority.keySet()) pricnt[priority.get(key)].add(key);
+//		
+//		int total = 5;
+//		for(int i=lan.size(); i>=0; i--) {
+//			int n = pricnt[i].size();
+//			
+//			if(n <= total) {
+//				for(Integer k : pricnt[i]) matching_user_id.add(k);
+//				
+//				total -= n;
+//			}
+//			else {
+//				int a[] = new int[total];
+//				
+//				for(int j=0; j<n; j++) {
+//					a[i] = (int)(Math.random()*n);
+//					
+//					for(int k=0; k<j; k++) 
+//						if(a[i] == a[j]) j--;
+//					
+//				}
+//				for(int j=0;j<total;j++) matching_user_id.add(pricnt[i].get(a[j]));
+//			}
+//		}
+//		
+//	}
+//	
+//	public void pick3(List<String> preferTech) {
+//		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
+//		for(String s : preferTech) lan.add(s);
+//		
+//		String str;
+//		int x;
+//		for(int i=0;i<lan.size();i++) {
+//			for (int j = 0; j < 3; j++) {
+//				str = lan.get(i);
+//				x = ablist.get(str).get(j).getUid();
+//
+//				if (priority.get(x) == null) priority.put(x, 1);
+//				else priority.put(x, priority.get(x) + 1);
+//			}
+//		}
+//			
+//	}
+//	
+//
+//	public void pick2() {
+//		List<User> temp = new ArrayList<>();
+//		
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getBack_cpp()-s2.getAbility().getBack_cpp();
+//			}});
+//		
+//		ablist.put("cpp", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getBack_java()-s2.getAbility().getBack_java();
+//			}});
+//		ablist.put("java", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getBack_python()-s2.getAbility().getBack_python();
+//			}});
+//		ablist.put("python", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getBack_php()-s2.getAbility().getBack_php();
+//			}});
+//		ablist.put("php", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFront_html()-s2.getAbility().getFront_html();
+//			}});
+//		ablist.put("html", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFront_css()-s2.getAbility().getFront_css();
+//			}});
+//		ablist.put("css", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFront_javascript()-s2.getAbility().getFront_javascript();
+//			}});
+//		ablist.put("javascript", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getDb_sql()-s2.getAbility().getDb_sql();
+//			}});
+//		ablist.put("sql", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getDb_nosql()-s2.getAbility().getDb_nosql();
+//			}});
+//		ablist.put("nosql", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFrame_spring()-s2.getAbility().getFrame_spring();
+//			}});
+//		ablist.put("spring", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFrame_django()-s2.getAbility().getFrame_django();
+//			}});
+//		ablist.put("django", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFrame_bootstrap()-s2.getAbility().getFrame_bootstrap();
+//			}});
+//		ablist.put("bootstrap", temp);
+//		
+//		temp.clear();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFrame_vue()-s2.getAbility().getFrame_vue();
+//			}});
+//		ablist.put("vue", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getFrame_react()-s2.getAbility().getFrame_react();
+//			}});
+//		ablist.put("react", temp);
+//		
+//		temp = new ArrayList<>();
+//		for(User u : users) temp.add(u);
+//		Collections.sort(temp, new Comparator<User>(){
+//			public int compare(User s1, User s2) {
+//				return s1.getAbility().getAlgo()-s2.getAbility().getAlgo();
+//			}});
+//		ablist.put("algo", temp);
+//	}
+//	
+//	public void pick1(List<Integer> matching_user_id) {
+//		int total = 5;
+//		int n = users.size();
+//		
+//		int a[] = new int[total];
+//		
+//		for(int i=0; i<n; i++) {
+//			a[i] = (int)(Math.random()*n);
+//			
+//			for(int j=0; j<i; j++) 
+//				if(a[i] == a[j]) i--;
+//			
+//		}
+//		for(int i=0;i<total;i++) matching_user_id.add(users.get(a[i]).getUid());
+//	}
 }

@@ -21,6 +21,10 @@ import subNav from '../components/common/subnav.vue'
 import competitionItem from '../components/main/competitionItem.vue'
 import TeamIn from '../components/team/TeamIn.vue'
 import TeamOut from '../components/team/TeamOut.vue'
+import http from "../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
   name:"Main",
@@ -30,11 +34,28 @@ export default {
       TeamIn,
       TeamOut,
   },
+  
+
   data() {
     return {
       teamCheck: false,
     }
-  }
+  },
+  
+  created() {
+      let formData = new FormData;
+      formData.append("nickname", storage.getItem("NickName"));
+
+      http
+      .post("/team/exist", formData)
+      .then((res) => {
+          console.log(res)
+          console.log(res.data)
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  },
 };
 </script>
 
