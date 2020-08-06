@@ -123,7 +123,10 @@ public class TeamController {
 		
 		if(user.getTeam().getTeamid() == 1) {
 			System.out.println("현재팀없음");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "팀없음";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
 		}
 		else {
 			
