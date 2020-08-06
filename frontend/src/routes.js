@@ -46,36 +46,31 @@ export default [
         component : Login
     },
     {
-        path : '/user/join',
-        name : 'Join',
-        component : Join
-    },
-    {
-        path : '/user/step1',
+        path : '/user/join/1',
         name : 'step1',
         component : step1,
         props: true
     },    
     {
-        path : '/user/step2',
+        path : '/user/join/2',
         name : 'step2',
         component : step2,
         props: true
     },    
     {
-        path : '/user/step3',
+        path : '/user/join/3',
         name : 'step3',
         component : step3,
         props: true
     },    
     {
-        path : '/user/step4',
+        path : '/user/join/4',
         name : 'step4',
         component : step4,
         props: true
     },
     {
-        path : '/user/step5',
+        path : '/user/join/5',
         name : 'step5',
         component : step5,
         props: true
