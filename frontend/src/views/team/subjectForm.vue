@@ -108,7 +108,7 @@ export default {
         },
 
         moveLeader() {
-            this.$router.push({ name: 'LeaderForm', params: { subjectCheck: this.subjectCheck }});
+            this.$router.push({ name: 'createTeam', params: { subjectCheck: this.subjectCheck }});
         }
 
     }

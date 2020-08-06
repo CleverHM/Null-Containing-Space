@@ -33,11 +33,10 @@ import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
-import leaderForm from './views/team/leaderForm.vue'
 
 
 import Components from './views/Components.vue'
-import test from './views/test.vue'
+// import test from './views/test.vue'
 
 export default [
     // User
@@ -167,7 +166,8 @@ export default [
     {
         path : '/team/create',
         name : 'createTeam',
-        component : createTeam
+        component : createTeam,
+        props: true,
     }, 
     {
         path : '/team/specs',
@@ -185,17 +185,11 @@ export default [
         component: SubjectForm,
     },
     {
-        path: '/team/leader1',
-        name: 'LeaderbeforeForm',
+        path: '/team/leader',
+        name: 'LeaderForm',
         component: SubjectForm,
         props: true,
 
-    },
-    {
-        path: '/team/leader2',
-        name: 'LeaderForm',
-        component: leaderForm,
-        props: true,
     },
 
 

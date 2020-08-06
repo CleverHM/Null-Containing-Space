@@ -47,8 +47,8 @@ export default {
       goBack(){
           if (this.currentRouteName === 'FeedDetail') {
               this.$router.push({ name: 'FeedMain'})
-          } else if (this.currentRouteName === 'LeaderForm') {
-              this.$router.push({ name: 'LeaderbeforeForm', params: { beforeSubject: this.subjectCheck }});
+          } else if (this.currentRouteName === 'createTeam') {
+              this.$router.push({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
           } else {
               this.$router.go(-1)
           }
