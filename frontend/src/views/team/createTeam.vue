@@ -268,7 +268,7 @@ export default {
             formData.append("teamintro", this.team.intro);
             formData.append("prePro", this.subjectCheck);
             formData.append("preTech", techList);
-            formData.append("cnt", 5);  // 인원수 (디폴트 5)
+            formData.append("cnt", this.team.cnt);
 
             http
             .post("/team/create", formData)
@@ -407,7 +407,7 @@ input::placeholder {
     margin-bottom: 5px;
 }
 
-.displaytags{
+.displaytags {
     width: 30%;
     padding: 10px;
     font-size: 14px;
