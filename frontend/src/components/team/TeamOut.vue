@@ -24,7 +24,7 @@ export default {
   methods: {
 
       moveLeader() {
-        this.$router.push({ name: 'LeaderbeforeForm'});
+        this.$router.push({ name: 'LeaderForm'});
       },
       
       moveMember() {
