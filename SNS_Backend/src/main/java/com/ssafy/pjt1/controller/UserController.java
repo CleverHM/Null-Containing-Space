@@ -420,10 +420,10 @@ public class UserController {
 				responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 				responseHeaders.add("Content-Type", type);
 
-				mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 						user.getIntro(), tag, abt, out, me, follow);
 			} else {
-				mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 						user.getIntro(), tag, abt, reportBytes, me, follow);
 				System.out.println("프로필 파일 없음");
 			}
@@ -481,10 +481,10 @@ public class UserController {
 					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 					responseHeaders.add("Content-Type", type);
 
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, out, false, false);
 				} else {
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, reportBytes, false, false);
 					System.out.println("프로필 파일 없음");
 				}
@@ -529,10 +529,10 @@ public class UserController {
 					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 					responseHeaders.add("Content-Type", type);
 
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, out, false, true);
 				} else {
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, reportBytes, false, true);
 					System.out.println("프로필 파일 없음");
 				}
