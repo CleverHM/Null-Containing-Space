@@ -46,15 +46,15 @@ public class TeamController {
 	
 	@PostMapping("/team/create")
 	@ApiOperation(value = "팀 생성", notes = "팀 생성 기능을 구현")
-	public void teamCreate(@Valid @RequestParam String title, String teamintro, int cnt, int prePro,List<Boolean> preTech, String nickname) {
+	public void teamCreate(@Valid @RequestParam String title, String teamintro, int cnt, int prePro, Boolean[] preTech, String nickname) {
 		
 		Optional<User> optionaluser = userservice.findtwo(nickname);
 		User user = optionaluser.get();
 		
-		Team team = new Team(title, teamintro, cnt, prePro, preTech.get(0),  preTech.get(1), 
-				preTech.get(2),  preTech.get(3),  preTech.get(4),  preTech.get(5),  
-				preTech.get(6),  preTech.get(7),  preTech.get(8),  preTech.get(9), 
-				preTech.get(10),  preTech.get(11),  preTech.get(12),  preTech.get(13),  preTech.get(14));
+		Team team = new Team(title, teamintro, cnt, prePro, preTech[0],  
+				preTech[1], preTech[2],preTech[3],preTech[4],preTech[5],
+				preTech[6],preTech[7],preTech[8],preTech[9],preTech[10],
+				preTech[11],preTech[12],preTech[13],preTech[14]);
 		
 
 //		Team team = new Team(title, teamintro, cnt, prePro,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true);
