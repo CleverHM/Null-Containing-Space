@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.pjt1.dao.UserDao;
-import com.ssafy.pjt1.dto.Ability;
 import com.ssafy.pjt1.dto.User;
 
 @Service
@@ -42,45 +41,52 @@ public class MatchingServiceImpl implements MatchingService{
 	 */
 	
 	@Autowired
-	static UserDao userdao;
+	UserDao userdao;
 	
 	static Map<String, List<User> > ablist = new HashMap<>();
 	static Map<Integer, Integer> priority = new HashMap<>();
 	static List<String> lan = new ArrayList<>();
-	
-	//static List<User> users = userdao.findAll();	
-	//임의 값
-	static List<User> users = new ArrayList<>();
+	// 최종 선별된 유저들
+	static List<Integer> matching_user_id = new ArrayList<>();
 	
 	
-	public List<Integer> match(List<String> back, List<String> front, List<String> database, List<String> frame, String algo){
-		List<Integer> matching_user_id = new ArrayList<>();
+	public List<Integer> match(int preferProject, List<String> preferTech){
+		// 모든 유저
+		List<User> tusers = userdao.findAll();
+		// 선호하지 않는 사람
+		List<User> users = new ArrayList<>();
+		// 선호하는 사람
+		List<User> users2 = new ArrayList<>();
 		
-		// 테스트
-		User u = null;
-		Ability ab = null;
-//		testdata(u, ab);
+		
+		// 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
+		for(User u : tusers) 
+			if(u.isMatchok() == true) {
+				if(preferProject != u.getPreferProject()) users.add(u); 
+				else users2.add(u);
+			}
+		
+		// 선호하는 사람들 먼저 선별
+		pick1(users2);
 
-		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬
-		init();
+		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
+		users = pick2(users);
 
-		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
+		//언어들 중에서 더 잘하는 사람을 선별(3차)
+		pick3(preferTech);	
 		
-		for(String s : back) lan.add(s);
-		for(String s : front) lan.add(s);
-		for(String s : database) lan.add(s);
-		for(String s : frame) lan.add(s);
-		lan.add(algo);
+		//비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
+		pick4();
 		
-		pick();	
 		
-		// 
-		
+		return matching_user_id; 
+	}
+	
+	public void pick4() {
 		List<Integer> pricnt[] = new ArrayList[lan.size()*3 + 1];
 		for(int i=0;i<lan.size()*3+1;i++) pricnt[i] = new ArrayList<Integer>();
 		
 		for(Integer key : priority.keySet()) pricnt[priority.get(key)].add(key);
-		
 		
 		int total = 5;
 		for(int i=lan.size(); i>=0; i--) {
@@ -104,11 +110,12 @@ public class MatchingServiceImpl implements MatchingService{
 				for(int j=0;j<total;j++) matching_user_id.add(pricnt[i].get(a[j]));
 			}
 		}
-		
-		return matching_user_id; 
 	}
 	
-	public void pick() {
+	public void pick3(List<String> preferTech) {
+		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
+		for(String s : preferTech) lan.add(s);
+		
 		String str;
 		int x;
 		for(int i=0;i<lan.size();i++) {
@@ -124,7 +131,7 @@ public class MatchingServiceImpl implements MatchingService{
 	}
 	
 
-	public void init() {
+	public List<User> pick2(List<User> users) {
 		List<User> temp = new ArrayList<>();
 		
 		for(User u : users) temp.add(u);
@@ -246,44 +253,24 @@ public class MatchingServiceImpl implements MatchingService{
 				return s1.getAbility().getAlgo()-s2.getAbility().getAlgo();
 			}});
 		ablist.put("algo", temp);
+		
+		return users;
 	}
 	
-//	// 임의 값 생성
-//	public void testdata(User u, Ability ab) {
-//		u = new User(1, "a", "123", "a", "a", "a", 16, true);
-//		ab = new Ability(1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(2, "b", "123", "b", "b", "b", 13, false);
-//		ab = new Ability(2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(3, "c", "123", "c", "c", "c", 19, true);
-//		ab = new Ability(3, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(4, "d", "123", "d", "d", "d", 22, false);
-//		ab = new Ability(4, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 1);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(5, "e", "123", "e", "e", "e", 21, true);
-//		ab = new Ability(5, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(6, "f", "123", "f", "f", "f", 25, false);
-//		ab = new Ability(6, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 3);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(7, "g", "123", "g", "g", "g", 28, true);
-//		ab = new Ability(7, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4);
-//		u.setAbility(ab);
-//		users.add(u);
-//	}
-
+	public void  pick1(List<User> users2) {
+		int total = 5;
+		int n = users2.size();
+		
+		int a[] = new int[total];
+		
+		for(int i=0; i<n; i++) {
+			a[i] = (int)(Math.random()*n);
+			
+			for(int j=0; j<i; j++) 
+				if(a[i] == a[j]) i--;
+			
+		}
+		for(int i=0;i<total;i++) matching_user_id.add(users2.get(a[i]).getUid());
+		
+	}
 }
