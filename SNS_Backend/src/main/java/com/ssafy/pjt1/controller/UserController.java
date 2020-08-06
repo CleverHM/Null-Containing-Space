@@ -368,7 +368,7 @@ public class UserController {
 		List<String> tag = new ArrayList<>();
 		List<Integer> abt = new ArrayList<>();
 
-		Optional<User> optionalUser = userservice.findtwo(nickname);
+		Optional<User> optionalUser = userservice.findtwo(pageNickname);
 		User user = optionalUser.get();
 
 		System.out.println(user.getEmail());
