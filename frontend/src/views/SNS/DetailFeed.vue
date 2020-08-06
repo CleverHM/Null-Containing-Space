@@ -292,7 +292,7 @@ export default {
 
 </script>
 
-<style scope>
+<style scoped>
 .feedpage {
   margin: 65px 5px 55px 5px;
   padding: 10px;
