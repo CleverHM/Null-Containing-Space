@@ -6,7 +6,7 @@
 
     <div class="form-wrap">
       <div class="input-with-label">
-        <input v-model="childauthNum" id="emailcode" @keyup.enter="confirmCode" placeholder="인증코드를 입력하세요." type="text" />
+        <input v-model="authNum" id="emailcode" @keyup.enter="confirmCode" placeholder="인증코드를 입력하세요." type="text" />
         <label for="emailcode">인증코드</label>
         <span id="ErrorMsg">{{ ErrorMessage }}</span>
       </div>
@@ -31,25 +31,35 @@ import http from "@/util/http-common.js";
 
 export default {
   props: {
-    ErrorMessage: {
-      type: String,
-    },
     email: {
       type: String,
     }
   },
   data: () => {
     return {
-      childauthNum: "",
+      ErrorMessage: "",
+      authNum: "",
     }
   },
   methods:{
    confirmCode() {
-     this.$emit("ConfirmCode", this.childauthNum)
+     http
+    .post('/auth/loginMailConfirm', 
+        {
+          "auth_email": this.email,
+          "auth_number": this.authNum,
+        }
+      )
+      .then((data) => {
+        this.$emit("CompleteStep2", this.email)
+      })
+      .catch((err) => {
+        this.ErrorMessage = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
+      })
     },
-    resend() {
-      this.$emit("Resend", this.email)
-    }
+    resend(email) {
+      http.post('/auth/loginMailSend', this.email)
+    },
     
   },
 };
