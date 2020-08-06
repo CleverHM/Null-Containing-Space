@@ -4,7 +4,7 @@
       <div class="team-title d-flex justify-content-center">
         {{ teamData.title }}
       </div>
-      
+
       <!-- 프로젝트 기술 -->
       <div class="team-use">
           프로젝트 사용 기술
@@ -30,21 +30,9 @@
       </div>
 
 
-      <div class="team-member-area">
-        <div class="leader-area">
-          <div class="user-img">
-            <div class="user-name">
-            {{ teamData.leaderNickname }}
-            </div>
-          </div>
-        </div>
-        <div v-for="mem in teamData.members" :key="mem">
-          <div class="user-img">
-            <div class="user-name">
-            {{ mem }}
-            </div>
-          </div>
-        </div>
+      <div class="team-member-area d-flex flex-row align-items-center">
+        <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
+        <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
       </div>
 
 
@@ -53,9 +41,14 @@
 </template>
 
 <script>
+import memberImg from './memberImg.vue'
+
 export default {
     name: "specification",
     props: ['teamData'],
+    components: {
+      memberImg,
+    },
 
     data() {
       return {
@@ -79,7 +72,6 @@ export default {
           ]
         },
         teamContent: '',
-
       }
     },
 
@@ -99,7 +91,9 @@ export default {
           checkLen = 0;
         }
       }
+      // 프로젝트 요약 부분 줄바꿈 적용
       this.teamContent = this.teamData.intro.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+    
     },
 
     methods: {
@@ -153,20 +147,8 @@ export default {
 }
 
 .team-member-area {
-  display: inline-block;
+  display: inline;
 }
 
-.user-img {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #eeeeee;
-}
-
-.user-name {
-  line-height: 160px;
-  text-align: center;
-}
 
 </style>

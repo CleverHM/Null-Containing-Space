@@ -25,7 +25,8 @@
         <div class="user-part d-flex flex-row align-items-center justify-content-between">
           <div class="d-flex flex-row align-items-center user-low-part">
             <div class="user-img">
-              <img src="@/assets/images/default_image.png" alt="user_default_image">
+              <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image">
+              <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image">
             </div>
             <div class="user-name">{{ article.userNickname }}</div>
             <div class="user-diff-time">{{ article.diffTime }}</div>
@@ -127,9 +128,11 @@ export default {
         title: "",
         userEmail:"",
         userNickname: "",
+        userFile: "",
         viewCount: 0,
         diffTime: "",
       },
+      userImg: false,
       comment: {
         content: "",
       },
@@ -179,6 +182,12 @@ export default {
 
         // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
         this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+
+        if (this.article.userFile == null) {
+          this.userImg = false
+        } else {
+          this.userImg = true
+        }
       })
       .catch((err) => {
         console.log(err)
