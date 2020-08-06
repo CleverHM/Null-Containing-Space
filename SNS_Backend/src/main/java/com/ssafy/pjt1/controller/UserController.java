@@ -420,22 +420,25 @@ public class UserController {
 				responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 				responseHeaders.add("Content-Type", type);
 
-				mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 						user.getIntro(), tag, abt, out, me, follow);
 			} else {
-				mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 						user.getIntro(), tag, abt, reportBytes, me, follow);
 				System.out.println("프로필 파일 없음");
 			}
 		} else {
 			// 페이지가 내가 아니야
 			// 내가 pageNickname 을 팔로우 했는지 판단
-			Set<UserFollow> uf = user.getFollowings();
+			Optional<User> optionalUser1 = userservice.findtwo(nickname);
+			User user1 = optionalUser1.get();
+			
+			Set<UserFollow> uf = user1.getFollowings();
 			
 			int f = 0;
 			
 			end : for(UserFollow userfollow : uf) {
-				if(userfollow.getTo().getEmail().equals(pageNickname)) {
+				if(userfollow.getTo().getNickname().equals(pageNickname)) {
 					f = 1;
 					break end;
 				}
@@ -481,10 +484,10 @@ public class UserController {
 					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 					responseHeaders.add("Content-Type", type);
 
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, out, false, false);
 				} else {
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, reportBytes, false, false);
 					System.out.println("프로필 파일 없음");
 				}
@@ -529,10 +532,10 @@ public class UserController {
 					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 					responseHeaders.add("Content-Type", type);
 
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, out, false, true);
 				} else {
-					mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
 							user.getIntro(), tag, abt, reportBytes, false, true);
 					System.out.println("프로필 파일 없음");
 				}
