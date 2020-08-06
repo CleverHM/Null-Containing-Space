@@ -143,10 +143,12 @@ export default {
     methods : {
         getUserInfo() {
           var InputData = new FormData();
-          InputData.append("nickname", this.nickname)
+          InputData.append("nickname", storage.getItem("NickName"))
+          InputData.append("pageNickname", this.nickname)
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
+              console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file
