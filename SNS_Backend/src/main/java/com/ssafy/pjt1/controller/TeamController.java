@@ -74,6 +74,7 @@ public class TeamController {
 		
 		user.setLeader(true);
 		user.setTeam(team);
+		user.setMatchok(false);
 		userservice.signUp(user);
 	}
 	
@@ -89,7 +90,7 @@ public class TeamController {
 		
 		// 팀: 유저 이어주기
 		user.setTeam(team);
-		
+		user.setMatchok(false);
 		userservice.signUp(user);
 		
 	}
@@ -132,11 +133,31 @@ public class TeamController {
 			
 			// 팀 원 넣기
 			List<String> mems = new LinkedList<String>();
+			List<Boolean> preferTech = new LinkedList<Boolean>();
+			String leaderNickname = "";
 			
-			for(User u : user.getTeam().getUsers()) {
-				mems.add(u.getNickname());
-			}
-			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle());
+			preferTech.add(user.getTeam().isBack_cpp());
+			preferTech.add(user.getTeam().isBack_java());
+			preferTech.add(user.getTeam().isBack_python());
+			preferTech.add(user.getTeam().isBack_php());
+			preferTech.add(user.getTeam().isFront_html());
+			preferTech.add(user.getTeam().isFront_css());
+			preferTech.add(user.getTeam().isFront_javascript());
+			preferTech.add(user.getTeam().isDb_sql());
+			preferTech.add(user.getTeam().isDb_nosql());
+			preferTech.add(user.getTeam().isFrame_spring());
+			preferTech.add(user.getTeam().isFrame_django());
+			preferTech.add(user.getTeam().isFrame_bootstrap());
+			preferTech.add(user.getTeam().isFrame_vue());
+			preferTech.add(user.getTeam().isFrame_react());
+			preferTech.add(user.getTeam().getAlgo());
+			
+			for(User u : user.getTeam().getUsers()) 
+				if(u.getLeader() == true) leaderNickname = u.getNickname();
+				else mems.add(u.getNickname());
+				
+			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), 
+					mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle(),user.getTeam().getPreferProject(), preferTech, leaderNickname);
 			
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

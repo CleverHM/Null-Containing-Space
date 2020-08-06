@@ -445,6 +445,28 @@ public class PostController {
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
 				System.out.println("없는 파일");
+
+				int count = likeservice.likeCount(postList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+						postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+						postList.get(i).getUser().getNickname(), reportBytes, tag, count, likeFlag,
+						postList.get(i).getReplies().size()));
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
 
@@ -534,6 +556,28 @@ public class PostController {
 					likeFlag, reply, reply.size());
 			// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 		} else {
+			int count = likeservice.likeCount(post);
+
+			// 내가 좋아요 했는가?
+			int likeFlag = 0;
+
+			Optional<Post> tempP = postservice.findone(post.getPid());
+			Post pp = tempP.get();
+			Set<PostLike> postlikes = pp.getPostlikes();
+
+			for (PostLike pl : postlikes) {
+				// 이미 좋아요한 사람일 경우.
+				if (pl.getUser().getUid() == user.getUid()) {
+					likeFlag = 1;
+					break;
+				}
+			}
+
+			List<ReplyData> reply = new LinkedList<ReplyData>();
+			
+			feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
+					list, post.getUser().getNickname(), post.getUser().getEmail(), reportBytes, count, post.getViewCount(),
+					likeFlag, reply, reply.size());
 			System.out.println("없는 파일");
 			// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 		}
