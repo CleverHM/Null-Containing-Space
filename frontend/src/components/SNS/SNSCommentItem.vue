@@ -100,7 +100,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 #sns-comment {
   margin: 15px 3px 0px 3px;

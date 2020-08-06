@@ -13,10 +13,11 @@ public class FeedData {
     private byte[] file;
     private int likeFlag;
     private int replyCount;
+    private byte[] userFile;
     
     private List<String> tags;
-
-    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag, int replycount) {
+    
+    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag, int replycount, byte[] userfile) {
         this.pid = pid;
         this.email = email;
         this.date = date;
@@ -27,21 +28,24 @@ public class FeedData {
         this.LikeCount = likeCount;
         this.likeFlag = likeFlag;
         this.replyCount = replycount;
+        this.userFile = userfile;
     }
    
+	public byte[] getUserFile() {
+		return userFile;
+	}
 
+	public void setUserFile(byte[] userFile) {
+		this.userFile = userFile;
+	}
 
 	public int getReplyCount() {
 		return replyCount;
 	}
-
-
-
+	
 	public void setReplyCount(int replyCount) {
 		this.replyCount = replyCount;
 	}
-
-
 
 	public int getLikeFlag() {
 		return likeFlag;

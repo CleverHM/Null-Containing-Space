@@ -5,7 +5,7 @@
         <div class="main-part">
             <!-- 팀이 있을 때 !-->
             <div v-if="teamCheck">
-                <TeamIn/>
+                <TeamIn :teamData="teamData"/>
             </div>
             <!-- 팀이 없을 때 -->
             <div v-else>
@@ -21,6 +21,10 @@ import subNav from '../components/common/subnav.vue'
 import competitionItem from '../components/main/competitionItem.vue'
 import TeamIn from '../components/team/TeamIn.vue'
 import TeamOut from '../components/team/TeamOut.vue'
+import http from "../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
   name:"Main",
@@ -30,11 +34,31 @@ export default {
       TeamIn,
       TeamOut,
   },
+  
+
   data() {
     return {
       teamCheck: false,
+      teamData: null,
     }
-  }
+  },
+  
+  created() {
+      let formData = new FormData;
+      formData.append("nickname", storage.getItem("NickName"));
+
+      http
+      .post("/team/exist", formData)
+      .then((res) => {
+          this.teamCheck = res.data.status
+          if (this.teamCheck) {
+              this.teamData = res.data.teamdate
+          }
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  },
 };
 </script>
 
