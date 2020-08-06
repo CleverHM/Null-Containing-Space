@@ -183,7 +183,6 @@ export default {
         // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
         this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 
-        console.log(this.article)
         if (this.article.userFile == null) {
           this.userImg = false
         } else {

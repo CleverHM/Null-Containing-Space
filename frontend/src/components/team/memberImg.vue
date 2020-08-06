@@ -68,9 +68,8 @@ export default {
   overflow: hidden;
 }
 
-.user-img > img {
-  width: 100%;
-  object-fit: cover;
+.userImg > img {
+  width: 100px;
 }
 
 
@@ -80,9 +79,9 @@ export default {
   font-size: 15px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
-  bottom: 10px;
+  bottom: 7px;
   width: 100%;
-  background-color: rgba( 255, 255, 255, 0.4 );
+  background-color: rgba( 255, 255, 255, 0.5 );
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: clip;

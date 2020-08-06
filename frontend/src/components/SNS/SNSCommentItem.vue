@@ -3,7 +3,10 @@
     <!-- user 부분 -->
     <div class="user-part d-flex justify-content-between align-items-center mb-2">
       <div class="d-flex align-items-center">
-        <div class="comment-img"></div>
+        <div class="comment-img">
+            <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image">
+            <img :src="'data:image/png;base64, ' + reply.file" alt="user-image">
+        </div>
         <div class="comment-name ml-2">{{ reply.who }}</div>
       </div>
       <div class="d-flex flex-row">
@@ -32,6 +35,14 @@ export default {
     reply: Object,
   },
 
+  data() {
+    return {
+      diffTime: "",
+      userCheck: false,
+      userImg: false,
+    }
+  },
+
   created() {
     // 받아온 시간(string) - date (형식 변환)
     var postDate = new Date(this.reply.createData)
@@ -39,12 +50,11 @@ export default {
     if (this.reply.email === storage.getItem("User")) {
       this.userCheck = true;
     }
-  },
 
-  data() {
-    return {
-      diffTime: "",
-      userCheck: false,
+    if (this.reply.file == null ) {
+      this.userImg = false
+    } else {
+      this.userImg = true
     }
   },
 
@@ -107,11 +117,14 @@ export default {
 }
 
 .comment-img {
-  border: 1px solid;
-  color: #C4BCB8;
-  border-radius: 50%;
+  border-radius: 100%;
   width: 30px;
   height: 30px;
+  overflow: hidden;
+}
+
+.comment-img > img {
+  width: 100%;
 }
 
 .comment-name {
