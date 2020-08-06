@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.pjt1.dao.UserDao;
-import com.ssafy.pjt1.dto.Ability;
 import com.ssafy.pjt1.dto.User;
 
 @Service
@@ -42,21 +41,23 @@ public class MatchingServiceImpl implements MatchingService{
 	 */
 	
 	@Autowired
-	static UserDao userdao;
+	UserDao userdao;
 	
 	static Map<String, List<User> > ablist = new HashMap<>();
 	static Map<Integer, Integer> priority = new HashMap<>();
 	static List<String> lan = new ArrayList<>();
+	// 최종 선별된 유저들
+	static List<Integer> matching_user_id = new ArrayList<>();
 	
-	// 모든 유저
-	static List<User> tusers = userdao.findAll();
-	// 선호하지 않는 사람
-	static List<User> users = new ArrayList<>();
-	// 선호하는 사람
-	static List<User> users2 = new ArrayList<>();
 	
 	public List<Integer> match(int preferProject, List<String> preferTech){
-		List<Integer> matching_user_id = new ArrayList<>();
+		// 모든 유저
+		List<User> tusers = userdao.findAll();
+		// 선호하지 않는 사람
+		List<User> users = new ArrayList<>();
+		// 선호하는 사람
+		List<User> users2 = new ArrayList<>();
+		
 		
 		// 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
 		for(User u : tusers) 
@@ -66,22 +67,22 @@ public class MatchingServiceImpl implements MatchingService{
 			}
 		
 		// 선호하는 사람들 먼저 선별
-		pick1(matching_user_id);
+		pick1(users2);
 
 		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
-		pick2();
+		users = pick2(users);
 
 		//언어들 중에서 더 잘하는 사람을 선별(3차)
 		pick3(preferTech);	
 		
 		//비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
-		pick4(matching_user_id);
+		pick4();
 		
 		
 		return matching_user_id; 
 	}
 	
-	public void pick4(List<Integer> matching_user_id) {
+	public void pick4() {
 		List<Integer> pricnt[] = new ArrayList[lan.size()*3 + 1];
 		for(int i=0;i<lan.size()*3+1;i++) pricnt[i] = new ArrayList<Integer>();
 		
@@ -109,7 +110,6 @@ public class MatchingServiceImpl implements MatchingService{
 				for(int j=0;j<total;j++) matching_user_id.add(pricnt[i].get(a[j]));
 			}
 		}
-		
 	}
 	
 	public void pick3(List<String> preferTech) {
@@ -131,7 +131,7 @@ public class MatchingServiceImpl implements MatchingService{
 	}
 	
 
-	public void pick2() {
+	public List<User> pick2(List<User> users) {
 		List<User> temp = new ArrayList<>();
 		
 		for(User u : users) temp.add(u);
@@ -253,11 +253,13 @@ public class MatchingServiceImpl implements MatchingService{
 				return s1.getAbility().getAlgo()-s2.getAbility().getAlgo();
 			}});
 		ablist.put("algo", temp);
+		
+		return users;
 	}
 	
-	public void pick1(List<Integer> matching_user_id) {
+	public void  pick1(List<User> users2) {
 		int total = 5;
-		int n = users.size();
+		int n = users2.size();
 		
 		int a[] = new int[total];
 		
@@ -268,6 +270,7 @@ public class MatchingServiceImpl implements MatchingService{
 				if(a[i] == a[j]) i--;
 			
 		}
-		for(int i=0;i<total;i++) matching_user_id.add(users.get(a[i]).getUid());
+		for(int i=0;i<total;i++) matching_user_id.add(users2.get(a[i]).getUid());
+		
 	}
 }
