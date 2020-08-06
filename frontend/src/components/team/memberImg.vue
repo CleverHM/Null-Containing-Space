@@ -55,23 +55,21 @@ export default {
   left: -5px;
   width: 110px;
   height: 110px;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 100%;
   border: 7px solid #FFCC33;
 }
 
 .userImg {
-  display: inline-block;
+  display: block;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: #eeeeee;
   overflow: hidden;
 }
 
-.user-img > img {
-  width: 100%;
-  height: 100%;
+.userImg > img {
+  width: 100px;
 }
 
 
@@ -81,9 +79,9 @@ export default {
   font-size: 15px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
-  bottom: 13px;
+  bottom: 7px;
   width: 100%;
-  background-color: rgba( 255, 255, 255, 0.4 );
+  background-color: rgba( 255, 255, 255, 0.5 );
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: clip;
