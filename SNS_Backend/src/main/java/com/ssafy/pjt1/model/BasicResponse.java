@@ -10,4 +10,6 @@ public class BasicResponse {
     public String data;
     @ApiModelProperty(value = "object", position = 3)
     public Object object;
+    @ApiModelProperty(value = "teamdate", position = 4)
+    public TeamData teamdate;
 }

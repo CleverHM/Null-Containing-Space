@@ -8,6 +8,14 @@
                 <input v-model="team.title" id="title" placeholder="프로젝트 팀 이름(3글자 이상 입력해주세요)" type="text" />
             </div>
 
+            <!-- 프로젝트 인원 -->
+            <div class="cnt-area">
+                인원
+                <div class="cnt-down"></div>
+                <div>{{ team.cnt }}</div>
+                <div class="cnt-up"></div>
+            </div>
+
             <!-- 프로젝트 기술 -->
             <div class="team-use">
                 프로젝트 사용 기술
@@ -93,6 +101,7 @@ export default {
                 clicktech: [
                     [], [], [], [],
                 ],
+                cnt: 5,
                 intro: '',
                 techs: [
                     ['cpp', 'java', 'python', 'php',],
@@ -255,7 +264,7 @@ export default {
             .catch((err) => {
                 console.log(err)
             })
-            
+
         },
         
     }
@@ -291,6 +300,10 @@ export default {
     font-weight: normal;
 }
 
+.cnt-area {
+    display: inline;
+    margin: 5px;
+}
 
 .button-all {
     display: inline-block;

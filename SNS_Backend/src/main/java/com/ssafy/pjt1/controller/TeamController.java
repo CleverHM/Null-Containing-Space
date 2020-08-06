@@ -123,7 +123,10 @@ public class TeamController {
 		
 		if(user.getTeam().getTeamid() == 1) {
 			System.out.println("현재팀없음");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "팀없음";
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 		else {
 			
@@ -133,9 +136,12 @@ public class TeamController {
 			for(User u : user.getTeam().getUsers()) {
 				mems.add(u.getNickname());
 			}
-			
 			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle());
-			return new ResponseEntity<>(teamdata, HttpStatus.OK);
+			
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.teamdate = teamdata;
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 
 	}

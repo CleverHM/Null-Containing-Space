@@ -5,7 +5,7 @@
         <div class="main-part">
             <!-- 팀이 있을 때 !-->
             <div v-if="teamCheck">
-                <TeamIn/>
+                <TeamIn :teamData="teamData"/>
             </div>
             <!-- 팀이 없을 때 -->
             <div v-else>
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       teamCheck: false,
+      teamData: null,
     }
   },
   
@@ -49,8 +50,10 @@ export default {
       http
       .post("/team/exist", formData)
       .then((res) => {
-          console.log(res)
-          console.log(res.data)
+          this.teamCheck = res.data.status
+          if (this.teamCheck) {
+              this.teamData = res.data.teamdate
+          }
       })
       .catch((err) => {
           console.log(err)
