@@ -25,22 +25,22 @@
             </div>
 
             <!-- 블로그 & 깃 !-->
-            <button v-if="User.blogURL != null" :class="[{'btn-on' : User.blogURL===null}, {'btn-off' : User.blogURL != null}]">
-            <i class="fab fa-blogger fa-2x"></i>
-            <br><p>BLOG</p>
+            <button v-if="User.blogURL" class="btn-on">
+              <i class="fab fa-blogger fa-2x"></i>
+              <br><p>BLOG</p>
             </button>
-            <button v-else :class="[{'btn-on' : User.blogURL}, {'btn-off' : !User.blogURL}]" disabled>
-            <i class="fab fa-blogger fa-2x"></i>
-            <br><p>BLOG</p>
+            <button v-else class="btn-off" disabled>
+              <i class="fab fa-blogger fa-2x"></i>
+              <br><p>No BLOG</p>
             </button>
 
-            <button v-if="User.GitURL != null" :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]">
-            <i class="fab fa-git-square fa-2x"></i>
-            <br><p>GIT</p>
+            <button v-if="User.GitURL" class="btn-on">
+              <i class="fab fa-git-square fa-2x"></i>
+              <br><p>GIT</p>
             </button>
-            <button v-else :class="[{'btn-on' : User.GitURL}, {'btn-off' : !User.GitURL}]" disabled>
-            <i class="fab fa-git-square fa-2x"></i>
-            <br><p>GIT</p>
+            <button v-else class="btn-off" disabled>
+              <i class="fab fa-git-square fa-2x"></i>
+              <br><p>No GIT</p>
             </button>
 
 
@@ -58,7 +58,7 @@
           <div v-if="currentTab === 'tab1'">
             
             <!-- 자기소개 !-->
-            <div id="introduce" class="my-3" v-if="User.Introduce === null">
+            <div id="introduce" class="my-3" v-if="User.Introduce">
             {{ User.Introduce }}
             </div>
             <div id="introduce" class="my-3" v-else>
@@ -145,7 +145,6 @@ export default {
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
-              console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file

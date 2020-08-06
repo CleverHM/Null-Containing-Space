@@ -28,7 +28,9 @@ export default {
     data() {
         return {
             User : {
-              ability: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+              ability: [1, 1, 1, 1, 1,
+                        1, 1, 1, 1, 1,
+                         1, 1, 1, 1, 1],
               age: null,
               blogaddr: "",
               email: this.email,
