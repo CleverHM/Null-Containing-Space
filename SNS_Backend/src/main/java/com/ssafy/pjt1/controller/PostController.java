@@ -210,7 +210,7 @@ public class PostController {
 			for (int i = 0; i < post.getReplies().size(); i++) {
 				reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
 						post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
-						post.getReplies().get(i).getUser().getEmail()));
+						post.getReplies().get(i).getUser().getEmail(), null));
 			}
 
 			feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
@@ -576,9 +576,26 @@ public class PostController {
 			List<ReplyData> reply = new LinkedList<ReplyData>();
 
 			for (int i = 0; i < post.getReplies().size(); i++) {
-				reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
-						post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
-						post.getReplies().get(i).getUser().getEmail()));
+				byte[] reportBytes2 = null;
+				File result2 = new File(post.getReplies().get(i).getUser().getProfile().getFileurl() + post.getReplies().get(i).getUser().getProfile().getFilename());
+				
+				if (result2.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							post.getReplies().get(i).getUser().getProfile().getFileurl() + post.getReplies().get(i).getUser().getProfile().getFilename());
+
+					byte[] out2 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+
+					reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
+							post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
+							post.getReplies().get(i).getUser().getEmail(), out2));
+				} else {
+
+					reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
+							post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
+							post.getReplies().get(i).getUser().getEmail(), reportBytes2));
+				}
+				
 			}
 
 			byte[] reportBytes1 = null;
