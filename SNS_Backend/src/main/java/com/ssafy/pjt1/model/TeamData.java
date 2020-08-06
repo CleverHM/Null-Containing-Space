@@ -6,14 +6,14 @@ import java.util.List;
 public class TeamData {
 	private Date createDate;
 	private int cnt;
-	private List<String> members;
+	private List<TeamPersonData> members;
 	private String intro;
 	private String title;
 	private int preferProject;
 	private List<Boolean> preTech;
-	private String leaderNickname;
+	private TeamPersonData leaderNickname;
 
-	public TeamData(Date createDate, int cnt, List<String> members, String intro, String title, int preProject, List<Boolean> preTech, String leader ) {
+	public TeamData(Date createDate, int cnt, List<TeamPersonData> members, String intro, String title, int preProject, List<Boolean> preTech, TeamPersonData leader ) {
 		this.createDate = createDate;
 		this.cnt = cnt;
 		this.members = members;
@@ -24,11 +24,19 @@ public class TeamData {
 		this.leaderNickname = leader;
 	}
 	
-	public String getLeaderNickname() {
+	public List<TeamPersonData> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<TeamPersonData> members) {
+		this.members = members;
+	}
+
+	public TeamPersonData getLeaderNickname() {
 		return leaderNickname;
 	}
 
-	public void setLeaderNickname(String leaderNickname) {
+	public void setLeaderNickname(TeamPersonData leaderNickname) {
 		this.leaderNickname = leaderNickname;
 	}
 
@@ -62,14 +70,6 @@ public class TeamData {
 
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
-	}
-
-	public List<String> getMembers() {
-		return members;
-	}
-
-	public void setMembers(List<String> members) {
-		this.members = members;
 	}
 
 	public String getIntro() {

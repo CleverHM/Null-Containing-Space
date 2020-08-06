@@ -46,7 +46,7 @@
             <!-- git 주소 -->
             <div class="input-form">
                 <label for="gitUrl">Git URL</label>
-                <input v-model="User.gitUrl" 
+                <input v-model="User.GitURL" 
                 id="gitUrl"
                 type="text"/>
             </div>
@@ -54,7 +54,7 @@
             <!-- blog 주소 -->
             <div class="input-form">
                 <label for="blogUrl">Blog URL</label>
-                <input v-model="User.blogUrl" 
+                <input v-model="User.blogURL" 
                 id="blogUrl"
                 type="text"/>
             </div>
@@ -166,24 +166,46 @@ export default {
         },
         Modify() {
             var InputData = new FormData()
-            console.log(InputData)
-            InputData.append("profile", this.previewImg.file)
-            InputData.append("email", this.User.email)
-            InputData.append("nickname", this.User.nickname)
-            InputData.append("blog", this.User.blogURL)
-            InputData.append("git", this.User.GitURL)
-            InputData.append("intro", this.User.Introduce)
-            InputData.append("password", this.User.password)
-            http
-            .post("/account/modify", InputData)
-            .then(({data}) => {
-                console.log(data)
-                storage.NickName = this.User.nickname
-                this.$router.push({name:'profile'})
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            if (this.previewImg.file) {
+                InputData.append("profile", this.previewImg.file)
+                InputData.append("email", this.User.email)
+                InputData.append("nickname", this.User.nickname)
+                InputData.append("blog", this.User.blogURL)
+                InputData.append("git", this.User.GitURL)
+                InputData.append("intro", this.User.Introduce)
+
+                 http
+                .post("/account/modifyTrue", InputData)
+                .then(({data}) => {
+                    console.log(data)
+                    storage.NickName = this.User.nickname
+                    this.$router.push({name:'profile'})
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            } else {
+                InputData.append("email", this.User.email)
+                InputData.append("nickname", this.User.nickname)
+                InputData.append("blog", this.User.blogURL)
+                InputData.append("git", this.User.GitURL)
+                InputData.append("intro", this.User.Introduce)
+                console.log(InputData)
+
+                http
+                .post("/account/modifyFalse", InputData)
+                .then(({data}) => {
+                    console.log(data)
+                    storage.NickName = this.User.nickname
+                    this.$router.push({name:'profile'})
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }            
+            
+
+           
         },
     },
 }
@@ -289,6 +311,8 @@ input[type="text"]:focus{
     font-size: 16px;
 }
 #complete{
+    position: fixed;
+    bottom: 0;
     width: 100%;
     background-color: #464545;
     color: #f7f7f7;
