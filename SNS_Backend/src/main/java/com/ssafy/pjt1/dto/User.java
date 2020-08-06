@@ -94,7 +94,7 @@ public class User {
 		this.leader = lead;
 	}
 	
-	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile, boolean lead) {
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile, boolean lead, boolean matchok, int preferProject) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
@@ -108,6 +108,8 @@ public class User {
 		this.ability = ability;
 		this.profile = profile;
 		this.leader = lead;
+		this.matchok = matchok;
+		this.preferProject = preferProject;
 	}
 	
 	
