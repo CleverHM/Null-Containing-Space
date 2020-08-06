@@ -3,7 +3,8 @@
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img mr-2">
-        <img src="@/assets/images/default_image.png" alt="user_default_image">
+        <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image">
+        <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image">
       </div>
       <div class="flex-column">
         <div class="user-name" style="color: #464545;">
@@ -72,16 +73,24 @@ export default {
 
   created() {
     this.likeCheck();
+    console.log(this.article)
 
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.article.date)
     this.diffTime = this.dateCheck(postDate);
+
+    if (this.article.userFile == null) {
+      this.userImg = false
+    } else {
+      this.userImg = true
+    }
   },
   
   data() {
     return {
       likeColor: '',
       diffTime: '',
+      userImg: false,
     }
   },
 
