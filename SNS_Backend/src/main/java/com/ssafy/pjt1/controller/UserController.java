@@ -160,7 +160,7 @@ public class UserController {
 				list.get(13), list.get(14));
 		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false);
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false, false, 1);
 
 		Optional<Team> t1 = teamservice.findone(1);
 		user1.setTeam(t1.get());
