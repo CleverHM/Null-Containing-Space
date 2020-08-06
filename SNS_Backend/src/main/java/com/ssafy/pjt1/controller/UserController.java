@@ -396,6 +396,7 @@ public class UserController {
 		abt.add(user.getAbility().getFrame_bootstrap());
 		abt.add(user.getAbility().getFrame_vue());
 		abt.add(user.getAbility().getFrame_react());
+		abt.add(user.getAbility().getAlgo());
 		
 		MyPageData mypage = null;
 		
