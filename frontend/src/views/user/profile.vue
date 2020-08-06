@@ -161,6 +161,12 @@ export default {
             console.log(err)
           })
         },
+        ClickButton() {
+          // 세션의 닉네임 === 프로필 닉네임 -> `회원정보수정` 이면
+          // 세션의 닉네임 != 프로필 닉네임
+            // 팔로우 -> `팔로우취소`이면
+            // 팔로우 x -> `팔로우`이면
+        },
         handleClick(newTab) {
           this.currentTab = newTab;
         },

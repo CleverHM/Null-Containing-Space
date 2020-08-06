@@ -41,7 +41,6 @@ export default {
   border: 0;
   border-radius: 3px;
   box-shadow: 0 5px 5px -5px #333;
-  transition: background 0.3s ease-in;
 }
 .Modal-container .Modal-backdrop {
   height: 0;
@@ -61,7 +60,6 @@ export default {
   cursor: pointer;
 }
 
-.Modal-container #Modal-toggle:hover ~ button { background: #1E824C; }
 
 .Modal-container #Modal-toggle:checked {
   width: 100vw;
