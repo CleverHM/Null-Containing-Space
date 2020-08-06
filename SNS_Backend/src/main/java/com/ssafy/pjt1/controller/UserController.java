@@ -33,6 +33,7 @@ import com.ssafy.pjt1.dto.Ability;
 import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.Profile;
 import com.ssafy.pjt1.dto.TagFollow;
+import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
@@ -42,6 +43,7 @@ import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.FollowService;
 import com.ssafy.pjt1.service.JwtService;
 import com.ssafy.pjt1.service.MatchingService;
+import com.ssafy.pjt1.service.TeamService;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -64,11 +66,14 @@ public class UserController {
 	private JwtService jwtservice;
 
 	@Autowired
-	MatchingService matchingservice;
+	private MatchingService matchingservice;
 	
 	@Autowired
-	FollowService followservice; 
+	private FollowService followservice; 
 
+	@Autowired
+	private TeamService teamservice;
+	
 	// eamil 중복 체크
 		@PostMapping("/account/emailDuplicate")
 		@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
@@ -118,6 +123,14 @@ public class UserController {
 	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
+		
+		Optional<Team> t = teamservice.findone(1);
+		
+		if(!t.isPresent()) {
+			Team team = new Team("default 팀 입니다.", "default", Integer.MAX_VALUE);
+			teamservice.join(team);
+		}
+		
 		Profile img = new Profile();
 
 		String sourceFileName = "standard.PNG";
@@ -148,6 +161,9 @@ public class UserController {
 		
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
 				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false);
+
+		Optional<Team> t1 = teamservice.findone(1);
+		user1.setTeam(t1.get());
 
 		User user2 = userservice.signUp(user1);
 		System.out.println(user2.getNickname() + " " + user2.getPassword() + " " + user2.getEmail());
