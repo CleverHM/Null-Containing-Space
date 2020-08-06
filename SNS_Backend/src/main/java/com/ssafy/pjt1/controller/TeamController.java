@@ -48,6 +48,13 @@ public class TeamController {
 	@ApiOperation(value = "팀 생성", notes = "팀 생성 기능을 구현")
 	public void teamCreate(@Valid @RequestParam String title, String teamintro, int cnt, int prePro, Boolean[] preTech, String nickname) {
 		
+		Optional<Team> t = teamservice.findone(1);
+		
+		if(!t.isPresent()) {
+			Team team = new Team("default 팀 입니다.", "default", Integer.MAX_VALUE);
+			teamservice.join(team);
+		}
+		
 		Optional<User> optionaluser = userservice.findtwo(nickname);
 		User user = optionaluser.get();
 		
