@@ -1,11 +1,14 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.service.TeamService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -104,5 +108,35 @@ public class TeamController {
 		// 팀: 유저 끊어주기
 		
 		userservice.signUp(user);
+	}
+	
+	// nick name 으로 프로젝트 페이지판별 하기
+	@PostMapping("/team/exist")
+	@ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
+	public Object exist(@Valid @RequestParam String nickname) {
+		
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+		System.out.println(user.getTeam().getTeamid());
+		
+		TeamData teamdata = null;
+		
+		if(user.getTeam().getTeamid() == 1) {
+			System.out.println("현재팀없음");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+		else {
+			
+			// 팀 원 넣기
+			List<String> mems = new LinkedList<String>();
+			
+			for(User u : user.getTeam().getUsers()) {
+				mems.add(u.getNickname());
+			}
+			
+			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle());
+			return new ResponseEntity<>(teamdata, HttpStatus.OK);
+		}
+
 	}
 }

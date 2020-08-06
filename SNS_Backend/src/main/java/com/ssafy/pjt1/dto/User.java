@@ -45,6 +45,7 @@ public class User {
 	private String blogaddr;
 	private String intro;
 	private boolean matchok;
+	private int preferProject;
 	private boolean leader;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
@@ -143,6 +144,15 @@ public class User {
 		this.posts = posts;
 		this.postlikes = postlikes;
 		this.createDate = createDate;
+	}
+
+	
+	public int getPreferProject() {
+		return preferProject;
+	}
+
+	public void setPreferProject(int preferProject) {
+		this.preferProject = preferProject;
 	}
 
 	public boolean getLeader() {
