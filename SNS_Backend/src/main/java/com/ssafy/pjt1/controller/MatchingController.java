@@ -46,6 +46,7 @@ public class MatchingController {
 		
 		Team team = u.get().getTeam();
 		
+		
 		if(team.isBack_cpp()==true) preferTech.add("cpp");
 		if(team.isBack_java()==true) preferTech.add("java");
 		if(team.isBack_python()==true) preferTech.add("pyhton");
@@ -63,7 +64,7 @@ public class MatchingController {
 		if(team.getAlgo()==true) preferTech.add("algo");
 		
 
-		List<Integer> matching_user_id = matchingservice.match(preferTech);
+		List<Integer> matching_user_id = matchingservice.match(team.getPreferProject(),preferTech);
 		
 		for(Integer i : matching_user_id) {
 			u = userservice.findthree(i);

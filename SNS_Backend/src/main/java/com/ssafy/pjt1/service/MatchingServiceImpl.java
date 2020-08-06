@@ -48,35 +48,44 @@ public class MatchingServiceImpl implements MatchingService{
 	static Map<Integer, Integer> priority = new HashMap<>();
 	static List<String> lan = new ArrayList<>();
 	
-	//static List<User> users = userdao.findAll();	
-	//임의 값
+	// 모든 유저
+	static List<User> tusers = userdao.findAll();
+	// 선호하지 않는 사람
 	static List<User> users = new ArrayList<>();
+	// 선호하는 사람
+	static List<User> users2 = new ArrayList<>();
 	
-	
-	public List<Integer> match(List<String> preferTech){
+	public List<Integer> match(int preferProject, List<String> preferTech){
 		List<Integer> matching_user_id = new ArrayList<>();
 		
-		// 테스트
-		User u = null;
-		Ability ab = null;
-//		testdata(u, ab);
-
-		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬
-		init();
-
-		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
+		// 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
+		for(User u : tusers) 
+			if(u.isMatchok() == true) {
+				if(preferProject != u.getPreferProject()) users.add(u); 
+				else users2.add(u);
+			}
 		
-		for(String s : preferTech) lan.add(s);
+		// 선호하는 사람들 먼저 선별
+		pick1(matching_user_id);
 
-		pick();	
+		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
+		pick2();
+
+		//언어들 중에서 더 잘하는 사람을 선별(3차)
+		pick3(preferTech);	
 		
-		// 
+		//비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
+		pick4(matching_user_id);
 		
+		
+		return matching_user_id; 
+	}
+	
+	public void pick4(List<Integer> matching_user_id) {
 		List<Integer> pricnt[] = new ArrayList[lan.size()*3 + 1];
 		for(int i=0;i<lan.size()*3+1;i++) pricnt[i] = new ArrayList<Integer>();
 		
 		for(Integer key : priority.keySet()) pricnt[priority.get(key)].add(key);
-		
 		
 		int total = 5;
 		for(int i=lan.size(); i>=0; i--) {
@@ -101,10 +110,12 @@ public class MatchingServiceImpl implements MatchingService{
 			}
 		}
 		
-		return matching_user_id; 
 	}
 	
-	public void pick() {
+	public void pick3(List<String> preferTech) {
+		// 사용자가 프로젝트에 사용할 주요 언어들을 lan리스트에 담음(팀원을 뽑는데 사용될 데이터)
+		for(String s : preferTech) lan.add(s);
+		
 		String str;
 		int x;
 		for(int i=0;i<lan.size();i++) {
@@ -120,7 +131,7 @@ public class MatchingServiceImpl implements MatchingService{
 	}
 	
 
-	public void init() {
+	public void pick2() {
 		List<User> temp = new ArrayList<>();
 		
 		for(User u : users) temp.add(u);
@@ -244,42 +255,19 @@ public class MatchingServiceImpl implements MatchingService{
 		ablist.put("algo", temp);
 	}
 	
-//	// 임의 값 생성
-//	public void testdata(User u, Ability ab) {
-//		u = new User(1, "a", "123", "a", "a", "a", 16, true);
-//		ab = new Ability(1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(2, "b", "123", "b", "b", "b", 13, false);
-//		ab = new Ability(2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(3, "c", "123", "c", "c", "c", 19, true);
-//		ab = new Ability(3, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(4, "d", "123", "d", "d", "d", 22, false);
-//		ab = new Ability(4, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 1);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(5, "e", "123", "e", "e", "e", 21, true);
-//		ab = new Ability(5, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(6, "f", "123", "f", "f", "f", 25, false);
-//		ab = new Ability(6, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 3);
-//		u.setAbility(ab);
-//		users.add(u);
-//
-//		u = new User(7, "g", "123", "g", "g", "g", 28, true);
-//		ab = new Ability(7, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4);
-//		u.setAbility(ab);
-//		users.add(u);
-//	}
-
+	public void pick1(List<Integer> matching_user_id) {
+		int total = 5;
+		int n = users.size();
+		
+		int a[] = new int[total];
+		
+		for(int i=0; i<n; i++) {
+			a[i] = (int)(Math.random()*n);
+			
+			for(int j=0; j<i; j++) 
+				if(a[i] == a[j]) i--;
+			
+		}
+		for(int i=0;i<total;i++) matching_user_id.add(users.get(a[i]).getUid());
+	}
 }
