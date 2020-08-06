@@ -2,6 +2,7 @@
     <div class="css-slider">
         <section class="slide slide-one">
             감사합니다.
+            <button id="btn-join" @click="GoHome">완료</button>
         </section>
 
         <header>
@@ -20,6 +21,10 @@ export default {
     name: 'step1',
 
     methods: {
+    GoHome() {
+
+      this.$router.push({name: 'Login'})
+    },
     gostep1() {
       this.$router.push({name: 'step1'}).catch(()=>{})
     },
@@ -96,5 +101,16 @@ header div:hover {
 }
 header div#slide-5{
   background-color: #464545;
+}
+#btn-join{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  background-color: #464545;
+  height: 50px;
+  border-radius: 3px;
+  color: #f7f7f7;
+  font-weight: bold;
+  width:100%;
 }
 </style>

@@ -28,13 +28,17 @@ export default {
     data() {
         return {
             User : {
+              ability: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+              age: null,
+              blogaddr: "",
               email: this.email,
+              gender: true,
+              gitaddr: "",
+              intro: "",
               name: "",
               nickname: "",
               password: "",
               tel: "",
-              gender: true,
-              age: null,
             },
     }
     },

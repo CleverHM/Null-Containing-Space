@@ -9,7 +9,7 @@
       <div class="input-form">
           <input @keyup.enter="confirmEmail" v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
           <label for="email">이메일</label>
-          <div id="ErrorMsg">{{ ErrorMessage }}</div>
+          <div id="ErrorMsg" style="text-align: left;">{{ ErrorMessage }}</div>
       </div>
       
       <button class="btn-input" @click="confirmEmail">입력</button>
