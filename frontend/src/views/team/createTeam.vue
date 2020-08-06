@@ -11,9 +11,9 @@
             <!-- 프로젝트 인원 -->
             <div class="cnt-area">
                 인원
-                <div class="cnt-down"></div>
+                <b-icon-chevron-down scale="1.2" font-scale="1.5" class="cnt-down" @click="cntDown"></b-icon-chevron-down>
                 <div>{{ team.cnt }}</div>
-                <div class="cnt-up"></div>
+                <b-icon-chevron-up scale="1.2" font-scale="1.5" class="cnt-up" @click="cntUp"></b-icon-chevron-up>
             </div>
 
             <!-- 프로젝트 기술 -->
@@ -180,6 +180,20 @@ export default {
             }
         },
 
+        // 인원 수 위
+        cntUp () {
+            this.team.cnt = this.team.cnt + 1;
+        },
+
+        // 인원 수 아래
+        cntDown () {
+            if (this.team.cnt == 1) {
+                console.log('안됨')
+            } else {
+                this.team.cnt = this.team.cnt - 1;
+            }
+        },
+
         // 안 됨...
         // clickAll(event) {
         //     var cidx = Number(event.target.parentElement.id.split('^')[0] - 1)
@@ -301,8 +315,32 @@ export default {
 }
 
 .cnt-area {
-    display: inline;
-    margin: 5px;
+    display: inline-block;
+    margin: 10px;
+    color: #464545;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.cnt-area > div {
+    display: inline-block;
+    font-weight: lighter;
+}
+
+.cnt-down {
+    margin: 0px 10px 0px 10px;
+    background-color: #ACCCC4;
+    border-radius: 50%;
+    color: white;
+    padding: 5px;
+}
+
+.cnt-up {
+    margin: 0px 10px 0px 10px;
+    background-color: #ACCCC4;
+    border-radius: 50%;
+    color:white;
+    padding: 5px;
 }
 
 .button-all {
