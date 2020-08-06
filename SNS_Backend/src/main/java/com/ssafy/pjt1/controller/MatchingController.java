@@ -38,7 +38,7 @@ public class MatchingController {
 	
 	@PostMapping("/match/teammember")
 	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public Object matchingAlgo(@Valid @RequestParam String nickname) {
+	public void matchingAlgo(@Valid @RequestParam String nickname) {
 		List<String> preferTech = new ArrayList<>();
 		List<User> userlist = new ArrayList<>();
 		
@@ -63,15 +63,13 @@ public class MatchingController {
 		if(team.isFrame_react()==true) preferTech.add("react");
 		if(team.getAlgo()==true) preferTech.add("algo");
 		
-
-		List<Integer> matching_user_id = matchingservice.match(team.getPreferProject(),preferTech);
+		int preferProject = team.getPreferProject();
+		List<Integer> matching_user_id = matchingservice.match(preferProject, preferTech);
 		
 		for(Integer i : matching_user_id) {
 			u = userservice.findthree(i);
 			userlist.add(u.get());
 		}
 		
-		Object response = null;
-		return response;
 	}
 }
