@@ -19,7 +19,8 @@
                     </div>
                     <div class="profile-btns">
                         <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
-                        <button class="btn-follow" v-else>팔로우</button>
+                        <button class="btn-follow" v-else-if="isFollow" @click="follow">팔로우 취소</button>
+                        <button class="btn-follow" v-else @click="follow">팔로우</button>
                     </div>
                 </div>
             </div>
@@ -111,16 +112,10 @@ export default {
         TagBadge,
         Tabs,
     },
-    props: [
-      'nickname'
-    ],
     created() {
+      this.nickname = storage.getItem("NickName")
+      this.pagenickname = this.$route.params.nickname
       this.getUserInfo()
-    },
-    computed: {
-      isMe() {
-        return storage.NickName === this.User.nickname
-      }
     },
     data : () => {
         return {
@@ -134,6 +129,8 @@ export default {
               profileURL: null,
               ability: null,
             },
+            isMe: false,
+            isFollow: false,
             // navigation dropdown
             showMenu: false,
             tabs: TABS,
@@ -142,13 +139,14 @@ export default {
     },
     methods : {
         getUserInfo() {
+          console.log("hello")
           var InputData = new FormData();
-          InputData.append("nickname", storage.getItem("NickName"))
-          InputData.append("pageNickname", this.nickname)
+          InputData.append("nickname", this.nickname)
+          InputData.append("pageNickname", this.pagenickname)
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
-              console.log(data)
+              // console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file
@@ -158,16 +156,28 @@ export default {
               this.User.GitURL = data.gitaddr
               this.User.ability = data.abt
               console.log(this.User)
+              this.isMe = data.me
+              this.isFollow = data.follow
+              console.log("create", this.isFollow)
           })
           .catch((err) => {
             console.log(err)
           })
         },
-        ClickButton() {
-          // 세션의 닉네임 === 프로필 닉네임 -> `회원정보수정` 이면
-          // 세션의 닉네임 != 프로필 닉네임
-            // 팔로우 -> `팔로우취소`이면
-            // 팔로우 x -> `팔로우`이면
+        follow() {
+          var InputData = new FormData()
+          InputData.append("From", this.nickname)
+          InputData.append("To", this.pagenickname)
+          http.post("/follow/user", InputData)
+          .then(({data}) => {
+            console.log("follow",data)
+            this.isFollow = data.flag
+            this.User.followingcount = data.followingCnt
+            this.User.followercount = data.followerCnt
+            console.log(this.isFollow)
+          })
+          .catch(() => {})
+
         },
         handleClick(newTab) {
           this.currentTab = newTab;

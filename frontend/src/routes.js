@@ -86,7 +86,7 @@ export default [
         component : getAbility
     },
     {
-        path : '/user/profile',
+        path : '/user/profile/:nickname',
         name : 'profile',
         component : profile,
         props: true,
