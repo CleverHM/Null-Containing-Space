@@ -39,7 +39,7 @@ export default {
             this.$router.push({name: 'Notice'}).catch(()=>{})
         },
         goProfile() {
-            this.$router.push({ name: 'profile', params: { postId: this.nickname }}).catch(()=>{})
+            this.$router.push({ name: 'profile', params: { nickname: this.nickname }}).catch(()=>{})
         },
         
     }

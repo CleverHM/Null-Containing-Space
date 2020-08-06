@@ -111,6 +111,9 @@ export default {
         TagBadge,
         Tabs,
     },
+    props: [
+      'nickname'
+    ],
     created() {
       this.getUserInfo()
     },
@@ -133,7 +136,6 @@ export default {
             },
             // navigation dropdown
             showMenu: false,
-            nickname: storage.NickName,
             tabs: TABS,
             currentTab: 'tab1',
         }
