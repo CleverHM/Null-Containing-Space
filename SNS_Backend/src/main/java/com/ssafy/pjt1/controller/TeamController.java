@@ -1,5 +1,11 @@
 package com.ssafy.pjt1.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +13,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.MyPageData;
 import com.ssafy.pjt1.model.TeamData;
+import com.ssafy.pjt1.model.TeamPersonData;
 import com.ssafy.pjt1.service.TeamService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -114,7 +123,7 @@ public class TeamController {
 	// nick name 으로 프로젝트 페이지판별 하기
 	@PostMapping("/team/exist")
 	@ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
-	public Object exist(@Valid @RequestParam String nickname) {
+	public Object exist(@Valid @RequestParam String nickname) throws MalformedURLException, IOException {
 		
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
@@ -132,9 +141,9 @@ public class TeamController {
 		else {
 			
 			// 팀 원 넣기
-			List<String> mems = new LinkedList<String>();
+			List<TeamPersonData> mems = new LinkedList<TeamPersonData>();
 			List<Boolean> preferTech = new LinkedList<Boolean>();
-			String leaderNickname = "";
+			TeamPersonData leaderNickname = null;
 			
 			preferTech.add(user.getTeam().isBack_cpp());
 			preferTech.add(user.getTeam().isBack_java());
@@ -153,8 +162,45 @@ public class TeamController {
 			preferTech.add(user.getTeam().getAlgo());
 			
 			for(User u : user.getTeam().getUsers()) 
-				if(u.getLeader() == true) leaderNickname = u.getNickname();
-				else mems.add(u.getNickname());
+				if(u.getLeader() == true) {
+					 // 이미지
+			        byte[] reportBytes = null;
+			        File result=new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
+			        
+			        if(result.exists()){
+			            System.out.println("있음");
+			            InputStream inputStream = new FileInputStream(u.getProfile().getFileurl() + u.getProfile().getFilename());
+			            String type=result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+
+			            byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
+					
+			            leaderNickname = new TeamPersonData(nickname, out);
+			        }
+			        else {
+			        	leaderNickname = new TeamPersonData(nickname, reportBytes);
+			        	System.out.println("프로필 파일 없음");
+			        }
+				}
+				else {
+					 // 이미지
+			        byte[] reportBytes = null;
+			        File result=new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
+			        
+			        if(result.exists()){
+			            System.out.println("있음");
+			            InputStream inputStream = new FileInputStream(u.getProfile().getFileurl() + u.getProfile().getFilename());
+			            String type=result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+
+			            byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+						mems.add(new TeamPersonData(u.getNickname(), out));
+			        }
+			        else {
+
+						mems.add(new TeamPersonData(u.getNickname(), reportBytes));
+			        	System.out.println("프로필 파일 없음");
+			        }
+				}
 				
 			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), 
 					mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle(),user.getTeam().getPreferProject(), preferTech, leaderNickname);
