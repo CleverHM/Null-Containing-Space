@@ -74,6 +74,7 @@ public class TeamController {
 		
 		user.setLeader(true);
 		user.setTeam(team);
+		user.setMatchok(false);
 		userservice.signUp(user);
 	}
 	
@@ -89,7 +90,7 @@ public class TeamController {
 		
 		// 팀: 유저 이어주기
 		user.setTeam(team);
-		
+		user.setMatchok(false);
 		userservice.signUp(user);
 		
 	}
