@@ -58,7 +58,7 @@
           <div v-if="currentTab === 'tab1'">
             
             <!-- 자기소개 !-->
-            <div id="introduce" class="my-3" v-if="User.Introduce === null">
+            <div id="introduce" class="my-3" v-if="User.Introduce">
             {{ User.Introduce }}
             </div>
             <div id="introduce" class="my-3" v-else>

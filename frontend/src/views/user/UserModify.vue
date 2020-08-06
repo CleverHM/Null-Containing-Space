@@ -61,7 +61,7 @@
             <!-- 자기소개 -->
             <div class="textarea-form">
                 <label for="blogUrl">자기소개</label>
-                <textarea v-model="User.Intoduce"
+                <textarea v-model="User.Introduce"
                 id="Introduce" />
             </div>
             <!-- 비밀번호 수정 버튼 -->
@@ -173,7 +173,7 @@ export default {
                 InputData.append("blog", this.User.blogURL)
                 InputData.append("git", this.User.GitURL)
                 InputData.append("intro", this.User.Introduce)
-
+                console.log("inputdata", InputData)
                  http
                 .post("/account/modifyTrue", InputData)
                 .then(({data}) => {
@@ -190,7 +190,7 @@ export default {
                 InputData.append("blog", this.User.blogURL)
                 InputData.append("git", this.User.GitURL)
                 InputData.append("intro", this.User.Introduce)
-                console.log(InputData)
+                console.log("inputdata", InputData)
 
                 http
                 .post("/account/modifyFalse", InputData)
