@@ -430,12 +430,15 @@ public class UserController {
 		} else {
 			// 페이지가 내가 아니야
 			// 내가 pageNickname 을 팔로우 했는지 판단
-			Set<UserFollow> uf = user.getFollowings();
+			Optional<User> optionalUser1 = userservice.findtwo(nickname);
+			User user1 = optionalUser1.get();
+			
+			Set<UserFollow> uf = user1.getFollowings();
 			
 			int f = 0;
 			
 			end : for(UserFollow userfollow : uf) {
-				if(userfollow.getTo().getEmail().equals(pageNickname)) {
+				if(userfollow.getTo().getNickname().equals(pageNickname)) {
 					f = 1;
 					break end;
 				}
