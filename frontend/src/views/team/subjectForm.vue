@@ -39,9 +39,11 @@ export default {
         Navbar,
         subNav,
     },
+
     props: [
         'beforeSubject'
         ],
+        
     data() {
         return {
             subjectCheck: 0,

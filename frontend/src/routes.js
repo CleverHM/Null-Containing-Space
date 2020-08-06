@@ -188,7 +188,6 @@ export default [
         path: '/team/leader1',
         name: 'LeaderbeforeForm',
         component: SubjectForm,
-        props: true,
 
     },
     {

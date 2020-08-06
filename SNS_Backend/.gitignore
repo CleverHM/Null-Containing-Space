@@ -38,3 +38,4 @@ build/
 target/classes/com/ssafy/pjt1/controller/UserController.class
 target/classes/META-INF/maven/com.ssafy/SNS_Backend/pom.properties
 target/classes/com/*
+bin/

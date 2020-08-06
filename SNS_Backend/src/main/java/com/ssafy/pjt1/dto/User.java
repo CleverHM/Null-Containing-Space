@@ -23,6 +23,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.hash.BloomFilter;
 
 @Entity
 @Table(name = "User")
@@ -44,6 +45,8 @@ public class User {
 	private String blogaddr;
 	private String intro;
 	private boolean matchok;
+	private int preferProject;
+	private boolean leader;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
 	private Set<UserFollow> followings;
@@ -84,13 +87,14 @@ public class User {
 
 	}
 
-	public User(String nickname, String password, String email) {
+	public User(String nickname, String password, String email, boolean lead) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
+		this.leader = lead;
 	}
 	
-	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile) {
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile, boolean lead, boolean matchok, int preferProject) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
@@ -103,10 +107,13 @@ public class User {
 		this.intro = intro;
 		this.ability = ability;
 		this.profile = profile;
+		this.leader = lead;
+		this.matchok = matchok;
+		this.preferProject = preferProject;
 	}
 	
-		
-	public User(int uid, String nickname, String password, String email, String name, String tel, int age, boolean gender) {
+	
+	public User(int uid, String nickname, String password, String email, String name, String tel, int age, boolean gender, boolean lead) {
 		this.uid = uid;
 		this.nickname = nickname;
 		this.password = password;
@@ -115,6 +122,7 @@ public class User {
 		this.tel = tel;
 		this.age = age;
 		this.gender = gender;
+		this.leader = lead;
 	}
 	
 	public User(int uid, String nickname, String password, String email, String name, String tel, int age,
@@ -138,6 +146,23 @@ public class User {
 		this.posts = posts;
 		this.postlikes = postlikes;
 		this.createDate = createDate;
+	}
+
+	
+	public int getPreferProject() {
+		return preferProject;
+	}
+
+	public void setPreferProject(int preferProject) {
+		this.preferProject = preferProject;
+	}
+
+	public boolean getLeader() {
+		return leader;
+	}
+
+	public void setLeader(boolean leader) {
+		this.leader = leader;
 	}
 
 	public Team getTeam() {
