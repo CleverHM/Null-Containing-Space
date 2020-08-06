@@ -35,6 +35,7 @@ import com.ssafy.pjt1.dto.Profile;
 import com.ssafy.pjt1.dto.TagFollow;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
+import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
 import com.ssafy.pjt1.model.MachingRequest;
@@ -67,35 +68,35 @@ public class UserController {
 
 	@Autowired
 	private MatchingService matchingservice;
-	
+
 	@Autowired
-	private FollowService followservice; 
+	private FollowService followservice;
 
 	@Autowired
 	private TeamService teamservice;
-	
+
 	// eamil 중복 체크
-		@PostMapping("/account/emailDuplicate")
-		@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
+	@PostMapping("/account/emailDuplicate")
+	@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
 
-		public Object emailDuplicate(@Valid @RequestBody String email) {
-			Optional<User> optionaluser = userservice.findone(email);
+	public Object emailDuplicate(@Valid @RequestBody String email) {
+		Optional<User> optionaluser = userservice.findone(email);
 
-			if (optionaluser.isPresent()) {
-				System.out.println("실패");
-				final BasicResponse result = new BasicResponse();
-				result.status = false;
-				result.data = "이멩일이 중복 되었습니다.";
-				return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
-			} else {
-				System.out.println("성공");
-				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "success";
-				return new ResponseEntity<>(result, HttpStatus.OK);
-			}
+		if (optionaluser.isPresent()) {
+			System.out.println("실패");
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "이멩일이 중복 되었습니다.";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		} else {
+			System.out.println("성공");
+			final BasicResponse result = new BasicResponse();
+			result.status = true;
+			result.data = "success";
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
-	
+	}
+
 // 중복 체크
 	@PostMapping("/account/nickNameDuplicate")
 	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
@@ -123,14 +124,14 @@ public class UserController {
 	@ApiOperation(value = "가입하기", notes = "가입하기 기능을 구현")
 
 	public Object signup(@Valid @RequestBody SignupRequest request) {
-		
+
 		Optional<Team> t = teamservice.findone(1);
-		
-		if(!t.isPresent()) {
+
+		if (!t.isPresent()) {
 			Team team = new Team("default 팀 입니다.", "default", Integer.MAX_VALUE);
 			teamservice.join(team);
 		}
-		
+
 		Profile img = new Profile();
 
 		String sourceFileName = "standard.PNG";
@@ -146,21 +147,21 @@ public class UserController {
 		} while (destinationFile.exists());
 
 		destinationFile.getParentFile().mkdirs();
-		//profile.transferTo(destinationFile);
+		// profile.transferTo(destinationFile);
 
 		img.setFilename(destinationFileName);
 		img.setFileOriname(sourceFileName);
 		img.setFileurl(fileUrl);
-		
-		
+
 		List<Integer> list = request.getAbility();
-		
+
 		Ability abt = new Ability(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5),
 				list.get(6), list.get(7), list.get(8), list.get(9), list.get(10), list.get(11), list.get(12),
 				list.get(13), list.get(14));
-		
+
 		User user1 = new User(request.getNickname(), request.getPassword(), request.getEmail(), request.getName(),
-				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),request.getIntro(),abt, img, false, false, 1);
+				request.getTel(), request.getAge(), request.isGender(), request.getGitaddr(), request.getBlogaddr(),
+				request.getIntro(), abt, img, false, false, 1);
 
 		Optional<Team> t1 = teamservice.findone(1);
 		user1.setTeam(t1.get());
@@ -178,7 +179,8 @@ public class UserController {
 
 	@PostMapping("/account/modifyTrue")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog, String git, String intro) throws Exception {
+	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog,
+			String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
 
@@ -228,7 +230,8 @@ public class UserController {
 
 	@PostMapping("/account/modifyFalse")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro) throws Exception {
+	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro)
+			throws Exception {
 		// 회원 수정 시작!
 		System.out.println(email);
 		Optional<User> legacyUser = userservice.findone(email);
@@ -240,7 +243,7 @@ public class UserController {
 		originUser.setGitaddr(git);
 		originUser.setIntro(intro);
 		userservice.signUp(originUser);
-		
+
 		if (legacyUser.isPresent()) {
 
 			final BasicResponse result = new BasicResponse();
@@ -253,7 +256,6 @@ public class UserController {
 		}
 	}
 
-	
 	@PutMapping("/account/delete")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
 	public Object delete(@Valid @RequestParam String nickname) {
@@ -263,7 +265,7 @@ public class UserController {
 		ResponseEntity response = null;
 
 		if (user2.isPresent()) {
-			User select = user2.get(); 
+			User select = user2.get();
 
 			Set<Post> posts = select.getPosts();
 
@@ -314,7 +316,7 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@PostMapping("/account/tokenAuth")
 	@ApiOperation(value = "토큰 확인 ", notes = "토큰 확인을 구현")
 	public Object login(@Valid @RequestParam String token) {
@@ -359,69 +361,188 @@ public class UserController {
 		}
 	}
 
-
 	@PostMapping("/account/myPage")
-    @ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
-    public MyPageData myPageDetail(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException{
+	@ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
+	public MyPageData myPageDetail(@Valid @RequestParam String nickname, String pageNickname)
+			throws FileNotFoundException, IOException {
 		List<String> tag = new ArrayList<>();
 		List<Integer> abt = new ArrayList<>();
-		
-		Optional<User> optionalUser = userservice.findtwo(nickname);
+
+		Optional<User> optionalUser = userservice.findtwo(pageNickname);
 		User user = optionalUser.get();
-		
+
 		System.out.println(user.getEmail());
-		
+
 		int followercnt = followservice.followerCount(user);
 		int followingcnt = followservice.followingCount(user);
-		
+
 		System.out.println(followercnt + ", " + followingcnt);
-		
-		if(user.getTagfollows().size()!=0) {	
-			for(TagFollow t : user.getTagfollows()) { 
-				System.out.print(t.getTag().getName() + " ");
-				tag.add(t.getTag().getName());
-			}
-		}
-		abt.add(user.getAbility().getBack_cpp());
-		abt.add(user.getAbility().getBack_java());
-		abt.add(user.getAbility().getBack_python());
-		abt.add(user.getAbility().getBack_php());
-		abt.add(user.getAbility().getFront_html());
-		abt.add(user.getAbility().getFront_css());
-		abt.add(user.getAbility().getFront_javascript());
-		abt.add(user.getAbility().getDb_sql());
-		abt.add(user.getAbility().getDb_nosql());
-		abt.add(user.getAbility().getFrame_spring());
-		abt.add(user.getAbility().getFrame_django());
-		abt.add(user.getAbility().getFrame_bootstrap());
-		abt.add(user.getAbility().getFrame_vue());
-		abt.add(user.getAbility().getFrame_react());
-		abt.add(user.getAbility().getAlgo());
-		
+		boolean me = true;
+		boolean follow = true;
 		MyPageData mypage = null;
 		
-		 // 이미지
-        byte[] reportBytes = null;
-        File result=new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
-        
-        if(result.exists()){
-            System.out.println("있음");
-            InputStream inputStream = new FileInputStream(user.getProfile().getFileurl() + user.getProfile().getFilename());
-            String type=result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+		if(nickname.equals(pageNickname)) {
+			if (user.getTagfollows().size() != 0) {
+				for (TagFollow t : user.getTagfollows()) {
+					System.out.print(t.getTag().getName() + " ");
+					tag.add(t.getTag().getName());
+				}
+			}
+			abt.add(user.getAbility().getBack_cpp());
+			abt.add(user.getAbility().getBack_java());
+			abt.add(user.getAbility().getBack_python());
+			abt.add(user.getAbility().getBack_php());
+			abt.add(user.getAbility().getFront_html());
+			abt.add(user.getAbility().getFront_css());
+			abt.add(user.getAbility().getFront_javascript());
+			abt.add(user.getAbility().getDb_sql());
+			abt.add(user.getAbility().getDb_nosql());
+			abt.add(user.getAbility().getFrame_spring());
+			abt.add(user.getAbility().getFrame_django());
+			abt.add(user.getAbility().getFrame_bootstrap());
+			abt.add(user.getAbility().getFrame_vue());
+			abt.add(user.getAbility().getFrame_react());
+			abt.add(user.getAbility().getAlgo());
 
-            byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
+			// 이미지
+			byte[] reportBytes = null;
+			File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
 
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
-            responseHeaders.add("Content-Type",type);
+			if (result.exists()) {
+				System.out.println("있음");
+				InputStream inputStream = new FileInputStream(
+						user.getProfile().getFileurl() + user.getProfile().getFilename());
+				String type = result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+				HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
+				responseHeaders.add("Content-Type", type);
+
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+						user.getIntro(), tag, abt, out, me, follow);
+			} else {
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+						user.getIntro(), tag, abt, reportBytes, me, follow);
+				System.out.println("프로필 파일 없음");
+			}
+		} else {
+			// 페이지가 내가 아니야
+			// 내가 pageNickname 을 팔로우 했는지 판단
+			Optional<User> optionalUser1 = userservice.findtwo(nickname);
+			User user1 = optionalUser1.get();
+			
+			Set<UserFollow> uf = user1.getFollowings();
+			
+			int f = 0;
+			
+			end : for(UserFollow userfollow : uf) {
+				if(userfollow.getTo().getNickname().equals(pageNickname)) {
+					f = 1;
+					break end;
+				}
+			}
+			
+			// 팔로우 하지 않았다.
+			if(f == 0) {
+				if (user.getTagfollows().size() != 0) {
+					for (TagFollow t : user.getTagfollows()) {
+						System.out.print(t.getTag().getName() + " ");
+						tag.add(t.getTag().getName());
+					}
+				}
+				abt.add(user.getAbility().getBack_cpp());
+				abt.add(user.getAbility().getBack_java());
+				abt.add(user.getAbility().getBack_python());
+				abt.add(user.getAbility().getBack_php());
+				abt.add(user.getAbility().getFront_html());
+				abt.add(user.getAbility().getFront_css());
+				abt.add(user.getAbility().getFront_javascript());
+				abt.add(user.getAbility().getDb_sql());
+				abt.add(user.getAbility().getDb_nosql());
+				abt.add(user.getAbility().getFrame_spring());
+				abt.add(user.getAbility().getFrame_django());
+				abt.add(user.getAbility().getFrame_bootstrap());
+				abt.add(user.getAbility().getFrame_vue());
+				abt.add(user.getAbility().getFrame_react());
+				abt.add(user.getAbility().getAlgo());
+
+				// 이미지
+				byte[] reportBytes = null;
+				File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("있음");
+					InputStream inputStream = new FileInputStream(
+							user.getProfile().getFileurl() + user.getProfile().getFilename());
+					String type = result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+					HttpHeaders responseHeaders = new HttpHeaders();
+					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
+					responseHeaders.add("Content-Type", type);
+
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+							user.getIntro(), tag, abt, out, false, false);
+				} else {
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+							user.getIntro(), tag, abt, reportBytes, false, false);
+					System.out.println("프로필 파일 없음");
+				}
+			}
+			// 팔로우함
+			else {
+				if (user.getTagfollows().size() != 0) {
+					for (TagFollow t : user.getTagfollows()) {
+						System.out.print(t.getTag().getName() + " ");
+						tag.add(t.getTag().getName());
+					}
+				}
+				abt.add(user.getAbility().getBack_cpp());
+				abt.add(user.getAbility().getBack_java());
+				abt.add(user.getAbility().getBack_python());
+				abt.add(user.getAbility().getBack_php());
+				abt.add(user.getAbility().getFront_html());
+				abt.add(user.getAbility().getFront_css());
+				abt.add(user.getAbility().getFront_javascript());
+				abt.add(user.getAbility().getDb_sql());
+				abt.add(user.getAbility().getDb_nosql());
+				abt.add(user.getAbility().getFrame_spring());
+				abt.add(user.getAbility().getFrame_django());
+				abt.add(user.getAbility().getFrame_bootstrap());
+				abt.add(user.getAbility().getFrame_vue());
+				abt.add(user.getAbility().getFrame_react());
+				abt.add(user.getAbility().getAlgo());
+
+				// 이미지
+				byte[] reportBytes = null;
+				File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("있음");
+					InputStream inputStream = new FileInputStream(
+							user.getProfile().getFileurl() + user.getProfile().getFilename());
+					String type = result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+					HttpHeaders responseHeaders = new HttpHeaders();
+					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
+					responseHeaders.add("Content-Type", type);
+
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+							user.getIntro(), tag, abt, out, false, true);
+				} else {
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
+							user.getIntro(), tag, abt, reportBytes, false, true);
+					System.out.println("프로필 파일 없음");
+				}
+			}
+		}
 		
-            mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(), user.getIntro(), tag, abt, out);
-        }
-        else {
-        	mypage = new MyPageData(nickname, followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(), user.getIntro(), tag, abt, reportBytes);
-        	System.out.println("프로필 파일 없음");
-        }
-        
+
 		return mypage;
 	}
 

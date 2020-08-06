@@ -2,13 +2,15 @@
     <div id="Main">
         <Navbar></Navbar>
         <subNav/>
-        <div class="main-part">
+        <div v-if="delayOn">
+        </div>
+        <div v-if="!delayOn" class="main-part">
             <!-- 팀이 있을 때 !-->
-            <div v-if="teamCheck">
-                <TeamIn/>
+            <div v-if="team.status">
+                <TeamIn :teamData="team.teamdate"/>
             </div>
             <!-- 팀이 없을 때 -->
-            <div v-else>
+            <div v-if="!team.status">
                 <TeamOut/>
             </div>
         </div>
@@ -21,6 +23,11 @@ import subNav from '../components/common/subnav.vue'
 import competitionItem from '../components/main/competitionItem.vue'
 import TeamIn from '../components/team/TeamIn.vue'
 import TeamOut from '../components/team/TeamOut.vue'
+import http from "../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
+
 
 export default {
   name:"Main",
@@ -30,11 +37,38 @@ export default {
       TeamIn,
       TeamOut,
   },
+  
+
   data() {
     return {
-      teamCheck: false,
+      team: {
+          status: null,
+      },
+      delayOn: true,
     }
-  }
+  },
+  
+  created() {
+        setTimeout(this.delayfinish, 200);
+
+        let formData = new FormData;
+        formData.append("nickname", storage.getItem("NickName"));
+
+        http
+        .post("/team/exist", formData)
+        .then((res) => {
+            this.team = res.data
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    },
+
+    methods: {
+        delayfinish(){
+            this.delayOn = false;
+        },
+    },
 };
 </script>
 
