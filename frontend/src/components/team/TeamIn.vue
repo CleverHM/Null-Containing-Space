@@ -1,6 +1,9 @@
 <template>
   <div id="teamIn">
-    teamIn
+    팀 페이지
+    <div class="team-spec">
+      
+    </div>
   </div>
 </template>
 
