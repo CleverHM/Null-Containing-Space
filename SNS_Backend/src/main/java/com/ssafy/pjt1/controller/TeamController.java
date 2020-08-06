@@ -132,11 +132,29 @@ public class TeamController {
 			
 			// 팀 원 넣기
 			List<String> mems = new LinkedList<String>();
+			List<String> preferTech = new LinkedList<String>();
+			
+			if(user.getTeam().isBack_cpp()==true) preferTech.add("cpp");
+			if(user.getTeam().isBack_java()==true) preferTech.add("java");
+			if(user.getTeam().isBack_python()==true) preferTech.add("pyhton");
+			if(user.getTeam().isBack_php()==true) preferTech.add("php");
+			if(user.getTeam().isFront_html()==true) preferTech.add("html");
+			if(user.getTeam().isFront_css()==true) preferTech.add("css");
+			if(user.getTeam().isFront_javascript()==true) preferTech.add("javascript");
+			if(user.getTeam().isDb_sql()==true) preferTech.add("sql");
+			if(user.getTeam().isDb_nosql()==true) preferTech.add("nosql");
+			if(user.getTeam().isFrame_spring()==true) preferTech.add("spring");
+			if(user.getTeam().isFrame_django()==true) preferTech.add("django");
+			if(user.getTeam().isFrame_bootstrap()==true) preferTech.add("bootstrap");
+			if(user.getTeam().isFrame_vue()==true) preferTech.add("vue");
+			if(user.getTeam().isFrame_react()==true) preferTech.add("react");
+			if(user.getTeam().getAlgo()==true) preferTech.add("algo");
 			
 			for(User u : user.getTeam().getUsers()) {
 				mems.add(u.getNickname());
 			}
-			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle());
+			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), 
+					mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle(),user.getTeam().getPreferProject(), preferTech);
 			
 			final BasicResponse result = new BasicResponse();
 			result.status = true;

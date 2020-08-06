@@ -9,15 +9,35 @@ public class TeamData {
 	private List<String> members;
 	private String intro;
 	private String title;
-	
-	public TeamData(Date createDate, int cnt, List<String> members, String intro, String title) {
+	private int preferProject;
+	private List<String> preTech;
+
+	public TeamData(Date createDate, int cnt, List<String> members, String intro, String title, int preProject, List<String> preTech ) {
 		this.createDate = createDate;
 		this.cnt = cnt;
 		this.members = members;
 		this.intro = intro;
 		this.title = title;
+		this.preferProject = preProject;
+		this.preTech = preTech;
+	}
+	
+	public List<String> getPreTech() {
+		return preTech;
 	}
 
+	public void setPreTech(List<String> preTech) {
+		this.preTech = preTech;
+	}
+
+	public int getPreferProject() {
+		return preferProject;
+	}
+
+	public void setPreferProject(int preferProject) {
+		this.preferProject = preferProject;
+	}
+	
 	public Date getCreateDate() {
 		return createDate;
 	}
