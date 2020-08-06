@@ -1,7 +1,7 @@
 <template>
     <div class="css-slider">
         <section class="slide slide-one">
-            <Join3 :User="User"></Join3>
+            <Join3 :User="User" @CompleteStep3="NextStep"></Join3>
         </section>
 
         <header>
@@ -22,20 +22,31 @@ export default {
     components: {
         Join3,
     },
+    props: [
+      'email'
+    ],
     data() {
         return {
             User : {
-            email: "",
-            name: "",
-            nickname: "",
-            password: "",
-            tel: "",
-            gender: true,
-            age: null,
-        },
+              ability: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+              age: null,
+              blogaddr: "",
+              email: this.email,
+              gender: true,
+              gitaddr: "",
+              intro: "",
+              name: "",
+              nickname: "",
+              password: "",
+              tel: "",
+            },
     }
     },
     methods: {
+    NextStep(User) {
+        this.$router.push({name: 'step4', params: {User: User}}) 
+
+    },
     gostep1() {
       this.$router.push({name: 'step1'}).catch(()=>{})
     },

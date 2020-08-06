@@ -1,7 +1,7 @@
 <template>
     <div class="css-slider">
         <section class="slide slide-one">
-            <Join2></Join2>
+            <Join2 :email="email" @CompleteStep2="NextStep"></Join2>
         </section>
 
         <header>
@@ -16,13 +16,30 @@
 
 <script>
 import Join2 from '@/components/user/step2.vue'
-
+import http from "@/util/http-common.js";
 export default {
     name: 'step1',
     components: {
         Join2,
     },
+    props: [
+      'email'
+    ],
+    created() {
+      this.sendEmail()
+    },
     methods: {
+    sendEmail() {
+      http
+      .post("/auth/loginMailSend", this.email)
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    NextStep(email) {
+        this.$router.push({name: 'step3', params: {email: email}}) 
+
+    },
     gostep1() {
       this.$router.push({name: 'step1'}).catch(()=>{})
     },

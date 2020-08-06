@@ -1,8 +1,18 @@
 <template>
-    <div class="css-slider">
+    <div id="css-slider">
         <section class="slide slide-four">
-          <Join4 :ability="ability" v-for="ability in abilities" :key="ability.id"></Join4>
-
+          <h5>당신의 개발능력을 평가해주세요.</h5>
+          <table>
+            <tr class="tableHeader">
+              <th> 개발 능력 </th>
+              <th>상</th>
+              <th>중</th>
+              <th>하</th>
+            </tr>
+            <Join4 :ability="ability" v-for="ability in abilities" :key="ability.id" @getAbility="saveAbility"></Join4>
+          </table>
+          
+          <button id="btn-join" @click="Join">입력</button>
         </section>
 
         <header>
@@ -17,84 +27,95 @@
 
 <script>
 import Join4 from '@/components/user/checkAbility.vue'
+import http from "@/util/http-common.js"
+
 
 export default {
     name: 'step4',
     components: {
         Join4,
     },
+    props: {
+      User: {
+        type: Object,
+      }
+    },
     data() {
         return {
             abilities: [
-                { name: 'html',
-                  id: '1',
-                  score: 2},
-                { name: 'css',
-                  id: '2',
-                  score: 2},
-                { name: 'JavaScript',
-                  id: '3' ,
-                  score: 2},
                 { name: 'cpp',
-                  id: '4',
-                  score: 2 },
-                { name: 'java',
-                  id: '5' ,
-                  score: 2},
+                    id: 0},
+                { name: 'Java',
+                    id: 1},
                 { name: 'Python',
-                    id: '6' ,
-                    score: 2},
+                    id: 2},
                 { name: 'php',
-                    id: '7' ,
-                    score: 2},
-                { name: 'sql',
-                    id: '8' ,
-                    score: 2},
-                { name: 'nosql',
-                    id: '9' ,
-                    score: 2},
-                { name: 'spring',
-                    id: '10',
-                    score: 2 },
-                { name: 'django',
-                    id: '11',
-                    score: 2 },
-                { name: 'bootstrap',
-                    id: '12',
-                    score: 2 },
-                { name: 'vue',
-                    id: '13',
-                    score: 2 },
-                { name: 'react',
-                    id: '14',
-                    score: 2 },
+                    id: 3},
+                { name: 'html',
+                    id: 4},
+                { name: 'css',
+                    id: 5},
+                { name: 'JavaScript',
+                    id: 6},
+                { name: 'SQL',
+                    id: 7},
+                { name: 'noSQL',
+                    id: 8},
+                { name: 'Spring',
+                    id: 9},
+                { name: 'Django',
+                    id: 10},
+                { name: 'BootStrap',
+                    id: 11},
+                { name: 'Vue',
+                    id: 12},
+                { name: 'React',
+                    id: 13},
+                { name: 'Algorithm',
+                    id: 14},
             ],
         }
 
     },
     methods: {
-    gostep1() {
-      this.$router.push({name: 'step1'}).catch(()=>{})
-    },
-    gostep2() {
-      this.$router.push({name: 'step2'}).catch(()=>{})
-    },
-    gostep3() {
-      this.$router.push({name: 'step3'}).catch(()=>{})
-    },
-    gostep4() {
-      this.$router.push({name: 'step4'}).catch(()=>{})
-    },
-    gostep5() {
-      this.$router.push({name: 'step5'}).catch(()=>{})
-    },
+      saveAbility(name, level){
+        for (var i in this.abilities){
+          var ability = this.abilities[i]
+          if (ability.name === name){
+            this.User.ability[i] = level
+          }
+        }
+      },
+      Join() {
+        console.log(this.User)
+        http.post("/account/signup", this.User)
+        .then(({data}) => {
+          this.$router.push({name: 'step5'}) 
+        })
+
+      },
+      gostep1() {
+        this.$router.push({name: 'step1'}).catch(()=>{})
+      },
+      gostep2() {
+        this.$router.push({name: 'step2'}).catch(()=>{})
+      },
+      gostep3() {
+        this.$router.push({name: 'step3'}).catch(()=>{})
+      },
+      gostep4() {
+        this.$router.push({name: 'step4'}).catch(()=>{})
+      },
+      gostep5() {
+        this.$router.push({name: 'step5'}).catch(()=>{})
+      },
   },
     
 }
 </script>
 
 <style scoped>
-.css-slider{
+#css-slider{
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -127,8 +148,12 @@ label {
   -webkit-transition: left .65s ease-out;
   transition: left .65s ease-out;
 }
-
+.slide h5 {
+  text-align: center;
+  margin-bottom: 25px;
+}
 header {
+  text-align: center;
   position: absolute;
   top: 0;
   left: 0;
@@ -150,4 +175,28 @@ header div:hover {
 header div#slide-4{
   background-color: #464545;
 }
+table {
+  padding-bottom: 50px;
+  display: inline-block;
+  font-size: 19px;
+}
+tr {
+  text-align: left;
+  border-bottom: 1px soild #464545;
+}
+th, td {
+  padding: 20px;
+}
+#btn-join{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  background-color: #464545;
+  height: 50px;
+  border-radius: 3px;
+  color: #f7f7f7;
+  font-weight: bold;
+  width:100%;
+}
+
 </style>

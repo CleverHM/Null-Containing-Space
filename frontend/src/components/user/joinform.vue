@@ -59,13 +59,14 @@
           id="age"
           placeholder="25"
           type="text" />
+          <div class="Warning" v-if="error.age"><i class="fas fa-exclamation-triangle"></i>{{ error.age }}</div>
       </div>
 
       <!-- 휴대폰 번호 !-->
       <div class="input-form">
         <label for="tel">휴대폰</label>
         <input v-model="FormUser.tel"
-        @keyup="ChangeTelForm(user.tel)"
+        @keyup="ChangeTelForm(FormUser.tel)"
         id="tel"
         placeholder="'-'를 제외하고 입력하세요."
         type="text"
@@ -85,11 +86,15 @@
           <button @click="isDuplicate">중복체크</button>
       </div>
 
-      <button id="btn-join" @click="join">가입하기</button>
+      <button id="btn-join" @click="confirmForm">입력</button>
   </div>
 </template>
 
 <script>
+import http from "@/util/http-common.js";
+
+const passwordReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
+const ageReg = /^[1-9]{1}$|^[1-4]{1}[0-9]{1}$|^100$/
 export default {
   name: 'Join3',
   props: {
@@ -115,6 +120,104 @@ export default {
       isSubmit: false,
 
     }
+  },
+  methods: {
+    // 비밀번호 체크
+    checkpassword() {
+      if (this.FormUser.password.match(passwordReg) != null){
+        this.error.password = false;
+      } else {
+        this.error.password = true;
+      }
+    },
+    // 비밀번호 확인 체크
+    checkpasswordconfirm() {
+      if (this.FormUser.password === this.passwordConfirm){
+        this.error.passwordConfirm = false;
+      } else {
+        this.error.passwordConfirm = true;
+      }
+    },
+    // 성별 선택 - 남자
+    selectmale() {
+      this.isMale = true;
+      this.isFemale = false;
+      this.FormUser.gender = true;
+    },
+    // 성별 선택 - 여자
+    selectfemale() {
+      this.isMale = false;
+      this.isFemale = true;
+      this.FormUser.gender = false;
+    },
+    // 나이 체크
+    checkage() {
+      if (this.FormUser.age.match(ageReg) != null){
+        this.error.age = false;
+      } else {
+        this.error.age = "올바른 형식이 아닙니다.";
+      }
+    },
+    // 휴대폰번호 체크
+    ChangeTelForm(inputNum){
+      var phoneNum = inputNum.replace(/[^0-9]/g, '');
+      console.log("before change", phoneNum)
+      var tmp = '';
+      if (phoneNum.length < 4){
+        tmp = phoneNum
+      } else if (phoneNum.length < 7){
+        tmp += phoneNum.substr(0, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(3);
+      } else if (phoneNum.length < 11) {
+        tmp += phoneNum.substr(0, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(3, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(6);
+      }else {
+        tmp += phoneNum.substr(0, 3);
+        tmp += '-'
+        tmp += phoneNum.substr(3, 4);
+        tmp += '-'
+        tmp += phoneNum.substr(7);
+      }
+      this.FormUser.tel = tmp
+    },
+    // 닉네임체크
+    isDuplicate() {
+      http
+      .post("/account/nickNameDuplicate", this.FormUser.nickname)
+      .then((data) => {
+        console.log(data.data)
+        if (data.data.status) {
+          this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
+          this.error.nickname=false
+        }
+      })
+      .catch((err) => {
+        this.error.nickname="사용할 수 없는 닉네임입니다."
+        this.error.nicknameSuccess=false;
+      })
+    },
+    // 최종 회원가입양식 확인
+    confirmForm() {
+      console.log(this.FormUser.password, this.passwordConfirm, this.FormUser.name
+          ,this.FormUser.age,this.FormUser.tel , this.FormUser.nickname)
+      if (this.FormUser.password && this.passwordConfirm && this.FormUser.name &&
+           this.FormUser.age && this.FormUser.tel && this.FormUser.nickname){
+             
+            if (this.error.nickname || this.error.password || this.error.passwordConfirm){
+                alert("다시입력")
+            } else {
+                this.$emit("CompleteStep3", this.FormUser)
+            }
+      } else {
+        alert("폼을 다시입력")
+      }
+      
+
+    },
   }
 }
 </script>
@@ -182,6 +285,7 @@ input[type="password"]:focus{
   margin-left: -0px;
 }
 .Warning{
+  text-align: left;
   font-size: 13px;
   color: red;
 }
