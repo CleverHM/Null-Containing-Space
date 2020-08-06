@@ -210,12 +210,12 @@ public class PostController {
 			for (int i = 0; i < post.getReplies().size(); i++) {
 				reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
 						post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
-						post.getReplies().get(i).getUser().getEmail()));
+						post.getReplies().get(i).getUser().getEmail(), null));
 			}
 
 			feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
 					list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(), 1,
-					reply, reply.size());
+					reply, reply.size(), null);
 		} else {
 			System.out.println("없는 파일");
 		}
@@ -438,10 +438,25 @@ public class PostController {
 					}
 				}
 
-				res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
-						postList.get(i).getCreateDate(), postList.get(i).getTitle(),
-						postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-						postList.get(i).getReplies().size()));
+				byte[] reportBytes1 = null;
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+				
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), reportBytes1));
+				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
 				System.out.println("없는 파일");
@@ -463,10 +478,25 @@ public class PostController {
 					}
 				}
 
-				res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
-						postList.get(i).getCreateDate(), postList.get(i).getTitle(),
-						postList.get(i).getUser().getNickname(), reportBytes, tag, count, likeFlag,
-						postList.get(i).getReplies().size()));
+				byte[] reportBytes1 = null;
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+				
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), reportBytes1));
+				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
 
@@ -546,14 +576,46 @@ public class PostController {
 			List<ReplyData> reply = new LinkedList<ReplyData>();
 
 			for (int i = 0; i < post.getReplies().size(); i++) {
-				reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
-						post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
-						post.getReplies().get(i).getUser().getEmail()));
+				byte[] reportBytes2 = null;
+				File result2 = new File(post.getReplies().get(i).getUser().getProfile().getFileurl() + post.getReplies().get(i).getUser().getProfile().getFilename());
+				
+				if (result2.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							post.getReplies().get(i).getUser().getProfile().getFileurl() + post.getReplies().get(i).getUser().getProfile().getFilename());
+
+					byte[] out2 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+
+					reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
+							post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
+							post.getReplies().get(i).getUser().getEmail(), out2));
+				} else {
+
+					reply.add(new ReplyData(post.getReplies().get(i).getRid(), post.getReplies().get(i).getContent(),
+							post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
+							post.getReplies().get(i).getUser().getEmail(), reportBytes2));
+				}
+				
 			}
 
-			feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
-					list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(),
-					likeFlag, reply, reply.size());
+			byte[] reportBytes1 = null;
+			File result1 = new File(post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
+			
+			if (result1.exists()) {
+				System.out.println("있음");
+				InputStream inputStream1 = new FileInputStream(
+						post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
+
+				byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
+						list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(),
+						likeFlag, reply, reply.size(), out1);
+			} else {
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
+						list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(),
+						likeFlag, reply, reply.size(),reportBytes1);
+			}
+			
 			// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 		} else {
 			int count = likeservice.likeCount(post);
@@ -575,9 +637,23 @@ public class PostController {
 
 			List<ReplyData> reply = new LinkedList<ReplyData>();
 			
-			feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
-					list, post.getUser().getNickname(), post.getUser().getEmail(), reportBytes, count, post.getViewCount(),
-					likeFlag, reply, reply.size());
+			byte[] reportBytes1 = null;
+			File result1 = new File(post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
+			
+			if (result1.exists()) {
+				System.out.println("있음");
+				InputStream inputStream1 = new FileInputStream(
+						post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
+
+				byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
+						list, post.getUser().getNickname(), post.getUser().getEmail(), null, count, post.getViewCount(),
+						likeFlag, reply, reply.size(), out1);
+			} else {
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
+						list, post.getUser().getNickname(), post.getUser().getEmail(), null, count, post.getViewCount(),
+						likeFlag, reply, reply.size(),reportBytes1);
+			}
 			System.out.println("없는 파일");
 			// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 		}
@@ -698,13 +774,64 @@ public class PostController {
 					}
 				}
 
-				res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
-						hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
-						hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-						hasftagPostList.get(i).getReplies().size()));
+				byte[] reportBytes1 = null;
+				File result1 = new File(hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
+				
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
+							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
+							hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							hasftagPostList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
+							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
+							hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							hasftagPostList.get(i).getReplies().size(), reportBytes1));
+				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
 				System.out.println("없는 파일");
+				int count = likeservice.likeCount(hasftagPostList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(hasftagPostList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				byte[] reportBytes1 = null;
+				File result1 = new File(hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
+				
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
+							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
+							hasftagPostList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							hasftagPostList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
+							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
+							hasftagPostList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							hasftagPostList.get(i).getReplies().size(), reportBytes1));
+				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
 

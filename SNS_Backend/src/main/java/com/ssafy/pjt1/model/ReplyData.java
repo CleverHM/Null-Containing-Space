@@ -8,13 +8,23 @@ public class ReplyData {
 	private String content;
 	private String who;
 	private Date createData;
+	private byte[] file;
 	
-	public ReplyData(int rid, String content, String who, Date createData, String email) {
+	public ReplyData(int rid, String content, String who, Date createData, String email, byte[] file) {
 		this.rid = rid;
 		this.content = content;
 		this.who = who;
 		this.createData = createData;
 		this.email = email;
+		this.file = file;
+	}
+
+	public byte[] getFile() {
+		return file;
+	}
+
+	public void setFile(byte[] file) {
+		this.file = file;
 	}
 
 	public String getEmail() {

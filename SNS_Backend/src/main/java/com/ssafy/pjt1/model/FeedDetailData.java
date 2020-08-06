@@ -17,6 +17,7 @@ public class FeedDetailData {
     private String userEmail;
 
     private byte[] file;
+    private byte[] userFile;
     
     private int LikeCount;
     private int ViewCount;
@@ -26,7 +27,7 @@ public class FeedDetailData {
     private int replyCount;
     
     public FeedDetailData(int pid, String title, String content, Date date, List<String> tags, String userNickname,
-            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies, int repltcount) {
+            String userEmail, byte[] file, int likeCount, int viewCount, int likeFlag, List<ReplyData> replies, int repltcount, byte[] userfile) {
         this.pid = pid;
         this.title = title;
         this.content = content;
@@ -40,7 +41,16 @@ public class FeedDetailData {
         this.likeFlag = likeFlag;
         this.replies = replies;
         this.replyCount = repltcount;
+        this.userFile = userfile;
     }
+
+	public byte[] getUserFile() {
+		return userFile;
+	}
+
+	public void setUserFile(byte[] userFile) {
+		this.userFile = userFile;
+	}
 
 	public int getReplyCount() {
 		return replyCount;

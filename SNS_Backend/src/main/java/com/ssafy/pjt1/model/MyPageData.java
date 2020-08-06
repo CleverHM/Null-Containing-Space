@@ -14,8 +14,11 @@ public class MyPageData {
 	
 	private byte[] file;
 
+	private boolean me;
+	private boolean follow;
+	
 	public MyPageData(String nickname, int followerCnt, int followingCnt, String blogaddr, String gitaddr, String intro,
-			List<String> tag, List<Integer> abt, byte[] file) {
+			List<String> tag, List<Integer> abt, byte[] file, boolean me, boolean follow) {
 		this.nickname = nickname;
 		this.followerCnt = followerCnt;
 		this.followingCnt = followingCnt;
@@ -25,6 +28,8 @@ public class MyPageData {
 		this.tag = tag;
 		this.abt = abt;
 		this.file = file;
+		this.me = me;
+		this.follow = follow;
 	}
 	
 	public MyPageData(String nickname, int followerCnt, int followingCnt, String blogaddr, String gitaddr, String intro,
@@ -37,6 +42,22 @@ public class MyPageData {
 		this.intro = intro;
 		this.tag = tag;
 		this.abt = abt;
+	}
+
+	public boolean isMe() {
+		return me;
+	}
+
+	public void setMe(boolean me) {
+		this.me = me;
+	}
+
+	public boolean isFollow() {
+		return follow;
+	}
+
+	public void setFollow(boolean follow) {
+		this.follow = follow;
 	}
 
 	public String getNickname() {
