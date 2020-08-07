@@ -216,4 +216,17 @@ public class TeamController {
 		}
 
 	}
+	
+	@PostMapping("/team/memberRegister")
+	@ApiOperation(value = "팀원으로 등록", notes = "팀원으로 등록 기능을 구현")
+	public void memberRegister(@Valid @RequestParam String nickname, int preferProject) {
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		
+		User user = optionalUser.get();
+		
+		user.setMatchok(true);
+		user.setPreferProject(preferProject);
+		
+		userservice.signUp(user);
+	}
 }
