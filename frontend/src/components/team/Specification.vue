@@ -1,54 +1,47 @@
 <template>
   <div id="specification">
-    <div class="spec-area">
-      <div class="team-title d-flex justify-content-center">
-        {{ teamData.title }}
-      </div>
-
+    <div class="specification-area">
       <!-- 프로젝트 기술 -->
       <div class="team-use">
-          프로젝트 사용 기술
 
-        <div v-for="n in 4" :key="n-1" :id="n + '/'" class="mx-1 mb-2">
-          <div class="displaytags">
-              {{ basic.techName[n-1] }}
-          </div>
-          <div class="button-area">
-              <div v-for="m in basic.techLen[n-1]"
-                  :key="basic.techTrue[n-1][m-1]"
-                  :id="m + ','"
-                  class="checkOn">
-                  {{ basic.techTrue[n-1][m-1] }}
-              </div>
+        <div class="subject-area d-flex justify-content-center">
+          {{ subjectCheck }}
+        </div>
+        <div class="specs-area">
+          <div v-for="n in 4" :key="n-1" :id="n + '/'" class="mx-1 mb-2">
+            <div class="displaytags">
+                {{ basic.techName[n-1] }}
+            </div>
+            <div class="button-area">
+                <div v-for="m in basic.techLen[n-1]"
+                    :key="basic.techTrue[n-1][m-1]"
+                    :id="m + ','"
+                    class="checkOn">
+                    {{ basic.techTrue[n-1][m-1] }}
+                </div>
+            </div>
           </div>
         </div>
 
-        
-        <div class="page-content" v-html="teamContent" style="font-weight: lighter;">
+        <div style="border-bottom: 1px solid #464545;" class="mb-3"></div>
+
+        <div class="content-area">
+          프로젝트 요약
+          <div class="page-content" v-html="teamContent" style="font-weight: lighter;">
+          </div>
         </div>
       
       </div>
-
-
-      <div class="team-member-area d-flex flex-row align-items-center">
-        <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
-        <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
-      </div>
-
 
     </div>
   </div>
 </template>
 
 <script>
-import memberImg from './memberImg.vue'
 
 export default {
     name: "specification",
     props: ['teamData'],
-    components: {
-      memberImg,
-    },
 
     data() {
       return {
@@ -59,6 +52,11 @@ export default {
             'sql', 'nosql', 
             'spring', 'django', 'bootstrap', 'vue', 'react', 
             'algo',
+          ],
+          subjects: [
+              '웹 기술 프로젝트',
+              '웹 디자인 프로젝트',
+              'IOT 프로젝트',
           ],
           techDiv: [
             3, 6, 8, 13, 14
@@ -72,12 +70,16 @@ export default {
           ]
         },
         teamContent: '',
+        subjectCheck: '',
       }
     },
 
     created() {
       var c = 0;
       var checkLen = 0;
+
+      var num = Number(this.teamData.preferProject) - 1
+      this.subjectCheck = this.basic.subjects[num]
 
       // 각 영역마다 true인 값 넣어주기
       for (let i = 0; i < this.basic.techs.length; i++) {
@@ -103,14 +105,6 @@ export default {
 </script>
 
 <style scoped>
-.team-title {
-  padding: 0px 10px 5px 10px;
-  color: #464545;
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size: 25px;
-  font-weight: bold;
-}
-
 
 .team-use {
   margin: 20px 10px 10px 10px;
@@ -120,8 +114,8 @@ export default {
   font-weight: bold;
 }
 
-.displaytags {
-  width: 30%;
+.subject-area {
+  border-bottom: 1px solid #464545;
   padding: 10px;
   font-size: 14px;
   font-weight: bold;
@@ -129,7 +123,22 @@ export default {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.displaytags {
+  display: inline-block;
+  width: 25%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #464545;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.specs-area {
+  margin: 20px 0px 20px 0px;
+}
+
 .button-area {
+  display: inline;
   width: 98%;
   padding: 0px 10px 5px 10px;
   margin-bottom: 5px;
@@ -148,6 +157,23 @@ export default {
 
 .team-member-area {
   display: inline;
+}
+
+.content-area {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #464545;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.page-content {
+  margin: 5px;
+  padding: 7px;
+  border: 1px solid #E2DFD8;
+  border-radius: 10px;
+  word-wrap: wrap;
+  word-break: break-all;
 }
 
 

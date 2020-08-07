@@ -2,13 +2,15 @@
     <div id="Main">
         <Navbar></Navbar>
         <subNav/>
-        <div class="main-part">
+        <div v-if="delayOn">
+        </div>
+        <div v-if="!delayOn" class="main-part">
             <!-- 팀이 있을 때 !-->
-            <div v-if="teamCheck">
-                <TeamIn :teamData="teamData"/>
+            <div v-if="team.status">
+                <TeamIn :teamData="team.teamdate"/>
             </div>
             <!-- 팀이 없을 때 -->
-            <div v-else>
+            <div v-if="!team.status">
                 <TeamOut/>
             </div>
         </div>
@@ -26,6 +28,7 @@ import axios from 'axios';
 
 const storage = window.sessionStorage;
 
+
 export default {
   name:"Main",
   components: {
@@ -38,27 +41,34 @@ export default {
 
   data() {
     return {
-      teamCheck: false,
-      teamData: null,
+      team: {
+          status: null,
+      },
+      delayOn: true,
     }
   },
   
   created() {
-      let formData = new FormData;
-      formData.append("nickname", storage.getItem("NickName"));
+        setTimeout(this.delayfinish, 200);
 
-      http
-      .post("/team/exist", formData)
-      .then((res) => {
-          this.teamCheck = res.data.status
-          if (this.teamCheck) {
-              this.teamData = res.data.teamdate
-          }
-      })
-      .catch((err) => {
-          console.log(err)
-      })
-  },
+        let formData = new FormData;
+        formData.append("nickname", storage.getItem("NickName"));
+
+        http
+        .post("/team/exist", formData)
+        .then((res) => {
+            this.team = res.data
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    },
+
+    methods: {
+        delayfinish(){
+            this.delayOn = false;
+        },
+    },
 };
 </script>
 
