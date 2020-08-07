@@ -4,8 +4,8 @@
         <subNav></subNav>
         <div class="contentArea">
             <!-- 로딩 페이지 -->
-            <div v-if="loddingOn">
-                <img src="@/assets/images/lionLodding.gif" alt="" style="width:100%;">
+            <div v-if="loadingOn">
+                <img src="@/assets/images/lionLoading.gif" alt="" style="width:100%;">
             </div>
 
             <!-- 매칭된 화면 -->
@@ -64,7 +64,7 @@ export default {
 
     data() {
         return {
-            loddingOn: true,
+            loadingOn: true,
             matchNodetail: true,
             memberData: {
                 file: null,
@@ -74,20 +74,20 @@ export default {
     },
 
     created() {
-        this.isLodding();
+        this.isLoading();
     },
 
     methods: {
         // 로딩하는가?
-        isLodding() {
-            if (this.loddingOn) {
+        isLoading() {
+            if (this.loadingOn) {
                 setTimeout(this.delayfinish, 4000);
             }
         },
 
         // 딜레이 화면
         delayfinish(){
-            this.loddingOn = false;
+            this.loadingOn = false;
         },
 
         // 디테일 화면 켜기
@@ -97,9 +97,9 @@ export default {
 
         // 다시 매칭하기
         reMatchOn() {
-            this.loddingOn = true;
+            this.loadingOn = true;
             this.matchNodetail = true;
-            this.isLodding();
+            this.isLoading();
         }
 
     }
