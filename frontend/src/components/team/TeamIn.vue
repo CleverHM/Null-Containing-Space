@@ -104,6 +104,7 @@ export default {
   },
 
   created() {
+    console.log(this.teamData)
     if (storage.getItem("NickName") == this.teamData.leaderNickname.nickname) {
       this.ifLeader = true
     } else {

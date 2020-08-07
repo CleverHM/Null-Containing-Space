@@ -7,7 +7,7 @@
                 <!-- 프로필 이미지  -->
                 <div class="profileImg">
                   <img v-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
-                  <img v-else src="@/assets/images/profile_default.png">
+                  <img v-else src="@/assets/images/default_image.png">
                 </div>
                 <!-- 이름/팔로우 -->
                 <div class="profileInfo">
