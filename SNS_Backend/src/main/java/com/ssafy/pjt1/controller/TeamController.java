@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://172.26.14.153:5000" })
+@CrossOrigin(origins = { "http://localhost:3000" })
 
 @RestController
 public class TeamController {
@@ -161,9 +161,11 @@ public class TeamController {
 			preferTech.add(user.getTeam().isFrame_react());
 			preferTech.add(user.getTeam().getAlgo());
 			
-			for(User u : user.getTeam().getUsers()) 
+			for(User u : user.getTeam().getUsers()) {
+				System.out.println(u.getNickname() + " " + u.getLeader());
 				if(u.getLeader() == true) {
 					 // 이미지
+					System.out.println("나리더");
 			        byte[] reportBytes = null;
 			        File result=new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
 			        
@@ -174,10 +176,10 @@ public class TeamController {
 
 			            byte[]out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
 					
-			            leaderNickname = new TeamPersonData(nickname, out);
+			            leaderNickname = new TeamPersonData(u.getNickname() , out);
 			        }
 			        else {
-			        	leaderNickname = new TeamPersonData(nickname, reportBytes);
+			        	leaderNickname = new TeamPersonData(u.getNickname() , reportBytes);
 			        	System.out.println("프로필 파일 없음");
 			        }
 				}
@@ -201,7 +203,9 @@ public class TeamController {
 			        	System.out.println("프로필 파일 없음");
 			        }
 				}
-				
+			}
+			
+			System.out.println(leaderNickname.getNickname());
 			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), 
 					mems, user.getTeam().getTeamIntro(), user.getTeam().getTitle(),user.getTeam().getPreferProject(), preferTech, leaderNickname);
 			
