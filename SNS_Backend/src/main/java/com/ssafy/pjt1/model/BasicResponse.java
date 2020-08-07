@@ -1,5 +1,7 @@
 package com.ssafy.pjt1.model;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModelProperty;
 
 
@@ -14,4 +16,9 @@ public class BasicResponse {
     public boolean matchok;
     @ApiModelProperty(value = "teamdate", position = 5)
     public TeamData teamdate;
+    @ApiModelProperty(value = "teamdates", position = 6)
+    public List<TeamData> teamdates;
+    @ApiModelProperty(value = "preferProject", position = 7)
+    public int preferProject;
+    
 }

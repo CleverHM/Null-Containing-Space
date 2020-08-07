@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -69,6 +70,12 @@ public class UserServiceImpl implements UserService {
 		//for(Post p : posts) posttagdao.deleteUser2(p.getPid());
 		
 		userdao.delete(user);
+	}
+
+	@Override
+	public List<User> findall() {
+		// TODO Auto-generated method stub
+		return userdao.findAll();
 	}
 
 }

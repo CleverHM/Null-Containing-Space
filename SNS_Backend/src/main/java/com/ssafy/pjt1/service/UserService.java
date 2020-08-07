@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -14,4 +15,5 @@ public interface UserService {
 	Optional<User> findone(String email);
 	Optional<User> findtwo(String nickname);
 	Optional<User> findthree(int id);
+	List<User> findall();
 }
