@@ -1,77 +1,87 @@
 <template>
   <div id="teamIn">
-    <div class="team-title d-flex justify-content-center">
-      {{ teamData.title }}
+    <Navbar></Navbar>
+    <subNav/>
+      
+    <div v-if="delayOn">
     </div>
+    <div v-if="!delayOn">
+      <div class="team-title d-flex justify-content-center">
+        {{ teamData.title }}
+      </div>
 
-    <!-- 팀 / 명세서-->
-    <tabs
-      :tabs="tabs"
-      :currentTab="currentTab"
-      :wrapper-class="'default-tabs'"
-      :tab-class="'default-tabs__item'"
-      :tab-active-class="'default-tabs__item_active'"
-      :line-class="'default-tabs__active-line'"
-      @onClick="handleClick"
-    />
-    <div class="content">
-      <div v-if="currentTab === 'tab1'">
+      <!-- 팀 / 명세서-->
+      <tabs
+        :tabs="tabs"
+        :currentTab="currentTab"
+        :wrapper-class="'default-tabs'"
+        :tab-class="'default-tabs__item'"
+        :tab-active-class="'default-tabs__item_active'"
+        :line-class="'default-tabs__active-line'"
+        @onClick="handleClick"
+      />
+      <div class="content">
+        <div v-if="currentTab === 'tab1'">
 
-        <!-- 시작일 -->
-        <div class="displaytags">
-          프로젝트 진행 : {{ diffTime }}
-        </div>
-        
-        <!-- 팀 정보 -->
-        <div id="team" class="my-3">
-          <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
-          <div class="d-flex justify-content-start align-items-center">
-            <div class="displaytags">
-              팀장
-            </div>
-            <div class="team-member-area">
-              <router-link :to="{ name: 'profile', params: { nickname: teamData.leaderNickname.nickname }}">
-                <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
-              </router-link>
-            </div>
+          <!-- 시작일 -->
+          <div class="displaytags">
+            프로젝트 진행 : {{ diffTime }}
           </div>
           
-          <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
-            <div class="displaytags">
-              팀원
+          <!-- 팀 정보 -->
+          <div id="team" class="my-3">
+            <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
+            <div class="d-flex justify-content-start align-items-center">
+              <div class="displaytags">
+                팀장
+              </div>
+              <div class="team-member-area">
+                <router-link :to="{ name: 'profile', params: { nickname: teamData.leaderNickname.nickname }}">
+                  <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
+                </router-link>
+              </div>
             </div>
-            <div class="team-member-area d-flex flex-row align-items-center">
-                <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2" @click="goUserProfile"></memberImg>
+            
+            <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
+              <div class="displaytags">
+                팀원
+              </div>
+              <div class="team-member-area d-flex flex-row align-items-center">
+                  <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2" @click="goUserProfile"></memberImg>
+              </div>
             </div>
           </div>
-        </div>
 
-      </div>
-      
-      <div v-if="currentTab === 'tab2'">
+        </div>
         
-        <!-- 프로젝트 명세서 -->
-        <div class="team-spec">
-            <specs :teamData="teamData"/>
+        <div v-if="currentTab === 'tab2'">
+          
+          <!-- 프로젝트 명세서 -->
+          <div class="team-spec">
+              <specs :teamData="teamData"/>
+          </div>
+        
         </div>
+      </div>
       
+
+      <!-- 팀원 매칭 버튼 -->
+      <div class="submit-area d-flex justify-content-center">
+        <button v-if="ifLeader" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
       </div>
     </div>
-    
-
-    <!-- 팀원 매칭 버튼 -->
-    <div class="submit-area d-flex justify-content-center">
-      <button v-if="ifLeader" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
-    </div>
-    
   </div>
 </template>
 
 <script>
-import specs from './Specification.vue'
-import memberImg from './memberImg.vue'
+import Navbar from '../../components/common/Navigation.vue'
+import subNav from '../../components/common/subnav.vue'
+import specs from '../../components/team/Specification.vue'
+import memberImg from '../../components/team/memberImg.vue'
 import Tabs from 'vue-tabs-with-active-line';
 import httpCommon from '../../util/http-common';
+import http from "../../util/http-common.js";
+import axios from 'axios';
 
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
@@ -89,13 +99,15 @@ export default {
   name: "teamIn",
 
   components: {
+    Navbar,
+    subNav,
     specs,
     memberImg,
     Tabs,
   },
 
   props: [
-    'teamData',
+    'teamId',
     ],
 
   data() {
@@ -105,17 +117,28 @@ export default {
       currentTab: 'tab1',
       diffTime: '',
       teamExist: false,
+      teamData: {
+        createData: '2000-10-10',
+        members: [],
+      },
+      delayOn: true,
     }
   },
 
   created() {
+    setTimeout(this.delayfinish, 200);
 
-    if (storage.getItem("NickName") == this.teamData.leaderNickname.nickname) {
-      this.ifLeader = true
-    } else {
-      this.ifLeader = false
-    }
-
+    let formData = new FormData;
+    formData.append("teamid", this.teamId)
+    http
+    .post('/team/teamInfo', formData)
+    .then((res) => {
+      this.teamData = res.data.teamdate
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.teamData.createDate)
     this.diffTime = this.dateCheck(postDate);
@@ -168,14 +191,13 @@ export default {
       }
     },
 
-    // 팀 매칭 페이지로 이동
-    teamMatchGo() {
-      this.$router.push({ name: 'teamMatch', params: { teamData: this.teamData }})
-    },
-
     // 유저 페이지 이동
     goUserProfile() {
       console.log('ㅠㅠㅠㅠ')
+    },
+
+    delayfinish(){
+        this.delayOn = false;
     },
 
   },

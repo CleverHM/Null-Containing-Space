@@ -7,11 +7,19 @@
         <div v-if="!delayOn" class="main-part">
             <!-- 팀이 있을 때 !-->
             <div v-if="team.status">
-                <TeamIn :teamData="team.teamdate"/>
+                <TeamIn :teamData="team.teamdate" :isMember="true"/>
             </div>
             <!-- 팀이 없을 때 -->
             <div v-if="!team.status">
-                <TeamOut/>
+                <!-- 팀원 등록했을 때 -->
+                <div v-if="team.matchok">
+                    <NoTeam :userData="team"/>
+                </div>
+
+                <!-- 팀원 등록을 안했을 때 -->
+                <div v-if="!team.matchok">
+                    <TeamOut/>
+                </div>
             </div>
         </div>
     </div>
@@ -23,6 +31,7 @@ import subNav from '../components/common/subnav.vue'
 import competitionItem from '../components/main/competitionItem.vue'
 import TeamIn from '../components/team/TeamIn.vue'
 import TeamOut from '../components/team/TeamOut.vue'
+import NoTeam from '../components/team/NoTeam.vue'
 import http from "../util/http-common.js";
 import axios from 'axios';
 
@@ -36,6 +45,7 @@ export default {
       subNav,
       TeamIn,
       TeamOut,
+      NoTeam,
   },
   
 
@@ -58,6 +68,8 @@ export default {
         .post("/team/exist", formData)
         .then((res) => {
             this.team = res.data
+            console.log('팀정보')
+            console.log(this.team)
         })
         .catch((err) => {
             console.log(err)

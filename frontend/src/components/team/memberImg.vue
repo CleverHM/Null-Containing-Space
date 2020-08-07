@@ -1,6 +1,6 @@
 <template>
   <div id="member-img">
-    <div class="userImg" @click="userProfileGo">
+    <div class="userImg">
         <img v-if="imgExist" :src="'data:image/png;base64, ' + memberData.file" alt="user-image">
         <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
         <div class="user-name d-flex justify-content-center">
@@ -34,11 +34,6 @@ export default {
     }
   },
 
-  methods: {
-    userProfileGo() {
-      console.log('다른사람')
-    }
-  }
 
 }
 </script>
