@@ -34,7 +34,12 @@ import http from "@/util/http-common.js";
 const passwordReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
 
 export default {
-  name: 'Join3',
+  name: 'passwordForm',
+  props: {
+    email: {
+      type: String,
+    }
+  },
   data() {
     return{
       password: "",
@@ -65,7 +70,13 @@ export default {
       }
     },
     updatePassword(){
-      this.$emit("updatePassword", this.password)
+      var InputData = new FormData()
+      InputData.append("email", this.email)
+      InputData.append("NewPassword", this.password)
+      http.post("account/findPasswordModify", InputData)
+      .then(() => {
+        this.$emit("Complete3")
+      })
     }
   }
 }

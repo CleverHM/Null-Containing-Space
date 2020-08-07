@@ -35,6 +35,9 @@ export default {
       type: String,
     }
   },
+  created() {
+    this.linkname = this.$route.name
+  },
   data: () => {
     return {
       ErrorMessage: "",
@@ -43,19 +46,29 @@ export default {
   },
   methods:{
    confirmCode() {
-     http
-    .post('/auth/loginMailConfirm', 
-        {
-          "auth_email": this.email,
-          "auth_number": this.authNum,
-        }
-      )
-      .then((data) => {
-        this.$emit("CompleteStep2", this.email)
-      })
-      .catch((err) => {
-        this.ErrorMessage = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
-      })
+     if (this.linkname == 'findPassword'){
+       http.post('/auth/passwordUpdateMailConfirm', {
+         'auth_email' : this.email,
+         'auth_number' : this.authNum
+       })
+       .then(() => {
+         this.$emit("Complete2")
+       })
+     } else {
+       http.post('/auth/loginMailConfirm', 
+          {
+            "auth_email": this.email,
+            "auth_number": this.authNum,
+          }
+        )
+        .then((data) => {
+          this.$emit("CompleteStep2", this.email)
+        })
+        .catch((err) => {
+          this.ErrorMessage = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
+        })
+     }
+     
     },
     resend(email) {
       http.post('/auth/loginMailSend', this.email)

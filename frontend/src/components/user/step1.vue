@@ -45,11 +45,12 @@ export default {
               http
               .post("/auth/passwordUpdateMailSend", this.email)
               .then(({data}) => {
-                  this.$emit("CompleteStep1", this.email)
+                  this.$emit("Complete1", this.email)
               })
-              .catch((err) => {
+              .catch(() => {
                   this.ErrorMessage = "존재하지 않는 이메일입니다. 다른 이메일을 입력해주세요."
               })
+
           }else {
             this.ErrorMessage = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
           }
