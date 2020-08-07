@@ -1,5 +1,6 @@
 package com.ssafy.pjt1.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class TeamServiceImpl implements TeamService{
 	@Override
 	public Optional<Team> findone(int teamid) {
 		return teamDao.findById(teamid);
+	}
+
+	@Override
+	public List<Team> fineall() {
+		// TODO Auto-generated method stub
+		return teamDao.findAll();
 	}
 
 }
