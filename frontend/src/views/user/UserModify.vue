@@ -5,22 +5,23 @@
         <div id="ModifyForm">
             <!-- 프로필 사진 -->
             <div class="image-form" id="image-form">
-                <label for="profileimg">
+                <label id="image-preview" for="profileimg">
                     <div class="image-box">
                         <img v-if="previewImg.preview" :src="previewImg.preview">
                         <img v-else-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
-                        <img v-else src="@/assets/images/profile_default.png">
+                        <img v-else src="@/assets/images/default_image.png">
                     </div>
+                    <label for="profileimg">변경 <b-icon-pencil /></label>
                     <br>
                     <!-- 프로필사진 변경 -->
                 </label>
+                
                 <input
                 id="profileimg"
                 type="file"
                 ref="files"
                 @change="imageUpload" />
             </div>
-            
         
             <!-- 이메일(수정불가) -->
             <div class="input-form" id="email-form">
@@ -256,6 +257,7 @@ export default {
     width: 140px;
     border-radius: 100%;
     overflow: hidden;
+    /* border: 2px solid #464545; */
 }
 .image-box img {
     margin: 0;
@@ -265,6 +267,7 @@ export default {
 }
 .image-form label {
     display: inline-block;
+    position: relative;
     padding: 0 0 0 0;
     background-color: #f7f7f7;
     color: #464545;
@@ -272,6 +275,15 @@ export default {
     font-size: 15px;
     cursor: pointer;
     border-radius: 5px;
+}
+#image-preview label{
+    position: absolute;
+    bottom: 10px;
+    left: 0px;
+    width: 140px;
+    height: 30px;
+    line-height: 30px;
+    
 }
 .image-form input[type='file'] {
     position: absolute;
