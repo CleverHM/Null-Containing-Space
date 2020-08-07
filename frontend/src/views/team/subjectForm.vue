@@ -32,6 +32,10 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
     name: "SubjectForm",
@@ -103,8 +107,21 @@ export default {
             }
         },
 
+        // 팀원 시작 등록 후 메인으로
         moveMain() {
-            console.log('팀원 등록')
+            let formData = new FormData();
+            formData.append("nickname", storage.getItem("NickName"));
+            formData.append("preferProject", this.subjectCheck);
+
+            http
+            .post('/team/memberRegister', formData)
+            .then((res) => {
+                this.$router.push({ name: 'Main' })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
         },
 
         moveLeader() {

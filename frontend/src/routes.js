@@ -33,6 +33,7 @@ import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
+import TeamInfo from './views/team/TeamInfo.vue'
 
 
 import Components from './views/Components.vue'
@@ -185,6 +186,12 @@ export default [
         component: SubjectForm,
         props: true,
 
+    },
+    {
+        path: '/team/info/:teamId',
+        name: 'TeamInfo',
+        component: TeamInfo,
+        props: true,
     },
 
 
