@@ -189,6 +189,7 @@ public class TeamController {
 				}
 				System.out.println("다왔다!");
 				result.teamdates = teamdatas;
+				result.preferProject = user.getPreferProject();
 				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				System.out.println("현재팀없음");

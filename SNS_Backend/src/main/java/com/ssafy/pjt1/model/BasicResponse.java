@@ -18,4 +18,7 @@ public class BasicResponse {
     public TeamData teamdate;
     @ApiModelProperty(value = "teamdates", position = 6)
     public List<TeamData> teamdates;
+    @ApiModelProperty(value = "preferProject", position = 7)
+    public int preferProject;
+    
 }
