@@ -36,7 +36,7 @@ import SubjectForm from './views/team/subjectForm.vue'
 
 
 import Components from './views/Components.vue'
-// import test from './views/test.vue'
+import test from './views/test.vue'
 
 export default [
     // User
@@ -86,7 +86,7 @@ export default [
         component : getAbility
     },
     {
-        path : '/user/profile',
+        path : '/user/profile/:nickname',
         name : 'profile',
         component : profile,
         props: true,
@@ -193,5 +193,11 @@ export default [
         path : '/components',
         name : 'Components',
         component : Components
+    },
+    //test
+    {
+        path : '/test',
+        name : 'test',
+        component : test
     },
 ]

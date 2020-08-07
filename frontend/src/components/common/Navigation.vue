@@ -51,6 +51,7 @@ export default {
               this.$router.push({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
           } else {
               this.$router.go(-1)
+
           }
       },
       goSearch(){

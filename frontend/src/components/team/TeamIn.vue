@@ -24,6 +24,7 @@
         
         <!-- 팀 정보 -->
         <div id="team" class="my-3">
+          <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
           <div class="d-flex justify-content-start align-items-center">
             <div class="displaytags">
               팀장
@@ -33,7 +34,7 @@
             </div>
           </div>
           
-          <div class="d-flex justify-content-start align-items-center mt-4">
+          <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
             <div class="displaytags">
               팀원
             </div>
@@ -58,7 +59,7 @@
 
     <!-- 팀원 매칭 버튼 -->
     <div class="submit-area d-flex justify-content-center">
-      <button v-if="ifLeader" class="submit-button" @click="teamFind">팀원 매칭하기</button>
+      <button v-if="ifLeader" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
     </div>
     
   </div>
@@ -98,10 +99,12 @@ export default {
       tabs: TABS,
       currentTab: 'tab1',
       diffTime: '',
+      teamExist: false,
     }
   },
 
   created() {
+    console.log(this.teamData)
     if (storage.getItem("NickName") == this.teamData.leaderNickname.nickname) {
       this.ifLeader = true
     } else {
@@ -112,13 +115,15 @@ export default {
     var postDate = new Date(this.teamData.createDate)
     this.diffTime = this.dateCheck(postDate);
 
+    if (this.teamData.members.length == 0) {
+      this.teamExist = false
+    } else {
+      this.teamExist = true
+    }
+
   },
 
   methods: {
-    // 팀원찾기 페이지로 넘어가기
-    teamFind() {
-      console.log('매칭하기')
-    },
 
     // tab 이동
     handleClick(newTab) {
@@ -158,6 +163,11 @@ export default {
       }
     },
 
+    // 팀 매칭 페이지로 이동
+    teamMatchGo() {
+      this.$router.push({ name: 'teamMatch', params: { teamData: this.teamData }})
+    }
+
 
   },
 
@@ -171,6 +181,10 @@ export default {
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: 25px;
   font-weight: bold;
+}
+
+#team {
+  margin-bottom: 50px;
 }
 
 .content {
@@ -192,6 +206,16 @@ export default {
 
 
 .displaytags {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #464545;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+.teamCnt {
+  margin-bottom: 20px;
   padding: 10px;
   font-size: 14px;
   font-weight: bold;
