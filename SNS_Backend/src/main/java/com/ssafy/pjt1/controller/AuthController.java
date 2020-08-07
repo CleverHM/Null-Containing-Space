@@ -29,10 +29,7 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-<<<<<<< HEAD
-=======
 @CrossOrigin(origins = { "http://localhost:3000" })
->>>>>>> 9fea44dde12e7eb433982496ef7a7abbce54efce
 
 @RestController
 public class AuthController {
