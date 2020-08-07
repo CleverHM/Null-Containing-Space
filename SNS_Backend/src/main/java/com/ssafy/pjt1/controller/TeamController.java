@@ -132,11 +132,23 @@ public class TeamController {
 		TeamData teamdata = null;
 		
 		if(user.getTeam().getTeamid() == 1) {
-			System.out.println("현재팀없음");
-			final BasicResponse result = new BasicResponse();
-			result.status = false;
-			result.data = "팀없음";
-			return new ResponseEntity<>(result, HttpStatus.OK);
+			if(user.isMatchok() == true) {
+				System.out.println("현재팀없음");
+				System.out.println("팀원 등록은 했음");
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.matchok = true;
+				result.data = "팀없음";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}else {
+				System.out.println("현재팀없음");
+				System.out.println("팀원 등록 안함");
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.matchok = false;
+				result.data = "팀없음";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
 		}
 		else {
 			

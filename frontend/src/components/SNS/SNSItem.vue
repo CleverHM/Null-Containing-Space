@@ -3,14 +3,12 @@
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img mr-2">
-        <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image">
-        <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image">
+        <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image" @click="goUserProfile">
+        <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image" @click="goUserProfile">
       </div>
       <div class="flex-column">
-        <div class="user-name" style="color: #464545;">
-          <router-link :to="{ name: 'profile', params: { nickname: article.userName }}" style="color: #464545;">
+        <div class="user-name" style="color: #464545;" @click="goUserProfile">
             {{ article.userName }}
-          </router-link>
         </div>
         <div class="date-diff">{{ diffTime }}</div>
       </div>
@@ -159,6 +157,11 @@ export default {
       } else {
         return '0초 전'
       }
+    },
+
+    // 유저 사진, 닉네임 눌렀을 때 그 유저의 프로필 페이지로 보낸다.
+    goUserProfile() {
+      this.$router.push({ name: 'profile', params: { nickname: this.article.userName }});
     },
 
   },

@@ -4,10 +4,10 @@
     <div class="user-part d-flex justify-content-between align-items-center mb-2">
       <div class="d-flex align-items-center">
         <div class="comment-img">
-            <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image">
-            <img :src="'data:image/png;base64, ' + reply.file" alt="user-image">
+            <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image" @click="goUserProfile">
+            <img :src="'data:image/png;base64, ' + reply.file" alt="user-image" @click="goUserProfile">
         </div>
-        <div class="comment-name ml-2">{{ reply.who }}</div>
+        <div class="comment-name ml-2" @click="goUserProfile">{{ reply.who }}</div>
       </div>
       <div class="d-flex flex-row">
         <div class="comment-date">{{ diffTime }}</div>
@@ -102,8 +102,12 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-    }
+    },
 
+    // 유저 사진, 닉네임 눌렀을 때 그 유저의 프로필 페이지로 보낸다.
+    goUserProfile() {
+      this.$router.push({ name: 'profile', params: { nickname: this.reply.who }});
+    },
 
   },
 
