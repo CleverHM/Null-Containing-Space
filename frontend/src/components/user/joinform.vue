@@ -207,7 +207,7 @@ export default {
       if (this.FormUser.password && this.passwordConfirm && this.FormUser.name &&
            this.FormUser.age && this.FormUser.tel && this.FormUser.nickname){
              
-            if (this.error.nickname || this.error.password || this.error.passwordConfirm){
+            if (this.error.nickname || !this.error.nicknameSuccess || this.error.password || this.error.passwordConfirm){
                 alert("다시입력")
             } else {
                 this.$emit("CompleteStep3", this.FormUser)
