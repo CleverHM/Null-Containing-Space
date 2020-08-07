@@ -75,13 +75,32 @@
             </div>
             <!-- 회원탈퇴 버튼 -->
             <div class="input-form" id="delete-form">
-                <label for="nickname">회원탈퇴</label>
-                <input 
-                id="delete"
-                type="text"
-                disabled/>
-                <button>회원탈퇴</button>
+                
+                <!-- <input id="delete" type="text" disabled/> -->
+
+                <!-- 회원탈퇴 Modal -->
+                <div class="Modal-container">
+                    <label for="delete-form">회원탈퇴</label>
+                    <input id="Modal-toggle" type="checkbox">
+                    <button>회원탈퇴</button>
+
+
+                    <div class="Modal-backdrop">
+                        <div class="Modal-content">
+                            <label class="Modal-close" for="Modal-toggle">x</label>
+                            <h2>회원탈퇴</h2>
+                            <hr />
+                            <p>회원탈퇴 하시겠습니까?</p>
+                            <label class="Modal-close close-button" for="Modal-toggle">취소</label>
+                            <label class="Modal-close delete-button" @click="deleteUser">탈퇴</label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+            
+
             <!-- 수정 완료 버튼 -->
             <button id="complete" @click="Modify">수정</button>
         </div>
@@ -129,6 +148,7 @@ export default {
             this.User.nickname = storage.NickName;
             var InputData = new FormData();
             InputData.append("nickname", this.User.nickname)
+            InputData.append("pageNickname", this.User.nickname)
             http
             .post("/account/myPage", InputData)
             .then(({data}) => {
@@ -207,9 +227,16 @@ export default {
                     console.log(err)
                 })
             }            
-            
-
-           
+        },
+        deleteUser() {
+            var InputData = new FormData()
+            InputData.append("nickname", this.User.nickname)
+            http.put("/account/delete", InputData)
+            .then((data) => {
+                console.log(data)
+                alert("회원탈퇴 완료!")
+                this.$router.push("/")
+            })
         },
     },
 }
@@ -306,11 +333,11 @@ input[type="text"]:focus{
 #password, #delete{
     border: 0;
 }
-#delete-form > button,
+
 #password-form > button{
     background-color: #D52602;
 }
-#delete-form > label,
+
 #password-form > label{
     font-size: 16px;
 }
@@ -328,4 +355,135 @@ input[type="text"]:focus{
   font-size: 13px;
   color: green;
 }
+
+/* for modal */
+.Modal-container {
+  position: relative;
+  width: 100%;
+  height: 50px;
+}
+.Modal-container > label {
+    font-size: 16px;
+}
+.Modal-container button {
+  display: block;
+  color: #f7f7f7;
+  padding: 5px;
+  background: #D52602;
+  font-size: 16px;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: 0 5px 5px -5px #333;
+}
+.Modal-container .Modal-backdrop {
+  height: 0;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease-in;
+}
+.Modal-container #Modal-toggle {
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    left: 82%;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 50px;
+    z-index: 9999;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+.Modal-container #Modal-toggle:checked {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  opacity: 0;
+}
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 1;
+}
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content {
+  background-color: #fff;
+  max-width: 400px;
+  width: 100%;
+  height: 280px;
+  padding: 10px 30px;
+  position: relative;
+  left: calc(50% - 200px);
+  top: 12%;
+  border-radius: 4px;
+  z-index: 999;
+  pointer-events: auto;
+  cursor: auto;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 400px) {
+
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content { left: 0; }
+}
+
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content .Modal-close {
+  color: #666;
+  position: absolute;
+  left: 90%;
+  right: 0px;
+  top: 0;
+  padding-top: 7px;
+  background: #fff;
+  font-size: 16px;
+  width: 25px;
+  height: 28px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content .Modal-close.close-button {
+  top: initial;
+  padding: 2px;
+  position: absolute;
+  left: 83%;
+  bottom: 10px;
+  background: #EDECEA ;
+  color: #464545;
+  width: 50px;
+  border-radius: 2px;
+  font-size: 16px;
+  font-weight: normal;
+}
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content .Modal-close.delete-button {
+  top: initial;
+  padding: 2px;
+  position: absolute;
+  left: 68%;
+  bottom: 10px;
+  background: #D52602 ;
+  color: #f7f7f7;
+  width: 50px;
+  border-radius: 2px;
+  font-size: 16px;
+  font-weight: normal;
+}
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content .Modal-close.button:hover {
+  color: #fff;
+  background: #1E824C;
+}
+
+.Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content .Modal-close:hover { color: #333; }
 </style>
