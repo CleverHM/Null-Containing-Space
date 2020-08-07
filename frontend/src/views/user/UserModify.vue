@@ -9,7 +9,7 @@
                     <div class="image-box">
                         <img v-if="previewImg.preview" :src="previewImg.preview">
                         <img v-else-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
-                        <img v-else src="@/assets/images/default_image.png">
+                        <img v-else src="@/assets/images/profile_default.png">
                     </div>
                     <br>
                     <!-- 프로필사진 변경 -->
@@ -38,7 +38,7 @@
                 id="nickname"
                 type="text"/>
                 <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
-                <div class="Success" v-else><i class="fas fa-exclamation-triangle"></i>사용할 수 있는 닉네임입니다.</div>
+                <div class="Success" v-if="error.nicknameSuccess"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
 
                 <button @click="isDuplicate">중복체크</button>
             </div>
@@ -116,6 +116,7 @@ export default {
             },
             error: {
                 nickname: "",
+                nicknameSuccess: "",
             },
             previewImg: {
                 file: "",
@@ -128,7 +129,6 @@ export default {
             this.User.nickname = storage.NickName;
             var InputData = new FormData();
             InputData.append("nickname", this.User.nickname)
-            InputData.append("pageNickname", this.User.nickname)
             http
             .post("/account/myPage", InputData)
             .then(({data}) => {
@@ -148,11 +148,14 @@ export default {
             .then((data) => {
                 console.log(data.data)
                 if (data.data.status) {
+                this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
                 this.error.nickname=""
+
                 }
             })
             .catch((err) => {
-                this.err.nickname="사용할 수 없는 닉네임입니다."
+                this.error.nickname="사용할 수 없는 닉네임입니다."
+                this.error.nicknameSuccess=""
             })
         },
         imageUpload() {
@@ -180,7 +183,7 @@ export default {
                 .then(({data}) => {
                     console.log(data)
                     storage.NickName = this.User.nickname
-                    this.$router.push({name:'profile', params: {nickname: this.User.nickname}})
+                   this.$router.push({name:'profile', params: {nickname: this.User.nickname}})
                 })
                 .catch((err) => {
                     console.log(err)
@@ -198,7 +201,7 @@ export default {
                 .then(({data}) => {
                     console.log(data)
                     storage.NickName = this.User.nickname
-                    this.$router.push({name:'profile', params: {nickname: this.User.nickname}})
+                   this.$router.push({name:'profile', params: {nickname: this.User.nickname}})
                 })
                 .catch((err) => {
                     console.log(err)
