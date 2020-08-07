@@ -73,8 +73,15 @@
             <TagBadge></TagBadge>
 
           </div>
-          <div v-if="currentTab === 'tab2'">
-            {{ User.ability }}
+          <div v-if="currentTab === 'tab2'" >
+            <table>
+            <tr class="tableHeader">
+              <th> 종류 </th>
+              <th> 능력 </th>
+            </tr>
+            <profileAbility :name="abilities[n]" :ability="User.ability[n]" :id="n" :key="n" v-for="n in 15"></profileAbility>
+          </table>
+            
           </div>
         
         </div>
@@ -89,6 +96,7 @@ import subNav from '../../components/common/subnav.vue'
 import TagBadge from '../../components/common/TagBadge.vue'
 import TabComponent from '../../components/common/TabComponent.vue'
 import Tabs from 'vue-tabs-with-active-line';
+import profileAbility from '../../components/user/profileAbility.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
@@ -111,6 +119,7 @@ export default {
         subNav,
         TagBadge,
         Tabs,
+        profileAbility,
     },
     created() {
       this.nickname = storage.getItem("NickName")
@@ -135,6 +144,39 @@ export default {
             showMenu: false,
             tabs: TABS,
             currentTab: 'tab1',
+            abilities: [
+                { name: 'cpp',
+                    id: 0},
+                { name: 'Java',
+                    id: 1},
+                { name: 'Python',
+                    id: 2},
+                { name: 'php',
+                    id: 3},
+                { name: 'html',
+                    id: 4},
+                { name: 'css',
+                    id: 5},
+                { name: 'JavaScript',
+                    id: 6},
+                { name: 'SQL',
+                    id: 7},
+                { name: 'noSQL',
+                    id: 8},
+                { name: 'Spring',
+                    id: 9},
+                { name: 'Django',
+                    id: 10},
+                { name: 'BootStrap',
+                    id: 11},
+                { name: 'Vue',
+                    id: 12},
+                { name: 'React',
+                    id: 13},
+                { name: 'Algorithm',
+                    id: 14},
+            ],
+            lenAbility: 15,
         }
     },
     methods : {
@@ -313,5 +355,10 @@ export default {
   height: 2px;
   background-color: black;
   transition: transform 0.4s ease, width 0.4s ease;
+}
+/* ability tab */
+th{
+  padding-bottom: 10px;
+  border-bottom: 2px solid #464545;
 }
 </style>
