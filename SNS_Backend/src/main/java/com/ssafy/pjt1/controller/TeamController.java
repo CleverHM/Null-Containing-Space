@@ -122,7 +122,7 @@ public class TeamController {
 	// nick name 으로 프로젝트 페이지판별 하기
 	@PostMapping("/team/exist")
 	@ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
-	public Object exist(@Valid @RequestBody String nickname) throws MalformedURLException, IOException {
+	public Object exist(@Valid @RequestParam String nickname) throws MalformedURLException, IOException {
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
@@ -177,7 +177,7 @@ public class TeamController {
 								}
 
 								// teamid 저장
-								System.out.println(t.getTeamid()+ " "+ leaderNickname.getNickname());
+								System.out.println(t.getTeamid() + " " + leaderNickname.getNickname());
 								TeamData TeamData1 = new TeamData(t.getTeamid(), leaderNickname);
 								teamdatas.add(TeamData1);
 
@@ -290,6 +290,91 @@ public class TeamController {
 		user.setPreferProject(preferProject);
 
 		userservice.signUp(user);
+	}
+
+	// 팀 아이디로 정보 보내기
+	@PostMapping("/team/teamInfo")
+	@ApiOperation(value = "팀페이지(팀아이디로)", notes = "팀페이지(팀아이디로) 기능을 구현")
+	public void teamInfo(@Valid @RequestBody int teamid) throws MalformedURLException, IOException {
+
+		// 팀 원 넣기
+		Optional<Team> optionalTeam = teamservice.findone(teamid);
+		Team team = optionalTeam.get();
+		
+		List<TeamPersonData> mems = new LinkedList<TeamPersonData>();
+		List<Boolean> preferTech = new LinkedList<Boolean>();
+		TeamPersonData leaderNickname = null;
+
+		preferTech.add(team.isBack_cpp());
+		preferTech.add(team.isBack_java());
+		preferTech.add(team.isBack_python());
+		preferTech.add(team.isBack_php());
+		preferTech.add(team.isFront_html());
+		preferTech.add(team.isFront_css());
+		preferTech.add(team.isFront_javascript());
+		preferTech.add(team.isDb_sql());
+		preferTech.add(team.isDb_nosql());
+		preferTech.add(team.isFrame_spring());
+		preferTech.add(team.isFrame_django());
+		preferTech.add(team.isFrame_bootstrap());
+		preferTech.add(team.isFrame_vue());
+		preferTech.add(team.isFrame_react());
+		preferTech.add(team.getAlgo());
+
+//		for (User u : team.getUsers()) {
+//			System.out.println(u.getNickname() + " " + u.getLeader());
+//			if (u.getLeader() == true) {
+//				// 이미지
+//				System.out.println("나리더");
+//				byte[] reportBytes = null;
+//				File result = new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
+//
+//				if (result.exists()) {
+//					System.out.println("있음");
+//					InputStream inputStream = new FileInputStream(
+//							u.getProfile().getFileurl() + u.getProfile().getFilename());
+//					String type = result.toURL().openConnection()
+//							.guessContentTypeFromName(user.getProfile().getFilename());
+//
+//					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+//
+//					leaderNickname = new TeamPersonData(u.getNickname(), out);
+//				} else {
+//					leaderNickname = new TeamPersonData(u.getNickname(), reportBytes);
+//					System.out.println("프로필 파일 없음");
+//				}
+//			} else {
+//				// 이미지
+//				byte[] reportBytes = null;
+//				File result = new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
+//
+//				if (result.exists()) {
+//					System.out.println("있음");
+//					InputStream inputStream = new FileInputStream(
+//							u.getProfile().getFileurl() + u.getProfile().getFilename());
+//					String type = result.toURL().openConnection()
+//							.guessContentTypeFromName(user.getProfile().getFilename());
+//
+//					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+//
+//					mems.add(new TeamPersonData(u.getNickname(), out));
+//				} else {
+//
+//					mems.add(new TeamPersonData(u.getNickname(), reportBytes));
+//					System.out.println("프로필 파일 없음");
+//				}
+//			}
+//		}
+//
+//		System.out.println(leaderNickname.getNickname());
+//		teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems,
+//				user.getTeam().getTeamIntro(), user.getTeam().getTitle(), user.getTeam().getPreferProject(), preferTech,
+//				leaderNickname);
+//
+//		final BasicResponse result = new BasicResponse();
+//		result.status = true;
+//		result.teamdate = teamdata;
+//		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 }
