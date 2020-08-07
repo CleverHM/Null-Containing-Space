@@ -7,7 +7,7 @@
                 <!-- 프로필 이미지  -->
                 <div class="profileImg">
                   <img v-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
-                  <img v-else src="@/assets/images/profile_default.png">
+                  <img v-else src="@/assets/images/default_image.png">
                 </div>
                 <!-- 이름/팔로우 -->
                 <div class="profileInfo">
@@ -19,7 +19,8 @@
                     </div>
                     <div class="profile-btns">
                         <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
-                        <button class="btn-follow" v-else>팔로우</button>
+                        <button class="btn-follow" v-else-if="isFollow" @click="follow">팔로우 취소</button>
+                        <button class="btn-follow" v-else @click="follow">팔로우</button>
                     </div>
                 </div>
             </div>
@@ -112,12 +113,9 @@ export default {
         Tabs,
     },
     created() {
+      this.nickname = storage.getItem("NickName")
+      this.pagenickname = this.$route.params.nickname
       this.getUserInfo()
-    },
-    computed: {
-      isMe() {
-        return storage.NickName === this.User.nickname
-      }
     },
     data : () => {
         return {
@@ -131,20 +129,24 @@ export default {
               profileURL: null,
               ability: null,
             },
+            isMe: false,
+            isFollow: false,
             // navigation dropdown
             showMenu: false,
-            nickname: storage.NickName,
             tabs: TABS,
             currentTab: 'tab1',
         }
     },
     methods : {
         getUserInfo() {
+          console.log("hello")
           var InputData = new FormData();
           InputData.append("nickname", this.nickname)
+          InputData.append("pageNickname", this.pagenickname)
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
+              // console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file
@@ -154,10 +156,28 @@ export default {
               this.User.GitURL = data.gitaddr
               this.User.ability = data.abt
               console.log(this.User)
+              this.isMe = data.me
+              this.isFollow = data.follow
+              console.log("create", this.isFollow)
           })
           .catch((err) => {
             console.log(err)
           })
+        },
+        follow() {
+          var InputData = new FormData()
+          InputData.append("From", this.nickname)
+          InputData.append("To", this.pagenickname)
+          http.post("/follow/user", InputData)
+          .then(({data}) => {
+            console.log("follow",data)
+            this.isFollow = data.flag
+            this.User.followingcount = data.followingCnt
+            this.User.followercount = data.followerCnt
+            console.log(this.isFollow)
+          })
+          .catch(() => {})
+
         },
         handleClick(newTab) {
           this.currentTab = newTab;

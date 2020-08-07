@@ -260,7 +260,6 @@ export default {
             // 2. 원래 ability의 algo가 있으므로 algo는 true로 보내준다.
             techList = techList.concat(true)
 
-            console.log(techList)
             // 보내줘야할 데이터들을 formData 안에 넣는다.
             let formData = new FormData();
             formData.append("nickname", storage.getItem("NickName"));
@@ -273,7 +272,8 @@ export default {
             http
             .post("/team/create", formData)
             .then((res) => {
-                console.log('완료')
+                alert('팀 개설이 완료되었습니다.')
+                this.$router.push({ name: 'Main' })
             })
             .catch((err) => {
                 console.log(err)
