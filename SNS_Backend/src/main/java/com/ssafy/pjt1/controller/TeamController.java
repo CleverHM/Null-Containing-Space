@@ -295,7 +295,7 @@ public class TeamController {
 	// 팀 아이디로 정보 보내기
 	@PostMapping("/team/teamInfo")
 	@ApiOperation(value = "팀페이지(팀아이디로)", notes = "팀페이지(팀아이디로) 기능을 구현")
-	public void teamInfo(@Valid @RequestBody int teamid) throws MalformedURLException, IOException {
+	public Object teamInfo(@Valid @RequestParam int teamid) throws MalformedURLException, IOException {
 
 		// 팀 원 넣기
 		Optional<Team> optionalTeam = teamservice.findone(teamid);
@@ -321,60 +321,56 @@ public class TeamController {
 		preferTech.add(team.isFrame_react());
 		preferTech.add(team.getAlgo());
 
-//		for (User u : team.getUsers()) {
-//			System.out.println(u.getNickname() + " " + u.getLeader());
-//			if (u.getLeader() == true) {
-//				// 이미지
-//				System.out.println("나리더");
-//				byte[] reportBytes = null;
-//				File result = new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
-//
-//				if (result.exists()) {
-//					System.out.println("있음");
-//					InputStream inputStream = new FileInputStream(
-//							u.getProfile().getFileurl() + u.getProfile().getFilename());
-//					String type = result.toURL().openConnection()
-//							.guessContentTypeFromName(user.getProfile().getFilename());
-//
-//					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
-//
-//					leaderNickname = new TeamPersonData(u.getNickname(), out);
-//				} else {
-//					leaderNickname = new TeamPersonData(u.getNickname(), reportBytes);
-//					System.out.println("프로필 파일 없음");
-//				}
-//			} else {
-//				// 이미지
-//				byte[] reportBytes = null;
-//				File result = new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
-//
-//				if (result.exists()) {
-//					System.out.println("있음");
-//					InputStream inputStream = new FileInputStream(
-//							u.getProfile().getFileurl() + u.getProfile().getFilename());
-//					String type = result.toURL().openConnection()
-//							.guessContentTypeFromName(user.getProfile().getFilename());
-//
-//					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
-//
-//					mems.add(new TeamPersonData(u.getNickname(), out));
-//				} else {
-//
-//					mems.add(new TeamPersonData(u.getNickname(), reportBytes));
-//					System.out.println("프로필 파일 없음");
-//				}
-//			}
-//		}
-//
-//		System.out.println(leaderNickname.getNickname());
-//		teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems,
-//				user.getTeam().getTeamIntro(), user.getTeam().getTitle(), user.getTeam().getPreferProject(), preferTech,
-//				leaderNickname);
-//
-//		final BasicResponse result = new BasicResponse();
-//		result.status = true;
-//		result.teamdate = teamdata;
-//		return new ResponseEntity<>(result, HttpStatus.OK);
+		for (User u : team.getUsers()) {
+			System.out.println(u.getNickname() + " " + u.getLeader());
+			if (u.getLeader() == true) {
+				// 이미지
+				System.out.println("나리더");
+				byte[] reportBytes = null;
+				File result = new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("있음");
+					InputStream inputStream = new FileInputStream(
+							u.getProfile().getFileurl() + u.getProfile().getFilename());
+
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+					leaderNickname = new TeamPersonData(u.getNickname(), out);
+				} else {
+					leaderNickname = new TeamPersonData(u.getNickname(), reportBytes);
+					System.out.println("프로필 파일 없음");
+				}
+			} else {
+				// 이미지
+				byte[] reportBytes = null;
+				File result = new File(u.getProfile().getFileurl() + u.getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("있음");
+					InputStream inputStream = new FileInputStream(
+							u.getProfile().getFileurl() + u.getProfile().getFilename());
+
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+					mems.add(new TeamPersonData(u.getNickname(), out));
+				} else {
+
+					mems.add(new TeamPersonData(u.getNickname(), reportBytes));
+					System.out.println("프로필 파일 없음");
+				}
+			}
+		}
+
+		System.out.println(leaderNickname.getNickname());
+		TeamData teamdata = new TeamData(team.getCreateDate(), team.getMemberCnt(), mems,
+				team.getTeamIntro(), team.getTitle(), team.getPreferProject(), preferTech,
+				leaderNickname);
+
+		final BasicResponse result = new BasicResponse();
+		result.status = true;
+		result.teamdate = teamdata;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 }
