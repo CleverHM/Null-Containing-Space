@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,8 +39,8 @@ import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
-import com.ssafy.pjt1.model.MachingRequest;
 import com.ssafy.pjt1.model.MyPageData;
+import com.ssafy.pjt1.model.RecommendUser;
 import com.ssafy.pjt1.model.SignupRequest;
 import com.ssafy.pjt1.service.FollowService;
 import com.ssafy.pjt1.service.JwtService;
@@ -345,14 +346,20 @@ public class UserController {
 
 		if (optionalUser.isPresent()) {
 			User user = optionalUser.get();
-			user.setPassword(NewPassword);
-			userservice.signUp(user);
 			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "success";
 
-			return new ResponseEntity<>(result, HttpStatus.OK);
-
+			// 비밀번호 같은 경우 거르기
+			if (user.getPassword().equals(NewPassword)) {
+				result.status = false;
+				result.data = "이전과 비밀번호 같음";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				user.setPassword(NewPassword);
+				userservice.signUp(user);
+				result.status = true;
+				result.data = "success";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
 		} else {
 			final BasicResponse result = new BasicResponse();
 			result.status = false;
@@ -380,8 +387,8 @@ public class UserController {
 		boolean me = true;
 		boolean follow = true;
 		MyPageData mypage = null;
-		
-		if(nickname.equals(pageNickname)) {
+
+		if (nickname.equals(pageNickname)) {
 			if (user.getTagfollows().size() != 0) {
 				for (TagFollow t : user.getTagfollows()) {
 					System.out.print(t.getTag().getName() + " ");
@@ -420,11 +427,11 @@ public class UserController {
 				responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
 				responseHeaders.add("Content-Type", type);
 
-				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
-						user.getIntro(), tag, abt, out, me, follow);
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(),
+						user.getGitaddr(), user.getIntro(), tag, abt, out, me, follow);
 			} else {
-				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
-						user.getIntro(), tag, abt, reportBytes, me, follow);
+				mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(),
+						user.getGitaddr(), user.getIntro(), tag, abt, reportBytes, me, follow);
 				System.out.println("프로필 파일 없음");
 			}
 		} else {
@@ -432,20 +439,20 @@ public class UserController {
 			// 내가 pageNickname 을 팔로우 했는지 판단
 			Optional<User> optionalUser1 = userservice.findtwo(nickname);
 			User user1 = optionalUser1.get();
-			
+
 			Set<UserFollow> uf = user1.getFollowings();
-			
+
 			int f = 0;
-			
-			end : for(UserFollow userfollow : uf) {
-				if(userfollow.getTo().getNickname().equals(pageNickname)) {
+
+			end: for (UserFollow userfollow : uf) {
+				if (userfollow.getTo().getNickname().equals(pageNickname)) {
 					f = 1;
 					break end;
 				}
 			}
-			
+
 			// 팔로우 하지 않았다.
-			if(f == 0) {
+			if (f == 0) {
 				if (user.getTagfollows().size() != 0) {
 					for (TagFollow t : user.getTagfollows()) {
 						System.out.print(t.getTag().getName() + " ");
@@ -476,19 +483,21 @@ public class UserController {
 					System.out.println("있음");
 					InputStream inputStream = new FileInputStream(
 							user.getProfile().getFileurl() + user.getProfile().getFilename());
-					String type = result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+					String type = result.toURL().openConnection()
+							.guessContentTypeFromName(user.getProfile().getFilename());
 
 					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
 					HttpHeaders responseHeaders = new HttpHeaders();
-					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
+					responseHeaders.add("content-disposition",
+							"attachment; filename=" + user.getProfile().getFilename());
 					responseHeaders.add("Content-Type", type);
 
-					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
-							user.getIntro(), tag, abt, out, false, false);
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(),
+							user.getGitaddr(), user.getIntro(), tag, abt, out, false, false);
 				} else {
-					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
-							user.getIntro(), tag, abt, reportBytes, false, false);
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(),
+							user.getGitaddr(), user.getIntro(), tag, abt, reportBytes, false, false);
 					System.out.println("프로필 파일 없음");
 				}
 			}
@@ -524,26 +533,57 @@ public class UserController {
 					System.out.println("있음");
 					InputStream inputStream = new FileInputStream(
 							user.getProfile().getFileurl() + user.getProfile().getFilename());
-					String type = result.toURL().openConnection().guessContentTypeFromName(user.getProfile().getFilename());
+					String type = result.toURL().openConnection()
+							.guessContentTypeFromName(user.getProfile().getFilename());
 
 					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
 					HttpHeaders responseHeaders = new HttpHeaders();
-					responseHeaders.add("content-disposition", "attachment; filename=" + user.getProfile().getFilename());
+					responseHeaders.add("content-disposition",
+							"attachment; filename=" + user.getProfile().getFilename());
 					responseHeaders.add("Content-Type", type);
 
-					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
-							user.getIntro(), tag, abt, out, false, true);
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(),
+							user.getGitaddr(), user.getIntro(), tag, abt, out, false, true);
 				} else {
-					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(), user.getGitaddr(),
-							user.getIntro(), tag, abt, reportBytes, false, true);
+					mypage = new MyPageData(user.getNickname(), followercnt, followingcnt, user.getBlogaddr(),
+							user.getGitaddr(), user.getIntro(), tag, abt, reportBytes, false, true);
 					System.out.println("프로필 파일 없음");
 				}
 			}
 		}
-		
 
 		return mypage;
 	}
 
+	// user 랜덤 추천
+	@PostMapping("/account/recommendUser")
+	@ApiOperation(value = "유저 랜덤 추천", notes = "유저 랜덤 추천 기능을 구현.")
+	public List<RecommendUser> recommendUser(@Valid @RequestParam String nickname) {
+
+		List<RecommendUser> list = new LinkedList<RecommendUser>();
+
+		List<User> optionalUsers = userservice.findall();
+
+		// 램덤수 뽑기
+		// 다섯명 이상일 경우
+		if (optionalUsers.size() > 5) {
+			// 5명 랜덤 뽑기
+		} else {
+			// 그냥 다넣기
+			for (int i = 0; i < optionalUsers.size(); i++) {
+				User user = optionalUsers.get(i);
+
+				int followerCount = followservice.followerCount(user);
+				int followingCount = followservice.followingCount(user);
+
+				RecommendUser ru = new RecommendUser(user.getUid(), null, user.getNickname(), user.getCreateDate(),
+						followerCount, followingCount);
+
+				list.add(ru);
+			}
+		}
+
+		return list;
+	}
 }
