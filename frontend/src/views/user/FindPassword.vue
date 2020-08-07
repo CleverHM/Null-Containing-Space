@@ -1,26 +1,26 @@
 <template>
   <div class="JoinView">
-    <div class="progress-container">
-      <ul class="progressbar">
-        <button id="Step1" :disable="!isActiveStep1" :class="{'active':isActiveStep1}">이메일 입력</button>
-        <button id="Step2" :disable="!isActiveStep2" :class="{'active':isActiveStep2}">이메일 인증</button>
-        <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">새 비밀번호 입력</button>
-      </ul>
-    </div>
-
-    <div v-if="isActiveStep2">
-      <div v-if="isActiveStep3">
-        <Password3 @updatePassword="updatePassword"></Password3>
+      <div class="progress-container">
+        <ul class="progressbar">
+          <button id="Step1" :disable="!isActiveStep1" :class="{'active':isActiveStep1}">이메일 입력</button>
+          <button id="Step2" :disable="!isActiveStep2" :class="{'active':isActiveStep2}">이메일 인증</button>
+          <button id="Step3" :disable="!isActiveStep3" :class="{'active':isActiveStep3}">새 비밀번호 입력</button>
+        </ul>
       </div>
+
+      <div v-if="isActiveStep2">
+        <div v-if="isActiveStep3">
+          <Password3 @Complete3="moveLogin" :email="email"></Password3>
+        </div>
+        <div v-else>
+          <Password2 @Complete2="Gostep3" :email="email"></Password2>
+        </div>
+      </div>
+
       <div v-else>
-        <Password2 @ConfirmCode="Gostep3" @Resend="resend" :email="email" :ErrorMessage="ErrorMsg.auth"></Password2>
+        <Password1 @Complete1="Gostep2"></Password1>
       </div>
-    </div>
-
-    <div v-else>
-      <Password1 @ConfirmEmail="Gostep2" :ErrorMessage="ErrorMsg.email"></Password1>
-    </div>
-
+      <div class="loading"></div>
   </div>
 </template>
 
@@ -42,16 +42,9 @@ export default {
   data: () => {
     return {
       email: "",
-      password: "",
-      authNum : "",
       isActiveStep1 : true,
       isActiveStep2 : false,
       isActiveStep3 : false,
-      ErrorMsg: {
-        email: "",
-        auth: "",
-        password: "",
-      },
       passwordType: "password",
       passwordConfirmType: "password",
     };
@@ -61,65 +54,11 @@ export default {
   methods:{
     Gostep2(email){
       this.email = email
-      console.log(this.email, typeof(this.email))
-      http
-      .post('/auth/passwordUpdateMailSend', 
-        this.email,
-      )
-      .then((data) => {
-        console.log(data)
-        this.isActiveStep2 = true;
-      })
-      .catch((err) => {
-        this.ErrorMsg.email = "존재하지 않는 이메일입니다."
-      })
+      this.isActiveStep2 = true;
     },
-      resend(email) {
-      console.log(email)
-      http
-      .post('/auth/passwordUpdateMailSend', 
-        this.email,
-      )
-      .then((data) => {
-        alert("인증번호가 재전송되었습니다.")
-      })  
-      .catch((err) => {
-        console.log(err)
-      })
-    },
-    Gostep3(authNum) {
-      console.log(this.email)
-      console.log(authNum)
-      http
-      .post('/auth/passwordUpdateMailConfirm', 
-        {
-          "auth_email": this.email,
-          "auth_number": authNum,
-        }
-        )
-      .then((data) => {
-        this.isActiveStep3 = true;
-      })
-      .catch((err) => {
-        this.ErrorMsg.auth = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
-      })
+    Gostep3() {
+      this.isActiveStep3 = true;
       
-    },
-    updatePassword(password){
-      let formData = new FormData();
-      formData.append("email", this.email);
-      formData.append("NewPassword", password);
-      let msg = "";
-      http
-      .post("/account/findPasswordModify", formData)
-      .then((data) => {
-        console.log(data)
-        if(data == "success") {
-          msg = "complete";
-        }
-        alert(msg);
-        this.moveLogin();
-      });
     },
     moveLogin(){
       this.$router.push("/");
