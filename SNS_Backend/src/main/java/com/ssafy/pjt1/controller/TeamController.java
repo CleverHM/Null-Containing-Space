@@ -39,8 +39,6 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://172.26.14.153:5000" })
-
 @RestController
 public class TeamController {
 	
