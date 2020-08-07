@@ -216,6 +216,7 @@ public class TeamController {
 		}
 
 	}
+<<<<<<< HEAD
 	
 	@PostMapping("/team/memberRegister")
 	@ApiOperation(value = "팀원으로 등록", notes = "팀원으로 등록 기능을 구현")
@@ -229,4 +230,6 @@ public class TeamController {
 		
 		userservice.signUp(user);
 	}
+=======
+>>>>>>> e6591c80d842ab0ecdea544c066d96d1be1a8768
 }
