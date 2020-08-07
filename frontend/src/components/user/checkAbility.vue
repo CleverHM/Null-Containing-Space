@@ -1,129 +1,93 @@
 <template>
-    <div id="radio-pillbox">
-        <div>
-            <span>
-                {{ ability.name }} : 
-            </span>
-            <div class="btngroup">
-                <button id="high" class="cusbtn" @click="isactiveHigh" :class="{'active':acthigh}">상</button>
-                <button id="medium" class="cusbtn" @click="isactiveMedium" :class="{'active':actmd}">중</button>
-                <button id="low" class="cusbtn" @click="isactiveLow" :class="{'active':actlow}">하</button>
-            </div>
-        </div>
-        
-        
-    </div>
+    <tr id="checkAbility">
+        <!-- ability name -->
+        <td>
+            {{ ability.name }}
+        </td>
+
+        <!-- button -->
+        <td class="radio-wrap">
+            <input type="radio" value="상" :name="ability.name" checked @click="checkButton">
+            <div class="checkmark"></div>  
+        </td>
+        <td class="radio-wrap">
+            <input type="radio" value="중" :name="ability.name" @click="checkButton">
+            <div class="checkmark"></div>
+        </td>
+        <td class="radio-wrap">
+            <input type="radio" value="하" :name="ability.name" @click="checkButton">
+            <div class="checkmark"></div>
+        </td>
+    </tr>    
 </template>
 
 <script>
 export default {
-    name: "checkAbility",
+    name: 'checkAbility',
     props: {
         ability: {
-        type: Object,
+            type: Object,
         },
-
-  },
+    },
     data() {
         return {
-            acthigh: false,
-            actmd: true,
-            actlow: false,
+            high : false,
+            medium: false,
+            low: false,
+        
         }
     },
     methods: {
-        isactiveHigh() {
-            this.acthigh = true;
-            this.actmd = false;
-            this.actlow = false;
-        },
-        isactiveMedium() {
-            this.acthigh = false;
-            this.actmd = true;
-            this.actlow = false;
-        },
-        isactiveLow() {
-            this.acthigh = false;
-            this.actmd = false;
-            this.actlow = true;
+        checkButton(event){
+            var value = event.toElement.value
+            if (value==='상'){
+                this.$emit("getAbility", this.ability.name, 1)
+            } else if (value === '중'){
+                this.$emit("getAbility", this.ability.name, 2)
+            } else if (value === '하') {
+                this.$emit("getAbility", this.ability.name, 3)
+            }
         }
-    }
-
+    },
 }
 </script>
+
+
 <style scoped>
-
-.btngroup {
-    background-color: white;
-    display: inline-block;
+.radio-wrap{
+    position: relative;
 }
-#high{
-    height: 30px;
-    width: 50px;
-
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: #464545;
-
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #464545;
-    
-    border-left-width: 1px;
-    border-left-style: solid;
-    border-left-color: #464545;
-
+input[type="radio"],
+input[type="radio"]:checked {
+    appearance: none;
+    position: relative;
+    left: -5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
 }
-#medium{
-    height: 30px;
-    width: 50px;
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: #464545;
-
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #464545;
-    
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #464545;
-    
-    border-left-width: 1px;
-    border-left-style: solid;
-    border-left-color: #464545;
-}
-#low{
-    height: 30px;
-    width: 50px;
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: #464545;
-
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #464545;
-    
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #464545;
+input[type="radio"]{
+    position: relative;
+    background-color: #f7f7f7;
+    border: 1px solid #464545;
     
 }
-.active{
-    background: #464545;
-    color: #f7f7f7;
+input[type="radio"]:checked{
+    position: relative;
+    background-color: #f7f7f7;
+    border: 1px solid #464545;
 }
-.cusbtn:visited{
-    border: none;
+
+input[type="radio"]:checked + .checkmark {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    height: 13px;
+    width: 13px;
+    border-radius: 100%;
+    background-color: #92ADA6;
 }
-.cusbtn:active{
-    border: none;
+td {
+    padding: 20px;
 }
 </style>
-

@@ -10,5 +10,8 @@ public interface UserService {
 	Optional<User> login(String email, String password);
 	User signUp(User user);
 	void delete(User selectUser, Set<Post> posts);
+	Optional<User> duplNick(String nickName);
 	Optional<User> findone(String email);
+	Optional<User> findtwo(String nickname);
+	Optional<User> findthree(int id);
 }

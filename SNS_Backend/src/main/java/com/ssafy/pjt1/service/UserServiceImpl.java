@@ -44,6 +44,21 @@ public class UserServiceImpl implements UserService {
 	public Optional<User> findone(String email) {
 		return userdao.findUserByEmail(email);
 	}
+	
+	@Override
+	public Optional<User> findtwo(String nickname) {
+		return userdao.findUserByNickname(nickname);
+	}
+	
+	@Override
+	public Optional<User> findthree(int id) {
+		return userdao.findUserByUid(id);
+	}
+	
+	@Override
+	public Optional<User> duplNick(String nickName) {
+		return userdao.findUserByNickname(nickName);
+	}
 
 	@Override
 	public void delete(User user, Set<Post> posts) {

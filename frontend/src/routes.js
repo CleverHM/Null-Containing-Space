@@ -1,10 +1,16 @@
-
 // User
 import Login from './views/user/Login.vue'
-import Join from './views/user/Join.vue'
+import getAbility from './views/user/Join/getAbility.vue'
+import step1 from './views/user/Join/step1.vue'
+import step2 from './views/user/Join/step2.vue'
+import step3 from './views/user/Join/step3.vue'
+import step4 from './views/user/Join/step4.vue'
+import step5 from './views/user/Join/step5.vue'
+
 import findPassword from './views/user/FindPassword.vue'
-import getAbility from './views/user/getAbility.vue'
+import Join from './views/user/Join.vue'
 import profile from './views/user/profile.vue'
+import UserModify from './views/user/UserModify.vue'
 
 // Feed
 import FeedMain from './views/SNS/IndexFeed.vue'
@@ -26,20 +32,48 @@ import StudyMatching from './views/study/StudyMatching.vue'
 import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
+import SubjectForm from './views/team/subjectForm.vue'
 
 
 import Components from './views/Components.vue'
+import test from './views/test.vue'
 
 export default [
+    // User
     {
         path : '/',
         name : 'Login',
         component : Login
     },
     {
-        path : '/user/join',
-        name : 'Join',
-        component : Join
+        path : '/user/join/1',
+        name : 'step1',
+        component : step1,
+        props: true
+    },    
+    {
+        path : '/user/join/2',
+        name : 'step2',
+        component : step2,
+        props: true
+    },    
+    {
+        path : '/user/join/3',
+        name : 'step3',
+        component : step3,
+        props: true
+    },    
+    {
+        path : '/user/join/4',
+        name : 'step4',
+        component : step4,
+        props: true
+    },
+    {
+        path : '/user/join/5',
+        name : 'step5',
+        component : step5,
+        props: true
     },
     {
         path : '/find/password',
@@ -52,9 +86,15 @@ export default [
         component : getAbility
     },
     {
-        path : '/user/profile',
+        path : '/user/profile/:nickname',
         name : 'profile',
-        component : profile
+        component : profile,
+        props: true,
+    },
+    {
+        path : '/user/modify',
+        name : 'UserModify',
+        component : UserModify
     },
     // Main
     {
@@ -107,6 +147,12 @@ export default [
         component : FeedCreate
     },
     {
+        path : '/feed/update',
+        name : 'FeedUpdate',
+        component : FeedCreate,
+        props: true,
+    },
+    {
         path : '/feed/comment',
         name : 'FeedComment',
         component : FeedComment
@@ -115,7 +161,8 @@ export default [
     {
         path : '/team/create',
         name : 'createTeam',
-        component : createTeam
+        component : createTeam,
+        props: true,
     }, 
     {
         path : '/team/specs',
@@ -126,12 +173,31 @@ export default [
         path : '/team/match',
         name : 'teamMatch',
         component : teamMatch
-    }, 
+    },
+    {
+        path: '/team/subject',
+        name: 'SubjectForm',
+        component: SubjectForm,
+    },
+    {
+        path: '/team/leader',
+        name: 'LeaderForm',
+        component: SubjectForm,
+        props: true,
+
+    },
+
 
     // Component
     {
         path : '/components',
         name : 'Components',
         component : Components
+    },
+    //test
+    {
+        path : '/test',
+        name : 'test',
+        component : test
     },
 ]

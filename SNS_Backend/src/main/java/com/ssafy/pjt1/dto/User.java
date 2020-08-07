@@ -1,4 +1,4 @@
-﻿package com.ssafy.pjt1.dto;
+package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -7,14 +7,13 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,7 +36,13 @@ public class User {
 	private String name;
 	private String tel;
 	private int age;
-	private boolean gender; // 1이면 남자, 2이면 여자
+	private boolean gender;
+	private String gitaddr;
+	private String blogaddr;
+	private String intro;
+	private boolean matchok;
+	private int preferProject;
+	private boolean leader;
 
 	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL)
 	private Set<UserFollow> followings;
@@ -47,14 +52,28 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<TagFollow> tagfollows;
-
-	// 유저  : 게시물 (1 : N 단방향 관계)
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<Post>();
 	
-	//유저 : 좋아요 (1 : N 관계)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Reply> replys = new HashSet<Reply>();
+		
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
+		
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ABILITY_ID")
+	private Ability ability;
+		
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "PROFILE_ID")
+	private Profile profile;
+	
+	//team : 유저 (1 : N 관계)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
 
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -64,13 +83,14 @@ public class User {
 
 	}
 
-	public User(String nickname, String password, String email) {
+	public User(String nickname, String password, String email, boolean lead) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
+		this.leader = lead;
 	}
-
-	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender) {
+	
+	public User(String nickname, String password, String email, String name, String tel, int age, boolean gender, String gitaddr, String blogaddr, String intro, Ability ability, Profile profile, boolean lead, boolean matchok, int preferProject) {
 		this.nickname = nickname;
 		this.password = password;
 		this.email = email;
@@ -78,6 +98,130 @@ public class User {
 		this.tel = tel;
 		this.age = age;
 		this.gender = gender;
+		this.gitaddr = gitaddr;
+		this.blogaddr = blogaddr;
+		this.intro = intro;
+		this.ability = ability;
+		this.profile = profile;
+		this.leader = lead;
+		this.matchok = matchok;
+		this.preferProject = preferProject;
+	}
+	
+	
+	public User(int uid, String nickname, String password, String email, String name, String tel, int age, boolean gender, boolean lead) {
+		this.uid = uid;
+		this.nickname = nickname;
+		this.password = password;
+		this.email = email;
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
+		this.leader = lead;
+	}
+	
+	public User(int uid, String nickname, String password, String email, String name, String tel, int age,
+			boolean gender, String gitaddr, String blogaddr, String intro, Set<UserFollow> followings,
+			Set<UserFollow> followers, Set<TagFollow> tagfollows, Set<Post> posts, Set<PostLike> postlikes,
+			LocalDateTime createDate) {
+		this.uid = uid;
+		this.nickname = nickname;
+		this.password = password;
+		this.email = email;
+		this.name = name;
+		this.tel = tel;
+		this.age = age;
+		this.gender = gender;
+		this.gitaddr = gitaddr;
+		this.blogaddr = blogaddr;
+		this.intro = intro;
+		this.followings = followings;
+		this.followers = followers;
+		this.tagfollows = tagfollows;
+		this.posts = posts;
+		this.postlikes = postlikes;
+		this.createDate = createDate;
+	}
+
+	
+	public int getPreferProject() {
+		return preferProject;
+	}
+
+	public void setPreferProject(int preferProject) {
+		this.preferProject = preferProject;
+	}
+
+	public boolean getLeader() {
+		return leader;
+	}
+
+	public void setLeader(boolean leader) {
+		this.leader = leader;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+	public boolean isMatchok() {
+		return matchok;
+	}
+
+	public void setMatchok(boolean matchok) {
+		this.matchok = matchok;
+	}
+
+	public Ability getAbility() {
+		return ability;
+	}
+
+	public void setAbility(Ability ability) {
+		this.ability = ability;
+	}
+
+	public String getGitaddr() {
+		return gitaddr;
+	}
+
+	public void setGitaddr(String gitaddr) {
+		this.gitaddr = gitaddr;
+	}
+
+	public String getBlogaddr() {
+		return blogaddr;
+	}
+
+	public void setBlogaddr(String blogaddr) {
+		this.blogaddr = blogaddr;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public Set<Reply> getReplys() {
+		return replys;
+	}
+
+	public void setReplys(Set<Reply> replys) {
+		this.replys = replys;
 	}
 
 	public Set<Post> getPosts() {
@@ -177,3 +321,5 @@ public class User {
 		this.tagfollows = tagfollows;
 	}
 }
+
+

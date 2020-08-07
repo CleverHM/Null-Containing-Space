@@ -80,4 +80,46 @@
   - 사용자의 팔로워, 팔로잉 개수를 보여주는 기능 구현(Spring)
   - 게시물의 좋아요 개수를 보여주는 기능 구현(Spring)
 - 김호한
-  - 
+  - 게시물 조회수 기능 구현(Spring)
+  - 게시물 데이터 전달 Model 기능 구현(Spring)
+
+
+
+## 2020. 08. 03
+
+- 조대흠
+  - AWS에 도커설치.
+  - 도커에 Maria-db 컨테이너 설치.
+  - 도커에 스프링부트 jar 파일 업로드 작업중.
+- 박상현
+  - 댓글 Dto, Dao, Service, Controller 구현(Spring)
+  - 댓글 C, D 구현(Spring)
+  - 개인 능력치 Dto, Dao, Service, Controller 병합(Spring)
+  - 회원정보 수정에서 프로필사진 추가 기능 구현(Spring)
+- 김호한
+  - 게시물 Vue 데이터 전달 (Spring)
+  - 게시물 Update 기능 구현 (Spring)
+  - 댓글수/회원 수정/댓글 UID 전달 구현 (Spring)
+
+## 2020. 08. 04
+
+- 조대흠
+  - 서버 배포 작업 ing(현재 외부에서 ip주소로 접근불가능함)
+- 박상현
+  - MyPage Controller 구현(Spring)
+  - User Dto 수정(Spring)
+  - User삭제 Controller 수정(Spring)
+- 김호한
+  - 게시판 업데이트 사진 부분 완료 (Spring)
+  - 해쉬태그를 이용한 게시물 정렬 기능 구현 완료 (Spring)
+  - 프로필 사진 추가 (Spring)
+
+## 2020. 08. 05
+
+- 조대흠
+  - 서버 배포 작업(도커)
+- 박상현
+  - 팀원 매칭 알고리즘 추가 설계 및 2차 코딩 중(Spring, Hash 알고리즘)
+- 김호한
+  - Team Create, Delete, join 구현(Spring)
+  - 이메일 중복 체크 구현(Spring)

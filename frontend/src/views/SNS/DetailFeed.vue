@@ -1,31 +1,36 @@
 <template>
   <div id="detailFeed">
-    <div class="wrapB">
+    <div class="wrapB" style="position: relative;">
       <Navbar></Navbar>
-      <subNav></subNav>
 
       <!-- 수정삭제 부분 -->
-      <div v-if="udOn" class=" ud-part">
-        <li><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+      <div class="ud-button">
+        <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
+      </div>
+      <div v-if="udOn" class="ud-part">
+        <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}">
+          <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
+        </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
       </div>
-
       <div class="feedpage">
         <!-- title 부분 -->
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
           <div class="page-title">
             {{ article.title }}
-          </div>
-          <div>
-            <b-icon-three-dots-vertical @click="udButton"></b-icon-three-dots-vertical>
           </div>
         </div>
 
         <!-- user 부분 -->
-        <div class="user-part d-flex flex-row align-items-center">
-          <div class="user-img"></div>
-          <div class="user-name">{{ article.userNickname }}</div>
-          <div class="user-created-at">{{ article.date }}</div>
+        <div class="user-part d-flex flex-row align-items-center justify-content-between">
+          <div class="d-flex flex-row align-items-center user-low-part">
+            <div class="user-img">
+              <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image">
+              <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image">
+            </div>
+            <div class="user-name">{{ article.userNickname }}</div>
+            <div class="user-diff-time">{{ article.diffTime }}</div>
+          </div>
           <div class="user-count">
             <span>조회수</span>
             <span class="ml-2">{{ article.viewCount }}</span>
@@ -37,9 +42,9 @@
           <img :src="'data:image/png;base64, ' + article.file" alt="image" class="img-part">
         </div>
 
-        <!-- content 부분 -->
-        <div class="page-content">
-          {{ article.content }}
+        <!-- content 부분. -->
+        <!-- content에 <br/>를 넣었으므로 {{}}이 아닌 v-html로 출력 -->
+        <div class="page-content" v-html="article.content">
         </div>
 
         <!-- 좋아요 부분 -->
@@ -59,8 +64,7 @@
 
         <!-- 댓글 part -->
         <div class="comment-part">
-          <Comment></Comment>
-          <Comment></Comment>
+          <Comment v-for="reply in article.replies" :reply="reply" :key="reply.id" @delete-reply="refreshOn()"></Comment>
         </div>
 
         <!-- 댓글 작성창 -->
@@ -69,6 +73,7 @@
             placeholder="댓글을 작성해주세요."
             class="flex-fill"
             style="border:none;"
+            maxlength="255" 
             @keyup.enter="commentOn"/>
           <button class="px-3" @click="commentOn">
             작성
@@ -81,20 +86,20 @@
 </template>
 
 <script>
-import Navbar from '../../components/common/Navigation.vue'
-import subNav from '../../components/common/subnav.vue'
-import Comment from '../../components/SNS/SNSCommentItem.vue'
+import Navbar from '../../components/common/Navigation.vue';
+import Comment from '../../components/SNS/SNSCommentItem.vue';
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
 const storage = window.sessionStorage;
+var now = new Date(); // 현재 시간 받아오기
+
 
 export default {
   name: "detailFeed",
   props: ["postId"],
   components: {
     Navbar,
-    subNav,
     Comment,
   },
 
@@ -114,7 +119,7 @@ export default {
       udOn: false,
       article: {
         content: "",
-        data: "",
+        date: "",
         file: "",
         likeCount: 0,
         likeFlag: 0,
@@ -123,8 +128,11 @@ export default {
         title: "",
         userEmail:"",
         userNickname: "",
+        userFile: "",
         viewCount: 0,
+        diffTime: "",
       },
+      userImg: false,
       comment: {
         content: "",
       },
@@ -139,7 +147,6 @@ export default {
   methods: {
     // 좋아요 체크
     likeCheck() {
-      console.log(this.article.likeFlag)
       if (this.article.likeFlag) {
         this.likeColor = '#FF0000';
       } else {
@@ -149,7 +156,6 @@ export default {
 
     // 댓글 작성 버튼 눌림
     commentOn() {
-      console.log(this.comment.content)
       if (this.comment.content === "") {
         this.errorMsg();
       } else {
@@ -158,7 +164,6 @@ export default {
     },
 
     dataReceive() {
-      // console.log(this.postId)
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("pid", this.postId);
@@ -167,15 +172,59 @@ export default {
       http
       .post('/post/postDetail', formData)
       .then((res) => {
-        // console.log(res.data)
         // 받아온 데이터를 집어 넣기
         this.article = res.data
-        console.log('check')
-        console.log(this.article)
+
+        // 받아온 시간(string) - date (형식 변환)
+        var postDate = new Date(this.article.date)
+        this.article.date = postDate
+        this.article.diffTime = this.dateCheck(this.article.date);
+
+        // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
+        this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+
+        if (this.article.userFile == null) {
+          this.userImg = false
+        } else {
+          this.userImg = true
+        }
       })
       .catch((err) => {
         console.log(err)
       })
+    },
+
+    // 날짜 체크
+    dateCheck(date) {
+      var diff = now - date
+      var diff_sec = Math.floor(diff / 1000)
+      var diff_min = Math.floor(diff_sec / 60)
+      var diff_hour = Math.floor(diff_min / 60)
+      var diff_day = Math.floor(diff_hour / 24)
+      var diff_month = Math.floor(diff_day / 30)
+      var diff_year = Math.floor(diff_month / 12)
+
+      if (diff_year > 0) {
+        var calyear = diff_year + '년 전'
+        return calyear
+      } else if (diff_month > 0) {
+        var calmonth = diff_month + '달 전'
+        return calmonth
+      } else if (diff_day > 0) {
+        var calday = diff_day + '일 전'
+        return calday
+      } else if (diff_hour > 0) {
+        var calhour = diff_hour + '시간 전'
+        return calhour
+      } else if (diff_min > 0) {
+        var calmin = diff_min + '분 전'
+        return calmin
+      } else if(diff_sec > 0) {
+        var caltime = diff_sec + '초 전'
+        return caltime
+      } else {
+        return '0초 전'
+      }
     },
     
     // 에러메세지
@@ -185,28 +234,24 @@ export default {
 
     // 댓글 작성
     commentSubmit() {
-      console.log("comment submit!")
+      let formData = new FormData();
+      formData.append("email", storage.getItem("User"));
+      formData.append("content", this.comment.content);
+      formData.append("pid", this.article.pid)
       
       http
-      .post('url', {
-        content: this.comment.content,
-        email: storage.getItem("User"),
-      })
+      .post('/reply/create', formData)
       .then((res) => {
-        console.log('SUCCESS!!');
-        // this.$router.push(`/feed/${article.pid}/detail`);
+        this.comment.content = "";
+        this.dataReceive();
       })
       .catch((err) => {
         console.log(err);
-        console.log('ERROR!!');
       })
     },
 
     // 좋아요 누름
     likeButton(event) {
-      // console.log('liked')
-      // console.log(storage.getItem("User"))
-      
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
       formData.append("postid", this.article.pid);
@@ -214,7 +259,6 @@ export default {
       http
       .post('/like/post', formData)
       .then((res) => {
-        // console.log(res.data)
         this.article.likeCount = res.data.count
         this.article.likeFlag = res.data.flag
       })
@@ -228,7 +272,6 @@ export default {
       if (requestUser === this.article.userEmail) {
         this.udOn = !this.udOn;
       }
-      // console.log(this.udOn)
     },
 
     // 글 삭제
@@ -239,8 +282,6 @@ export default {
         this.article.pid
       )
       .then((res) => {
-        console.log('delete')
-        console.log(res.data)
         this.$router.push({ name: 'FeedMain' });
       })
       .catch((err) => {
@@ -249,25 +290,36 @@ export default {
 
     },
 
+    // 댓글 삭제
+    refreshOn() {
+      this.dataReceive();
+    },
+
   }
 }
 
 
 </script>
 
-<style scope>
+<style scoped>
 .feedpage {
-  margin: 85px 5px 55px 5px;
+  margin: 65px 5px 55px 5px;
   padding: 10px;
   background-color: white;
   border-radius: 10px;
 }
 
 .user-img {
-  background-color: #C4BCB8;
+  display: block;
+  background-color: #EDECEA;
   border-radius: 50%;
   width: 30px;
   height: 30px;
+  overflow: hidden;
+}
+
+.user-img > img {
+  width: 100%;
 }
 
 .page-title {
@@ -275,10 +327,16 @@ export default {
   color: #464545;
   font-weight: bold;
   font-size: 20px;
+  width: 92%;
+  white-space: normal;
+  word-break: break-all;
 }
 
 .user-part > div {
   margin-top: 5px;
+}
+
+.user-low-part > div {
   margin-right: 13px;
 }
 
@@ -289,7 +347,7 @@ export default {
   font-size: 14px;
 }
 
-.user-created-at {
+.user-diff-time {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #E2DFD8;
   font-size: 14px;
@@ -343,19 +401,33 @@ export default {
   margin-right: 10px;
   margin-bottom: 7px;
 }
-
+.up-parent{
+  position: relative;
+}
 .ud-part {
-  position: float;
-  float: right;
+  position: absolute;
+  right: 15px;
+  top: 40px;
   background-color: #f7f7f7;
+  border-radius: 3px;
 }
 .ud-part > li {
   margin: 20px;
+}
+.ud-button {
+  position: absolute;
+  right: 25px;
+  top: 13px;
 }
 
 .img-part {
   width: 95%;
   margin: 10px;
   border-radius: 2px;
+}
+
+.update-button {
+  color: #464545;
+  margin: 20px;
 }
 </style>

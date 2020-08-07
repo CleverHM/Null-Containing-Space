@@ -57,7 +57,7 @@
         </div>
         <div class="wrap">
           <p>아직 회원이 아니신가요?</p>
-          <router-link to="/user/join" class="btn--text">가입하기</router-link>
+          <router-link to="/user/join/1" class="btn--text">가입하기</router-link>
         </div>
       </div>
     </div>
@@ -144,6 +144,7 @@ export default {
 
         storage.setItem("token", "");
         storage.setItem("User", "");
+        storage.setItem("NickName", "");
         
         let msg = "";
         
@@ -167,6 +168,7 @@ export default {
             }
             console.log(User, typeof(User))
             storage.setItem("User", res.data.email)
+            storage.setItem("NickName", res.data.nickname)
           }
           alert(msg);
           this.moveFeed();

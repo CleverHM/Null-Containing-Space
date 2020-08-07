@@ -1,128 +1,196 @@
 <template>
-    <div id="profile" class="px-4" style="top:0;">
-        <Navbar></Navbar>
-        <div id="baseProfile" class="mb-4">
-            <div class="d-flex align-items-center">
-                <div id="profileImg"></div>
-                <div class="ml-3 flex-fill">
-                    <p class="mb-1 profileName">sdfsdf</p>
-                    <div class="follow mb-2">
-                        <button class="follower">0<br>팔로워</button>
-                        <button class="following">1<br>팔로잉</button>
+    <div style="top:0">
+        <Navbar :showMenu="showMenu" @toggleShow="toggleMenu"></Navbar>
+        <subNav></subNav>
+        <div id="profile" @click="noshowMenu">
+            <div id="baseProfile" style="height: 150px;">
+                <!-- 프로필 이미지  -->
+                <div class="profileImg">
+                  <img v-if="User.profileURL" :src="'data:image/png;base64, ' + User.profileURL" alt="image" class="img-part">
+                  <img v-else src="@/assets/images/default_image.png">
+                </div>
+                <!-- 이름/팔로우 -->
+                <div class="profileInfo">
+                    <!-- 닉네임 -->
+                    <div class="profileName">{{ User.nickname }}</div>
+                    <div class="follow">
+                        <button class="follower">{{ User.followercount }}<br>팔로워</button>
+                        <button class="following">{{ User.followingcount }}<br>팔로잉</button>
                     </div>
-                    <button class="btn-follow">팔로우</button>
+                    <div class="profile-btns">
+                        <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
+                        <button class="btn-follow" v-else-if="isFollow" @click="follow">팔로우 취소</button>
+                        <button class="btn-follow" v-else @click="follow">팔로우</button>
+                    </div>
                 </div>
             </div>
+
+            <!-- 블로그 & 깃 !-->
+            <button v-if="User.blogURL" class="btn-on">
+              <i class="fab fa-blogger fa-2x"></i>
+              <br><p>BLOG</p>
+            </button>
+            <button v-else class="btn-off" disabled>
+              <i class="fab fa-blogger fa-2x"></i>
+              <br><p>No BLOG</p>
+            </button>
+
+            <button v-if="User.GitURL" class="btn-on">
+              <i class="fab fa-git-square fa-2x"></i>
+              <br><p>GIT</p>
+            </button>
+            <button v-else class="btn-off" disabled>
+              <i class="fab fa-git-square fa-2x"></i>
+              <br><p>No GIT</p>
+            </button>
+
+
+            <!-- 개발 능력 !-->
+            <tabs
+          :tabs="tabs"
+          :currentTab="currentTab"
+          :wrapper-class="'default-tabs'"
+          :tab-class="'default-tabs__item'"
+          :tab-active-class="'default-tabs__item_active'"
+          :line-class="'default-tabs__active-line'"
+          @onClick="handleClick"
+        />
+        <div class="content">
+          <div v-if="currentTab === 'tab1'">
+            
+            <!-- 자기소개 !-->
+            <div id="introduce" class="my-3" v-if="User.Introduce">
+            {{ User.Introduce }}
+            </div>
+            <div id="introduce" class="my-3" v-else>
+            자기소개가 없습니다. <br>
+            회원정보수정에서 자기소개를 추가해주세요.
+            </div>
+
+            <!-- 태그 뱃지 !-->
+            <TagBadge></TagBadge>
+            <TagBadge></TagBadge>
+            <TagBadge></TagBadge>
+
+          </div>
+          <div v-if="currentTab === 'tab2'">
+            {{ User.ability }}
+          </div>
+        
         </div>
 
-        <!-- 블로그 & 깃 !-->
-        <button :class="[{'btn-on' : blogLink}, {'btn-off' : !blogLink}]">
-        <i class="fab fa-blogger fa-2x"></i>
-        <br><p>BLOG</p>
-        </button>
-        <button :class="[{'btn-on' : gitLink}, {'btn-off' : !gitLink}]">
-        <i class="fab fa-git-square fa-2x"></i>
-        <br><p>GIT</p>
-        </button>
-
-        <!-- 자기소개 !-->
-<pre id="introduce" class="my-3">
-안녕하세요 알골마스터입니다.
-잘지내보아요.
-
-관심 분야
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-</pre>
-
-        <!-- 태그 뱃지 !-->
-        <TagBadge></TagBadge>
-        <TagBadge></TagBadge>
-        <TagBadge></TagBadge>
-
-
-        <!-- 공모전 / SNS 관리 !-->
-        <tabs
-      :tabs="tabs"
-      :currentTab="currentTab"
-      :wrapper-class="'default-tabs'"
-      :tab-class="'default-tabs__item'"
-      :tab-active-class="'default-tabs__item_active'"
-      :line-class="'default-tabs__active-line'"
-      @onClick="handleClick"
-    />
-    <div class="content">
-      <div v-if="currentTab === 'tab1'">
-        Sed ut perspiciatis unde omnis iste natus error sit
-        voluptatem accusantium doloremque laudantium, totam rem aperiam,
-        eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-        dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-        aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-        quia dolor sit amet, consectetur, adipisci velit, sed quia non
-        numquam eius modi tempora incidunt ut labore
-        et dolore magnam aliquam quaerat voluptatem.
-      </div>
-      <div v-if="currentTab === 'tab2'">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </div>
-      <div v-if="currentTab === 'tab3'">
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-        voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-        occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-        mollitia animi, id est laborum et dolorum fuga.
-      </div>
     </div>
-
-
     </div>
 </template>
 
 <script>
 import Navbar from '../../components/common/Navigation.vue'
+import subNav from '../../components/common/subnav.vue'
 import TagBadge from '../../components/common/TagBadge.vue'
 import TabComponent from '../../components/common/TabComponent.vue'
 import Tabs from 'vue-tabs-with-active-line';
+import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
 console.log(storage.getItem("token"))
 // var User = JSON.parse(storage.getItem('User'));
 // console.log(User)
 const TABS = [{
-    title: 'Tab 1',
+    title: 'Introduce',
     value: 'tab1',
-    }, {
-    title: 'Tab 2',
+    },{
+    title: 'Ability',
     value: 'tab2',
-    }, {
-    title: 'Tab 3',
-    value: 'tab3',
-}];
+    },
+];
 
 export default {
     name: "profile",
     components:{
         Navbar,
+        subNav,
         TagBadge,
         Tabs,
     },
+    created() {
+      this.nickname = storage.getItem("NickName")
+      this.pagenickname = this.$route.params.nickname
+      this.getUserInfo()
+    },
     data : () => {
         return {
-            
-            blogLink : "dsdfsdfsfd",
-            gitLink : "",
+            User: {
+              nickname: null,
+              followingcount: 0,
+              followercount: 0,
+              blogURL: null,
+              GitURL: null,
+              Introduce: null,
+              profileURL: null,
+              ability: null,
+            },
+            isMe: false,
+            isFollow: false,
+            // navigation dropdown
+            showMenu: false,
             tabs: TABS,
             currentTab: 'tab1',
         }
     },
     methods : {
-         handleClick(newTab) {
-        this.currentTab = newTab;
+        getUserInfo() {
+          console.log("hello")
+          var InputData = new FormData();
+          InputData.append("nickname", this.nickname)
+          InputData.append("pageNickname", this.pagenickname)
+          http
+          .post("/account/myPage", InputData)
+          .then(({data}) => {
+              // console.log(data)
+              this.User.nickname = data.nickname
+              this.User.Introduce = data.intro
+              this.User.profileURL = data.file
+              this.User.followingcount = data.followingCnt
+              this.User.followercount = data.followerCnt;
+              this.User.blogURL = data.blogaddr
+              this.User.GitURL = data.gitaddr
+              this.User.ability = data.abt
+              console.log(this.User)
+              this.isMe = data.me
+              this.isFollow = data.follow
+              console.log("create", this.isFollow)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
         },
+        follow() {
+          var InputData = new FormData()
+          InputData.append("From", this.nickname)
+          InputData.append("To", this.pagenickname)
+          http.post("/follow/user", InputData)
+          .then(({data}) => {
+            console.log("follow",data)
+            this.isFollow = data.flag
+            this.User.followingcount = data.followingCnt
+            this.User.followercount = data.followerCnt
+            console.log(this.isFollow)
+          })
+          .catch(() => {})
+
+        },
+        handleClick(newTab) {
+          this.currentTab = newTab;
+        },
+        noshowMenu() {
+          this.showMenu = false;
+        },
+        toggleMenu(isshow) {
+          this.showMenu = isshow;
+        },
+        goUserModify() {
+          this.$router.push({name: 'UserModify'})
+        }
     }
 
 
@@ -131,29 +199,49 @@ export default {
 </script>
 
 <style scoped>
-#profileImg{
+#profile{
+  margin: 70px 20px 50px 20px;
+}
+.baseProfile {
+  position: relative;
+}
+.profileImg{
+    float: left;
     height: 120px;
     width: 120px;
-    background-color: black;
+    background-color: #f7f7f7;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.profileImg img {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .profileName{
+    padding: 0 0 5px 135px;
     font-size: 20px;
     font-weight: bold;
 }
-.follower{
-    width:50%;
+.follow{
+  padding-left: 135px;
+  margin: 5px 0 10px 0;
 }
-.following{
-    width:50%;
-
+.follow button {
+  width: 50%;
+}
+.profile-btns {
+  padding: 0 10px 0 135px;
 }
 .btn-follow{
-    width:100%;
+    width: 100%;
     background-color: #464545;
     border-radius: 3px;
     color: #f7f7f7;
 
 }
+/* git, blog url */
 .btn-on{
     width:50%;
     font-size: 18px;
@@ -162,10 +250,18 @@ export default {
 .btn-off{
     width:50%;
     font-size: 18px;
-    color: #E2DFD8;
-    
+    color: #E2DFD8;   
 }
-
+.btn-off:visited{
+  border: 0;
+}
+.btn-off:active{
+  border: 0;
+}
+#introduce {
+  white-space: normal;
+  word-break: break-all;
+}
 .tabs {
   position: relative;
   top: 20px;
