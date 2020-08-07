@@ -188,7 +188,8 @@ public class TeamController {
 					} // ifend
 				}
 				System.out.println("다왔다!");
-				return teamdatas;
+				result.teamdates = teamdatas;
+				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				System.out.println("현재팀없음");
 				System.out.println("팀원 등록 안함");
