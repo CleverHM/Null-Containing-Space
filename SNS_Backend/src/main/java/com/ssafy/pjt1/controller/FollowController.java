@@ -47,7 +47,7 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://172.26.14.153:5000" })
+@CrossOrigin(origins = { "http://localhost:3000" })
 
 @RestController
 public class FollowController {
@@ -67,16 +67,18 @@ public class FollowController {
 		int followFlag = 0;
 
 		// from의 팔로우 리스트 확인
-		Optional<User> tempU = userservice.findtwo(From);
-		User user = tempU.get();
+		Optional<User> U1 = userservice.findtwo(From);
+		Optional<User> U2 = userservice.findtwo(To);
+		User u1 = U1.get();
+		User u2 = U2.get();
 
-		Set<UserFollow> followings = user.getFollowings();
+		Set<UserFollow> followings = u1.getFollowings();
 
 		// 먼저 post의 좋아요 개수를 받는다
 		for (UserFollow pl : followings) {
 			// System.out.println(pl.getFrom().getEmail());
 			System.out.println(pl.getTo().getEmail());
-			if (pl.getTo().getEmail().equals(To)) {
+			if (pl.getTo().getNickname().equals(To)) {
 				followFlag = 1;
 				break;
 			}
@@ -84,17 +86,15 @@ public class FollowController {
 
 		int followerCnt = 0;
 		int followingCnt = 0;
-
+		followerCnt = followservice.followerCount(u2);
+		followingCnt = followservice.followingCount(u2);
+		
 		System.out.println(followFlag);
-
+		System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		// 이미 팔로우한 사람이 없는 경우.
 		if (followFlag == 0) {
 //			// u1이 u2 팔로우하는거임.
-			Optional<User> U1 = userservice.findtwo(From);
-			Optional<User> U2 = userservice.findtwo(To);
 
-			User u1 = U1.get();
-			User u2 = U2.get();
 
 			UserFollow userfollow = new UserFollow();
 			userfollow.setFrom(u1);
@@ -102,24 +102,17 @@ public class FollowController {
 			followservice.followUser(userfollow);
 
 			// u2의 팔로워 팔로잉 개수
-			followerCnt = followservice.followerCount(u1);
-			followingCnt = followservice.followingCount(u1);
-			followingCnt = followingCnt + 1;
+			followFlag = 1;
+			followerCnt = followerCnt + 1;
 			System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		} else {
 			// u1이 u2 언팔로우하는거임.
-			Optional<User> U1 = userservice.findtwo(From);
-			Optional<User> U2 = userservice.findtwo(To);
-
-			User u1 = U1.get();
-			User u2 = U2.get();
 
 			followservice.unfollowUser(u1.getUid(), u2.getUid());
 
 			// u2의 팔로워 팔로잉 개수
-			followerCnt = followservice.followerCount(u1);
-			followingCnt = followservice.followingCount(u1);
-			followingCnt = followingCnt - 1;
+			followFlag = 0;
+			followerCnt = followerCnt - 1;
 			System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		}
 

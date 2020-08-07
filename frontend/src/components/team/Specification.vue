@@ -172,6 +172,8 @@ export default {
   padding: 7px;
   border: 1px solid #E2DFD8;
   border-radius: 10px;
+  word-wrap: wrap;
+  word-break: break-all;
 }
 
 
