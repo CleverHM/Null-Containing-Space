@@ -143,7 +143,6 @@ public class User {
 		this.postlikes = postlikes;
 		this.createDate = createDate;
 	}
-
 	
 	public int getPreferProject() {
 		return preferProject;
