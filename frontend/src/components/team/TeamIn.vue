@@ -30,9 +30,7 @@
               팀장
             </div>
             <div class="team-member-area">
-              <router-link :to="{ name: 'profile', params: { nickname: teamData.leaderNickname.nickname }}">
-                <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
-              </router-link>
+              <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
             </div>
           </div>
           
@@ -41,7 +39,7 @@
               팀원
             </div>
             <div class="team-member-area d-flex flex-row align-items-center">
-                <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2" @click="goUserProfile"></memberImg>
+                <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
             </div>
           </div>
         </div>

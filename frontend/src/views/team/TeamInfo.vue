@@ -117,16 +117,13 @@ export default {
       currentTab: 'tab1',
       diffTime: '',
       teamExist: false,
-      teamData: {
-        createData: '2000-10-10',
-        members: [],
-      },
+      teamData: null,
       delayOn: true,
     }
   },
 
   created() {
-    setTimeout(this.delayfinish, 200);
+    setTimeout(this.delayfinish, 300);
 
     let formData = new FormData;
     formData.append("teamid", this.teamId)
@@ -134,21 +131,20 @@ export default {
     .post('/team/teamInfo', formData)
     .then((res) => {
       this.teamData = res.data.teamdate
+      // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
+      var postDate = new Date(this.teamData.createDate)
+      this.diffTime = this.dateCheck(postDate);
+
+      if (this.teamData.members.length == 0) {
+        this.teamExist = false
+      } else {
+        this.teamExist = true
+      }
     })
     .catch((err) => {
       console.log(err)
     })
     
-    // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
-    var postDate = new Date(this.teamData.createDate)
-    this.diffTime = this.dateCheck(postDate);
-
-    if (this.teamData.members.length == 0) {
-      this.teamExist = false
-    } else {
-      this.teamExist = true
-    }
-
   },
 
   methods: {
