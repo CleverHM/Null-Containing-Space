@@ -5,19 +5,23 @@
         <div class="img-area d-flex align-content-center">
             <img v-if="imgExist" :src="'data:image/png;base64, ' + teamData.leaderNickname.file" alt="user-image">
             <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
+            <div class="leaderImg"></div>
         </div>
 
         <!-- 유저 정보 -->
         <div class="info-area">
-
+            <!-- 팀이름 -->
+            <div class="texttags">
+                {{ teamData.title }}
+            </div>
             <!-- 유저 이름 -->
             <div class="texttags">
                 팀장: {{ teamData.leaderNickname.nickname }}
             </div>
 
             <!-- 버튼 영역 -->
-            <div class="btn-area d-flex justify-content-center">
-                <button style="background-color: #ACCCC4;" @click="goTeamInfo">팀 정보보기</button>
+            <div class="btn-area">
+                <button class="btn-style" style="background-color: #ACCCC4; width: 100%;" @click="goTeamDetail">팀 정보보기</button>
             </div>
 
         </div>
@@ -45,7 +49,7 @@ export default {
     },
 
     methods: {
-        goTeamInfo() {
+        goTeamDetail() {
             this.$router.push({ name: 'TeamInfo', params: { teamId: this.teamData.teamid }})
         }
     },
@@ -54,6 +58,9 @@ export default {
 </script>
 
 <style scoped>
+#TeamUser {
+  position: relative;
+}
 .user-area {
     margin: 15px 10px 15px 10px;
     padding: 15px;
@@ -66,6 +73,7 @@ export default {
     display: inline-block;
     margin-top: 5px;
     margin-bottom: 5px;
+    margin-left: 10px;
     width: 90px;
     height: 90px;
     border-radius: 100%;
@@ -77,14 +85,25 @@ export default {
     width: 100%;
 }
 
+.leaderImg {
+  position: absolute;
+  top: 16px;
+  left: 30px;
+  width: 99px;
+  height: 99px;
+  border-radius: 100%;
+  border: 7px solid #FFCC33;
+}
+
 .info-area {
-    width: 65%;
+    width: 55%;
     margin-left: 20px;
 }
 
 
 .texttags {
-  margin: 10px;
+  margin-bottom: 7px;
+  margin-left: 8px;
   font-size: 14px;
   font-weight: bold;
   color: #464545;
@@ -95,10 +114,12 @@ export default {
     margin-left: 5px;
 }
 
-.btn-area > button {
+.btn-style {
     padding: 6px;
     color: white;
     border-radius: 10px;
 }
+
+
 
 </style>

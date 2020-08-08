@@ -1,8 +1,9 @@
 <template>
     <div style="top:0">
-        <Navbar :showMenu="showMenu" @toggleShow="toggleMenu"></Navbar>
+        <Navbar />
         <subNav></subNav>
-        <div id="profile" @click="noshowMenu">
+
+        <div id="profile">
             <div id="baseProfile" style="height: 150px;">
                 <!-- 프로필 이미지  -->
                 <div class="profileImg">
@@ -44,49 +45,49 @@
               <br><p>No GIT</p>
             </button>
 
-
             <!-- 개발 능력 !-->
-            <tabs
-          :tabs="tabs"
-          :currentTab="currentTab"
-          :wrapper-class="'default-tabs'"
-          :tab-class="'default-tabs__item'"
-          :tab-active-class="'default-tabs__item_active'"
-          :line-class="'default-tabs__active-line'"
-          @onClick="handleClick"
-        />
-        <div class="content">
-          <div v-if="currentTab === 'tab1'">
+            <nav class="default-tabs">
+              <div class="default-tabs-item tabs-item_active" @click="handleClick">
+                <button> Introduce </button> <!-- active tab -->
+                <div class="default-tabs-active-line"></div>
+              </div>
+              <div class="default-tabs-item" @click="handleClick">
+                <button> Ability </button>
+                <div class="default-tabs-active-line"></div>
+              </div>
+            </nav>
             
-            <!-- 자기소개 !-->
-            <div id="introduce" class="my-3" v-if="User.Introduce">
-            {{ User.Introduce }}
-            </div>
-            <div id="introduce" class="my-3" v-else>
-            자기소개가 없습니다. <br>
-            회원정보수정에서 자기소개를 추가해주세요.
+            <div class="content">
+              <div v-if="currentTab === 'Introduce'">
+                
+                <!-- 자기소개 !-->
+                <div id="introduce" class="my-3" v-if="User.Introduce">
+                {{ User.Introduce }}
+                </div>
+                <div id="introduce" class="my-3" v-else>
+                자기소개가 없습니다. <br>
+                회원정보수정에서 자기소개를 추가해주세요.
+                </div>
+
+                <!-- 태그 뱃지 !-->
+                <TagBadge></TagBadge>
+                <TagBadge></TagBadge>
+                <TagBadge></TagBadge>
+
+              </div>
+              <div v-if="currentTab === 'Ability'" >
+                <table>
+                <tr class="tableHeader">
+                  <th> 종류 </th>
+                  <th> 능력 </th>
+                </tr>
+                <profileAbility :abilityname="abilities[n]" :ability="User.ability[n]" :id="n" :key="n" v-for="n in 15"></profileAbility>
+              </table>
+                
+              </div>
             </div>
 
-            <!-- 태그 뱃지 !-->
-            <TagBadge></TagBadge>
-            <TagBadge></TagBadge>
-            <TagBadge></TagBadge>
-
-          </div>
-          <div v-if="currentTab === 'tab2'" >
-            <table>
-            <tr class="tableHeader">
-              <th> 종류 </th>
-              <th> 능력 </th>
-            </tr>
-            <profileAbility :name="abilities[n]" :ability="User.ability[n]" :id="n" :key="n" v-for="n in 15"></profileAbility>
-          </table>
-            
-          </div>
-        
         </div>
-
-    </div>
     </div>
 </template>
 
@@ -94,23 +95,11 @@
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
 import TagBadge from '../../components/common/TagBadge.vue'
-import TabComponent from '../../components/common/TabComponent.vue'
-import Tabs from 'vue-tabs-with-active-line';
 import profileAbility from '../../components/user/profileAbility.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
 console.log(storage.getItem("token"))
-// var User = JSON.parse(storage.getItem('User'));
-// console.log(User)
-const TABS = [{
-    title: 'Introduce',
-    value: 'tab1',
-    },{
-    title: 'Ability',
-    value: 'tab2',
-    },
-];
 
 export default {
     name: "profile",
@@ -118,7 +107,6 @@ export default {
         Navbar,
         subNav,
         TagBadge,
-        Tabs,
         profileAbility,
     },
     created() {
@@ -140,10 +128,7 @@ export default {
             },
             isMe: false,
             isFollow: false,
-            // navigation dropdown
-            showMenu: false,
-            tabs: TABS,
-            currentTab: 'tab1',
+            currentTab: 'Introduce',
             abilities: [
                 { name: 'cpp',
                     id: 0},
@@ -221,14 +206,9 @@ export default {
           .catch(() => {})
 
         },
-        handleClick(newTab) {
-          this.currentTab = newTab;
-        },
-        noshowMenu() {
-          this.showMenu = false;
-        },
-        toggleMenu(isshow) {
-          this.showMenu = isshow;
+        handleClick(event) {
+          console.log(event.target.innerText)
+          this.currentTab = event.target.innerText;
         },
         goUserModify() {
           this.$router.push({name: 'UserModify'})
@@ -304,58 +284,66 @@ export default {
   white-space: normal;
   word-break: break-all;
 }
-.tabs {
+
+.default-tabs {
   position: relative;
-  top: 20px;
+  /* margin: 0 auto; */
 }
-
-.tabs__item {
-  display: inline-block;
-  margin: 0 5px;
-  padding: 10px;
-  padding-bottom: 8px;
-  font-size: 16px;
-  letter-spacing: 0.8px;
-  color: gray;
-  text-decoration: none;
-  border: none;
-  background-color: transparent;
-  border-bottom: 2px solid transparent;
+.default-tabs-item {
+    display: inline-block;
+    padding-bottom: 8px;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    color: gray;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    width: 50%;
+}
+.default-tabs-item button {
   cursor: pointer;
-  transition: all 0.25s;
+  border: 0;
+  outline: 0;
+}
+.default-tabs-item_active {
+      color: black;
+}
+.default-tabs-item:hover {
+      border-bottom: 2px solid gray;
+      color: black;
+}
+.default-tabs-item:focus {
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
+.default-tabs-item:first-child {
+      margin-left: 0;
+}
+.default-tabs-item:last-child {
+      margin-right: 0;
+}
+.default-tabs-active-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: black;
+    /* -webkit-transition: width 0.4s ease, -webkit-transform 0.4s ease;
+    transition: width 0.4s ease, -webkit-transform 0.4s ease;
+    transition: transform 0.4s ease, width 0.4s ease;
+    transition: transform 0.4s ease, width 0.4s ease, -webkit-transform 0.4s ease; */
+}
+.content {
+  margin-top: 30px;
+  font-size: 20px;
 }
 
-.tabs__item_active {
-  color: black;
-}
-
-.tabs__item:hover {
-  border-bottom: 2px solid gray;
-  color: black;
-}
-
-.tabs__item:focus {
-  outline: none;
-  border-bottom: 2px solid gray;
-  color: black;
-}
-
-.tabs__item:first-child {
-  margin-left: 0;
-}
-
-.tabs__item:last-child {
-  margin-right: 0;
-}
-
-.tabs__active-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background-color: black;
-  transition: transform 0.4s ease, width 0.4s ease;
-}
 /* ability tab */
 th{
   padding-bottom: 10px;
