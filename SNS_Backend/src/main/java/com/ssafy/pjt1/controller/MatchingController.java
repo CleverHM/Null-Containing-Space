@@ -79,9 +79,11 @@ public class MatchingController {
 		
 		for(Integer i : matching_user_id) System.out.println("추천된 userid : " + i);
 		
+		Optional<User> u2;
+		
 		for(Integer i : matching_user_id) {
-			u = userservice.findthree(i);
-			userlist.add(u.get());
+			u2 = userservice.findthree(i);
+			userlist.add(u2.get());
 		}
 		
 		List<MatchingMemberData> res = new LinkedList<>();
@@ -102,7 +104,10 @@ public class MatchingController {
 				res.add(new MatchingMemberData(userlist.get(i).getUid(), userlist.get(i).getNickname(), userlist.get(i).getPreferProject(), trash));
 			}
 		}
-		
+		System.out.println("유저 uid : " + u.get().getUid());
+		System.out.println("유저 이메일 : " + u.get().getEmail());
+		System.out.println("유저 닉네임 : " + u.get().getNickname());
+		System.out.println("매칭 돌린 애가 리더인지 아닌지 : " + u.get().getLeader());
 		MatchingData res2 = new MatchingData(u.get().getLeader(),res);
 		
 		System.out.println("추천된 팀원 수 : " + res.size());

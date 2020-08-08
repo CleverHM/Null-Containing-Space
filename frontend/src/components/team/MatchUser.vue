@@ -4,7 +4,7 @@
     <div class="user-area d-flex flex-row">
         <!-- 유저 이미지 -->
         <div class="img-area d-flex align-content-center">
-            <img v-if="imgExist" :src="'data:image/png;base64, ' + memberData.file" alt="user-image">
+            <img v-if="imgExist" :src="'data:image/png;base64, ' + userData.file" alt="user-image">
             <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
         </div>
 
@@ -23,7 +23,7 @@
 
             <!-- 버튼 영역 -->
             <div class="btn-area d-flex justify-content-between">
-                <button style="background-color: #E2DFD8;">팀원 정보보기</button>
+                <button style="background-color: #E2DFD8;" @click="goUserProfile">팀원 정보보기</button>
                 <button style="background-color: #ACCCC4;">팀원 요청</button>
             </div>
 
@@ -35,12 +35,12 @@
 <script>
 export default {
     name: "MatchUser",
-    // props: ['userData'],
+    props: ['userData'],
 
     data() {
         return {
             userImg: false,
-            userData: {
+            userData2: {
                 nickname: '알골마스터',
                 file: null,
                 preferProject: 1,
@@ -69,7 +69,9 @@ export default {
     },
 
     methods: {
-
+        goUserProfile() {
+            this.$router.push({ name: 'profile', params: { nickname: this.userData.nickname }})
+        }
     },
 
 }
