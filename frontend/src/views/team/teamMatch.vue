@@ -13,7 +13,7 @@
                 <div v-if="matchNodetail">
                     <!-- 매칭 간략화 화면 -->
                     <div class="memberImg-area d-flex justify-content-center">
-                        <memberImg :memberData="memberData" :isLeader="false"></memberImg>
+                        <memberImg v-for="member in members" :key="member.nickname" :memberData="member" :isLeader="false"></memberImg>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="btnForm" @click="memberDetailOn">확인</button>
@@ -24,11 +24,7 @@
 
                 <div v-else>
                     <div class="match-area">
-                        <MatchUser></MatchUser>
-                        <MatchUser></MatchUser>
-                        <MatchUser></MatchUser>
-                        <MatchUser></MatchUser>
-                        <MatchUser></MatchUser>
+                        <MatchUser v-for="member in members" :key="member.nickname" :memeberData="member"></MatchUser>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="btnForm" @click="reMatchOn">다시 팀원 매칭하기</button>
@@ -44,6 +40,11 @@ import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
 import memberImg from '../../components/team/memberImg.vue'
 import MatchUser from '../../components/team/MatchUser.vue'
+import httpCommon from '../../util/http-common'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
     name: 'teamMatch',
@@ -53,20 +54,24 @@ export default {
         memberImg,
         MatchUser,
     },
+    props: ["isLeader"],
 
     data() {
         return {
-            loadingOn: false,
+            loadingOn: true,
             matchNodetail: true,
-            memberData: {
-                file: null,
-                nickname: '알골마스터',
-            }
+            members: null,
         }
     },
 
     created() {
         this.isLoading();
+        if (this.isLeader == true) {
+            this.MatchReceive();
+        } else {
+            alert('팀장만 가능합니다.')
+            this.$router.push({ name: 'Main'})
+        }
     },
 
     methods: {
@@ -92,6 +97,20 @@ export default {
             this.loadingOn = true;
             this.matchNodetail = true;
             this.isLoading();
+        },
+
+        MatchReceive() {
+            let formData = new FormData;
+            formData.append("nickname", storage.getItem("NickName"));
+
+            http
+            .post('/match/teammember', formData)
+            .then((res) => {
+                this.members = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
 
     }

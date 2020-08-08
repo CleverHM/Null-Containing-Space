@@ -1,37 +1,30 @@
 package com.ssafy.pjt1.model;
 
+import java.util.List;
+
 public class MatchingData {
-	private int userid;
-	private String nickname;
-	private byte[] profile;
+	private boolean leader;
+	private List<MatchingMemberData> member;
 	
-	public MatchingData(int userid, String nickname, byte[] profile) {
-		this.userid = userid;
-		this.nickname = nickname;
-		this.profile = profile;
+	public MatchingData(boolean leader, List<MatchingMemberData> member) {
+		super();
+		this.leader = leader;
+		this.member = member;
 	}
 
-	public int getUserid() {
-		return userid;
+	public boolean isLeader() {
+		return leader;
 	}
 
-	public void setUserid(int userid) {
-		this.userid = userid;
+	public void setLeader(boolean leader) {
+		this.leader = leader;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public List<MatchingMemberData> getMember() {
+		return member;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setMember(List<MatchingMemberData> member) {
+		this.member = member;
 	}
-
-	public byte[] getProfile() {
-		return profile;
-	}
-
-	public void setProfile(byte[] profile) {
-		this.profile = profile;
-	} 
 }

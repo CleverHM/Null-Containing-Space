@@ -173,7 +173,8 @@ export default [
     {
         path : '/team/match',
         name : 'teamMatch',
-        component : teamMatch
+        component : teamMatch,
+        props: true,
     },
     {
         path: '/team/subject',
