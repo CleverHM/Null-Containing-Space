@@ -93,7 +93,9 @@ public class PostController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+
+		 String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		//String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
@@ -245,6 +247,7 @@ public class PostController {
 		File destinationFile;
 		String destinationFileName;
 		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+        //        String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;

@@ -1,0 +1,47 @@
+version: "3.7"
+services:
+  core-server:
+    build:
+      context: ./SNS_Backend
+      dockerfile: Dockerfie
+    image: core-server
+    container_name: core-server
+    ports:
+      - "8080:8080"
+    networks:
+      - sns-mariadb
+      - vue-sns
+    depends_on:
+      - mariadb
+    command: ["./wait-for-it.sh", "mariadb:3306", "20", "python", "app.py"]
+
+  client:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: client
+    container_name: client
+    ports:
+      - "80:80"
+    command: /bin/sh -c "npm run serve"
+    networks:
+      - vue-sns
+    depends_on:
+      - core-server
+
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - sns-mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=sns
+
+
+networks:
+  sns-mariadb:
+  vue-sns:

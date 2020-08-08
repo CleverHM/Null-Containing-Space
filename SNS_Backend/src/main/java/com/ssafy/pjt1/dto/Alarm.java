@@ -37,6 +37,10 @@ public class Alarm {
 	@Column(updatable = false)
 	private Date createDate;	
 	
+	public Alarm() {
+		
+	}
+	
 	public Alarm( String content, String toNickname) {
 		this.content = content;
 		this.toNickname = toNickname;
