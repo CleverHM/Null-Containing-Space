@@ -25,9 +25,10 @@ public class TeamData {
 		this.leaderNickname = leader;
 	}
 	
-	public TeamData(int teamid, TeamPersonData leaderNickname) {
+	public TeamData(int teamid, TeamPersonData leaderNickname, String title) {
 		this.teamid = teamid;
 		this.leaderNickname = leaderNickname;
+		this.title = title;
 	}
 
 	public int getTeamid() {

@@ -41,8 +41,8 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 
-//@CrossOrigin(origins = { "http://localhost:3000" })
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = "*")
 
 @RestController
 public class TeamController {
@@ -180,7 +180,7 @@ public class TeamController {
 
 								// teamid 저장
 								System.out.println(t.getTeamid() + " " + leaderNickname.getNickname());
-								TeamData TeamData1 = new TeamData(t.getTeamid(), leaderNickname);
+								TeamData TeamData1 = new TeamData(t.getTeamid(), leaderNickname, t.getTitle());
 								teamdatas.add(TeamData1);
 
 								break end;
