@@ -16,7 +16,7 @@
         :teamData="team"/>
     </div>
 
-    <button class="closeTeam">팀원 시작 취소</button>
+    <button class="closeTeam" @click="closeTeam">팀원 시작 취소</button>
   
   </div>
 </template>
@@ -56,7 +56,9 @@ export default {
     },
     
     methods: {
-
+      closeTeam() {
+        console.log('취소취소')
+      },
     },
 }
 </script>
