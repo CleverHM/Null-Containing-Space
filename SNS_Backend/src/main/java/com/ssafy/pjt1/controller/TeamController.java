@@ -180,7 +180,7 @@ public class TeamController {
 
 								// teamid 저장
 								System.out.println(t.getTeamid() + " " + leaderNickname.getNickname());
-								TeamData TeamData1 = new TeamData(t.getTeamid(), leaderNickname);
+								TeamData TeamData1 = new TeamData(t.getTeamid(), leaderNickname, t.getTitle());
 								teamdatas.add(TeamData1);
 
 								break end;

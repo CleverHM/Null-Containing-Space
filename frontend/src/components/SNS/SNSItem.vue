@@ -109,6 +109,7 @@ export default {
 
     // 좋아요 누름
     likeButton(event) {
+
       
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
@@ -121,6 +122,7 @@ export default {
         this.article.likeFlag = res.data.flag
       })
       .catch((err) => {
+        console.log('좋아요')
         console.log(err)
       })
     },

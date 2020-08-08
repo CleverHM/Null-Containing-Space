@@ -59,25 +59,30 @@ public class MatchingServiceImpl implements MatchingService{
 		List<User> users2 = new ArrayList<>();
 		
 		
-		// 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
+		// 매칭시스템에 등록이 되었는지 아닌지 분류, 특정한 프로젝트를 선호하는 사람과 선호하지 않는 사람 분류(1차)
 		for(User u : tusers) 
 			if(u.isMatchok() == true) {
 				if(preferProject != u.getPreferProject()) users.add(u); 
 				else users2.add(u);
 			}
 		
-		// 선호하는 사람들 먼저 선별
-		pick1(users2);
+		if(users2.size() < 5) {
+			for(User u : users2)  matching_user_id.add(u.getUid());
+		}// 선호하는 사람들 먼저 선별
+		else pick1(users2);
 
-		// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
-		users = pick2(users);
+		if(users.size() < 5) {
+			for(User u : users)  matching_user_id.add(u.getUid());
+		}// 각 언어를 hash key값으로 해서 사용자들을 각 언어의 수준에따라 정렬 (2차)
+		else { 
+			users = pick2(users);
 
-		//언어들 중에서 더 잘하는 사람을 선별(3차)
-		pick3(preferTech);	
-		
-		//비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
-		pick4();
-		
+			// 언어들 중에서 더 잘하는 사람을 선별(3차)
+			pick3(preferTech);
+
+			// 비슷한 사람들이 있을 경우 매번 다른 사람들이 선별(4차)
+			pick4();
+		}
 		
 		return matching_user_id; 
 	}
@@ -100,14 +105,16 @@ public class MatchingServiceImpl implements MatchingService{
 			else {
 				int a[] = new int[total];
 				
-				for(int j=0; j<n; j++) {
-					a[i] = (int)(Math.random()*n);
+				for(int j=0; j<total; j++) {
+					a[j] = (int)(Math.random()*n);
 					
 					for(int k=0; k<j; k++) 
-						if(a[i] == a[j]) j--;
+						if(a[j] == a[k]) j--;
 					
 				}
-				for(int j=0;j<total;j++) matching_user_id.add(pricnt[i].get(a[j]));
+				for(int j=0; j<total; j++) matching_user_id.add(pricnt[i].get(a[j]));
+			
+				total = 0;
 			}
 		}
 	}
@@ -263,7 +270,7 @@ public class MatchingServiceImpl implements MatchingService{
 		
 		int a[] = new int[total];
 		
-		for(int i=0; i<n; i++) {
+		for(int i=0; i<total; i++) {
 			a[i] = (int)(Math.random()*n);
 			
 			for(int j=0; j<i; j++) 
