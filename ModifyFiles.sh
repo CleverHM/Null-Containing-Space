@@ -15,8 +15,8 @@ else
 	echo "Start as LOCAL"
 	# package.json
 	echo "frontend/package.json"
-	sed -i '6s/.*/    "serve": "vue-cli-service serve --host localhost --port 3000 --open",/g' frontend/package.json
 	sed -i '6d' frontend/package.json
+	sed -i '6s/.*/    "serve": "vue-cli-service serve --host localhost --port 3000 --open",/g' frontend/package.json
 	# src/util/http-common.js
 	echo "src/util/http-common.js"
 	sed -i '5s/.*/    baseURL:"http:\/\/localhost:8080", /g' frontend/src/util/http-common.js
