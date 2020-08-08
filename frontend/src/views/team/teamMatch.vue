@@ -12,16 +12,8 @@
             <div v-else>
                 <div v-if="matchNodetail">
                     <!-- 매칭 간략화 화면 -->
-                    <div class="memberImg-area">
-                        <div class="d-flex flex-row justify-content-center">
-                            <memberImg :memberData="memberData" :isLeader="false"></memberImg>
-                            <memberImg :memberData="memberData" :isLeader="false"></memberImg>
-                        </div>
-                        <div class="d-flex flex-row justify-content-center">
-                            <memberImg :memberData="memberData" :isLeader="false"></memberImg>
-                            <memberImg :memberData="memberData" :isLeader="false"></memberImg>
-                            <memberImg :memberData="memberData" :isLeader="false"></memberImg>
-                        </div>
+                    <div class="memberImg-area d-flex justify-content-center">
+                        <memberImg :memberData="memberData" :isLeader="false"></memberImg>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="btnForm" @click="memberDetailOn">확인</button>
