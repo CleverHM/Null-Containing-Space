@@ -36,9 +36,7 @@
                 팀장
               </div>
               <div class="team-member-area">
-                <router-link :to="{ name: 'profile', params: { nickname: teamData.leaderNickname.nickname }}">
                   <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
-                </router-link>
               </div>
             </div>
             
@@ -47,7 +45,7 @@
                 팀원
               </div>
               <div class="team-member-area d-flex flex-row align-items-center">
-                  <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2" @click="goUserProfile"></memberImg>
+                  <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false"></memberImg>
               </div>
             </div>
           </div>
@@ -67,7 +65,7 @@
 
       <!-- 팀원 매칭 버튼 -->
       <div class="submit-area d-flex justify-content-center">
-        <button v-if="ifLeader" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
+        <button class="submit-button" @click="teamSignup">팀 가입 신청</button>
       </div>
     </div>
   </div>
@@ -187,14 +185,13 @@ export default {
       }
     },
 
-    // 유저 페이지 이동
-    goUserProfile() {
-      console.log('ㅠㅠㅠㅠ')
+    delayfinish(){
+      this.delayOn = false;
     },
 
-    delayfinish(){
-        this.delayOn = false;
-    },
+    teamSignup() {
+      console.log('가입신청')
+    }
 
   },
 

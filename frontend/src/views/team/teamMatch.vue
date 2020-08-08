@@ -64,7 +64,7 @@ export default {
 
     data() {
         return {
-            loadingOn: true,
+            loadingOn: false,
             matchNodetail: true,
             memberData: {
                 file: null,
