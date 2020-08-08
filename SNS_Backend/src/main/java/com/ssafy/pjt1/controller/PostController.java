@@ -93,7 +93,11 @@ public class PostController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
+<<<<<<< HEAD
 		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+=======
+		 String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+>>>>>>> feature/khh/backend
 		//String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
