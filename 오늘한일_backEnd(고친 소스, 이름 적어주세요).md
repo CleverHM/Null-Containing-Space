@@ -148,6 +148,7 @@
 
 - 조대흠
 - 박상현
+  - MatchingController 오류 수정 및 vue와 연결(Spring)
 - 김호한
   - 램덤 유저 Controller 생성 (Spring) 
   - 알람 Dto ,Dao, Service 구현 (Spring)
