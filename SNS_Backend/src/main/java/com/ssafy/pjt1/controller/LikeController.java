@@ -50,6 +50,8 @@ public class LikeController {
     public Object userLikePost(@Valid @RequestParam String email, @Valid @RequestParam int postid) {
         int likeFlag = 0;
         
+        System.out.println("adasdasdasdaqweqwrqsafvasqvavevwevewv");
+        
         // 좋아요 버튼 or 좋아요 취소 버튼 눌린 게시물을 들고옴.
         Optional<User> tempU = userservice.findone(email);
         User user = tempU.get();
