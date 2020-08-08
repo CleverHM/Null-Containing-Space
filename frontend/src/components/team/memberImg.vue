@@ -76,7 +76,7 @@ export default {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
   bottom: 7px;
-  width: 100px;
+  width: 100%;
   background-color: rgba( 255, 255, 255, 0.5 );
   white-space: nowrap; 
   overflow: hidden;
