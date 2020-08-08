@@ -1,6 +1,12 @@
 package com.ssafy.pjt1.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.FeedData;
+import com.ssafy.pjt1.model.MatchingData;
 import com.ssafy.pjt1.service.MatchingService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -40,14 +48,13 @@ public class MatchingController {
 	
 	@PostMapping("/match/teammember")
 	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public void matchingAlgo(@Valid @RequestParam String nickname) {
+	public List<MatchingData> matchingAlgo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
 		List<String> preferTech = new ArrayList<>();
 		List<User> userlist = new ArrayList<>();
 		
 		Optional<User> u = userservice.findtwo(nickname);
 		
 		Team team = u.get().getTeam();
-		
 		
 		if(team.isBack_cpp()==true) preferTech.add("cpp");
 		if(team.isBack_java()==true) preferTech.add("java");
@@ -66,12 +73,38 @@ public class MatchingController {
 		if(team.getAlgo()==true) preferTech.add("algo");
 		
 		int preferProject = team.getPreferProject();
-		List<Integer> matching_user_id = matchingservice.match(preferProject, preferTech);
+		List<Integer> matching_user_id = new ArrayList<>();
+		matching_user_id = matchingservice.match(preferProject, preferTech);
+		
+		for(Integer i : matching_user_id) System.out.println("추천된 userid : " + i);
 		
 		for(Integer i : matching_user_id) {
 			u = userservice.findthree(i);
 			userlist.add(u.get());
 		}
 		
+		List<MatchingData> res = new LinkedList<MatchingData>();
+		
+		for (int i = 0; i < userlist.size(); i++) {
+			byte[] trash = null;
+
+			File result = new File(userlist.get(i).getProfile().getFileurl()+ userlist.get(i).getProfile().getFilename());
+
+			if (result.exists()) {
+				System.out.println("프로필 사진 있음");
+				InputStream inputStream = new FileInputStream(userlist.get(i).getProfile().getFileurl() + userlist.get(i).getProfile().getFilename());
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+				
+				res.add(new MatchingData(userlist.get(i).getUid(), userlist.get(i).getNickname(), out));
+			}
+			else {
+				res.add(new MatchingData(userlist.get(i).getUid(), userlist.get(i).getNickname(), trash));
+			}
+		}
+		
+		System.out.println("추천된 팀원 수 : " + res.size());
+		for(MatchingData r : res)System.out.println(r);
+		
+		return res;
 	}
 }

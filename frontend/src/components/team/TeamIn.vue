@@ -168,7 +168,7 @@ export default {
 
     // 팀 매칭 페이지로 이동
     teamMatchGo() {
-      this.$router.push({ name: 'teamMatch', params: { teamData: this.teamData }})
+      this.$router.push({ name: 'teamMatch', params: { isLeader: true }})
     },
 
     // 유저 페이지 이동
