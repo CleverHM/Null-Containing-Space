@@ -59,7 +59,6 @@ import io.swagger.annotations.ApiResponses;
 //@CrossOrigin(origins = { "http://localhost:3000" })
 @CrossOrigin(origins = "*")
 
-
 @RestController
 public class PostController {
 	@Autowired
