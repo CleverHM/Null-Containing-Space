@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TeamData {
+	private int teamid;
 	private Date createDate;
 	private int cnt;
 	private List<TeamPersonData> members;
@@ -24,6 +25,20 @@ public class TeamData {
 		this.leaderNickname = leader;
 	}
 	
+	public TeamData(int teamid, TeamPersonData leaderNickname, String title) {
+		this.teamid = teamid;
+		this.leaderNickname = leaderNickname;
+		this.title = title;
+	}
+
+	public int getTeamid() {
+		return teamid;
+	}
+
+	public void setTeamid(int teamid) {
+		this.teamid = teamid;
+	}
+
 	public List<TeamPersonData> getMembers() {
 		return members;
 	}

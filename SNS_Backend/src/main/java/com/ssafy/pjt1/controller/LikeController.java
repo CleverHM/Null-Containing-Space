@@ -32,7 +32,9 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = "*")
 
 @RestController
 public class LikeController {
@@ -47,6 +49,8 @@ public class LikeController {
     @ApiOperation(value = "게시물 좋아요", notes = "사용자가 게시물을 좋아요 하는 기능을 구현")
     public Object userLikePost(@Valid @RequestParam String email, @Valid @RequestParam int postid) {
         int likeFlag = 0;
+        
+        System.out.println("adasdasdasdaqweqwrqsafvasqvavevwevewv");
         
         // 좋아요 버튼 or 좋아요 취소 버튼 눌린 게시물을 들고옴.
         Optional<User> tempU = userservice.findone(email);

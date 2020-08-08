@@ -25,9 +25,10 @@
         <div class="user-part d-flex flex-row align-items-center justify-content-between">
           <div class="d-flex flex-row align-items-center user-low-part">
             <div class="user-img">
-              <img src="@/assets/images/default_image.png" alt="user_default_image">
+              <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image" @click="goUserProfile">
+              <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image" @click="goUserProfile">
             </div>
-            <div class="user-name">{{ article.userNickname }}</div>
+            <div class="user-name" @click="goUserProfile">{{ article.userNickname }}</div>
             <div class="user-diff-time">{{ article.diffTime }}</div>
           </div>
           <div class="user-count">
@@ -127,9 +128,11 @@ export default {
         title: "",
         userEmail:"",
         userNickname: "",
+        userFile: "",
         viewCount: 0,
         diffTime: "",
       },
+      userImg: false,
       comment: {
         content: "",
       },
@@ -179,6 +182,12 @@ export default {
 
         // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
         this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+
+        if (this.article.userFile == null) {
+          this.userImg = false
+        } else {
+          this.userImg = true
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -286,13 +295,19 @@ export default {
       this.dataReceive();
     },
 
+    
+    // 유저 사진, 닉네임 눌렀을 때 그 유저의 프로필 페이지로 보낸다.
+    goUserProfile() {
+      this.$router.push({ name: 'profile', params: { nickname: this.article.userNickname }});
+    },
+
   }
 }
 
 
 </script>
 
-<style scope>
+<style scoped>
 .feedpage {
   margin: 65px 5px 55px 5px;
   padding: 10px;

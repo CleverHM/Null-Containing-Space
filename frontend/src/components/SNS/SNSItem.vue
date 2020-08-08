@@ -3,13 +3,12 @@
     <!-- user 부분 -->
     <div class="user-part d-flex flex-row align-items-center">
       <div class="user-img mr-2">
-        <img src="@/assets/images/default_image.png" alt="user_default_image">
+        <img v-if="!userImg" src="@/assets/images/default_image.png" alt="user_default_image" @click="goUserProfile">
+        <img :src="'data:image/png;base64, ' + article.userFile" alt="user-image" @click="goUserProfile">
       </div>
       <div class="flex-column">
-        <div class="user-name" style="color: #464545;">
-          <router-link :to="{ name: 'profile', params: { nickname: article.userName }}" style="color: #464545;">
+        <div class="user-name" style="color: #464545;" @click="goUserProfile">
             {{ article.userName }}
-          </router-link>
         </div>
         <div class="date-diff">{{ diffTime }}</div>
       </div>
@@ -72,16 +71,24 @@ export default {
 
   created() {
     this.likeCheck();
+    console.log(this.article)
 
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.article.date)
     this.diffTime = this.dateCheck(postDate);
+
+    if (this.article.userFile == null) {
+      this.userImg = false
+    } else {
+      this.userImg = true
+    }
   },
   
   data() {
     return {
       likeColor: '',
       diffTime: '',
+      userImg: false,
     }
   },
 
@@ -102,6 +109,7 @@ export default {
 
     // 좋아요 누름
     likeButton(event) {
+
       
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
@@ -114,6 +122,7 @@ export default {
         this.article.likeFlag = res.data.flag
       })
       .catch((err) => {
+        console.log('좋아요')
         console.log(err)
       })
     },
@@ -150,6 +159,11 @@ export default {
       } else {
         return '0초 전'
       }
+    },
+
+    // 유저 사진, 닉네임 눌렀을 때 그 유저의 프로필 페이지로 보낸다.
+    goUserProfile() {
+      this.$router.push({ name: 'profile', params: { nickname: this.article.userName }});
     },
 
   },

@@ -33,10 +33,11 @@ import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
+import TeamInfo from './views/team/TeamInfo.vue'
 
 
 import Components from './views/Components.vue'
-// import test from './views/test.vue'
+import test from './views/test.vue'
 
 export default [
     // User
@@ -86,7 +87,7 @@ export default [
         component : getAbility
     },
     {
-        path : '/user/profile',
+        path : '/user/profile/:nickname',
         name : 'profile',
         component : profile,
         props: true,
@@ -186,6 +187,12 @@ export default [
         props: true,
 
     },
+    {
+        path: '/team/info/:teamId',
+        name: 'TeamInfo',
+        component: TeamInfo,
+        props: true,
+    },
 
 
     // Component
@@ -193,5 +200,11 @@ export default [
         path : '/components',
         name : 'Components',
         component : Components
+    },
+    //test
+    {
+        path : '/test',
+        name : 'test',
+        component : test
     },
 ]

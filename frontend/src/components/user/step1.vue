@@ -39,19 +39,36 @@ export default {
   methods:{
     // 데이터베이스에 이메일이 있는지 확인하고 다음페이지로 이동시키기
     confirmEmail() {
-        if (this.email.match(EmailregExp) != null){
-          http
-          .post("/account/emailDuplicate", this.email)
-          .then(({data}) => {
-            this.$emit("CompleteStep1", this.email)
-          })
-          .catch((err) => {
-            this.ErrorMessage = "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요."
-          })
+        // 비밀번호 찾기 페이지
+        if (this.linkName == "findPassword"){
+          if (this.email.match(EmailregExp) != null){
+              http
+              .post("/auth/passwordUpdateMailSend", this.email)
+              .then(({data}) => {
+                  this.$emit("Complete1", this.email)
+              })
+              .catch(() => {
+                  this.ErrorMessage = "존재하지 않는 이메일입니다. 다른 이메일을 입력해주세요."
+              })
+
+          }else {
+            this.ErrorMessage = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
+          }
+        // 회원가입
         }else {
-          this.ErrorMessage = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
-        }
-        
+          if (this.email.match(EmailregExp) != null){
+              http
+              .post("/account/emailDuplicate", this.email)
+              .then(({data}) => {
+                  this.$emit("CompleteStep1", this.email)
+              })
+              .catch((err) => {
+                  this.ErrorMessage = "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요."
+              })
+          }else {
+            this.ErrorMessage = "이메일 형식이 올바르지 않습니다. 다시 입력해주세요."
+          }
+        }      
     },
   }
 };

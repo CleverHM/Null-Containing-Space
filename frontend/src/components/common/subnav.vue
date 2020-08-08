@@ -39,7 +39,17 @@ export default {
             this.$router.push({name: 'Notice'}).catch(()=>{})
         },
         goProfile() {
-            this.$router.push({ name: 'profile', params: { postId: this.nickname }}).catch(()=>{})
+            console.log(".....")
+            this.$router.push({ name: 'profile', params: { nickname: this.nickname }})
+            .then((data) => {
+                console.log("hdsfkdflwkej")
+                location.reload()
+            })
+            .catch((err)=>{
+                console.log(err)
+                console.log("please go")
+                location.reload()
+            })
         },
         
     }
@@ -49,6 +59,7 @@ export default {
 
 <style scoped>
 .btn-group{
+    z-index: 1000;
     height: 50px;
     width: 100%;
     position: fixed;

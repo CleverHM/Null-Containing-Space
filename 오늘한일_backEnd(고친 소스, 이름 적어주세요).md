@@ -123,3 +123,32 @@
 - 김호한
   - Team Create, Delete, join 구현(Spring)
   - 이메일 중복 체크 구현(Spring)
+
+## 2020. 08. 07
+
+- 조대흠
+  - 서버 배포 작업
+  - vue, spring, mariadb 이미지화
+  - docker 컨테이너에 삽입
+  - dockerfile 및 docker-compose.yml 파일 작성
+  - docker를 통해 배포
+- 박상현
+  - 서버 배포 작업
+  - vue, spring, mariadb 이미지화
+  - docker 컨테이너에 삽입
+  - dockerfile 및 docker-compose.yml 파일 작성
+  - docker를 통해 배포
+- 김호한
+  - 팀원으로 등록하기 구현(Spring)
+  - 팀이 없고 팀원으로 등록한경우 선호 프로젝트 띄우기 기능 구현(Spring)
+  - 비밀번호 이전꺼랑 같으니지 체크 하는 기능 구현(Spring)
+  - 램덤 유저 Controller 생성(Spring) -> 덜구현
+
+## 2020. 08. 08
+
+- 조대흠
+- 박상현
+- 김호한
+  - 램덤 유저 Controller 생성 (Spring) 
+  - 알람 Dto ,Dao, Service 구현 (Spring)
+  - 알람 보내기, 내가 받은 알람 목록 보기 구현 (Spring)

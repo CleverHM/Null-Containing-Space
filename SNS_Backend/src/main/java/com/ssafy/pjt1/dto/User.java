@@ -1,6 +1,7 @@
 package com.ssafy.pjt1.dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,6 +62,9 @@ public class User {
 		
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Alarm> alarms = new HashSet<Alarm>();
 		
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ABILITY_ID")
@@ -77,7 +81,7 @@ public class User {
 
 	@CreationTimestamp
 	@Column(updatable = false)
-	private LocalDateTime createDate;
+	private Date createDate;
 
 	public User() {
 
@@ -124,7 +128,7 @@ public class User {
 	public User(int uid, String nickname, String password, String email, String name, String tel, int age,
 			boolean gender, String gitaddr, String blogaddr, String intro, Set<UserFollow> followings,
 			Set<UserFollow> followers, Set<TagFollow> tagfollows, Set<Post> posts, Set<PostLike> postlikes,
-			LocalDateTime createDate) {
+			Date createDate) {
 		this.uid = uid;
 		this.nickname = nickname;
 		this.password = password;
@@ -143,8 +147,31 @@ public class User {
 		this.postlikes = postlikes;
 		this.createDate = createDate;
 	}
-
 	
+	public Set<Alarm> getAlarms() {
+		return alarms;
+	}
+
+	public void setAlarms(Set<Alarm> alarms) {
+		this.alarms = alarms;
+	}
+
+	public Set<PostLike> getPostlikes() {
+		return postlikes;
+	}
+
+	public void setPostlikes(Set<PostLike> postlikes) {
+		this.postlikes = postlikes;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
 	public int getPreferProject() {
 		return preferProject;
 	}

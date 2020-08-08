@@ -8,6 +8,14 @@
                 <input v-model="team.title" id="title" placeholder="프로젝트 팀 이름(3글자 이상 입력해주세요)" type="text" />
             </div>
 
+            <!-- 프로젝트 인원 -->
+            <div class="cnt-area">
+                인원
+                <b-icon-chevron-down scale="1.2" font-scale="1.5" class="cnt-down" @click="cntDown"></b-icon-chevron-down>
+                <div>{{ team.cnt }}</div>
+                <b-icon-chevron-up scale="1.2" font-scale="1.5" class="cnt-up" @click="cntUp"></b-icon-chevron-up>
+            </div>
+
             <!-- 프로젝트 기술 -->
             <div class="team-use">
                 프로젝트 사용 기술
@@ -50,10 +58,10 @@
                         프로젝트 요약
                     </div>
                     <div style="font-weight: lighter; font-size:13px;">
-                        {{ team.content.length }}/
+                        {{ team.intro.length }}/
                     </div>
                 </div>
-                <textarea class="d-flex flex-fill" v-model="team.content" placeholder="프로젝트와 관련된 내용을 적어주세요."/>
+                <textarea class="d-flex flex-fill" v-model="team.intro" placeholder="프로젝트와 관련된 내용을 적어주세요."/>
             </div>
 
             <div class="d-flex justify-content-center">
@@ -68,6 +76,10 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
     name: "createTeam",
@@ -89,7 +101,8 @@ export default {
                 clicktech: [
                     [], [], [], [],
                 ],
-                content: '',
+                cnt: 5,
+                intro: '',
                 techs: [
                     ['cpp', 'java', 'python', 'php',],
                     ['html', 'css', 'javascript', ],
@@ -167,6 +180,20 @@ export default {
             }
         },
 
+        // 인원 수 위
+        cntUp () {
+            this.team.cnt = this.team.cnt + 1;
+        },
+
+        // 인원 수 아래
+        cntDown () {
+            if (this.team.cnt == 1) {
+                console.log('안됨')
+            } else {
+                this.team.cnt = this.team.cnt - 1;
+            }
+        },
+
         // 안 됨...
         // clickAll(event) {
         //     var cidx = Number(event.target.parentElement.id.split('^')[0] - 1)
@@ -233,15 +260,26 @@ export default {
             // 2. 원래 ability의 algo가 있으므로 algo는 true로 보내준다.
             techList = techList.concat(true)
 
-            console.log(techList)
             // 보내줘야할 데이터들을 formData 안에 넣는다.
             let formData = new FormData();
+            formData.append("nickname", storage.getItem("NickName"));
             formData.append("title", this.team.title);
-            formData.append("subject", this.subjectCheck);
-            formData.append("tech", techList);
-            formData.append("content", this.team.content)
-            
-        }
+            formData.append("teamintro", this.team.intro);
+            formData.append("prePro", this.subjectCheck);
+            formData.append("preTech", techList);
+            formData.append("cnt", this.team.cnt);
+
+            http
+            .post("/team/create", formData)
+            .then((res) => {
+                alert('팀 개설이 완료되었습니다.')
+                this.$router.push({ name: 'Main' })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+        },
         
     }
 
@@ -276,6 +314,34 @@ export default {
     font-weight: normal;
 }
 
+.cnt-area {
+    display: inline-block;
+    margin: 10px;
+    color: #464545;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.cnt-area > div {
+    display: inline-block;
+    font-weight: lighter;
+}
+
+.cnt-down {
+    margin: 0px 10px 0px 10px;
+    background-color: #ACCCC4;
+    border-radius: 50%;
+    color: white;
+    padding: 5px;
+}
+
+.cnt-up {
+    margin: 0px 10px 0px 10px;
+    background-color: #ACCCC4;
+    border-radius: 50%;
+    color:white;
+    padding: 5px;
+}
 
 .button-all {
     display: inline-block;
@@ -341,7 +407,7 @@ input::placeholder {
     margin-bottom: 5px;
 }
 
-.displaytags{
+.displaytags {
     width: 30%;
     padding: 10px;
     font-size: 14px;
