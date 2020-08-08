@@ -23,21 +23,19 @@
 //	void sendMail() throws MessagingException {
 //		//customMailSender.sendMail();
 //		
-//		List<String> back = new ArrayList<>();
-//		List<String> front = new ArrayList<>();
-//		List<String> database = new ArrayList<>();
-//		List<String> frame = new ArrayList<>();
-//		String algo;
-//		back.add("java");
-//		front.add("html");
-//		database.add("sql");
-//		frame.add("vue");
-//		frame.add("spring");
-//		algo="algo";
+//		List<String> preferTech = new ArrayList<>();
+//		preferTech.add("java");
+//		preferTech.add("sql");
+//		preferTech.add("spring");
+//		preferTech.add("vue");
+//		preferTech.add("algo");
 //		
 //		System.out.println("aaaa");
 //		
-//		ms.match(back, front, database, frame, algo);
+//		
+//		List<Integer> useridlist = ms.match(1, preferTech);
+//		System.out.println(useridlist.size());
+//		for(Integer i : useridlist) System.out.println(useridlist.get(i));
 //	}
 //
 //}
