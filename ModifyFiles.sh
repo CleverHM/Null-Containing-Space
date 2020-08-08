@@ -5,7 +5,7 @@ if [ "$isServer" == "" ]; then
 	echo "Start as SERVER"
 	# package.json
 	echo "frontend/package.json"
-	sed -i '6s/.*/    "serve": "vue-cli-service serve --host client --port 81 --open",/g' frontend/package.json
+	sed -i '6s/.*/    "serve": "vue-cli-service serve --host client --port 80 --open",/g' frontend/package.json
 	sed -i '6 i\    "dev": "webpack-dev-server --inline --progress --host 0.0.0.0 --disableHostCheck true --config build/webpack.dev.conf.js",' frontend/package.json
 	# src/util/http-common.js
 	echo "src/util/http-common.js"
