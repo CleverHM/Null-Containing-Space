@@ -32,9 +32,10 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://localhost:3000" })
 
-@RestController
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = "*")
+
 public class LikeController {
 	@Autowired
 	private UserService userservice;

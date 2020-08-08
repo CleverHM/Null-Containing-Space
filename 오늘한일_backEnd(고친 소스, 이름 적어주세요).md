@@ -127,9 +127,17 @@
 ## 2020. 08. 07
 
 - 조대흠
-  - 서버 배포 작업(도커)
+  - 서버 배포 작업
+  - vue, spring, mariadb 이미지화
+  - docker 컨테이너에 삽입
+  - dockerfile 및 docker-compose.yml 파일 작성
+  - docker를 통해 배포
 - 박상현
-  - 서버 배포 작업(도커)
+  - 서버 배포 작업
+  - vue, spring, mariadb 이미지화
+  - docker 컨테이너에 삽입
+  - dockerfile 및 docker-compose.yml 파일 작성
+  - docker를 통해 배포
 - 김호한
   - 팀원으로 등록하기 구현(Spring)
   - 팀이 없고 팀원으로 등록한경우 선호 프로젝트 띄우기 기능 구현(Spring)
