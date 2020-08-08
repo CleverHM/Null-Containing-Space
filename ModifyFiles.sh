@@ -1,6 +1,7 @@
 #!/bin/bash
-
-if [ "$1" == "server" ]; then
+isServer=`grep -r '"dev"' frontend/package.json`
+#echo "$isServer"
+if [ "$isServer" == "" ]; then
 	echo "Start as SERVER"
 	# package.json
 	echo "frontend/package.json"
@@ -10,8 +11,7 @@ if [ "$1" == "server" ]; then
 	echo "src/util/http-common.js"
 	sed -i '5s/.*/    baseURL:"http:\/\/52.79.249.53:8080", /g' frontend/src/util/http-common.js
 
-
-elif [ "$1"  = "local" ]; then
+else
 	echo "Start as LOCAL"
 	# package.json
 	echo "frontend/package.json"
@@ -20,8 +20,7 @@ elif [ "$1"  = "local" ]; then
 	# src/util/http-common.js
 	echo "src/util/http-common.js"
 	sed -i '5s/.*/    baseURL:"http:\/\/localhost:8080", /g' frontend/src/util/http-common.js
-else
-	echo "잘못입력"
+
 fi
 
 
