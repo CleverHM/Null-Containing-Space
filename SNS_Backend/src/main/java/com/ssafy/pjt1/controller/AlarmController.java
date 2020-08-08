@@ -1,5 +1,7 @@
 package com.ssafy.pjt1.controller;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -11,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dto.Alarm;
-import com.ssafy.pjt1.dto.Post;
-import com.ssafy.pjt1.dto.Reply;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.service.AlarmService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -51,5 +52,19 @@ public class AlarmController {
 		alarm.setUser(user);
 		
 		alarmservice.sendAlarm(alarm);
+	}
+	
+	@PostMapping("/alarm/meAlarm")
+    @ApiOperation(value = "나에게 온 메세지 확인", notes = "나에게 온 메세지 확인을 구현.")
+    public List<MyAlarm> meAlarm(@Valid @RequestParam String mynickname) throws Exception {
+		List<Alarm> aList = alarmservice.meAlarm(mynickname);
+		List<MyAlarm> res = new LinkedList<MyAlarm>();
+		
+		for(int i = 0; i < aList.size(); i++) {
+			MyAlarm ma = new MyAlarm(aList.get(i).getUser().getNickname(), aList.get(i).getCreateDate(), aList.get(i).getContent());
+			res.add(ma);
+		}
+		
+		return res;
 	}
 }

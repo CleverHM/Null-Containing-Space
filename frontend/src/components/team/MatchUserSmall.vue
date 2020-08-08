@@ -1,0 +1,56 @@
+<template>
+    <div id="MatchUserSmall">
+        <div class="userImg">
+            <img v-if="imgExist" :src="'data:image/png;base64, ' + userData.file" alt="user-image">
+            <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
+            <div class="userName d-flex justify-content-center">
+                {{ userData.nickname }}
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "MatchUserSmall",
+    props: ["userData"],
+    
+    data() {
+        return {
+            imgExist: false,
+        }
+    },
+    
+    created() {
+        if (this.userData.file == null) {
+            this.imgExist = false
+        } else {
+            this.imgExist = true
+        }
+    },
+
+}
+</script>
+
+<style scoped>
+.userImg {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    background-color: grey;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.userImg > img {
+    width: 100%
+}
+
+.userName {
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    color: #464545;
+    font-size: 14px;
+}
+
+</style>
