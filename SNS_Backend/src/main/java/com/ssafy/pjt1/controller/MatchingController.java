@@ -73,7 +73,8 @@ public class MatchingController {
 		if(team.getAlgo()==true) preferTech.add("algo");
 		
 		int preferProject = team.getPreferProject();
-		List<Integer> matching_user_id = matchingservice.match(preferProject, preferTech);
+		List<Integer> matching_user_id = new ArrayList<>();
+		matching_user_id = matchingservice.match(preferProject, preferTech);
 		
 		for(Integer i : matching_user_id) System.out.println("추천된 userid : " + i);
 		

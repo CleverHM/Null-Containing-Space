@@ -43,14 +43,19 @@ public class MatchingServiceImpl implements MatchingService{
 	@Autowired
 	UserDao userdao;
 	
-	static Map<String, List<User> > ablist = new HashMap<>();
-	static Map<Integer, Integer> priority = new HashMap<>();
-	static List<String> lan = new ArrayList<>();
+	static Map<String, List<User> > ablist;
+	static Map<Integer, Integer> priority;
+	static List<String> lan;
 	// 최종 선별된 유저들
-	static List<Integer> matching_user_id = new ArrayList<>();
+	static List<Integer> matching_user_id;
 	
 	
 	public List<Integer> match(int preferProject, List<String> preferTech){
+		matching_user_id = new ArrayList<>();
+		ablist = new HashMap<>();
+		priority = new HashMap<>();
+		lan = new ArrayList<>();
+		
 		// 모든 유저
 		List<User> tusers = userdao.findAll();
 		// 선호하지 않는 사람
