@@ -23,6 +23,7 @@ import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.MatchingData;
+import com.ssafy.pjt1.model.MatchingMemberData;
 import com.ssafy.pjt1.service.MatchingService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -48,7 +49,7 @@ public class MatchingController {
 	
 	@PostMapping("/match/teammember")
 	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public List<MatchingData> matchingAlgo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+	public MatchingData matchingAlgo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
 		List<String> preferTech = new ArrayList<>();
 		List<User> userlist = new ArrayList<>();
 		
@@ -83,7 +84,7 @@ public class MatchingController {
 			userlist.add(u.get());
 		}
 		
-		List<MatchingData> res = new LinkedList<MatchingData>();
+		List<MatchingMemberData> res = new LinkedList<>();
 		
 		for (int i = 0; i < userlist.size(); i++) {
 			byte[] trash = null;
@@ -95,16 +96,18 @@ public class MatchingController {
 				InputStream inputStream = new FileInputStream(userlist.get(i).getProfile().getFileurl() + userlist.get(i).getProfile().getFilename());
 				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 				
-				res.add(new MatchingData(userlist.get(i).getUid(), userlist.get(i).getNickname(), out));
+				res.add(new MatchingMemberData(userlist.get(i).getUid(), userlist.get(i).getNickname(), userlist.get(i).getPreferProject(), out));
 			}
 			else {
-				res.add(new MatchingData(userlist.get(i).getUid(), userlist.get(i).getNickname(), trash));
+				res.add(new MatchingMemberData(userlist.get(i).getUid(), userlist.get(i).getNickname(), userlist.get(i).getPreferProject(), trash));
 			}
 		}
 		
-		System.out.println("추천된 팀원 수 : " + res.size());
-		for(MatchingData r : res)System.out.println(r);
+		MatchingData res2 = new MatchingData(u.get().getLeader(),res);
 		
-		return res;
+		System.out.println("추천된 팀원 수 : " + res.size());
+		for(MatchingMemberData r : res)System.out.println(r);
+		
+		return res2;
 	}
 }
