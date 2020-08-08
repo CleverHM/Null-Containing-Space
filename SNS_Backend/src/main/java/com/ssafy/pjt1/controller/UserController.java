@@ -195,11 +195,7 @@ public class UserController {
 		String destinationFileName;
 		 String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
 		//String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> feature/khh/backend
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
 			destinationFile = new File(fileUrl + destinationFileName);
