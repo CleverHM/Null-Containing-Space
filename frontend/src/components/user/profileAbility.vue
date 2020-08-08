@@ -1,6 +1,6 @@
 <template>
     <tr>
-        <td class="name"> {{ name.name }} </td>
+        <td class="abilityname"> {{ abilityname.name }} </td>
         <td class="ability" v-if="ability === 1">
             <div class="high">상</div>
         </td>
@@ -17,13 +17,15 @@
 
 <script>
 export default {
-    name: "profileAbility",
-    props: [
-        'name',
-        'ability',
-    ]
-    
-}
+    props: {
+        abilityname: {
+            type: Object,
+        },
+        ability: {
+            type: Number,
+        }
+    },
+}   
 </script>
 
 <style scoped>
@@ -33,7 +35,7 @@ td{
 .ability{
     text-align: center;
 }
-.name{
+.abilityname{
     width: 100%;
 }
 .high{

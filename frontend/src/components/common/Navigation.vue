@@ -35,12 +35,16 @@ const storage = window.sessionStorage;
 export default {
   name:"NavBar",
   props: [
-      'showMenu',
       'subjectCheck', // LeaderForm에서 가지고있는 subject 정보
   ],
   computed: {
       currentRouteName() {
         return this.$route.name;
+      }
+  },
+  data() {
+      return {
+          showMenu: false,
       }
   },
   methods: {
@@ -57,16 +61,15 @@ export default {
       goSearch(){
 
       },
-      toggleShow: function() {
-          this.showMenu = !this.showMenu;
-          this.$emit("toggleShow", this.showMenu)
-      },
       logout() {
           storage.clear()
           alert("로그아웃")
           this.$router.push('/')
 
       },
+      toggleShow() {
+          this.showMenu = !this.showMenu
+      }
 
   },
 };
