@@ -47,11 +47,11 @@
 
             <!-- 개발 능력 !-->
             <nav class="default-tabs">
-              <div class="default-tabs-item tabs-item_active" @click="handleClick">
+              <div class="default-tabs-item" :class="{'tabs-item_active':isCurrent}" @click="handleClick">
                 <button> Introduce </button> <!-- active tab -->
                 <div class="default-tabs-active-line"></div>
               </div>
-              <div class="default-tabs-item" @click="handleClick">
+              <div class="default-tabs-item" :class="{'tabs-item_active':!isCurrent}" @click="handleClick">
                 <button> Ability </button>
                 <div class="default-tabs-active-line"></div>
               </div>
@@ -128,6 +128,7 @@ export default {
             },
             isMe: false,
             isFollow: false,
+            isCurrent: true,
             currentTab: 'Introduce',
             abilities: [
                 { name: 'cpp',
@@ -209,6 +210,7 @@ export default {
         handleClick(event) {
           console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
+          this.isCurrent = !this.isCurrent
         },
         goUserModify() {
           this.$router.push({name: 'UserModify'})
@@ -305,6 +307,11 @@ export default {
     transition: all 0.25s;
     width: 50%;
 }
+.tabs-item_active{
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
 .default-tabs-item button {
   cursor: pointer;
   border: 0;
@@ -322,23 +329,18 @@ export default {
       border-bottom: 2px solid gray;
       color: black;
 }
+.default-tabs-item:visited{
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
 .default-tabs-item:first-child {
       margin-left: 0;
 }
 .default-tabs-item:last-child {
       margin-right: 0;
 }
-.default-tabs-active-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    background-color: black;
-    /* -webkit-transition: width 0.4s ease, -webkit-transform 0.4s ease;
-    transition: width 0.4s ease, -webkit-transform 0.4s ease;
-    transition: transform 0.4s ease, width 0.4s ease;
-    transition: transform 0.4s ease, width 0.4s ease, -webkit-transform 0.4s ease; */
-}
+
 .content {
   margin-top: 30px;
   font-size: 20px;
