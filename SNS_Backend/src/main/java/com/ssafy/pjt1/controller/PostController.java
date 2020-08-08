@@ -55,7 +55,9 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = "*")
 
 @RestController
 public class PostController {
@@ -91,7 +93,8 @@ public class PostController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
@@ -242,7 +245,8 @@ public class PostController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		//String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+                String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;

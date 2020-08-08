@@ -59,6 +59,7 @@ export default {
 
 <style scoped>
 .btn-group{
+    z-index: 1000;
     height: 50px;
     width: 100%;
     position: fixed;

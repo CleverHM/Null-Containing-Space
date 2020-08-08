@@ -62,6 +62,9 @@ public class User {
 		
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)	
 	private Set<PostLike> postlikes;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Alarm> alarms = new HashSet<Alarm>();
 		
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ABILITY_ID")
@@ -145,6 +148,14 @@ public class User {
 		this.createDate = createDate;
 	}
 	
+	public Set<Alarm> getAlarms() {
+		return alarms;
+	}
+
+	public void setAlarms(Set<Alarm> alarms) {
+		this.alarms = alarms;
+	}
+
 	public Set<PostLike> getPostlikes() {
 		return postlikes;
 	}

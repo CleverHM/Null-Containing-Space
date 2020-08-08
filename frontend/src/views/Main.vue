@@ -68,8 +68,6 @@ export default {
         .post("/team/exist", formData)
         .then((res) => {
             this.team = res.data
-            console.log('팀정보')
-            console.log(this.team)
         })
         .catch((err) => {
             console.log(err)
