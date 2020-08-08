@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -569,6 +570,29 @@ public class UserController {
 		// 다섯명 이상일 경우
 		if (optionalUsers.size() > 5) {
 			// 5명 랜덤 뽑기
+			int[] ran = new int[5];
+			Random r = new Random();
+
+			for (int i = 0; i < optionalUsers.size(); i++) {
+				ran[i] = r.nextInt(optionalUsers.size()) + 1;
+				for (int k = 0; k < i; k++) {
+					if (ran[i] == ran[k]) {
+						i--;
+					}
+				}
+			}
+
+			for (int i = 0; i < ran.length; i++) {
+				User user = optionalUsers.get(ran[i] - 1);
+
+				int followerCount = followservice.followerCount(user);
+				int followingCount = followservice.followingCount(user);
+
+				RecommendUser ru = new RecommendUser(user.getUid(), null, user.getNickname(), user.getCreateDate(),
+						followerCount, followingCount);
+
+				list.add(ru);
+			}
 		} else {
 			// 그냥 다넣기
 			for (int i = 0; i < optionalUsers.size(); i++) {
