@@ -76,13 +76,12 @@
 
               </div>
               <div v-if="currentTab === 'Ability'" >
-                <table>
-                <tr class="tableHeader">
-                  <th> 종류 </th>
-                  <th> 능력 </th>
-                </tr>
+                <div class="ability-header">
+                    <div class="ability-kind">종류</div>
+                    <div class="ability-level">능력</div>
+                  
+                </div>
                 <profileAbility :abilityname="abilities[n]" :ability="User.ability[n]" :id="n" :key="n" v-for="n in 15"></profileAbility>
-              </table>
                 
               </div>
             </div>
@@ -347,8 +346,14 @@ export default {
 }
 
 /* ability tab */
-th{
+.ability-header{
+  border-bottom: 1px solid #464545;
+}
+.ability-kind, .ability-level{
   padding-bottom: 10px;
-  border-bottom: 2px solid #464545;
+  font-weight: bold;
+  display: inline-block;
+  width: 50%;
+  text-align: center;
 }
 </style>
