@@ -12,8 +12,8 @@ if [ "$isServer" == "" ]; then
 	sed -i '5s/.*/    baseURL:"http:\/\/52.79.249.53:8080", /g' frontend/src/util/http-common.js
 
 	# /SNS_Backend/src/main/resources/application.properties
-	sed -i '7s/#//g' SNS_Backend/src/main/resources/application.properties
-	sed -i '8s/^/#/g' SNS_Backend/src/main/resources/application.properties
+	sed -i 's/#spring.datasource.url=jdbc:mariadb:\/\/mariadb/spring.datasource.url=jdbc:mariadb:\/\/mariadb/g' SNS_Backend/src/main/resources/application.properties
+	sed -i 's/spring.datasource.url=jdbc:mariadb:\/\/localhost/#spring.datasource.url=jdbc:mariadb:\/\/localhost/g' SNS_Backend/src/main/resources/application.properties
 
 else
 	echo "Start as LOCAL"
@@ -25,8 +25,8 @@ else
 	echo "src/util/http-common.js"
 	sed -i '5s/.*/    baseURL:"http:\/\/localhost:8080", /g' frontend/src/util/http-common.js
 	# /SNS_Backend/src/main/resources/application.properties
-	sed -i '7s/^/#/g' SNS_Backend/src/main/resources/application.properties
-	sed -i '8s/#//g' SNS_Backend/src/main/resources/application.properties
+	sed -i 's/spring.datasource.url=jdbc:mariadb:\/\/mariadb/#spring.datasource.url=jdbc:mariadb:\/\/mariadb/g' SNS_Backend/src/main/resources/application.properties
+	sed -i 's/#spring.datasource.url=jdbc:mariadb:\/\/localhost/spring.datasource.url=jdbc:mariadb:\/\/localhost/g' SNS_Backend/src/main/resources/application.properties
 
 fi
 

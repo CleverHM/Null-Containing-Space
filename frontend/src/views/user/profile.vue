@@ -15,8 +15,8 @@
                     <!-- 닉네임 -->
                     <div class="profileName">{{ User.nickname }}</div>
                     <div class="follow">
-                        <button class="follower">{{ User.followercount }}<br>팔로워</button>
-                        <button class="following">{{ User.followingcount }}<br>팔로잉</button>
+                        <button class="follower" @click="goFollowList">{{ User.followercount }}<br>팔로워</button>
+                        <button class="following" @click="goFollowList">{{ User.followingcount }}<br>팔로잉</button>
                     </div>
                     <div class="profile-btns">
                         <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
@@ -213,7 +213,10 @@ export default {
         },
         goUserModify() {
           this.$router.push({name: 'UserModify'})
-        }
+        },
+        goFollowList(event) {
+          this.$router.push({name: 'followList', params: { PageName: event.target.className, nickname: this.User.nickname}})
+        },
     }
 
 
@@ -253,6 +256,8 @@ export default {
 }
 .follow button {
   width: 50%;
+  border: 0;
+  outline: 0;
 }
 .profile-btns {
   padding: 0 10px 0 135px;
@@ -268,18 +273,16 @@ export default {
 .btn-on{
     width:50%;
     font-size: 18px;
-    color: #464545
+    color: #464545;
+    border: 0;
+    outline: 0;
 }
 .btn-off{
     width:50%;
     font-size: 18px;
     color: #E2DFD8;   
-}
-.btn-off:visited{
-  border: 0;
-}
-.btn-off:active{
-  border: 0;
+    border: 0;
+    outline: 0;
 }
 #introduce {
   white-space: normal;
