@@ -11,54 +11,55 @@
       </div>
 
       <!-- 팀 / 명세서-->
-      <tabs
-        :tabs="tabs"
-        :currentTab="currentTab"
-        :wrapper-class="'default-tabs'"
-        :tab-class="'default-tabs__item'"
-        :tab-active-class="'default-tabs__item_active'"
-        :line-class="'default-tabs__active-line'"
-        @onClick="handleClick"
-      />
-      <div class="content">
-        <div v-if="currentTab === 'tab1'">
+      <div id="tabs">
+        <div class="tab-button d-flex justify-content-center">
+          <button v-for="(tab, index) in tabs"
+            :class="{active: currentTab === index}"
+            @click="currentTab = index"
+            :key="tab">
+            {{ tab }}
+          </button>
+        </div>
+        <div class="tab-content">
+          <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
 
-          <!-- 시작일 -->
-          <div class="displaytags">
-            프로젝트 진행 : {{ diffTime }}
-          </div>
-          
-          <!-- 팀 정보 -->
-          <div id="team" class="my-3">
-            <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
-            <div class="d-flex justify-content-start align-items-center">
-              <div class="displaytags">
-                팀장
-              </div>
-              <div class="team-member-area">
-                  <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
-              </div>
+            <!-- 시작일 -->
+            <div class="displaytags">
+              프로젝트 진행 : {{ diffTime }}
             </div>
             
-            <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
-              <div class="displaytags">
-                팀원
+            <!-- 팀 정보 -->
+            <div id="team" class="my-3">
+              <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
+              <div class="d-flex justify-content-start align-items-center">
+                <div class="displaytags">
+                  팀장
+                </div>
+                <div class="team-member-area">
+                    <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
+                </div>
               </div>
-              <div class="team-member-area d-flex flex-row align-items-center">
-                  <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false"></memberImg>
+              
+              <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
+                <div class="displaytags">
+                  팀원
+                </div>
+                <div class="team-member-area d-flex flex-row align-items-center">
+                    <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false"></memberImg>
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>
-        
-        <div v-if="currentTab === 'tab2'">
-          
-          <!-- 프로젝트 명세서 -->
-          <div class="team-spec">
-              <specs :teamData="teamData"/>
           </div>
-        
+          
+          <div v-if="currentTab == 1">
+            
+            <!-- 프로젝트 명세서 -->
+            <div class="team-spec">
+                <specs :teamData="teamData"/>
+            </div>
+          
+          </div>
         </div>
       </div>
       
@@ -76,7 +77,6 @@ import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
 import specs from '../../components/team/Specification.vue'
 import memberImg from '../../components/team/memberImg.vue'
-import Tabs from 'vue-tabs-with-active-line';
 import httpCommon from '../../util/http-common';
 import http from "../../util/http-common.js";
 import axios from 'axios';
@@ -84,14 +84,6 @@ import axios from 'axios';
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
 
-const TABS = [{
-    title: '프로젝트 팀 정보',
-    value: 'tab1',
-    },{
-    title: '프로젝트 명세서',
-    value: 'tab2',
-    },
-];
 
 export default {
   name: "teamIn",
@@ -101,7 +93,6 @@ export default {
     subNav,
     specs,
     memberImg,
-    Tabs,
   },
 
   props: [
@@ -111,12 +102,15 @@ export default {
   data() {
     return {
       ifLeader: false,
-      tabs: TABS,
-      currentTab: 'tab1',
       diffTime: '',
       teamExist: false,
       teamData: null,
       delayOn: true,
+      tabs: [
+        '프로젝트 팀 정보',
+        '프로젝트 명세서',
+      ],
+      currentTab: 0,
     }
   },
 
@@ -199,6 +193,9 @@ export default {
 </script>
 
 <style scoped>
+
+*:focus { outline:none; }
+
 .team-title {
   padding: 0px 10px 5px 10px;
   color: #464545;
@@ -247,5 +244,12 @@ export default {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.tab-button > button {
+  padding: 10px 20px 10px 20px;
+}
+
+.tab-button > .active {
+  border-bottom: 1.5px solid #464545;
+}
 
 </style>

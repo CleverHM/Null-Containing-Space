@@ -8,28 +8,17 @@
                 <img src="@/assets/images/lionLoading.gif" alt="" style="width:100%;">
             </div>
 
-            <!-- 매칭된 화면 -->
+            <!-- 매칭 간략화 화면 -->
             <div v-else>
-                <div v-if="matchNodetail">
-                    <!-- 매칭 간략화 화면 -->
-                    <div class="memberImg-area">
-                        <MatchUserSmall v-for="member in members" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btnForm" @click="memberDetailOn">자세히 보기</button>
-                        <button class="btnForm ml-2" @click="reMatchOn">다시 매칭하기</button>
-                    </div>
-
+                <div class="memberImg-area">
+                    <MatchUserSmall v-for="member in members" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button class="btnForm" @click="memberDetailOn">자세히 보기</button>
+                    <button class="btnForm ml-2" @click="reMatchOn">다시 매칭하기</button>
                 </div>
 
-                <div v-else>
-                    <div class="match-area">
-                        <MatchUser v-for="member in members" :key="member.nickname" :userData="member"></MatchUser>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btnForm" @click="reMatchOn">다시 팀원 매칭하기</button>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -38,7 +27,6 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
-import MatchUser from '../../components/team/MatchUser.vue'
 import MatchUserSmall from '../../components/team/MatchUserSmall.vue'
 import httpCommon from '../../util/http-common'
 import http from "../../util/http-common.js";
@@ -51,7 +39,6 @@ export default {
     components: {
         Navbar,
         subNav,
-        MatchUser,
         MatchUserSmall,
     },
     props: ["isLeader"],
@@ -59,7 +46,6 @@ export default {
     data() {
         return {
             loadingOn: true,
-            matchNodetail: true,
             members: null,
         }
     },
@@ -84,13 +70,12 @@ export default {
 
         // 디테일 화면 켜기
         memberDetailOn() {
-            this.matchNodetail = false;
+            this.$router.push({ name: 'MatchMember', params: { members: this.members }})
         },
 
         // 다시 매칭하기
         reMatchOn() {
             this.loadingOn = true;
-            this.matchNodetail = true;
             this.isLoading();
             this.MatchReceive();
         },
@@ -105,6 +90,8 @@ export default {
                 this.members = res.data.member
                 console.log(res.data)
                 this.MatchPossible();
+                storage.setItem("members", this.members);
+                
             })
             .catch((err) => {
                 console.log(err)
@@ -123,6 +110,9 @@ export default {
 </script>
 
 <style scoped>
+
+*:focus { outline:none; }
+
 .contentArea {
     margin-top: 70px;
 }
