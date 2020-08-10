@@ -9,7 +9,7 @@
               <th>중</th>
               <th>하</th>
             </tr>
-            <Join4 :ability="ability" v-for="ability in abilities" :key="ability.id" @getAbility="saveAbility"></Join4>
+            <Join4 :abilityName="ability" v-for="ability in abilities" :key="ability" @getAbility="saveAbility"></Join4>
           </table>
           
           <button id="btn-join" @click="Join">입력</button>
@@ -43,36 +43,21 @@ export default {
     data() {
         return {
             abilities: [
-                { name: 'cpp',
-                    id: 0},
-                { name: 'Java',
-                    id: 1},
-                { name: 'Python',
-                    id: 2},
-                { name: 'php',
-                    id: 3},
-                { name: 'html',
-                    id: 4},
-                { name: 'css',
-                    id: 5},
-                { name: 'JavaScript',
-                    id: 6},
-                { name: 'SQL',
-                    id: 7},
-                { name: 'noSQL',
-                    id: 8},
-                { name: 'Spring',
-                    id: 9},
-                { name: 'Django',
-                    id: 10},
-                { name: 'BootStrap',
-                    id: 11},
-                { name: 'Vue',
-                    id: 12},
-                { name: 'React',
-                    id: 13},
-                { name: 'Algorithm',
-                    id: 14},
+                'cpp',
+                'Java',
+                'Python',
+                'php',
+                'html',
+                'css',
+                'JavaScript',
+                'SQL',
+                'noSQL',
+                'Spring',
+                'Django',
+                'BootStrap',
+                'Vue',
+                'React',
+                'Algorithm',
             ],
         }
 

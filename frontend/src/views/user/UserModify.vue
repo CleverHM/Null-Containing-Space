@@ -114,7 +114,7 @@ import subNav from '../../components/common/subnav.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
-const pagereg = '/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi'
+// const pagereg = '/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi'
 export default {
     name: 'ModifyUser',
     components: {

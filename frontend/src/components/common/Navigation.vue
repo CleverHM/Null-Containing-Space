@@ -71,7 +71,7 @@ export default {
           this.showMenu = !this.showMenu
       },
       goModifyAbility() {
-          this.$router.push({name: 'modifyAbility'})
+          this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
       }
 
   },

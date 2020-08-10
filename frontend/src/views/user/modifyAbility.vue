@@ -9,7 +9,7 @@
               <th>중</th>
               <th>하</th>
             </tr>
-            <Join4 :ability="ability" v-for="ability in abilities" :key="ability.id" @getAbility="saveAbility"></Join4>
+            <ability :abilityName="ability" v-for="ability in abilities" :key="ability.id" @getAbility="saveAbility"></ability>
           </table>
           
           <button id="btn-join" @click="Join">입력</button>
@@ -19,53 +19,46 @@
 </template>
 
 <script>
-import Join4 from '@/components/user/checkAbility.vue'
+import ability from '@/components/user/checkAbility.vue'
 import http from "@/util/http-common.js"
 
 
 export default {
-    name: 'step4',
+    name: 'modifyAbility',
     components: {
-        Join4,
+        ability,
     },
-    props: {
-      User: {
-        type: Object,
-      }
+    props: [
+      'nickname'
+    ],
+    created() {
+      var InputData = new FormData()
+      console.log(this.nickname)
+      InputData.append("nickname", this.nickname)
+      http.post("/account/abilityInfo", InputData)
+      .then(({data}) => {
+        this.modifyAbility = data
+      })
+      
     },
     data() {
         return {
             abilities: [
-                { name: 'cpp',
-                    id: 0},
-                { name: 'Java',
-                    id: 1},
-                { name: 'Python',
-                    id: 2},
-                { name: 'php',
-                    id: 3},
-                { name: 'html',
-                    id: 4},
-                { name: 'css',
-                    id: 5},
-                { name: 'JavaScript',
-                    id: 6},
-                { name: 'SQL',
-                    id: 7},
-                { name: 'noSQL',
-                    id: 8},
-                { name: 'Spring',
-                    id: 9},
-                { name: 'Django',
-                    id: 10},
-                { name: 'BootStrap',
-                    id: 11},
-                { name: 'Vue',
-                    id: 12},
-                { name: 'React',
-                    id: 13},
-                { name: 'Algorithm',
-                    id: 14},
+                'cpp',
+                'Java',
+                'Python',
+                'php',
+                'html',
+                'css',
+                'JavaScript',
+                'SQL',
+                'noSQL',
+                'Spring',
+                'Django',
+                'BootStrap',
+                'Vue',
+                'React',
+                'Algorithm',
             ],
         }
 
@@ -87,21 +80,7 @@ export default {
         })
 
       },
-      gostep1() {
-        this.$router.push({name: 'step1'}).catch(()=>{})
-      },
-      gostep2() {
-        this.$router.push({name: 'step2'}).catch(()=>{})
-      },
-      gostep3() {
-        this.$router.push({name: 'step3'}).catch(()=>{})
-      },
-      gostep4() {
-        this.$router.push({name: 'step4'}).catch(()=>{})
-      },
-      gostep5() {
-        this.$router.push({name: 'step5'}).catch(()=>{})
-      },
+
   },
     
 }

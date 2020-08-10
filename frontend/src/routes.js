@@ -100,7 +100,8 @@ export default [
     {
         path : '/user/modify/ability',
         name : 'modifyAbility',
-        component : modifyAbility
+        component : modifyAbility,
+        props: true,
     },
     {
         path : '/user/profile/:nickname/follow',
