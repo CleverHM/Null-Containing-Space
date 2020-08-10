@@ -41,14 +41,15 @@ public class AlarmController {
 	@Autowired
     private UserService userservice;
 	
+	// 팀장 -> 팀원 
 	@PostMapping("/alarm/send")
-    @ApiOperation(value = "알람 보내기 댓글작성", notes = "알람 보내기 기능을 구현.")
+    @ApiOperation(value = "알람 보내기", notes = "알람 보내기 기능을 구현.")
     public void userReply(@Valid @RequestParam String mynickname, String tonickname) throws Exception {
 		Optional<User> optionalUser = userservice.findtwo(mynickname);
 		
 		User user = optionalUser.get();
 		
-		Alarm alarm = new Alarm("같이 해요", tonickname);
+		Alarm alarm = new Alarm("프로젝트 같이 해요", tonickname);
 		
 		alarm.setUser(user);
 		
@@ -62,7 +63,7 @@ public class AlarmController {
 		List<MyAlarm> res = new LinkedList<MyAlarm>();
 		
 		for(int i = 0; i < aList.size(); i++) {
-			MyAlarm ma = new MyAlarm(aList.get(i).getUser().getNickname(), aList.get(i).getCreateDate(), aList.get(i).getContent());
+			MyAlarm ma = new MyAlarm(aList.get(i).getAid(), aList.get(i).getUser().getNickname(), aList.get(i).getCreateDate(), aList.get(i).getContent());
 			res.add(ma);
 		}
 		
@@ -80,10 +81,20 @@ public class AlarmController {
 		List<MyAlarm> res = new LinkedList<MyAlarm>();
 		
 		for(Alarm a : aList) {
-			MyAlarm ma = new MyAlarm(a.getToNickname(), a.getCreateDate(), a.getContent());
+			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent());
 			res.add(ma);
 		}
 		
 		return res;
+	}
+	
+	// 알람 삭제
+	@PostMapping("/alarm/delete")
+    @ApiOperation(value = "알람 삭제", notes = "알람 삭제 구현")
+    public void delete(@Valid @RequestParam int aid) throws Exception {
+		Optional<Alarm> optionalAlarm = alarmservice.findById(aid);
+		Alarm alarm = optionalAlarm.get();
+		
+		alarmservice.delete(alarm);
 	}
 }

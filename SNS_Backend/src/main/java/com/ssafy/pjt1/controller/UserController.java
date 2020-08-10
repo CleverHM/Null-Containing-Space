@@ -645,26 +645,26 @@ public class UserController {
 	
 	@PostMapping("/account/abilityModify")
 	@ApiOperation(value = "능력치 수정", notes = "능력치 수정 기능을 구현.")
-	public void abilityInfo(@Valid @RequestParam String nickname, List<Integer> ability) throws FileNotFoundException, IOException {
+	public void abilityInfo(@Valid @RequestParam String nickname, int[] ability) throws FileNotFoundException, IOException {
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
-		user.getAbility().setBack_cpp(ability.get(0));
-		user.getAbility().setBack_java(ability.get(1));
-		user.getAbility().setBack_python(ability.get(2));
-		user.getAbility().setBack_php(ability.get(3));
-		user.getAbility().setFront_html(ability.get(4));
-		user.getAbility().setFront_css(ability.get(5));
-		user.getAbility().setFront_javascript(ability.get(6));
-		user.getAbility().setDb_sql(ability.get(7));
-		user.getAbility().setDb_nosql(ability.get(8));
-		user.getAbility().setFrame_spring(ability.get(9));
-		user.getAbility().setFrame_django(ability.get(10));
-		user.getAbility().setFrame_bootstrap(ability.get(11));
-		user.getAbility().setFrame_vue(ability.get(12));
-		user.getAbility().setFrame_react(ability.get(12));
-		user.getAbility().setAlgo(ability.get(13));
+		user.getAbility().setBack_cpp(ability[0]);
+		user.getAbility().setBack_java(ability[1]);
+		user.getAbility().setBack_python(ability[2]);
+		user.getAbility().setBack_php(ability[3]);
+		user.getAbility().setFront_html(ability[4]);
+		user.getAbility().setFront_css(ability[5]);
+		user.getAbility().setFront_javascript(ability[6]);
+		user.getAbility().setDb_sql(ability[7]);
+		user.getAbility().setDb_nosql(ability[8]);
+		user.getAbility().setFrame_spring(ability[9]);
+		user.getAbility().setFrame_django(ability[10]);
+		user.getAbility().setFrame_bootstrap(ability[11]);
+		user.getAbility().setFrame_vue(ability[12]);
+		user.getAbility().setFrame_react(ability[13]);
+		user.getAbility().setAlgo(ability[14]);
 
 		userservice.signUp(user);
 	}
