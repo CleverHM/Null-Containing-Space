@@ -130,6 +130,12 @@
 			<artifactId>h2</artifactId>
 			<version>1.4.199</version>
 		</dependency>
+		
+		<!-- 웹 소켓 사용 STOMP -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
 
 
 	</dependencies>
