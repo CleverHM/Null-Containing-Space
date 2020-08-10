@@ -55,7 +55,6 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-
 //@CrossOrigin(origins = { "http://localhost:3000" })
 @CrossOrigin(origins = "*")
 
@@ -94,8 +93,9 @@ public class PostController {
 		File destinationFile;
 		String destinationFileName;
 
-		 String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
-		//String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl =
+		// "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
@@ -247,7 +247,8 @@ public class PostController {
 		File destinationFile;
 		String destinationFileName;
 		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
-        //        String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl =
+		// "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
@@ -372,7 +373,7 @@ public class PostController {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 		List<Post> postList = new LinkedList<>();
-		
+
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
@@ -385,7 +386,7 @@ public class PostController {
 		for (int i = 0; i < postList.size(); i++) {
 			System.out.println(postList.get(i).getTitle());
 		}
-		
+
 		// 데이터 담는 작업
 		for (int i = 0; i < postList.size(); i++) {
 			System.out.println(postList.get(i).getTitle());
@@ -394,7 +395,7 @@ public class PostController {
 			for (PostTag t : postList.get(i).getPosttags()) {
 				tag.add(t.getTag().getName());
 			}
-			
+
 			Date d = new Date();
 
 			// 이미지 만들기
@@ -425,12 +426,13 @@ public class PostController {
 				}
 
 				byte[] reportBytes1 = null;
-				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
-				
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl()
+						+ postList.get(i).getUser().getProfile().getFilename());
+
 				if (result1.exists()) {
 					System.out.println("있음");
-					InputStream inputStream1 = new FileInputStream(
-							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+					InputStream inputStream1 = new FileInputStream(postList.get(i).getUser().getProfile().getFileurl()
+							+ postList.get(i).getUser().getProfile().getFilename());
 
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
@@ -465,12 +467,165 @@ public class PostController {
 				}
 
 				byte[] reportBytes1 = null;
-				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
-				
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl()
+						+ postList.get(i).getUser().getProfile().getFilename());
+
 				if (result1.exists()) {
 					System.out.println("있음");
-					InputStream inputStream1 = new FileInputStream(
-							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+					InputStream inputStream1 = new FileInputStream(postList.get(i).getUser().getProfile().getFileurl()
+							+ postList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), reportBytes1));
+				}
+			}
+
+		}
+		Collections.sort(res, new Comparator<FeedData>() {
+
+			@Override
+			public int compare(FeedData o1, FeedData o2) {
+				// TODO Auto-generated method stub
+				return o2.getPid() - o1.getPid();
+			}
+		});
+		return res;
+	}
+
+	// 내가 좋아요한 게시물 보내주기
+	@PostMapping("/post/myLikePost")
+	@ApiOperation(value = "내가 좋아요한 게시물 Vue로보내기", notes = "내가 좋아요한 게시물 Vue로보내기 기능을 구현.")
+	public List<FeedData> myLikePost(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+
+		List<FeedData> res = new LinkedList<FeedData>();
+		List<Post> postList = new LinkedList<>();
+
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+
+		// 전체 게시문
+		List<Post> allpost = postdao.findAll();
+		List<Post> myLikePostList = new LinkedList<>();
+		
+		// 내가 좋아요하 게시물 로 거르기
+		for (int i = 0; i < allpost.size(); i++) {
+
+			Optional<Post> tempP = postservice.findone(allpost.get(i).getPid());
+			Post post = tempP.get();
+			Set<PostLike> postlikes = post.getPostlikes();
+
+			for (PostLike pl : postlikes) {
+				// 이미 좋아요한 사람일 경우.
+				if (pl.getUser().getUid() == user.getUid()) {
+					myLikePostList.add(post);
+					break;
+				}
+			}
+		}
+
+		postList.addAll(myLikePostList);
+		
+		// 게시물 확인
+		System.out.println("==============내게시물==================");
+		for (int i = 0; i < postList.size(); i++) {
+			System.out.println(postList.get(i).getTitle());
+		}
+
+		
+		for (int i = 0; i < postList.size(); i++) {
+			System.out.println(postList.get(i).getTitle());
+			List<String> tag = new LinkedList<String>();
+
+			for (PostTag t : postList.get(i).getPosttags()) {
+				tag.add(t.getTag().getName());
+			}
+			Date d = new Date();
+
+			// 이미지 만들기
+			byte[] reportBytes = null;
+			File result = new File(postList.get(i).getFiles().getFileurl() + postList.get(i).getFiles().getFilename());
+
+			if (result.exists()) {
+				System.out.println("있음");
+				InputStream inputStream = new FileInputStream(
+						postList.get(i).getFiles().getFileurl() + postList.get(i).getFiles().getFilename());
+
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+				int count = likeservice.likeCount(postList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				byte[] reportBytes1 = null;
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl()
+						+ postList.get(i).getUser().getProfile().getFilename());
+
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(postList.get(i).getUser().getProfile().getFileurl()
+							+ postList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), reportBytes1));
+				}
+				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+			} else {
+				System.out.println("없는 파일");
+
+				int count = likeservice.likeCount(postList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				byte[] reportBytes1 = null;
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl()
+						+ postList.get(i).getUser().getProfile().getFilename());
+
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(postList.get(i).getUser().getProfile().getFileurl()
+							+ postList.get(i).getUser().getProfile().getFilename());
 
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
@@ -497,7 +652,7 @@ public class PostController {
 		});
 		return res;
 	}
-	
+
 	// 해당이메일 게시물 보내주기
 	@PostMapping("/post/getPost")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
@@ -577,12 +732,13 @@ public class PostController {
 				}
 
 				byte[] reportBytes1 = null;
-				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
-				
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl()
+						+ postList.get(i).getUser().getProfile().getFilename());
+
 				if (result1.exists()) {
 					System.out.println("있음");
-					InputStream inputStream1 = new FileInputStream(
-							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+					InputStream inputStream1 = new FileInputStream(postList.get(i).getUser().getProfile().getFileurl()
+							+ postList.get(i).getUser().getProfile().getFilename());
 
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
@@ -617,12 +773,13 @@ public class PostController {
 				}
 
 				byte[] reportBytes1 = null;
-				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
-				
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl()
+						+ postList.get(i).getUser().getProfile().getFilename());
+
 				if (result1.exists()) {
 					System.out.println("있음");
-					InputStream inputStream1 = new FileInputStream(
-							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+					InputStream inputStream1 = new FileInputStream(postList.get(i).getUser().getProfile().getFileurl()
+							+ postList.get(i).getUser().getProfile().getFilename());
 
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
@@ -715,12 +872,14 @@ public class PostController {
 
 			for (int i = 0; i < post.getReplies().size(); i++) {
 				byte[] reportBytes2 = null;
-				File result2 = new File(post.getReplies().get(i).getUser().getProfile().getFileurl() + post.getReplies().get(i).getUser().getProfile().getFilename());
-				
+				File result2 = new File(post.getReplies().get(i).getUser().getProfile().getFileurl()
+						+ post.getReplies().get(i).getUser().getProfile().getFilename());
+
 				if (result2.exists()) {
 					System.out.println("있음");
 					InputStream inputStream1 = new FileInputStream(
-							post.getReplies().get(i).getUser().getProfile().getFileurl() + post.getReplies().get(i).getUser().getProfile().getFilename());
+							post.getReplies().get(i).getUser().getProfile().getFileurl()
+									+ post.getReplies().get(i).getUser().getProfile().getFilename());
 
 					byte[] out2 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 
@@ -733,27 +892,28 @@ public class PostController {
 							post.getReplies().get(i).getUser().getNickname(), post.getReplies().get(i).getCreateDate(),
 							post.getReplies().get(i).getUser().getEmail(), reportBytes2));
 				}
-				
+
 			}
 
 			byte[] reportBytes1 = null;
-			File result1 = new File(post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
-			
+			File result1 = new File(
+					post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
+
 			if (result1.exists()) {
 				System.out.println("있음");
 				InputStream inputStream1 = new FileInputStream(
 						post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
 
 				byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
-				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
-						list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(),
-						likeFlag, reply, reply.size(), out1);
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),
+						post.getCreateDate(), list, post.getUser().getNickname(), post.getUser().getEmail(), out, count,
+						post.getViewCount(), likeFlag, reply, reply.size(), out1);
 			} else {
-				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
-						list, post.getUser().getNickname(), post.getUser().getEmail(), out, count, post.getViewCount(),
-						likeFlag, reply, reply.size(),reportBytes1);
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),
+						post.getCreateDate(), list, post.getUser().getNickname(), post.getUser().getEmail(), out, count,
+						post.getViewCount(), likeFlag, reply, reply.size(), reportBytes1);
 			}
-			
+
 			// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 		} else {
 			int count = likeservice.likeCount(post);
@@ -774,23 +934,24 @@ public class PostController {
 			}
 
 			List<ReplyData> reply = new LinkedList<ReplyData>();
-			
+
 			byte[] reportBytes1 = null;
-			File result1 = new File(post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
-			
+			File result1 = new File(
+					post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
+
 			if (result1.exists()) {
 				System.out.println("있음");
 				InputStream inputStream1 = new FileInputStream(
 						post.getUser().getProfile().getFileurl() + post.getUser().getProfile().getFilename());
 
 				byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
-				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
-						list, post.getUser().getNickname(), post.getUser().getEmail(), null, count, post.getViewCount(),
-						likeFlag, reply, reply.size(), out1);
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),
+						post.getCreateDate(), list, post.getUser().getNickname(), post.getUser().getEmail(), null,
+						count, post.getViewCount(), likeFlag, reply, reply.size(), out1);
 			} else {
-				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(), post.getCreateDate(),
-						list, post.getUser().getNickname(), post.getUser().getEmail(), null, count, post.getViewCount(),
-						likeFlag, reply, reply.size(),reportBytes1);
+				feedDetailData = new FeedDetailData(post.getPid(), post.getTitle(), post.getContent(),
+						post.getCreateDate(), list, post.getUser().getNickname(), post.getUser().getEmail(), null,
+						count, post.getViewCount(), likeFlag, reply, reply.size(), reportBytes1);
 			}
 			System.out.println("없는 파일");
 			// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
@@ -843,7 +1004,7 @@ public class PostController {
 
 		System.out.println("=======넣는 중==========");
 		for (Post p : postList) {
-			end : for (PostTag t : p.getPosttags()) {
+			end: for (PostTag t : p.getPosttags()) {
 				for (int i = 0; i < hashtag.length; i++) {
 					if (hashtag[i].equals(t.getTag().getName())) {
 						hasftagPostList.add(p);
@@ -913,12 +1074,14 @@ public class PostController {
 				}
 
 				byte[] reportBytes1 = null;
-				File result1 = new File(hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
-				
+				File result1 = new File(hasftagPostList.get(i).getUser().getProfile().getFileurl()
+						+ hasftagPostList.get(i).getUser().getProfile().getFilename());
+
 				if (result1.exists()) {
 					System.out.println("있음");
 					InputStream inputStream1 = new FileInputStream(
-							hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
+							hasftagPostList.get(i).getUser().getProfile().getFileurl()
+									+ hasftagPostList.get(i).getUser().getProfile().getFilename());
 
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
@@ -952,12 +1115,14 @@ public class PostController {
 				}
 
 				byte[] reportBytes1 = null;
-				File result1 = new File(hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
-				
+				File result1 = new File(hasftagPostList.get(i).getUser().getProfile().getFileurl()
+						+ hasftagPostList.get(i).getUser().getProfile().getFilename());
+
 				if (result1.exists()) {
 					System.out.println("있음");
 					InputStream inputStream1 = new FileInputStream(
-							hasftagPostList.get(i).getUser().getProfile().getFileurl() + hasftagPostList.get(i).getUser().getProfile().getFilename());
+							hasftagPostList.get(i).getUser().getProfile().getFileurl()
+									+ hasftagPostList.get(i).getUser().getProfile().getFilename());
 
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
