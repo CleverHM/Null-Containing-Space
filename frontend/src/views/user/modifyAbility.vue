@@ -76,11 +76,11 @@ export default {
             if (this.isLoading) {
                 setTimeout(this.delayfinish, 100);
             }
-        },
+      },
         // 딜레이 화면
-        delayfinish(){
+      delayfinish(){
             this.isLoading = false;
-        },
+      },
       saveAbility(name, level){
         for (var i=0; i<15; i++){
           var ability = this.abilities[i-1]

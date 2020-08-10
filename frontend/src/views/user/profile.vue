@@ -1,5 +1,6 @@
 <template>
-    <div style="top:0">
+    <div v-if="isLoading"></div>
+    <div v-else style="top:0">
         <Navbar />
         <subNav></subNav>
 
@@ -111,6 +112,7 @@ export default {
       this.nickname = storage.getItem("NickName")
       this.pagenickname = this.$route.params.nickname
       this.getUserInfo()
+      this.Loading();
     },
     data : () => {
         return {
@@ -161,9 +163,19 @@ export default {
                     id: 14},
             ],
             lenAbility: 15,
+            isLoading: true,
         }
     },
     methods : {
+        Loading() {
+              if (this.isLoading) {
+                  setTimeout(this.delayfinish, 100);
+              }
+        },
+          // 딜레이 화면
+        delayfinish(){
+              this.isLoading = false;
+        },
         getUserInfo() {
           console.log("hello")
           var InputData = new FormData();
