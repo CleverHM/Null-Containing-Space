@@ -1,7 +1,6 @@
 <template>
     <div>
         <Navbar></Navbar>
-        <subNav></subNav>
         <div id="ModifyForm">
             <!-- 프로필 사진 -->
             <div class="image-form" id="image-form">
@@ -118,7 +117,6 @@ export default {
     name: 'ModifyUser',
     components: {
         Navbar,
-        subNav,
     },
     created() {
         this.getInfo()

@@ -1,16 +1,28 @@
 <template>
-    <tr>
-        <td class="abilityname"> {{ abilityname.name }} </td>
-        <td class="ability" v-if="ability === 1">
-            <div class="high">상</div>
-        </td>
-        <td class="ability" v-else-if="ability === 2">
-             <div class="medium">중</div> 
-        </td>
-        <td class="ability" v-else-if="ability === 3"> 
-            <div class="low">하</div> 
-        </td>
-    </tr>
+    <div class="ability-body">
+        <div class="ability-kinds"> {{ abilityname.name }} </div>
+        <div class="ability-ability" v-if="ability === 1">
+            <div class="high">
+                <i class="far fa-gem gem-icon-low" aria-hidden="true"/>
+                <i class="far fa-gem gem-icon-middle" aria-hidden="true"/>
+                <i class="far fa-gem gem-icon-high" aria-hidden="true"/>
+            </div>
+        </div>
+        <div class="ability-ability" v-else-if="ability === 2">
+             <div class="middle">
+                 <i class="far fa-gem gem-icon-low" aria-hidden="true"/>
+                <i class="far fa-gem gem-icon-middle" aria-hidden="true"/>
+                <i class="far fa-gem gem-icon-high" aria-hidden="true"/>
+            </div> 
+        </div>
+        <div class="ability-ability" v-else-if="ability === 3"> 
+            <div class="low">
+                <i class="far fa-gem gem-icon-low" aria-hidden="true"/>
+                <i class="far fa-gem gem-icon-middle" aria-hidden="true"/>
+                <i class="far fa-gem gem-icon-high" aria-hidden="true"/>
+            </div> 
+        </div>
+    </div>
         
        
 </template>
@@ -29,25 +41,32 @@ export default {
 </script>
 
 <style scoped>
-td{
-    padding: 10px 0px;
+.ability-body{
+    padding: 13px 0px;
+    border-top: 1px solid #E2DFD8;
 }
-.ability{
-    text-align: center;
+.high, .middle, .low{
+    display: inline-block;
+    padding: 0 7px 0 0;
 }
-.abilityname{
-    width: 100%;
+.ability-kinds, .ability-ability{
+  display: inline-block;
+  width: 50%;
+  text-align: center;
 }
-.high{
-    background-color: #ACCCC4;
-    border-radius: 100%;
+.ability-kinds{
+    text-align: left;
 }
-.medium{
-    background-color: #C4BCB8;
-    border-radius: 100%;
+
+.fa-gem {
+  margin: 0 5px 0 7px;
+  color: #E3C700;
 }
-.low{
-    background-color: #C4BCB8;
-    border-radius: 100%;
+.middle > .gem-icon-high{
+    color: #EDECEA;
+}
+.low > .gem-icon-high,
+.low > .gem-icon-middle{
+    color: #EDECEA;
 }
 </style>

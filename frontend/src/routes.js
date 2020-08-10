@@ -8,8 +8,8 @@ import step4 from './views/user/Join/step4.vue'
 import step5 from './views/user/Join/step5.vue'
 
 import findPassword from './views/user/FindPassword.vue'
-import Join from './views/user/Join.vue'
 import profile from './views/user/profile.vue'
+import followList from './views/user/followinglist.vue'
 import UserModify from './views/user/UserModify.vue'
 
 // Feed
@@ -96,6 +96,12 @@ export default [
         path : '/user/modify',
         name : 'UserModify',
         component : UserModify
+    },
+    {
+        path : '/user/profile/:nickname/follow',
+        name : 'followList',
+        component : followList,
+        props: true,
     },
     // Main
     {
