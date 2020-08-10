@@ -15,8 +15,8 @@
                     <!-- 닉네임 -->
                     <div class="profileName">{{ User.nickname }}</div>
                     <div class="follow">
-                        <button class="follower">{{ User.followercount }}<br>팔로워</button>
-                        <button class="following">{{ User.followingcount }}<br>팔로잉</button>
+                        <button class="follower" @click="goFollowList">{{ User.followercount }}<br>팔로워</button>
+                        <button class="following" @click="goFollowList">{{ User.followingcount }}<br>팔로잉</button>
                     </div>
                     <div class="profile-btns">
                         <button class="btn-follow" v-if="isMe" @click="goUserModify">회원정보수정</button>
@@ -47,11 +47,11 @@
 
             <!-- 개발 능력 !-->
             <nav class="default-tabs">
-              <div class="default-tabs-item tabs-item_active" @click="handleClick">
+              <div class="default-tabs-item" :class="{'tabs-item_active':isCurrent}" @click="handleClick">
                 <button> Introduce </button> <!-- active tab -->
                 <div class="default-tabs-active-line"></div>
               </div>
-              <div class="default-tabs-item" @click="handleClick">
+              <div class="default-tabs-item" :class="{'tabs-item_active':!isCurrent}" @click="handleClick">
                 <button> Ability </button>
                 <div class="default-tabs-active-line"></div>
               </div>
@@ -76,13 +76,12 @@
 
               </div>
               <div v-if="currentTab === 'Ability'" >
-                <table>
-                <tr class="tableHeader">
-                  <th> 종류 </th>
-                  <th> 능력 </th>
-                </tr>
+                <div class="ability-header">
+                    <div class="ability-kind">종류</div>
+                    <div class="ability-level">능력</div>
+                  
+                </div>
                 <profileAbility :abilityname="abilities[n]" :ability="User.ability[n]" :id="n" :key="n" v-for="n in 15"></profileAbility>
-              </table>
                 
               </div>
             </div>
@@ -128,6 +127,7 @@ export default {
             },
             isMe: false,
             isFollow: false,
+            isCurrent: true,
             currentTab: 'Introduce',
             abilities: [
                 { name: 'cpp',
@@ -209,10 +209,14 @@ export default {
         handleClick(event) {
           console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
+          this.isCurrent = !this.isCurrent
         },
         goUserModify() {
           this.$router.push({name: 'UserModify'})
-        }
+        },
+        goFollowList(event) {
+          this.$router.push({name: 'followList', params: { PageName: event.target.className, nickname: this.User.nickname}})
+        },
     }
 
 
@@ -252,6 +256,8 @@ export default {
 }
 .follow button {
   width: 50%;
+  border: 0;
+  outline: 0;
 }
 .profile-btns {
   padding: 0 10px 0 135px;
@@ -267,18 +273,16 @@ export default {
 .btn-on{
     width:50%;
     font-size: 18px;
-    color: #464545
+    color: #464545;
+    border: 0;
+    outline: 0;
 }
 .btn-off{
     width:50%;
     font-size: 18px;
     color: #E2DFD8;   
-}
-.btn-off:visited{
-  border: 0;
-}
-.btn-off:active{
-  border: 0;
+    border: 0;
+    outline: 0;
 }
 #introduce {
   white-space: normal;
@@ -305,6 +309,11 @@ export default {
     transition: all 0.25s;
     width: 50%;
 }
+.tabs-item_active{
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
 .default-tabs-item button {
   cursor: pointer;
   border: 0;
@@ -322,31 +331,32 @@ export default {
       border-bottom: 2px solid gray;
       color: black;
 }
+.default-tabs-item:visited{
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
 .default-tabs-item:first-child {
       margin-left: 0;
 }
 .default-tabs-item:last-child {
       margin-right: 0;
 }
-.default-tabs-active-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    background-color: black;
-    /* -webkit-transition: width 0.4s ease, -webkit-transform 0.4s ease;
-    transition: width 0.4s ease, -webkit-transform 0.4s ease;
-    transition: transform 0.4s ease, width 0.4s ease;
-    transition: transform 0.4s ease, width 0.4s ease, -webkit-transform 0.4s ease; */
-}
+
 .content {
   margin-top: 30px;
   font-size: 20px;
 }
 
 /* ability tab */
-th{
+.ability-header{
+  border-bottom: 1px solid #464545;
+}
+.ability-kind, .ability-level{
   padding-bottom: 10px;
-  border-bottom: 2px solid #464545;
+  font-weight: bold;
+  display: inline-block;
+  width: 50%;
+  text-align: center;
 }
 </style>
