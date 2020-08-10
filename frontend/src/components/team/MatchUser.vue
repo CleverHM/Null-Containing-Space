@@ -1,4 +1,5 @@
 <template>
+
   <div id="MatchUser">
       
     <div class="user-area d-flex flex-row">
@@ -12,14 +13,30 @@
         <div class="info-area">
 
             <!-- 유저 이름 -->
-            <div class="texttags">
-                {{ userData.nickname }}
+            <div class="d-flex align-items-center justify-content-between texttags">
+                <span>
+                    {{ userData.nickname }}
+                </span>
+                <span v-if="noprefer">
+                    ({{ subjectCheck }})
+                </span>
             </div>
 
-            <!-- 선택한 주제 -->
-            <div class="texttags">
+            <div v-if="!noprefer" class="d-flex align-items-center texttags">
                 {{ subjectCheck }}
             </div>
+
+            <div v-if="noprefer" class="percent-area">
+                <b-progress 
+                    :value="userData.percent"
+                    class="percent-bar"
+                    variant="success"
+                    :key="userData.nickname"
+                    :show-progress="showProgress">
+                    <b-progress-bar :value="userData.percent" :label="`${userData.percent}%`"></b-progress-bar>
+                </b-progress>    
+            </div>
+
 
             <!-- 버튼 영역 -->
             <div class="btn-area d-flex justify-content-between">
@@ -35,7 +52,10 @@
 <script>
 export default {
     name: "MatchUser",
-    props: ['userData'],
+    props: [
+        'userData',
+        'noprefer',
+        ],
 
     data() {
         return {
@@ -54,6 +74,8 @@ export default {
             },
             subjectCheck: '',
             imgExist: false,  
+            animated: true,
+            showProgress: true,
         }
     },
 
@@ -78,6 +100,9 @@ export default {
 </script>
 
 <style scoped>
+
+*:focus { outline:none; }
+
 .user-area {
     margin: 15px 10px 15px 10px;
     padding: 15px;
@@ -124,5 +149,23 @@ export default {
     color: white;
     border-radius: 10px;
 }
+
+.none-area {
+    height: 21px;
+}
+
+.percent-area {
+    position: relative;
+    margin: 13px 7px 13px 7px;
+}
+
+
+.percent-bar {
+    height: 9px;
+    font-size: 8px;
+    background-color: #E2DFD8;
+    color: #ACCCC4;
+}
+
 
 </style>
