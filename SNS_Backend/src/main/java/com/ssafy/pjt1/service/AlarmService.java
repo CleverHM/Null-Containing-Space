@@ -9,5 +9,5 @@ public interface AlarmService {
 	void sendAlarm(Alarm alarm);
 	void delete(Alarm alarm);
 	List<Alarm> meAlarm(String mynickname);
-	Optional<Alarm>  findById(int aid);
+	Optional<Alarm> findById(int aid);
 }
