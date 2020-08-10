@@ -3,11 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-<<<<<<< HEAD
-      "serve": "vue-cli-service serve --host localhost --port 3000 --open",
-=======
     "serve": "vue-cli-service serve --host localhost --port 3000 --open",
->>>>>>> 81e8a4ceee19f50975a898f1cc0a761e2dd05b6a
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "jest",
