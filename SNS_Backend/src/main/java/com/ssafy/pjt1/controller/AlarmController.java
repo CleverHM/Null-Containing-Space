@@ -3,6 +3,7 @@ package com.ssafy.pjt1.controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -62,6 +63,24 @@ public class AlarmController {
 		
 		for(int i = 0; i < aList.size(); i++) {
 			MyAlarm ma = new MyAlarm(aList.get(i).getUser().getNickname(), aList.get(i).getCreateDate(), aList.get(i).getContent());
+			res.add(ma);
+		}
+		
+		return res;
+	}
+	
+	// 보낸 알림함 확인
+	@PostMapping("/alarm/meSendAlarm")
+    @ApiOperation(value = "내가 보낸 알람 확인", notes = "내가 보낸 알람 구현.")
+    public List<MyAlarm> meSendAlarm(@Valid @RequestParam String mynickname) throws Exception {
+		Optional<User> optionalUser = userservice.findtwo(mynickname);
+		User user = optionalUser.get();
+		
+		Set<Alarm> aList = user.getAlarms();
+		List<MyAlarm> res = new LinkedList<MyAlarm>();
+		
+		for(Alarm a : aList) {
+			MyAlarm ma = new MyAlarm(a.getToNickname(), a.getCreateDate(), a.getContent());
 			res.add(ma);
 		}
 		
