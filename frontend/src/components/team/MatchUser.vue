@@ -1,4 +1,5 @@
 <template>
+
   <div id="MatchUser">
       
     <div class="user-area d-flex flex-row">
@@ -26,8 +27,14 @@
             </div>
 
             <div v-if="noprefer" class="percent-area">
-                <div class="percent-back-graph"></div>
-                <div class="percent-graph" width="50%"></div>
+                <b-progress 
+                    :value="userData.percent"
+                    class="percent-bar"
+                    variant="success"
+                    :key="userData.nickname"
+                    :show-progress="showProgress">
+                    <b-progress-bar :value="userData.percent" :label="`${userData.percent}%`"></b-progress-bar>
+                </b-progress>    
             </div>
 
 
@@ -67,6 +74,8 @@ export default {
             },
             subjectCheck: '',
             imgExist: false,  
+            animated: true,
+            showProgress: true,
         }
     },
 
@@ -91,6 +100,9 @@ export default {
 </script>
 
 <style scoped>
+
+*:focus { outline:none; }
+
 .user-area {
     margin: 15px 10px 15px 10px;
     padding: 15px;
@@ -144,21 +156,16 @@ export default {
 
 .percent-area {
     position: relative;
-    margin: 15px 7px 15px 7px;
+    margin: 13px 7px 13px 7px;
 }
 
-.percent-back-graph {
-    width: 100%;
-    height: 5px;
-    background-color: rgb(218, 216, 216);
+
+.percent-bar {
+    height: 9px;
+    font-size: 8px;
+    background-color: #E2DFD8;
+    color: #ACCCC4;
 }
 
-.percent-graph {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    height: 10px;
-    background-color: #ACCCC4;
-}
 
 </style>

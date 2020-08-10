@@ -24,6 +24,9 @@
             </div>
 
             <div v-if="currentTab == 1" style="margin-left:10px; margin-top:20px;">
+                <div class="noprefertags d-flex justify-content-center">
+                    그래프는 해당 유저의 프로젝트 적합도를 의미합니다
+                </div>
                 <div class="match-area">
                     <MatchUser v-for="member in team.members2" :key="member.nickname" :userData="member" :noprefer="true"></MatchUser>
                 </div>
@@ -109,7 +112,7 @@ export default {
 
 
 .displaytags {
-    margin-top: 70px;   
+    margin-top: 70px;
     padding: 10px;
     font-size: 14px;
     font-weight: bold;
@@ -125,6 +128,13 @@ export default {
 
 .tab-button > .active {
   border-bottom: 1.5px solid #464545;
+}
+
+.noprefertags {
+    padding: 5px;
+    font-size: 13px;
+    color: #464545;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 </style>
