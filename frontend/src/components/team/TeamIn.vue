@@ -4,18 +4,19 @@
       {{ teamData.title }}
     </div>
 
+
     <!-- 팀 / 명세서-->
-    <tabs
-      :tabs="tabs"
-      :currentTab="currentTab"
-      :wrapper-class="'default-tabs'"
-      :tab-class="'default-tabs__item'"
-      :tab-active-class="'default-tabs__item_active'"
-      :line-class="'default-tabs__active-line'"
-      @onClick="handleClick"
-    />
-    <div class="content">
-      <div v-if="currentTab === 'tab1'">
+    <div id="tabs">
+      <div class="tab-button d-flex justify-content-center">
+        <button v-for="(tab, index) in tabs"
+          :class="{active: currentTab === index}"
+          @click="currentTab = index"
+          :key="tab">
+          {{ tab }}
+        </button>
+      </div>
+      <div class="tab-content">
+        <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
 
         <!-- 시작일 -->
         <div class="displaytags">
@@ -46,7 +47,7 @@
 
       </div>
       
-      <div v-if="currentTab === 'tab2'">
+      <div v-if="currentTab == 1">
         
         <!-- 프로젝트 명세서 -->
         <div class="team-spec">
@@ -54,6 +55,7 @@
         </div>
       
       </div>
+    </div>
     </div>
     
 
@@ -74,14 +76,6 @@ import httpCommon from '../../util/http-common';
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
 
-const TABS = [{
-    title: '프로젝트 팀 정보',
-    value: 'tab1',
-    },{
-    title: '프로젝트 명세서',
-    value: 'tab2',
-    },
-];
 
 export default {
   name: "teamIn",
@@ -89,7 +83,6 @@ export default {
   components: {
     specs,
     memberImg,
-    Tabs,
   },
 
   props: [
@@ -99,10 +92,13 @@ export default {
   data() {
     return {
       ifLeader: false,
-      tabs: TABS,
-      currentTab: 'tab1',
       diffTime: '',
       teamExist: false,
+      tabs: [
+        '프로젝트 팀 정보',
+        '프로젝트 명세서',
+      ],
+      currentTab: 0,
     }
   },
 
@@ -168,7 +164,7 @@ export default {
 
     // 팀 매칭 페이지로 이동
     teamMatchGo() {
-      this.$router.push({ name: 'teamMatch', params: { isLeader: true }})
+      this.$router.push({ name: 'teamMatch' })
     },
 
     // 유저 페이지 이동
@@ -182,6 +178,8 @@ export default {
 </script>
 
 <style scoped>
+*:focus { outline:none; }
+
 .team-title {
   padding: 0px 10px 5px 10px;
   color: #464545;
@@ -194,7 +192,7 @@ export default {
   margin-bottom: 50px;
 }
 
-.content {
+.tab-content {
   margin-bottom: 70px;
 }
 
@@ -230,5 +228,13 @@ export default {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+
+.tab-button > button {
+  padding: 10px 20px 10px 20px;
+}
+
+.tab-button > .active {
+  border-bottom: 1.5px solid #464545;
+}
 
 </style>

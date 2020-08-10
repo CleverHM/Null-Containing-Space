@@ -34,6 +34,7 @@ import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
 import TeamInfo from './views/team/TeamInfo.vue'
+import MatchMember from './views/team/MatchMember.vue'
 
 
 import Components from './views/Components.vue'
@@ -185,7 +186,12 @@ export default [
     {
         path : '/team/match',
         name : 'teamMatch',
-        component : teamMatch,
+        component : teamMatch
+    },
+    {
+        path: '/team/match/list',
+        name: 'MatchMember',
+        component: MatchMember,
         props: true,
     },
     {
