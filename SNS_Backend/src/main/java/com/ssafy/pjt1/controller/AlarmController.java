@@ -41,14 +41,15 @@ public class AlarmController {
 	@Autowired
     private UserService userservice;
 	
+	// 팀장 -> 팀원 
 	@PostMapping("/alarm/send")
-    @ApiOperation(value = "알람 보내기 댓글작성", notes = "알람 보내기 기능을 구현.")
+    @ApiOperation(value = "알람 보내기", notes = "알람 보내기 기능을 구현.")
     public void userReply(@Valid @RequestParam String mynickname, String tonickname) throws Exception {
 		Optional<User> optionalUser = userservice.findtwo(mynickname);
 		
 		User user = optionalUser.get();
 		
-		Alarm alarm = new Alarm("같이 해요", tonickname);
+		Alarm alarm = new Alarm("프로젝트 같이 해요", tonickname);
 		
 		alarm.setUser(user);
 		

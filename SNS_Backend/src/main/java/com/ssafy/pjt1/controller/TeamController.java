@@ -90,13 +90,17 @@ public class TeamController {
 
 	@PostMapping("/team/join")
 	@ApiOperation(value = "팀 가입", notes = "팀 가입 기능을 구현")
-	public void teamjoin(@Valid @RequestParam String nickname, int teamid) {
+	public void teamjoin(@Valid @RequestParam String nickname, String leadernickname) {
 		System.out.println(nickname);
-		Optional<User> optionalUser = userservice.findtwo(nickname);
-		Optional<Team> optionalTeam = teamservice.findone(teamid);
-
-		User user = optionalUser.get();
+		
+		Optional<User> optionalUser1 = userservice.findtwo(leadernickname);
+		User leaderUser = optionalUser1.get();
+		Optional<Team> optionalTeam = teamservice.findone(leaderUser.getTeam().getTeamid());
 		Team team = optionalTeam.get();
+		
+
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
 
 		// 팀: 유저 이어주기
 		user.setTeam(team);
