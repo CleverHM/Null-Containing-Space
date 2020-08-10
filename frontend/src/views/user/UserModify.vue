@@ -11,6 +11,7 @@
                         <img v-else src="@/assets/images/default_image.png">
                     </div>
                     <label for="profileimg">변경 <b-icon-pencil /></label>
+                    <div class="profile-border"></div>
                     <br>
                     <!-- 프로필사진 변경 -->
                 </label>
@@ -71,7 +72,7 @@
                 id="password"
                 type="text"
                 disabled />
-                <button>비밀번호 수정</button>
+                <button @click="goPassword">비밀번호 수정</button>
             </div>
             <!-- 회원탈퇴 버튼 -->
             <div class="input-form" id="delete-form">
@@ -113,6 +114,7 @@ import subNav from '../../components/common/subnav.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
+// const pagereg = '/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi'
 export default {
     name: 'ModifyUser',
     components: {
@@ -154,8 +156,10 @@ export default {
                 this.User.nickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
-                this.User.blogURL = data.blogaddr
-                this.User.GitURL = data.gitaddr
+                if (data.blogaddr && data.blogaddr != null) this.User.blogURL = data.blogaddr
+                else this.User.blogURL = 'https://'
+                if (data.gitaddr && data.gitaddr != null) this.User.GitURL = data.gitaddr
+                else this.User.GitURL = 'https://'
             })
             .catch((err) => {
             console.log(err)
@@ -237,6 +241,9 @@ export default {
                 this.$router.push("/")
             })
         },
+        goPassword() {
+            this.$router.push({name: 'findPassword'})
+        },    
     },
 }
 </script>
@@ -257,6 +264,14 @@ export default {
     overflow: hidden;
     /* border: 2px solid #464545; */
 }
+.profile-border{
+    width: 143px;
+    height: 143px;
+    border: 3px solid #464545;
+    border-radius: 100%;
+    position: absolute;
+    top: -1.5px;
+}
 .image-box img {
     margin: 0;
     width: 100%;
@@ -276,8 +291,8 @@ export default {
 }
 #image-preview label{
     position: absolute;
-    bottom: 10px;
-    left: 0px;
+    bottom: 13px;
+    left: 2px;
     width: 140px;
     height: 30px;
     line-height: 30px;
@@ -346,6 +361,9 @@ input[type="text"]:focus{
 
 #password-form > button{
     background-color: #D52602;
+    border: 0;
+    outline: 0;
+    box-shadow: 0 5px 5px -5px #333;
 }
 
 #password-form > label{
@@ -382,6 +400,7 @@ input[type="text"]:focus{
   background: #D52602;
   font-size: 16px;
   border: 0;
+  outline: 0;
   border-radius: 3px;
   box-shadow: 0 5px 5px -5px #333;
 }
@@ -393,14 +412,11 @@ input[type="text"]:focus{
   transition: opacity 0.2s ease-in;
 }
 .Modal-container #Modal-toggle {
-    width: 100px;
-    height: 50px;
+    width: 67.1px;
+    height: 33.47px;
     position: absolute;
-    left: 82%;
-    top: 0;
-    right: 0;
-    width: 150px;
-    height: 50px;
+    bottom: 8.5px;
+    right: 11px;
     z-index: 9999;
     opacity: 0;
     cursor: pointer;

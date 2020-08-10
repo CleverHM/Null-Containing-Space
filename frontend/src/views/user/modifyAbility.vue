@@ -1,7 +1,7 @@
 <template>
     <div id="css-slider">
         <section class="slide slide-four">
-          <h5>당신의 개발능력을 평가해주세요.</h5>
+          <h5>당신의 개발능력을 수정해주세요.</h5>
           <table>
             <tr class="tableHeader">
               <th> 개발 능력 </th>
@@ -9,36 +9,37 @@
               <th>중</th>
               <th>하</th>
             </tr>
-            <Join4 :abilityName="ability" v-for="ability in abilities" :key="ability" @getAbility="saveAbility"></Join4>
+            <ability :abilityName="ability" v-for="ability in abilities" :key="ability.id" @getAbility="saveAbility"></ability>
           </table>
           
           <button id="btn-join" @click="Join">입력</button>
         </section>
 
-        <header>
-            <div for="slide-1" id="slide-1" @click="gostep1"></div>
-            <div for="slide-2" id="slide-2" @click="gostep2"></div>
-            <div for="slide-3" id="slide-3" @click="gostep3"></div>
-            <div for="slide-4" id="slide-4" @click="gostep4"></div>
-            <div for="slide-5" id="slide-5" @click="gostep5"></div>
-        </header>
     </div>
 </template>
 
 <script>
-import Join4 from '@/components/user/checkAbility.vue'
+import ability from '@/components/user/checkAbility.vue'
 import http from "@/util/http-common.js"
 
 
 export default {
-    name: 'step4',
+    name: 'modifyAbility',
     components: {
-        Join4,
+        ability,
     },
-    props: {
-      User: {
-        type: Object,
-      }
+    props: [
+      'nickname'
+    ],
+    created() {
+      var InputData = new FormData()
+      console.log(this.nickname)
+      InputData.append("nickname", this.nickname)
+      http.post("/account/abilityInfo", InputData)
+      .then(({data}) => {
+        this.modifyAbility = data
+      })
+      
     },
     data() {
         return {
@@ -79,21 +80,7 @@ export default {
         })
 
       },
-      gostep1() {
-        this.$router.push({name: 'step1'}).catch(()=>{})
-      },
-      gostep2() {
-        this.$router.push({name: 'step2'}).catch(()=>{})
-      },
-      gostep3() {
-        this.$router.push({name: 'step3'}).catch(()=>{})
-      },
-      gostep4() {
-        this.$router.push({name: 'step4'}).catch(()=>{})
-      },
-      gostep5() {
-        this.$router.push({name: 'step5'}).catch(()=>{})
-      },
+
   },
     
 }
@@ -121,7 +108,7 @@ label {
   top:0;
   left: 100%;
   z-index: 10;
-  padding: 8em 0px;
+  padding: 2em 0px;
   background-color: #f7f7f7;
   background-size: cover;
    -webkit-transition: left 0s .75s;

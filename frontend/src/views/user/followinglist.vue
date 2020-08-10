@@ -1,7 +1,6 @@
 <template>
     <div id="followList">
         <Navbar />
-        <!-- 개발 능력 !-->
             <nav class="default-tabs">
               <div class="default-tabs-item" :class="{'tabs-item_active':isCurrent}" @click="handleClick">
                 <button> 팔로워 </button> <!-- active tab -->
@@ -45,16 +44,16 @@ export default {
     },
     created() {
         // 팔로잉 : 1, 팔로워 ; 2
-        if (this.PageName == 'follower') {
-            this.isCurrent = true
-            this.currentTab = '팔로워'
-            this.followFlag = 2
-        }
-        else {
+        if (this.PageName == 'following') {
             this.isCurrent = false
             this.currentTab = '팔로잉'
             this.followFlag = 1
         }
+        else {
+          this.isCurrent = true
+          this.currentTab = '팔로워'
+          this.followFlag = 2
+          }
         var InputData = new FormData()
         InputData.append("nickname", this.nickname)
         InputData.append("flag", this.followFlag)
@@ -80,7 +79,9 @@ export default {
         handleClick(event) {
           console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
-          this.isCurrent = !this.isCurrent
+          if (this.currentTab == '팔로잉') this.isCurrent = false
+          else this.isCurrent = true
+          
         },
     }
     

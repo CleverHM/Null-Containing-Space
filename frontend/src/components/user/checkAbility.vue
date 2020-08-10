@@ -2,20 +2,20 @@
     <tr id="checkAbility">
         <!-- ability name -->
         <td>
-            {{ ability.name }}
+            {{ abilityName }}
         </td>
 
         <!-- button -->
         <td class="radio-wrap">
-            <input type="radio" value="상" :name="ability.name" checked @click="checkButton">
+            <input type="radio" value="상" :name="abilityName" checked @click="checkButton">
             <div class="checkmark"></div>  
         </td>
         <td class="radio-wrap">
-            <input type="radio" value="중" :name="ability.name" @click="checkButton">
+            <input type="radio" value="중" :name="abilityName" @click="checkButton">
             <div class="checkmark"></div>
         </td>
         <td class="radio-wrap">
-            <input type="radio" value="하" :name="ability.name" @click="checkButton">
+            <input type="radio" value="하" :name="abilityName" @click="checkButton">
             <div class="checkmark"></div>
         </td>
     </tr>    
@@ -24,11 +24,9 @@
 <script>
 export default {
     name: 'checkAbility',
-    props: {
-        ability: {
-            type: Object,
-        },
-    },
+    props: [
+        'abilityName'
+    ],
     data() {
         return {
             high : false,

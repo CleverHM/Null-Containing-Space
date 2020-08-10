@@ -147,7 +147,10 @@
 ## 2020. 08. 08
 
 - 조대흠
+  - 배포 작업 마무리.(docker)
+  - 채팅 서버 클라이언트-서버 다음주에 작업.
 - 박상현
+  - MatchingController 오류 수정 및 vue와 연결(Spring)
 - 김호한
   - 램덤 유저 Controller 생성 (Spring) 
   - 알람 Dto ,Dao, Service 구현 (Spring)
