@@ -40,7 +40,6 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-
 //@CrossOrigin(origins = { "http://localhost:3000" })
 @CrossOrigin(origins = "*")
 
@@ -90,23 +89,41 @@ public class TeamController {
 
 	@PostMapping("/team/join")
 	@ApiOperation(value = "팀 가입", notes = "팀 가입 기능을 구현")
-	public void teamjoin(@Valid @RequestParam String nickname, String leadernickname) {
+	public Object teamjoin(@Valid @RequestParam String nickname, String leadernickname) {
 		System.out.println(nickname);
-		
+
 		Optional<User> optionalUser1 = userservice.findtwo(leadernickname);
 		User leaderUser = optionalUser1.get();
 		Optional<Team> optionalTeam = teamservice.findone(leaderUser.getTeam().getTeamid());
 		Team team = optionalTeam.get();
-		
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
-		// 팀: 유저 이어주기
-		user.setTeam(team);
-		user.setMatchok(false);
-		userservice.signUp(user);
+		if (user.getTeam().getTeamid() == 1) {
+			// 팀: 유저 이어주기
 
+			if (leaderUser.getTeam().getMemberCnt() == (leaderUser.getTeam().getUsers().size())) {
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.data = "팀인원아 가득 찼습니다.";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				user.setTeam(team);
+				user.setMatchok(false);
+				userservice.signUp(user);
+
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "팀 가입 완료";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
+		} else {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "이미 팀이 있습니다.";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
 	}
 
 	@PostMapping("/team/leave")
@@ -308,7 +325,7 @@ public class TeamController {
 		// 팀 원 넣기
 		Optional<Team> optionalTeam = teamservice.findone(teamid);
 		Team team = optionalTeam.get();
-		
+
 		List<TeamPersonData> mems = new LinkedList<TeamPersonData>();
 		List<Boolean> preferTech = new LinkedList<Boolean>();
 		TeamPersonData leaderNickname = null;
@@ -371,9 +388,8 @@ public class TeamController {
 		}
 
 		System.out.println(leaderNickname.getNickname());
-		TeamData teamdata = new TeamData(team.getCreateDate(), team.getMemberCnt(), mems,
-				team.getTeamIntro(), team.getTitle(), team.getPreferProject(), preferTech,
-				leaderNickname);
+		TeamData teamdata = new TeamData(team.getCreateDate(), team.getMemberCnt(), mems, team.getTeamIntro(),
+				team.getTitle(), team.getPreferProject(), preferTech, leaderNickname);
 
 		final BasicResponse result = new BasicResponse();
 		result.status = true;

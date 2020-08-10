@@ -63,7 +63,7 @@ public class AlarmController {
 		List<MyAlarm> res = new LinkedList<MyAlarm>();
 		
 		for(int i = 0; i < aList.size(); i++) {
-			MyAlarm ma = new MyAlarm(aList.get(i).getUser().getNickname(), aList.get(i).getCreateDate(), aList.get(i).getContent());
+			MyAlarm ma = new MyAlarm(aList.get(i).getAid(), aList.get(i).getUser().getNickname(), aList.get(i).getCreateDate(), aList.get(i).getContent());
 			res.add(ma);
 		}
 		
@@ -81,10 +81,20 @@ public class AlarmController {
 		List<MyAlarm> res = new LinkedList<MyAlarm>();
 		
 		for(Alarm a : aList) {
-			MyAlarm ma = new MyAlarm(a.getToNickname(), a.getCreateDate(), a.getContent());
+			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent());
 			res.add(ma);
 		}
 		
 		return res;
+	}
+	
+	// 알람 삭제
+	@PostMapping("/alarm/delete")
+    @ApiOperation(value = "알람 삭제", notes = "알람 삭제 구현")
+    public void delete(@Valid @RequestParam int aid) throws Exception {
+		Optional<Alarm> optionalAlarm = alarmservice.findById(aid);
+		Alarm alarm = optionalAlarm.get();
+		
+		alarmservice.delete(alarm);
 	}
 }
