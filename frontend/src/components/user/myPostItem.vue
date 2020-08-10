@@ -1,20 +1,22 @@
 <template>
-    <div class="myPostItem">
+    <div class="mypost">
         <!-- post image -->
         <div class="mypost-image">
 
         </div>
         <div class="mypost-info">
             <!-- title -->
-            <div class="mypost-title"></div>
+            <div class="mypost-title">내게시물 제목</div>
             <!-- 조회수, 좋아요, 댓글 -->
             <div class="mypost-etc">
+                <!-- 작성일 -->
+                <div class="etc mypost-view">1일 전</div>
                 <!-- 조회수 -->
-                <div class="mypost-view"></div>
+                <div class="etc mypost-view"><b-icon-eye /> 4</div>
                 <!-- 좋아요 -->
-                <div class="mypost-like"></div>
+                <div class="etc mypost-like"><b-icon-heart /> 6</div>
                 <!-- 댓글 -->
-                <div class="mypost-comment"></div>
+                <div class="etc mypost-comment"><b-icon-chat-left-dots /> 3</div>
 
 
             </div>
@@ -66,5 +68,33 @@ export default {
 </script>
 
 <style scoped>
-
+.mypost{
+    position: relative;
+    padding: 10px 15px 10px 15px;
+    border-bottom: 1.5px solid #464545;
+}
+.mypost-image, .mypost-info {
+    display: inline-block;
+}
+.mypost-image{
+    width: 80px;
+    height: 80px;
+    background-color: #464545;
+}
+.mypost-title{
+    position: absolute;
+    top: 20px;
+    left: 110px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.mypost-etc {
+    position: absolute;
+    bottom: 20px;
+    left: 110px;
+}
+.mypost-etc .etc {
+    display: inline-block;
+    padding-right: 10px;
+}
 </style>

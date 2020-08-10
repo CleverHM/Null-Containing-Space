@@ -2,6 +2,9 @@
     <div v-if="isLoading"></div>
     <div v-else>
         <Navbar />
+        <myPostItem :Post="post"></myPostItem>
+        <myPostItem></myPostItem>
+        <myPostItem></myPostItem>
         <myPostItem></myPostItem>
     </div>
 </template>
