@@ -2,30 +2,27 @@ package com.ssafy.pjt1.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.MyPageData;
 import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.model.TeamPersonData;
 import com.ssafy.pjt1.service.TeamService;
@@ -39,7 +36,6 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
-
 
 //@CrossOrigin(origins = { "http://localhost:3000" })
 @CrossOrigin(origins = "*")
@@ -90,19 +86,41 @@ public class TeamController {
 
 	@PostMapping("/team/join")
 	@ApiOperation(value = "팀 가입", notes = "팀 가입 기능을 구현")
-	public void teamjoin(@Valid @RequestParam String nickname, int teamid) {
+	public Object teamjoin(@Valid @RequestParam String nickname, String leadernickname) {
 		System.out.println(nickname);
-		Optional<User> optionalUser = userservice.findtwo(nickname);
-		Optional<Team> optionalTeam = teamservice.findone(teamid);
 
-		User user = optionalUser.get();
+		Optional<User> optionalUser1 = userservice.findtwo(leadernickname);
+		User leaderUser = optionalUser1.get();
+		Optional<Team> optionalTeam = teamservice.findone(leaderUser.getTeam().getTeamid());
 		Team team = optionalTeam.get();
 
-		// 팀: 유저 이어주기
-		user.setTeam(team);
-		user.setMatchok(false);
-		userservice.signUp(user);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
 
+		if (user.getTeam().getTeamid() == 1) {
+			// 팀: 유저 이어주기
+
+			if (leaderUser.getTeam().getMemberCnt() == (leaderUser.getTeam().getUsers().size())) {
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.data = "팀인원아 가득 찼습니다.";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			} else {
+				user.setTeam(team);
+				user.setMatchok(false);
+				userservice.signUp(user);
+
+				final BasicResponse result = new BasicResponse();
+				result.status = true;
+				result.data = "팀 가입 완료";
+				return new ResponseEntity<>(result, HttpStatus.OK);
+			}
+		} else {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "이미 팀이 있습니다.";
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
 	}
 
 	@PostMapping("/team/leave")
@@ -116,11 +134,36 @@ public class TeamController {
 		User user = optionalUser.get();
 
 		user.setTeam(team);
+		user.setMatchok(false);
 		// 팀: 유저 끊어주기
 
 		userservice.signUp(user);
 	}
 
+	@PostMapping("/team/exit")
+	@ApiOperation(value = "프로젝트 종료", notes = "프로젝트 종료 기능을 구현")
+	public void teamexit(@Valid @RequestParam String nickname) {
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		Optional<Team> optionalTeam = teamservice.findone(1);
+
+		Team team = optionalTeam.get();
+
+		User user = optionalUser.get();
+
+		Set<User> members = user.getTeam().getUsers(); 
+		
+		// 팀: 유저 끊어주기
+		for(User u : members) {
+			u.setTeam(team);
+			if(u.getLeader() == true) {
+				u.setLeader(false);
+			}
+			u.setMatchok(false);
+			userservice.signUp(user);
+		}
+	
+	}
+	
 	// nick name 으로 프로젝트 페이지판별 하기
 	@PostMapping("/team/exist")
 	@ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
@@ -304,7 +347,7 @@ public class TeamController {
 		// 팀 원 넣기
 		Optional<Team> optionalTeam = teamservice.findone(teamid);
 		Team team = optionalTeam.get();
-		
+
 		List<TeamPersonData> mems = new LinkedList<TeamPersonData>();
 		List<Boolean> preferTech = new LinkedList<Boolean>();
 		TeamPersonData leaderNickname = null;
@@ -367,9 +410,8 @@ public class TeamController {
 		}
 
 		System.out.println(leaderNickname.getNickname());
-		TeamData teamdata = new TeamData(team.getCreateDate(), team.getMemberCnt(), mems,
-				team.getTeamIntro(), team.getTitle(), team.getPreferProject(), preferTech,
-				leaderNickname);
+		TeamData teamdata = new TeamData(team.getCreateDate(), team.getMemberCnt(), mems, team.getTeamIntro(),
+				team.getTitle(), team.getPreferProject(), preferTech, leaderNickname);
 
 		final BasicResponse result = new BasicResponse();
 		result.status = true;
