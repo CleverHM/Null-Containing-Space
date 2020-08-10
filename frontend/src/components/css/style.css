@@ -1004,13 +1004,13 @@ p {
   color: #999;
 }
 
-[type="checkbox"]:checked,
+/* [type="checkbox"]:checked,
 [type="checkbox"]:not(:checked),
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
   position: absolute;
   left: -9999px;
-}
+} */
 
 [type="checkbox"]:checked + span,
 [type="checkbox"]:not(:checked) + span,
