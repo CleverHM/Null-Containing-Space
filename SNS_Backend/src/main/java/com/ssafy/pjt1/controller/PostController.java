@@ -365,6 +365,139 @@ public class PostController {
 		postdao.save(post);
 	}
 
+	// 내게시물 보내주기
+	@PostMapping("/post/myPost")
+	@ApiOperation(value = "내게시물 Vue로보내기", notes = "내게시물 Vue로보내기 기능을 구현.")
+	public List<FeedData> myPost(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+
+		List<FeedData> res = new LinkedList<FeedData>();
+		List<Post> postList = new LinkedList<>();
+		
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+
+		// 자기가 올린 게시문
+		Set<Post> myPost = user.getPosts();
+		postList.addAll(myPost);
+
+		// 게시물 확인
+		System.out.println("==============내게시물==================");
+		for (int i = 0; i < postList.size(); i++) {
+			System.out.println(postList.get(i).getTitle());
+		}
+		
+		// 데이터 담는 작업
+		for (int i = 0; i < postList.size(); i++) {
+			System.out.println(postList.get(i).getTitle());
+			List<String> tag = new LinkedList<String>();
+
+			for (PostTag t : postList.get(i).getPosttags()) {
+				tag.add(t.getTag().getName());
+			}
+			
+			Date d = new Date();
+
+			// 이미지 만들기
+			byte[] reportBytes = null;
+			File result = new File(postList.get(i).getFiles().getFileurl() + postList.get(i).getFiles().getFilename());
+
+			if (result.exists()) {
+				System.out.println("있음");
+				InputStream inputStream = new FileInputStream(
+						postList.get(i).getFiles().getFileurl() + postList.get(i).getFiles().getFilename());
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+				int count = likeservice.likeCount(postList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				byte[] reportBytes1 = null;
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+				
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), reportBytes1));
+				}
+				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+			} else {
+				System.out.println("없는 파일");
+
+				int count = likeservice.likeCount(postList.get(i));
+
+				// 내가 좋아요 했는가?
+				int likeFlag = 0;
+
+				Optional<Post> tempP = postservice.findone(postList.get(i).getPid());
+				Post post = tempP.get();
+				Set<PostLike> postlikes = post.getPostlikes();
+
+				for (PostLike pl : postlikes) {
+					// 이미 좋아요한 사람일 경우.
+					if (pl.getUser().getUid() == user.getUid()) {
+						likeFlag = 1;
+						break;
+					}
+				}
+
+				byte[] reportBytes1 = null;
+				File result1 = new File(postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+				
+				if (result1.exists()) {
+					System.out.println("있음");
+					InputStream inputStream1 = new FileInputStream(
+							postList.get(i).getUser().getProfile().getFileurl() + postList.get(i).getUser().getProfile().getFilename());
+
+					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), out1));
+				} else {
+					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
+							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
+							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
+							postList.get(i).getReplies().size(), reportBytes1));
+				}
+				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
+			}
+
+		}
+		Collections.sort(res, new Comparator<FeedData>() {
+
+			@Override
+			public int compare(FeedData o1, FeedData o2) {
+				// TODO Auto-generated method stub
+				return o2.getPid() - o1.getPid();
+			}
+		});
+		return res;
+	}
+	
 	// 해당이메일 게시물 보내주기
 	@PostMapping("/post/getPost")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
