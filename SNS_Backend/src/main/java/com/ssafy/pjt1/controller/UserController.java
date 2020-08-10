@@ -142,8 +142,9 @@ public class UserController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		 String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
-		//String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl =
+		// "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
@@ -193,8 +194,9 @@ public class UserController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		 String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
-		//String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl =
+		// "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
 			destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension;
@@ -612,5 +614,58 @@ public class UserController {
 		}
 
 		return list;
+	}
+
+	@PostMapping("/account/abilityInfo")
+	@ApiOperation(value = "능력치 넘기기", notes = "능력치 넘기기 기능을 구현.")
+	public List<Integer> abilityInfo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+		List<Integer> abt = new ArrayList<>();
+
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+
+		abt.add(user.getAbility().getBack_cpp());
+		abt.add(user.getAbility().getBack_java());
+		abt.add(user.getAbility().getBack_python());
+		abt.add(user.getAbility().getBack_php());
+		abt.add(user.getAbility().getFront_html());
+		abt.add(user.getAbility().getFront_css());
+		abt.add(user.getAbility().getFront_javascript());
+		abt.add(user.getAbility().getDb_sql());
+		abt.add(user.getAbility().getDb_nosql());
+		abt.add(user.getAbility().getFrame_spring());
+		abt.add(user.getAbility().getFrame_django());
+		abt.add(user.getAbility().getFrame_bootstrap());
+		abt.add(user.getAbility().getFrame_vue());
+		abt.add(user.getAbility().getFrame_react());
+		abt.add(user.getAbility().getAlgo());
+
+		return abt;
+	}
+	
+	@PostMapping("/account/abilityModify")
+	@ApiOperation(value = "능력치 수정", notes = "능력치 수정 기능을 구현.")
+	public void abilityInfo(@Valid @RequestParam String nickname, List<Integer> ability) throws FileNotFoundException, IOException {
+
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+
+		user.getAbility().setBack_cpp(ability.get(0));
+		user.getAbility().setBack_java(ability.get(1));
+		user.getAbility().setBack_python(ability.get(2));
+		user.getAbility().setBack_php(ability.get(3));
+		user.getAbility().setFront_html(ability.get(4));
+		user.getAbility().setFront_css(ability.get(5));
+		user.getAbility().setFront_javascript(ability.get(6));
+		user.getAbility().setDb_sql(ability.get(7));
+		user.getAbility().setDb_nosql(ability.get(8));
+		user.getAbility().setFrame_spring(ability.get(9));
+		user.getAbility().setFrame_django(ability.get(10));
+		user.getAbility().setFrame_bootstrap(ability.get(11));
+		user.getAbility().setFrame_vue(ability.get(12));
+		user.getAbility().setFrame_react(ability.get(12));
+		user.getAbility().setAlgo(ability.get(13));
+
+		userservice.signUp(user);
 	}
 }
