@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.MatchingData;
 import com.ssafy.pjt1.model.MatchingMemberData;
 import com.ssafy.pjt1.service.MatchingService;
+import com.ssafy.pjt1.service.MatchingServiceImpl.U;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -46,12 +46,15 @@ public class MatchingController {
 	private UserService userservice;
 	@Autowired
 	private MatchingService matchingservice;
+
 	
 	@PostMapping("/match/teammember")
 	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
 	public MatchingData matchingAlgo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
 		List<String> preferTech = new ArrayList<>();
-		List<User> userlist = new ArrayList<>();
+		List<User> userlist1 = new ArrayList<>();
+		List<User> userlist2 = new ArrayList<>();
+		List<Integer> plist = new ArrayList<>();
 		
 		Optional<User> u = userservice.findtwo(nickname);
 		
@@ -74,45 +77,67 @@ public class MatchingController {
 		if(team.getAlgo()==true) preferTech.add("algo");
 		
 		int preferProject = team.getPreferProject();
-		List<Integer> matching_user_id = new ArrayList<>();
-		matching_user_id = matchingservice.match(preferProject, preferTech);
-		
-		for(Integer i : matching_user_id) System.out.println("추천된 userid : " + i);
-		
+		List<U> matching_user = new ArrayList<>();
+		matching_user = matchingservice.match(preferProject, preferTech);
+
 		Optional<User> u2;
 		
-		for(Integer i : matching_user_id) {
-			u2 = userservice.findthree(i);
-			userlist.add(u2.get());
+		for(U i : matching_user) {
+			u2 = userservice.findthree(i.getUserid());
+			if(i.isPrefer() == true) userlist1.add(u2.get());
+			else {
+				userlist2.add(u2.get());
+				plist.add(i.getPercent());
+			}
 		}
 		
-		List<MatchingMemberData> res = new LinkedList<>();
+		List<MatchingMemberData> res1 = new LinkedList<>();
 		
-		for (int i = 0; i < userlist.size(); i++) {
+		for (int i = 0; i < userlist1.size(); i++) {
 			byte[] trash = null;
 
-			File result = new File(userlist.get(i).getProfile().getFileurl()+ userlist.get(i).getProfile().getFilename());
+			File result = new File(userlist1.get(i).getProfile().getFileurl()+ userlist1.get(i).getProfile().getFilename());
 
 			if (result.exists()) {
 				System.out.println("프로필 사진 있음");
-				InputStream inputStream = new FileInputStream(userlist.get(i).getProfile().getFileurl() + userlist.get(i).getProfile().getFilename());
+				InputStream inputStream = new FileInputStream(userlist1.get(i).getProfile().getFileurl() + userlist1.get(i).getProfile().getFilename());
 				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 				
-				res.add(new MatchingMemberData(userlist.get(i).getUid(), userlist.get(i).getNickname(), userlist.get(i).getPreferProject(), out));
+				res1.add(new MatchingMemberData(userlist1.get(i).getUid(), userlist1.get(i).getNickname(), userlist1.get(i).getPreferProject(), 0, out));
 			}
-			else {
-				res.add(new MatchingMemberData(userlist.get(i).getUid(), userlist.get(i).getNickname(), userlist.get(i).getPreferProject(), trash));
-			}
+			else res1.add(new MatchingMemberData(userlist1.get(i).getUid(), userlist1.get(i).getNickname(), userlist1.get(i).getPreferProject(), 0, trash));
 		}
+		
+		List<MatchingMemberData> res2 = new LinkedList<>();
+		
+		for (int i = 0; i < userlist2.size(); i++) {
+			byte[] trash = null;
+
+			File result = new File(userlist2.get(i).getProfile().getFileurl()+ userlist2.get(i).getProfile().getFilename());
+
+			if (result.exists()) {
+				System.out.println("프로필 사진 있음");
+				InputStream inputStream = new FileInputStream(userlist2.get(i).getProfile().getFileurl() + userlist2.get(i).getProfile().getFilename());
+				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+				
+				res2.add(new MatchingMemberData(userlist2.get(i).getUid(), userlist2.get(i).getNickname(), userlist2.get(i).getPreferProject(), plist.get(i), out));
+			}
+			else res2.add(new MatchingMemberData(userlist2.get(i).getUid(), userlist2.get(i).getNickname(), userlist2.get(i).getPreferProject(), plist.get(i), trash));
+		}
+		
+		
+		
 		System.out.println("유저 uid : " + u.get().getUid());
 		System.out.println("유저 이메일 : " + u.get().getEmail());
 		System.out.println("유저 닉네임 : " + u.get().getNickname());
 		System.out.println("매칭 돌린 애가 리더인지 아닌지 : " + u.get().getLeader());
-		MatchingData res2 = new MatchingData(u.get().getLeader(),res);
+		MatchingData res = new MatchingData(u.get().getLeader(), res1, res2);
 		
-		System.out.println("추천된 팀원 수 : " + res.size());
-		for(MatchingMemberData r : res)System.out.println(r);
+		System.out.println("추천된 선호 팀원들 : ");
+		for(MatchingMemberData r : res1)System.out.println(r);
+		System.out.println("추천된 선호 안하는 팀원들: ");
+		for(MatchingMemberData r : res2)System.out.println(r);
 		
-		return res2;
+		return res;
 	}
 }
