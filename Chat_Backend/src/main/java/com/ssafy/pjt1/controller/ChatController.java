@@ -5,18 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ssafy.pjt1.model.ChatRoom;
 
-@Controller
+@RestController
+@RequestMapping("/chat")
 public class ChatController {
 	
 	List<ChatRoom> roomList = new ArrayList<ChatRoom>();
+	
 	static int roomNumber = 0;
 	
 	@RequestMapping("/chat")
