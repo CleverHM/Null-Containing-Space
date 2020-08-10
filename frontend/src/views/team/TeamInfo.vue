@@ -219,6 +219,7 @@ export default {
 
 .submit-button {
     margin: 10px 0px 10px 0px;
+    width: 170px;
     padding: 10px;
     color: white;
     background-color: #ACCCC4;
@@ -249,6 +250,7 @@ export default {
 
 .tab-button > button {
   padding: 10px 20px 10px 20px;
+  width: 48%;
 }
 
 .tab-button > .active {

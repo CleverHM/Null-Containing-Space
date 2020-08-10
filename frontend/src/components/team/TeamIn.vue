@@ -16,46 +16,101 @@
         </button>
       </div>
       <div class="tab-content">
+        <!-- 팀 정보 탭 -->
         <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
 
-        <!-- 시작일 -->
-        <div class="displaytags">
-          프로젝트 진행 : {{ diffTime }}
-        </div>
-        
-        <!-- 팀 정보 -->
-        <div id="team" class="my-3">
-          <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
-          <div class="d-flex justify-content-start align-items-center">
-            <div class="displaytags">
-              팀장
-            </div>
-            <div class="team-member-area">
-              <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
-            </div>
+          <!-- 시작일 -->
+          <div class="displaytags">
+            프로젝트 진행 : {{ diffTime }}
           </div>
           
-          <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
-            <div class="displaytags">
-              팀원
+          <!-- 팀 정보 -->
+          <div id="team" class="my-3">
+            <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
+            <div class="d-flex justify-content-start align-items-center">
+              <div class="displaytags">
+                팀장
+              </div>
+              <div class="team-member-area">
+                <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
+              </div>
             </div>
-            <div class="team-member-area d-flex flex-row align-items-center">
-                <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
+            
+            <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
+              <div class="displaytags">
+                팀원
+              </div>
+              <div class="team-member-area d-flex flex-row align-items-center">
+                  <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
+              </div>
             </div>
           </div>
+
+        </div>
+      
+        <!-- 명세서 탭 -->
+        <div v-if="currentTab == 1">
+          
+          <!-- 프로젝트 명세서 -->
+          <div class="team-spec">
+              <specs :teamData="teamData"/>
+          </div>
+        
+        </div>
+      
+        <!-- 설정 탭 -->
+        <div v-if="currentTab == 2" class="settingArea d-flex flex-column">
+          
+          <!-- 진행 기간 - 연결 X -->
+          <button>
+            <b-icon-calendar-check class="mr-2"/>
+            {{ startDate }} 
+            <span class="mx-2"> ~ </span> 
+            {{ nowDate }} 
+            <span class="mx-2" style="font-size: 13px; color: #C4BCB8;"> (진행 중) </span>
+          </button>
+          
+          <!-- 실시간 채팅 -->
+          <button>
+            <b-icon-chat-dots class="mr-2"/>
+            실시간 채팅
+          </button>
+          
+          <!-- 팀 탈퇴 (팀장은 불가능)-->
+          <button
+            :class="{ noClick: ifLeader }">
+            <b-icon-person-dash class="mr-2"/>
+            프로젝트 탈퇴
+            <span v-if="ifLeader" style="float: right; font-size: 13px;">(팀원만 가능)</span>
+          </button>
+
+          <!-- 명세서 수정 (팀장만 가능) -->
+          <button style="border: none;"
+            :class="{ noClick: !ifLeader }">
+            <b-icon-card-checklist class="mr-2"/>
+            명세서 수정
+            <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
+          </button>
+          
+          <!-- 프로젝트 취소 (팀장만 가능)-->
+          <button style="border: none;"
+            :class="{ noClick: !ifLeader }">
+            <b-icon-trash class="mr-2"/>
+            프로젝트 취소
+            <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
+          </button>
+
+          <!-- 프로젝트 종료 (팀장만 가능)-->
+          <button style="border: none;"
+            :class="{ noClick: !ifLeader }">
+            <b-icon-door-open class="mr-2"/>
+            프로젝트 종료
+            <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
+          </button>
+
         </div>
 
       </div>
-      
-      <div v-if="currentTab == 1">
-        
-        <!-- 프로젝트 명세서 -->
-        <div class="team-spec">
-            <specs :teamData="teamData"/>
-        </div>
-      
-      </div>
-    </div>
     </div>
     
 
@@ -95,10 +150,13 @@ export default {
       diffTime: '',
       teamExist: false,
       tabs: [
-        '프로젝트 팀 정보',
-        '프로젝트 명세서',
+        '팀 정보',
+        '명세서',
+        '설정',
       ],
       currentTab: 0,
+      startDate: null,
+      nowDate: null,
     }
   },
 
@@ -111,8 +169,17 @@ export default {
     }
 
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
-    var postDate = new Date(this.teamData.createDate)
+    var postDate = new Date(this.teamData.createDate);
     this.diffTime = this.dateCheck(postDate);
+
+    // 프로젝트 시작 날짜 yyyy-mm-nn 순
+    this.startDate = this.teamData.createDate.slice(0,10)
+
+    // 오늘 날짜
+    let year = now.getFullYear().toString(); // 년도
+    let month = (now.getMonth() + 1).toString();  // 월
+    let date = now.getDate().toString();  // 날짜
+    this.nowDate = year + '-' + (month[1] ? month : '0' + month[0]) + '-' + (date[1] ? date : "0" + date[0]);
 
     if (this.teamData.members.length == 0) {
       this.teamExist = false
@@ -231,10 +298,30 @@ export default {
 
 .tab-button > button {
   padding: 10px 20px 10px 20px;
+  width: 32%;
 }
 
 .tab-button > .active {
   border-bottom: 1.5px solid #464545;
+}
+
+.settingArea {
+  margin: 30px 7px 10px 7px;
+}
+
+.settingArea > button {
+  padding: 12px;
+  width: 100%;
+  font-size: 15px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid white;
+  text-align: start;
+  color: #464545;
+}
+
+.noClick {
+  color: #cec8c5 !important;
 }
 
 </style>
