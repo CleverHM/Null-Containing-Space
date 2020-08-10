@@ -41,7 +41,6 @@ export default {
         subNav,
         MatchUserSmall,
     },
-    props: ["isLeader"],
 
     data() {
         return {
@@ -88,9 +87,9 @@ export default {
             .post('/match/teammember', formData)
             .then((res) => {
                 this.members = res.data.member
-                console.log(res.data)
+                console.log(res.data.member)
                 this.MatchPossible();
-                storage.setItem("members", this.members);
+                storage.setItem("members", JSON.stringify(this.members));
                 
             })
             .catch((err) => {

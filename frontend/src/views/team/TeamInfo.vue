@@ -225,6 +225,9 @@ export default {
     border-radius: 10px;
 }
 
+.tab-content {
+  margin-bottom: 70px;
+}
 
 .displaytags {
   padding: 10px;

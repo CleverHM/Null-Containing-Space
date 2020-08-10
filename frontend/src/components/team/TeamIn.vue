@@ -18,7 +18,6 @@
       <div class="tab-content">
         <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
 
-
         <!-- 시작일 -->
         <div class="displaytags">
           프로젝트 진행 : {{ diffTime }}
@@ -165,7 +164,7 @@ export default {
 
     // 팀 매칭 페이지로 이동
     teamMatchGo() {
-      this.$router.push({ name: 'teamMatch', params: { isLeader: true }})
+      this.$router.push({ name: 'teamMatch' })
     },
 
     // 유저 페이지 이동
@@ -193,7 +192,7 @@ export default {
   margin-bottom: 50px;
 }
 
-.content {
+.tab-content {
   margin-bottom: 70px;
 }
 
