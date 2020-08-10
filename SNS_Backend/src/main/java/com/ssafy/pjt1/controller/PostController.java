@@ -438,12 +438,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -479,12 +479,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
 				}
 			}
 
@@ -590,12 +590,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -631,12 +631,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
 				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
@@ -744,12 +744,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -785,12 +785,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
 				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
