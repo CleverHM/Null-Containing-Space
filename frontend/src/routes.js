@@ -11,7 +11,7 @@ import findPassword from './views/user/FindPassword.vue'
 import profile from './views/user/profile.vue'
 import followList from './views/user/followinglist.vue'
 import UserModify from './views/user/UserModify.vue'
-
+import modifyAbility from './views/user/modifyAbility.vue'
 // Feed
 import FeedMain from './views/SNS/IndexFeed.vue'
 import FeedDetail from './views/SNS/DetailFeed.vue'
@@ -96,6 +96,12 @@ export default [
         path : '/user/modify',
         name : 'UserModify',
         component : UserModify
+    },
+    {
+        path : '/user/modify/ability',
+        name : 'modifyAbility',
+        component : modifyAbility,
+        props: true,
     },
     {
         path : '/user/profile/:nickname/follow',
