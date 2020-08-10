@@ -155,3 +155,18 @@
   - 램덤 유저 Controller 생성 (Spring) 
   - 알람 Dto ,Dao, Service 구현 (Spring)
   - 알람 보내기, 내가 받은 알람 목록 보기 구현 (Spring)
+
+
+
+## 2020. 08. 10
+
+- 조대흠
+  - 실시간 채팅 프로그램(Spring)
+  - 실시간 채팅 프로그램(Vue)
+- 박상현
+  - Matching 알고리즘 프로젝트 적합도 추가(Spring)
+  - Matching 알고리즘 오류 수정(Spring)
+- 김호한
+  - 내게시물 가져오기 구현(Spring)
+  - 내가 좋아요한 게시물 가져오기 구현(Spring)
+  - 프로젝트 종료, 팀원 탈퇴 기능 구현(Spring)

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Auth {
 	
