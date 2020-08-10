@@ -12,8 +12,8 @@
             <div v-else>
                 <div v-if="matchNodetail">
                     <!-- 매칭 간략화 화면 -->
-                    <div class="memberImg-area d-flex justify-content-center">
-                        <MatchUserSmall v-for="member in members" :key="member.nickname" :userData="member"></MatchUserSmall>
+                    <div class="memberImg-area">
+                        <MatchUserSmall v-for="member in members" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="btnForm" @click="memberDetailOn">자세히 보기</button>
@@ -135,6 +135,14 @@ export default {
     color: white;
     font-weight: bold;
     font-size: 17px;
+}
+
+.memberImg-area {
+    width: 60%;
+    margin-left: 50%;
+    margin-top: 0%;
+    transform:translate(-40%, 0%);
+
 }
 
 </style>
