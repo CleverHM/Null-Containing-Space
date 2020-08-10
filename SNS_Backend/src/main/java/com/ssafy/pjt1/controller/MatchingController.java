@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -125,7 +127,10 @@ public class MatchingController {
 			else res2.add(new MatchingMemberData(userlist2.get(i).getUid(), userlist2.get(i).getNickname(), userlist2.get(i).getPreferProject(), plist.get(i), trash));
 		}
 		
-		
+		Collections.sort(res2, new Comparator<MatchingMemberData>(){
+			public int compare(MatchingMemberData m1, MatchingMemberData m2) {
+				return m2.getPercent() - m1.getPercent();
+			}});
 		
 		System.out.println("유저 uid : " + u.get().getUid());
 		System.out.println("유저 이메일 : " + u.get().getEmail());
