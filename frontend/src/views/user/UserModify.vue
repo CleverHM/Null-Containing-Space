@@ -114,7 +114,7 @@ import subNav from '../../components/common/subnav.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
-// const pagereg = '/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi'
+const domainreg = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi
 export default {
     name: 'ModifyUser',
     components: {
@@ -193,6 +193,8 @@ export default {
         },
         Modify() {
             var InputData = new FormData()
+            if (this.User.blogURL === 'https://') this.User.blogURL = ""
+            if (this.User.GitURL === 'https://') this.User.GitURL = ""
             if (this.previewImg.file) {
                 InputData.append("profile", this.previewImg.file)
                 InputData.append("email", this.User.email)
