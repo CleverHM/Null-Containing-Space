@@ -155,7 +155,7 @@ public class MatchingServiceImpl implements MatchingService{
 			
 			if(s.equals("cpp")) percent += pcal(ab.getBack_cpp());
 			else if(s.equals("java")) percent += pcal(ab.getBack_java());
-			else if(s.equals("pyhton")) percent += pcal(ab.getBack_python());
+			else if(s.equals("python")) percent += pcal(ab.getBack_python());
 			else if(s.equals("php")) percent +=pcal(ab.getBack_php());
 			else if(s.equals("html")) percent +=pcal(ab.getFront_html());
 			else if(s.equals("css")) percent +=pcal(ab.getFront_css());
@@ -213,7 +213,7 @@ public class MatchingServiceImpl implements MatchingService{
 		
 		String str;
 		int x;
-		for(int i=0;i<lan.size();i++) {
+		for(int i=0; i<lan.size(); i++) {
 			for (int j = 0; j < 3; j++) {
 				str = lan.get(i);
 				x = ablist.get(str).get(j).getUid();
