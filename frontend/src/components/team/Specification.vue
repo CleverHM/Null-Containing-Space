@@ -134,12 +134,14 @@ export default {
 }
 
 .specs-area {
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px 5px 0px;
+  overflow:auto;
 }
 
 .button-area {
+  float: right;
   display: inline;
-  width: 98%;
+  width: 70%;
   padding: 0px 10px 5px 10px;
   margin-bottom: 5px;
 }
