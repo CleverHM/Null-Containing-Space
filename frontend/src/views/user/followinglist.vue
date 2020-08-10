@@ -19,7 +19,7 @@
 
               </div>
               <div v-else >
-                <followItem />
+                <followItem :User="User" v-for="User in List" :key="User.nickname"/>
                 
               </div>
             </div>
@@ -43,27 +43,8 @@ export default {
         followItem
     },
     created() {
-        // 팔로잉 : 1, 팔로워 ; 2
-        if (this.PageName == 'following') {
-            this.isCurrent = false
-            this.currentTab = '팔로잉'
-            this.followFlag = 1
-        }
-        else {
-          this.isCurrent = true
-          this.currentTab = '팔로워'
-          this.followFlag = 2
-          }
-        var InputData = new FormData()
-        InputData.append("nickname", this.nickname)
-        InputData.append("flag", this.followFlag)
-        console.log(this.nickname, this.followFlag)
-        http.post("/follow/user/list", InputData)
-        .then(({data}) => {
-            for (var idx in data){
-                this.List.push(data[idx])
-            }
-        })
+      this.getfollow()
+       
         
 
     },
@@ -76,11 +57,52 @@ export default {
         }
     },
     methods : {
+        getfollow() {
+           // 팔로잉 : 1, 팔로워 ; 2
+          if (this.PageName == 'following') {
+              this.isCurrent = false
+              this.currentTab = '팔로잉'
+              this.followFlag = 1
+          }
+          else {
+            this.isCurrent = true
+            this.currentTab = '팔로워'
+            this.followFlag = 2
+            }
+          var InputData = new FormData()
+          InputData.append("nickname", this.nickname)
+          InputData.append("flag", this.followFlag)
+          console.log(this.nickname, this.followFlag)
+          http.post("/follow/user/list", InputData)
+          .then(({data}) => {
+              for (var idx in data){
+                  this.List.push(data[idx])
+              }
+          })
+        },
         handleClick(event) {
           console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
-          if (this.currentTab == '팔로잉') this.isCurrent = false
-          else this.isCurrent = true
+          if (this.currentTab == '팔로잉') {
+            this.isCurrent = false
+            this.currentTab = '팔로잉'
+            this.followFlag = 1
+          }
+          else {
+            this.isCurrent = true
+            this.currentTab = '팔로워'
+            this.followFlag = 2
+          }
+          var InputData = new FormData()
+          InputData.append("nickname", this.nickname)
+          InputData.append("flag", this.followFlag)
+          console.log(this.nickname, this.followFlag)
+          http.post("/follow/user/list", InputData)
+          .then(({data}) => {
+              for (var idx in data){
+                  this.List.push(data[idx])
+              }
+          })
           
         },
     }

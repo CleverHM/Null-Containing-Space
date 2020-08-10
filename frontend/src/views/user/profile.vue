@@ -1,5 +1,6 @@
 <template>
-    <div style="top:0">
+    <div v-if="isLoading"></div>
+    <div v-else style="top:0">
         <Navbar />
         <subNav></subNav>
 
@@ -27,7 +28,7 @@
             </div>
 
             <!-- 블로그 & 깃 !-->
-            <button v-if="User.blogURL" class="btn-on">
+            <button v-if="User.blogURL" @click="goBlog" class="btn-on">
               <i class="fab fa-blogger fa-2x"></i>
               <br><p>BLOG</p>
             </button>
@@ -36,7 +37,7 @@
               <br><p>No BLOG</p>
             </button>
 
-            <button v-if="User.GitURL" class="btn-on">
+            <button v-if="User.GitURL" @click="goGit" class="btn-on">
               <i class="fab fa-git-square fa-2x"></i>
               <br><p>GIT</p>
             </button>
@@ -59,7 +60,6 @@
             
             <div class="content">
               <div v-if="currentTab === 'Introduce'">
-                
                 <!-- 자기소개 !-->
                 <div id="introduce" class="my-3" v-if="User.Introduce">
                 {{ User.Introduce }}
@@ -112,6 +112,7 @@ export default {
       this.nickname = storage.getItem("NickName")
       this.pagenickname = this.$route.params.nickname
       this.getUserInfo()
+      this.Loading();
     },
     data : () => {
         return {
@@ -162,9 +163,19 @@ export default {
                     id: 14},
             ],
             lenAbility: 15,
+            isLoading: true,
         }
     },
     methods : {
+        Loading() {
+              if (this.isLoading) {
+                  setTimeout(this.delayfinish, 100);
+              }
+        },
+          // 딜레이 화면
+        delayfinish(){
+              this.isLoading = false;
+        },
         getUserInfo() {
           console.log("hello")
           var InputData = new FormData();
@@ -216,6 +227,12 @@ export default {
         },
         goFollowList(event) {
           this.$router.push({name: 'followList', params: { PageName: event.target.className, nickname: this.User.nickname}})
+        },
+        goBlog() {
+          window.open(this.User.blogURL)
+        },
+        goGit() {
+          window.open(this.User.GitURL)
         },
     }
 
@@ -285,7 +302,7 @@ export default {
     outline: 0;
 }
 #introduce {
-  white-space: normal;
+  white-space: pre-wrap;
   word-break: break-all;
 }
 
