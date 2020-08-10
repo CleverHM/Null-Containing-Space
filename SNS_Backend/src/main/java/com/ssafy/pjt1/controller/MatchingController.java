@@ -62,7 +62,7 @@ public class MatchingController {
 		
 		if(team.isBack_cpp()==true) preferTech.add("cpp");
 		if(team.isBack_java()==true) preferTech.add("java");
-		if(team.isBack_python()==true) preferTech.add("pyhton");
+		if(team.isBack_python()==true) preferTech.add("python");
 		if(team.isBack_php()==true) preferTech.add("php");
 		if(team.isFront_html()==true) preferTech.add("html");
 		if(team.isFront_css()==true) preferTech.add("css");
