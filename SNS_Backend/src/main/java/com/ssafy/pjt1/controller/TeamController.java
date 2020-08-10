@@ -2,30 +2,27 @@ package com.ssafy.pjt1.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.MyPageData;
 import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.model.TeamPersonData;
 import com.ssafy.pjt1.service.TeamService;
@@ -137,11 +134,36 @@ public class TeamController {
 		User user = optionalUser.get();
 
 		user.setTeam(team);
+		user.setMatchok(false);
 		// 팀: 유저 끊어주기
 
 		userservice.signUp(user);
 	}
 
+	@PostMapping("/team/exit")
+	@ApiOperation(value = "프로젝트 종료", notes = "프로젝트 종료 기능을 구현")
+	public void teamexit(@Valid @RequestParam String nickname) {
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		Optional<Team> optionalTeam = teamservice.findone(1);
+
+		Team team = optionalTeam.get();
+
+		User user = optionalUser.get();
+
+		Set<User> members = user.getTeam().getUsers(); 
+		
+		// 팀: 유저 끊어주기
+		for(User u : members) {
+			u.setTeam(team);
+			if(u.getLeader() == true) {
+				u.setLeader(false);
+			}
+			u.setMatchok(false);
+			userservice.signUp(user);
+		}
+	
+	}
+	
 	// nick name 으로 프로젝트 페이지판별 하기
 	@PostMapping("/team/exist")
 	@ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
