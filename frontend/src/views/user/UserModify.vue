@@ -114,6 +114,7 @@ import subNav from '../../components/common/subnav.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
+const pagereg = '/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi'
 export default {
     name: 'ModifyUser',
     components: {
@@ -155,8 +156,10 @@ export default {
                 this.User.nickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
-                this.User.blogURL = data.blogaddr
-                this.User.GitURL = data.gitaddr
+                if (data.blogaddr && data.blogaddr != null) this.User.blogURL = data.blogaddr
+                else this.User.blogURL = 'https://'
+                if (data.gitaddr && data.gitaddr != null) this.User.GitURL = data.gitaddr
+                else this.User.GitURL = 'https://'
             })
             .catch((err) => {
             console.log(err)

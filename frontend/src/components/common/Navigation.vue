@@ -17,7 +17,7 @@
                             <!-- <li class="menu-tiem"><b-icon-question-circle-fill scale="1.1" class="mr-2"/>QnA</li> -->
                             <li class="menu-tiem"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
                             <li class="menu-tiem"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
-                            <li class="menu-tiem"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
+                            <li class="menu-tiem" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
                             <hr>
                             <li class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
                             <!-- <li class="menu-tiem" @click="goModifyUser"><b-icon-pencil scale="1.1" class="mr-2"/>회원정보 수정</li> -->
@@ -69,6 +69,9 @@ export default {
       },
       toggleShow() {
           this.showMenu = !this.showMenu
+      },
+      goModifyAbility() {
+          this.$router.push({name: 'modifyAbility'})
       }
 
   },
