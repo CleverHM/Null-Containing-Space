@@ -4,12 +4,14 @@ public class MatchingMemberData {
 	private int userid;
 	private String nickname;
 	private int preferProject;
+	private int percent;
 	private byte[] profile;
-	
-	public MatchingMemberData(int userid, String nickname, int preferProject, byte[] profile) {
+
+	public MatchingMemberData(int userid, String nickname, int preferProject, int percent, byte[] profile) {
 		this.userid = userid;
 		this.nickname = nickname;
 		this.preferProject = preferProject;
+		this.percent = percent;
 		this.profile = profile;
 	}
 
@@ -35,6 +37,14 @@ public class MatchingMemberData {
 
 	public void setPreferProject(int preferProject) {
 		this.preferProject = preferProject;
+	}
+
+	public int getPercent() {
+		return percent;
+	}
+
+	public void setPercent(int percent) {
+		this.percent = percent;
 	}
 
 	public byte[] getProfile() {
