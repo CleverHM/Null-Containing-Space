@@ -167,4 +167,6 @@
   - Matching 알고리즘 프로젝트 적합도 추가(Spring)
   - Matching 알고리즘 오류 수정(Spring)
 - 김호한
-  - 
+  - 내게시물 가져오기 구현(Spring)
+  - 내가 좋아요한 게시물 가져오기 구현(Spring)
+  - 프로젝트 종료, 팀원 탈퇴 기능 구현(Spring)
