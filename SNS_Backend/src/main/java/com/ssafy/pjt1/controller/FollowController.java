@@ -146,7 +146,7 @@ public class FollowController {
 		System.out.println("팔로워 : " + cnt1 + "  팔로잉 : " + cnt2);
 	}
 
-	@GetMapping("/follow/user/list")
+	@PostMapping("/follow/user/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
 	public List<FollowList> userFollowList(@Valid @RequestParam String nickname, int flag) throws IOException {
 
