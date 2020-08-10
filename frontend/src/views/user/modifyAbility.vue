@@ -1,6 +1,7 @@
 <template>
     <div id="css-slider">
-        <section class="slide slide-four">
+        <div v-if="isLoading"></div>
+        <section class="slide slide-four" v-else>
           <h5>당신의 개발능력을 수정해주세요.</h5>
           <table>
             <tr class="tableHeader">
@@ -9,10 +10,10 @@
               <th>중</th>
               <th>하</th>
             </tr>
-            <ability :abilityName="ability" v-for="ability in abilities" :key="ability.id" @getAbility="saveAbility"></ability>
+            <ability :abilityLevel="modifyAbility[n-1]" :abilityName="abilities[n-1]" v-for="n in 15" :key="n-1" @getAbility="saveAbility"></ability>
           </table>
           
-          <button id="btn-join" @click="Join">입력</button>
+          <button id="btn-join" @click="Modify">수정</button>
         </section>
 
     </div>
@@ -38,7 +39,10 @@ export default {
       http.post("/account/abilityInfo", InputData)
       .then(({data}) => {
         this.modifyAbility = data
+        console.log(this.modifyAbility)
       })
+      this.Loading();
+      
       
     },
     data() {
@@ -60,23 +64,38 @@ export default {
                 'React',
                 'Algorithm',
             ],
+            modifyAbility: [2, 2, 2, 2, 2,
+                            2, 2, 2, 2, 2,
+                            2, 2, 2, 2, 2],
+            isLoading: true,
         }
 
     },
     methods: {
+      Loading() {
+            if (this.isLoading) {
+                setTimeout(this.delayfinish, 100);
+            }
+        },
+        // 딜레이 화면
+        delayfinish(){
+            this.isLoading = false;
+        },
       saveAbility(name, level){
-        for (var i in this.abilities){
-          var ability = this.abilities[i]
-          if (ability.name === name){
-            this.User.ability[i] = level
+        for (var i=0; i<15; i++){
+          var ability = this.abilities[i-1]
+          if (ability === name){
+            this.modifyAbility[i-1] = level
           }
         }
       },
-      Join() {
-        console.log(this.User)
-        http.post("/account/signup", this.User)
+      Modify() {
+        var InputData = new FormData()
+        InputData.append("nickname", this.nickname)
+        InputData.append("ability", this.modifyAbility)
+        http.post("/account/abilityModify", InputData)
         .then(({data}) => {
-          this.$router.push({name: 'step5'}) 
+          this.$router.push({ name: 'profile', params: { nickname: this.nickname }});
         })
 
       },
