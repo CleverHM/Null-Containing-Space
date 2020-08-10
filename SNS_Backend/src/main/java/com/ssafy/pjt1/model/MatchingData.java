@@ -4,12 +4,13 @@ import java.util.List;
 
 public class MatchingData {
 	private boolean leader;
-	private List<MatchingMemberData> member;
+	private List<MatchingMemberData> prefermember;
+	private List<MatchingMemberData> noprefermember;
 	
-	public MatchingData(boolean leader, List<MatchingMemberData> member) {
-		super();
+	public MatchingData(boolean leader, List<MatchingMemberData> prefermember, List<MatchingMemberData> noprefermember) {
 		this.leader = leader;
-		this.member = member;
+		this.prefermember = prefermember;
+		this.noprefermember = noprefermember;
 	}
 
 	public boolean isLeader() {
@@ -20,11 +21,20 @@ public class MatchingData {
 		this.leader = leader;
 	}
 
-	public List<MatchingMemberData> getMember() {
-		return member;
+	public List<MatchingMemberData> getPrefermember() {
+		return prefermember;
 	}
 
-	public void setMember(List<MatchingMemberData> member) {
-		this.member = member;
+	public void setPrefermember(List<MatchingMemberData> prefermember) {
+		this.prefermember = prefermember;
 	}
+
+	public List<MatchingMemberData> getNoprefermember() {
+		return noprefermember;
+	}
+
+	public void setNoprefermember(List<MatchingMemberData> noprefermember) {
+		this.noprefermember = noprefermember;
+	}
+	
 }
