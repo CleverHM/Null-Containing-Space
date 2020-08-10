@@ -44,7 +44,8 @@
 
         <!-- content 부분. -->
         <!-- content에 <br/>를 넣었으므로 {{}}이 아닌 v-html로 출력 -->
-        <div class="page-content" v-html="article.content">
+        <div class="page-content">
+          {{ article.content }}
         </div>
 
         <!-- 좋아요 부분 -->
@@ -179,9 +180,6 @@ export default {
         var postDate = new Date(this.article.date)
         this.article.date = postDate
         this.article.diffTime = this.dateCheck(this.article.date);
-
-        // 줄바꿈 적용을 위해 \n 을 <br/>로 바꿔준다.
-        this.article.content = this.article.content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 
         if (this.article.userFile == null) {
           this.userImg = false
@@ -369,7 +367,7 @@ export default {
 .page-content {
   margin-top: 5px;
   width: 98%;
-  white-space: normal;
+  white-space: pre-wrap;
   word-break: break-all;
 }
 

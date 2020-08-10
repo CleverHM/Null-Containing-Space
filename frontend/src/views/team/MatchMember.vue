@@ -19,13 +19,13 @@
         <div class="tab-content">
             <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
                 <div class="match-area">
-                    <MatchUser v-for="member in team.members1" :key="member.nickname" :userData="member"></MatchUser>
+                    <MatchUser v-for="member in team.members1" :key="member.nickname" :userData="member" :noprefer="false"></MatchUser>
                 </div>
             </div>
 
             <div v-if="currentTab == 1" style="margin-left:10px; margin-top:20px;">
                 <div class="match-area">
-                    <MatchUser v-for="member in team.members2" :key="member.nickname" :userData="member"></MatchUser>
+                    <MatchUser v-for="member in team.members2" :key="member.nickname" :userData="member" :noprefer="true"></MatchUser>
                 </div>
             </div>
         </div>
@@ -51,11 +51,10 @@ export default {
         subNav,
         MatchUser,
     },
-    props: ['members'],
+    props: ['members1', 'members2'],
     data() {
         return {
             team: {
-                members: null,
                 members1: null,
                 members2: null,
             },
@@ -69,12 +68,12 @@ export default {
 
     created() {
         if (this.members == undefined) {
-            this.team.members = JSON.parse(storage.getItem("members"))
+            this.team.members1 = JSON.parse(storage.getItem("members1"))
+            this.team.members2 = JSON.parse(storage.getItem("members2"))
         } else {
-            this.team.members = this.members
+            this.team.members1 = this.members1
+            this.team.members2 = this.members2
         }
-        this.team.members1 = this.team.members.slice(0, 5)
-        this.team.members2 = this.team.members.slice(5, 10)
     },
 
     methods: {

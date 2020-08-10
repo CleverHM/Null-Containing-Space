@@ -11,7 +11,8 @@
             <!-- 매칭 간략화 화면 -->
             <div v-else>
                 <div class="memberImg-area">
-                    <MatchUserSmall v-for="member in members" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
+                    <MatchUserSmall v-for="member in matchData.prefermember" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
+                    <MatchUserSmall v-for="member in matchData.noprefermember" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
                 </div>
                 <div class="d-flex justify-content-center">
                     <button class="btnForm" @click="memberDetailOn">자세히 보기</button>
@@ -45,6 +46,7 @@ export default {
     data() {
         return {
             loadingOn: true,
+            MatchData: null,
             members: null,
         }
     },
@@ -69,7 +71,7 @@ export default {
 
         // 디테일 화면 켜기
         memberDetailOn() {
-            this.$router.push({ name: 'MatchMember', params: { members: this.members }})
+            this.$router.push({ name: 'MatchMember', params: { members1: this.matchData.prefermember, members2: this.matchData.noprefermember }})
         },
 
         // 다시 매칭하기
@@ -86,10 +88,11 @@ export default {
             http
             .post('/match/teammember', formData)
             .then((res) => {
-                this.members = res.data.member
-                console.log(res.data.member)
+                this.matchData = res.data
+                console.log(res.data)
                 this.MatchPossible();
-                storage.setItem("members", JSON.stringify(this.members));
+                storage.setItem("members1", JSON.stringify(this.matchData.prefermember));
+                storage.setItem("members2", JSON.stringify(this.matchData.noprefermember));
                 
             })
             .catch((err) => {
@@ -98,7 +101,7 @@ export default {
         },
 
         MatchPossible() {
-            if (this.members.leader == false) {
+            if (this.matchData.leader == false) {
                 this.$router.push({ name: 'Main' })
             }
         },
