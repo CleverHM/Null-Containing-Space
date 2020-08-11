@@ -5,31 +5,21 @@
         <div class="contentArea">
             <!-- 로딩 페이지 -->
             <div v-if="loadingOn">
-                <img src="@/assets/images/lionLoading.gif" alt="" style="width:100%;">
+                <!-- <img src="@/assets/images/lionLoading.gif" alt="" style="width:100%;"> -->
             </div>
 
-            <!-- 매칭된 화면 -->
+            <!-- 매칭 간략화 화면 -->
             <div v-else>
-                <div v-if="matchNodetail">
-                    <!-- 매칭 간략화 화면 -->
-                    <div class="memberImg-area d-flex justify-content-center">
-                        <MatchUserSmall v-for="member in members" :key="member.nickname" :userData="member"></MatchUserSmall>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btnForm" @click="memberDetailOn">자세히 보기</button>
-                        <button class="btnForm ml-2" @click="reMatchOn">다시 매칭하기</button>
-                    </div>
-
+                <div class="memberImg-area">
+                    <MatchUserSmall v-for="member in matchData.prefermember" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
+                    <MatchUserSmall v-for="member in matchData.noprefermember" :key="member.nickname" :userData="member" class="m-2"></MatchUserSmall>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button class="btnForm" @click="memberDetailOn">자세히 보기</button>
+                    <button class="btnForm ml-2" @click="reMatchOn">다시 매칭하기</button>
                 </div>
 
-                <div v-else>
-                    <div class="match-area">
-                        <MatchUser v-for="member in members" :key="member.nickname" :userData="member"></MatchUser>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btnForm" @click="reMatchOn">다시 팀원 매칭하기</button>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -38,7 +28,6 @@
 <script>
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
-import MatchUser from '../../components/team/MatchUser.vue'
 import MatchUserSmall from '../../components/team/MatchUserSmall.vue'
 import httpCommon from '../../util/http-common'
 import http from "../../util/http-common.js";
@@ -51,15 +40,13 @@ export default {
     components: {
         Navbar,
         subNav,
-        MatchUser,
         MatchUserSmall,
     },
-    props: ["isLeader"],
 
     data() {
         return {
             loadingOn: true,
-            matchNodetail: true,
+            MatchData: null,
             members: null,
         }
     },
@@ -73,7 +60,7 @@ export default {
         // 로딩하는가?
         isLoading() {
             if (this.loadingOn) {
-                setTimeout(this.delayfinish, 4000);
+                setTimeout(this.delayfinish, 1000);
             }
         },
 
@@ -84,13 +71,12 @@ export default {
 
         // 디테일 화면 켜기
         memberDetailOn() {
-            this.matchNodetail = false;
+            this.$router.push({ name: 'MatchMember', params: { members1: this.matchData.prefermember, members2: this.matchData.noprefermember }})
         },
 
         // 다시 매칭하기
         reMatchOn() {
             this.loadingOn = true;
-            this.matchNodetail = true;
             this.isLoading();
             this.MatchReceive();
         },
@@ -102,9 +88,12 @@ export default {
             http
             .post('/match/teammember', formData)
             .then((res) => {
-                this.members = res.data.member
+                this.matchData = res.data
                 console.log(res.data)
                 this.MatchPossible();
+                storage.setItem("members1", JSON.stringify(this.matchData.prefermember));
+                storage.setItem("members2", JSON.stringify(this.matchData.noprefermember));
+                
             })
             .catch((err) => {
                 console.log(err)
@@ -112,7 +101,7 @@ export default {
         },
 
         MatchPossible() {
-            if (this.members.leader == false) {
+            if (this.matchData.leader == false) {
                 this.$router.push({ name: 'Main' })
             }
         },
@@ -123,6 +112,9 @@ export default {
 </script>
 
 <style scoped>
+
+*:focus { outline:none; }
+
 .contentArea {
     margin-top: 70px;
 }
@@ -135,6 +127,14 @@ export default {
     color: white;
     font-weight: bold;
     font-size: 17px;
+}
+
+.memberImg-area {
+    width: 60%;
+    margin-left: 50%;
+    margin-top: 0%;
+    transform:translate(-40%, 0%);
+
 }
 
 </style>

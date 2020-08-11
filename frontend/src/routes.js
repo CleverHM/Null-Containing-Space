@@ -10,6 +10,8 @@ import step5 from './views/user/Join/step5.vue'
 import findPassword from './views/user/FindPassword.vue'
 import profile from './views/user/profile.vue'
 import followList from './views/user/followinglist.vue'
+import myPost from './views/user/myPost.vue'
+import myLikePost from './views/user/myLikePost.vue'
 import UserModify from './views/user/UserModify.vue'
 import modifyAbility from './views/user/modifyAbility.vue'
 // Feed
@@ -20,7 +22,6 @@ import FeedComment from './views/SNS/CommentFeed.vue'
 
 // Main
 import Main from './views/Main.vue'
-import Search from './views/search/Search.vue';
 import Notice from './views/Notice.vue'
 
 // study
@@ -34,8 +35,12 @@ import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
 import TeamInfo from './views/team/TeamInfo.vue'
+import MatchMember from './views/team/MatchMember.vue'
 
-
+// Search
+import SearchMain from './views/search/SearchMain.vue'
+import TagResult from './views/search/TagResult.vue'
+// etc
 import Components from './views/Components.vue'
 import test from './views/test.vue'
 
@@ -109,16 +114,23 @@ export default [
         component : followList,
         props: true,
     },
+    {
+        path : '/user/profile/:nickname/myPost',
+        name : 'myPost',
+        component : myPost,
+        props: true,
+    },
+    {
+        path : '/user/profile/:nickname/myLikePost',
+        name : 'myLikePost',
+        component : myLikePost,
+        props: true,
+    },
     // Main
     {
         path : '/main',
         name : 'Main',
         component : Main
-    },
-    {
-        path : '/search',
-        name : 'Search',
-        component : Search
     },
     {
         path : '/notice',
@@ -178,6 +190,12 @@ export default [
         props: true,
     }, 
     {
+        path : '/team/update',
+        name : 'updateTeam',
+        component : createTeam,
+        props: true,
+    }, 
+    {
         path : '/team/specs',
         name : 'Specs',
         component : Specs
@@ -185,7 +203,12 @@ export default [
     {
         path : '/team/match',
         name : 'teamMatch',
-        component : teamMatch,
+        component : teamMatch
+    },
+    {
+        path: '/team/match/list',
+        name: 'MatchMember',
+        component: MatchMember,
         props: true,
     },
     {
@@ -198,7 +221,12 @@ export default [
         name: 'LeaderForm',
         component: SubjectForm,
         props: true,
-
+    },
+    {
+        path: '/team/leader/update',
+        name: 'LeaderUpdateForm',
+        component: SubjectForm,
+        props: true,
     },
     {
         path: '/team/info/:teamId',
@@ -206,7 +234,18 @@ export default [
         component: TeamInfo,
         props: true,
     },
-
+    // search
+    {
+        path: '/search',
+        name: 'SearchMain',
+        component: SearchMain,
+    },
+    {
+        path: '/search/:tag',
+        name: 'TagResult',
+        component: TagResult,
+        props: true,
+    },
 
     // Component
     {

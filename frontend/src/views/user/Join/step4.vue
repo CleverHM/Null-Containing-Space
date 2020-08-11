@@ -9,7 +9,7 @@
               <th>중</th>
               <th>하</th>
             </tr>
-            <Join4 :abilityName="ability" v-for="ability in abilities" :key="ability" @getAbility="saveAbility"></Join4>
+            <Join4 :abilityLevel="2" :abilityName="ability" v-for="ability in abilities" :key="ability" @getAbility="saveAbility"></Join4>
           </table>
           
           <button id="btn-join" @click="Join">입력</button>
