@@ -61,12 +61,12 @@ public class AlarmController {
 	// 댓글알람
 	@PostMapping("/alarm/replyAlarm")
 	@ApiOperation(value = "댓글알람 보내기", notes = "댓글알람 보내기 기능을 구현.")
-	public void replyAlarm(@Valid @RequestParam String mynickname, String tonickname) throws Exception {
+	public void replyAlarm(@Valid @RequestParam String mynickname, String tonickname, String title) throws Exception {
 		Optional<User> optionalUser = userservice.findtwo(mynickname);
 
 		User user = optionalUser.get();
 
-		Alarm alarm = new Alarm(mynickname + "님이 댓글을 달았습니다. ", tonickname, 2);
+		Alarm alarm = new Alarm(mynickname + "님이 회원님의 '" + title + "' 게시글에 댓글을 달았습니다. ", tonickname, 2);
 
 		alarm.setUser(user);
 
