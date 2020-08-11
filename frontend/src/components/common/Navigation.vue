@@ -16,7 +16,7 @@
                             <hr>
                             <!-- <li class="menu-tiem"><b-icon-question-circle-fill scale="1.1" class="mr-2"/>QnA</li> -->
                             <li class="menu-tiem" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
-                            <li class="menu-tiem"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
+                            <li class="menu-tiem" @click="goMyLikePost"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
                             <li class="menu-tiem" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
                             <hr>
                             <li class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
@@ -75,7 +75,10 @@ export default {
       },
       goMyPost() {
           this.$router.push({name: 'myPost', params:{ nickname: storage.NickName}})
-      }
+      },
+      goMyLikePost() {
+          this.$router.push({name: 'myLikePost', params:{ nickname: storage.NickName}})
+      },
 
   },
 };
