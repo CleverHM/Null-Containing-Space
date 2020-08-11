@@ -5,7 +5,7 @@
             <img v-else src="@/assets/images/default_image.png">
         </div>
         <div class="follow-nickname" @click="goProfile">{{ User.nickname }}</div>
-        <button class="follow-button">팔로우</button>
+        <button class="follow-button" @click="goProfile">프로필</button>
     </div>
 </template>
 
