@@ -1,19 +1,18 @@
 package com.ssafy.pjt1.dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ssafy.pjt1.service.ChatService;
 
 @Entity
 @Table(name = "ChatRoom")
@@ -23,7 +22,14 @@ public class ChatRoom {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
 	private int roomId;
+	
+	
 	private String name;
+	
+	// 채팅방 : 채팅  (1 : N 관계)
+	@JsonIgnore
+	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Chat> chat;
 	
 	public ChatRoom() {
 		
