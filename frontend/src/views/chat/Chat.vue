@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+   <Navbar></Navbar>
+   <subNav/>
+
     유저이름: 
     <input
       v-model="userName"
@@ -23,9 +26,22 @@
 <script>
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
+import Navbar from '../../components/common/Navigation.vue'
+import subNav from '../../components/common/subnav.vue'
 
 export default {
   name: 'Chat',
+
+   components: {
+    Navbar,
+    subNav,
+  },
+  
+  props: [
+    'teamId',
+    ],
+
+
   data() {
     return {
       userName: "",

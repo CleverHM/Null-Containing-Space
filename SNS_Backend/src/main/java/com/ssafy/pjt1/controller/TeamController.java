@@ -25,6 +25,7 @@ import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.model.TeamPersonData;
+import com.ssafy.pjt1.service.ChatService;
 import com.ssafy.pjt1.service.TeamService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -48,6 +49,9 @@ public class TeamController {
 
     @Autowired
     private TeamService teamservice;
+    
+    @Autowired
+    private ChatService chatservice;
 
     @PostMapping("/team/binTeam")
     @ApiOperation(value = "1 번팀 생성", notes = "1번 팀 생성 기능을 구현")
@@ -75,7 +79,9 @@ public class TeamController {
                 preTech[5], preTech[6], preTech[7], preTech[8], preTech[9], preTech[10], preTech[11], preTech[12],
                 preTech[13], preTech[14]);
 
-//        Team team = new Team(title, teamintro, cnt, prePro,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true);
+        
+        team.setChatroom(chatservice.createChatRoom()); // 팀 생성시 방 만들어주기.
+        
         teamservice.join(team);
 
         user.setLeader(true);
