@@ -70,9 +70,8 @@
                 </div>
 
                 <!-- 태그 뱃지 !-->
-                <TagBadge></TagBadge>
-                <TagBadge></TagBadge>
-                <TagBadge></TagBadge>
+                {{ User.tag }}
+                <TagBadge :tag="tag" v-for="tag in User.tags" :key="tag"></TagBadge>
 
               </div>
               <div v-if="currentTab === 'Ability'" >
@@ -98,7 +97,6 @@ import profileAbility from '../../components/user/profileAbility.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
-console.log(storage.getItem("token"))
 
 export default {
     name: "profile",
@@ -125,6 +123,7 @@ export default {
               Introduce: null,
               profileURL: null,
               ability: null,
+              tags: [],
             },
             isMe: false,
             isFollow: false,
@@ -177,14 +176,13 @@ export default {
               this.isLoading = false;
         },
         getUserInfo() {
-          console.log("hello")
           var InputData = new FormData();
           InputData.append("nickname", this.nickname)
           InputData.append("pageNickname", this.pagenickname)
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
-              // console.log(data)
+              console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file
@@ -193,10 +191,9 @@ export default {
               this.User.blogURL = data.blogaddr
               this.User.GitURL = data.gitaddr
               this.User.ability = data.abt
-              console.log(this.User)
+              this.User.tags = data.tag
               this.isMe = data.me
               this.isFollow = data.follow
-              console.log("create", this.isFollow)
           })
           .catch((err) => {
             console.log(err)
@@ -208,7 +205,6 @@ export default {
           InputData.append("To", this.pagenickname)
           http.post("/follow/user", InputData)
           .then(({data}) => {
-            console.log("follow",data)
             this.isFollow = data.flag
             this.User.followingcount = data.followingCnt
             this.User.followercount = data.followerCnt

@@ -1,12 +1,15 @@
 <template>
     <div id="TagBadge" class="mx-1">
-        <button><span>Spring</span></button>
+        <button><span>{{ tag }}</span></button>
     </div>
 </template>
 
 <script>
 export default {
     name: 'TagBadge',
+    props: [
+        'tag',
+    ]
 }
 </script>
 

@@ -46,7 +46,7 @@ public class FeedData {
         this.replyCount = replycount;
         this.userFile = userfile;
     }
-   
+
 	public int getViewCount() {
 		return ViewCount;
 	}
