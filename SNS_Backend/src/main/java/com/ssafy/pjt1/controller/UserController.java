@@ -416,7 +416,7 @@ public class UserController {
 			abt.add(user.getAbility().getFrame_vue());
 			abt.add(user.getAbility().getFrame_react());
 			abt.add(user.getAbility().getAlgo());
-
+			
 			// 이미지
 			byte[] reportBytes = null;
 			File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
@@ -570,21 +570,27 @@ public class UserController {
 		List<RecommendUser> list = new LinkedList<RecommendUser>();
 
 		List<User> optionalUsers = userservice.findall();
-
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User oriUser = optionalUser.get();
+		
 		// 램덤수 뽑기
 		// 다섯명 이상일 경우
-		if (optionalUsers.size() > 5) {
+		if (optionalUsers.size() > 6) {
 			// 5명 랜덤 뽑기
 			int[] ran = new int[5];
 			Random r = new Random();
 
 			for (int i = 0; i < optionalUsers.size(); i++) {
 				ran[i] = r.nextInt(optionalUsers.size()) + 1;
+				if((ran[i] -1) == oriUser.getUid()) {
+					i--;
+				}
 				for (int k = 0; k < i; k++) {
 					if (ran[i] == ran[k]) {
 						i--;
 					}
 				}
+				if(i == 4) break;
 			}
 
 			for (int i = 0; i < ran.length; i++) {
@@ -602,7 +608,9 @@ public class UserController {
 			// 그냥 다넣기
 			for (int i = 0; i < optionalUsers.size(); i++) {
 				User user = optionalUsers.get(i);
-
+				if(user.getUid() == oriUser.getUid()) {
+					continue;
+				}
 				int followerCount = followservice.followerCount(user);
 				int followingCount = followservice.followingCount(user);
 
