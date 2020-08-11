@@ -230,7 +230,7 @@ export default [
         component: SearchMain,
     },
     {
-        path: '/search/tag',
+        path: '/search/:tag',
         name: 'TagResult',
         component: TagResult,
         props: true,

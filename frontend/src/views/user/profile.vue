@@ -182,7 +182,7 @@ export default {
           http
           .post("/account/myPage", InputData)
           .then(({data}) => {
-              // console.log(data)
+              console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file

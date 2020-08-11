@@ -1,6 +1,7 @@
 <template>
   <div v-if="isLoading">
     <Navbar />
+    <subnav />
     <!-- 검색 창 -->
       <div class="search-bar">
         <label><b-icon-search /></label>
@@ -13,6 +14,7 @@
   </div>
   <div v-else id="SearchMain">
       <Navbar />
+      <subnav />
       <!-- 검색 창 -->
       <div class="search-bar">
         <label><b-icon-search /></label>
@@ -36,11 +38,11 @@
             <!-- 검색 결과 -->
             <div class="content">
                 <div v-if="isCurrent">
-                   <followItem :User="user" v-for="user in Results" :key="user.nickname"/>
+                   <peopleItem :User="user" v-for="user in Results" :key="user.nickname"/>
 
                 </div>
                 <div v-else >
-                  {{ Results }}
+                  <tagItem :tag="tag" v-for="tag in Results" :key="tag"/>
                 </div>
             </div>
       </div>
@@ -50,14 +52,18 @@
 
 <script>
 import Navbar from '@/components/common/Navigation.vue'
-import followItem from '@/components/user/followItem.vue'
+import subnav from '@/components/common/subnav.vue'
+import peopleItem from '@/components/search/peopleItem.vue'
+import tagItem from '@/components/search/tagItem.vue'
 import http from '@/util/http-common.js'
 
 export default {
   name: 'SearchMain',
   components: {
     Navbar,
-    followItem,
+    subnav,
+    peopleItem,
+    tagItem,
   },
   data() {
     return {
@@ -133,12 +139,10 @@ export default {
 </script>
 
 <style scoped>
-#SearchMain{
-  padding: 0 10px;
-}
 .search-bar{
   display: flex;
   border-bottom: 1px solid #464545;
+  margin: 0px 10px;
 }
 .search-bar > label {
   line-height: 50px;
@@ -163,7 +167,7 @@ export default {
 .default-tabs {
   position: relative;
   padding: 15px 0 0 0 ;
-  /* margin: 0 auto; */
+  margin: 0px 10px;
 }
 .default-tabs-item {
     display: inline-block;
@@ -216,7 +220,7 @@ export default {
 }
 
 .content {
-  margin-top: 5px;
+  margin: 5px 10px 0 10px;
   font-size: 20px;
 }
 #introduce {
