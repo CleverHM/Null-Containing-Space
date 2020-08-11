@@ -4,12 +4,12 @@
       <!-- 검색 창 -->
       <div class="search-bar">
         <label><b-icon-search /></label>
-        <input type="text" v-model="SearchData" placeholder="검색어를 입력하세요.">
+        <input type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search">
         <button v-if="SearchData" @click="Initialize"> x </button>
       </div>
 
       <!-- 검색 결과 -->
-      <div class="search-content">
+      <div v-if="isEnter" class="search-content">
           <!-- 결과 탭  -->
             <nav class="default-tabs">
               <div class="default-tabs-item" :class="{'tabs-item_active':isCurrent}" @click="handleClick">
@@ -21,13 +21,14 @@
                 <div class="default-tabs-active-line"></div>
               </div>
             </nav>
+            <!-- 검색 결과 -->
             <div class="content">
                 <div v-if="isCurrent">
-                   사람사람사람
+                   <followItem :User="user" v-for="user in Results" :key="user.nickname"/>
 
                 </div>
                 <div v-else >
-                  태그태그태그
+                  {{ Results }}
                 </div>
             </div>
       </div>
@@ -37,32 +38,70 @@
 
 <script>
 import Navbar from '@/components/common/Navigation.vue'
+import followItem from '@/components/user/followItem.vue'
+import http from '@/util/http-common.js'
+
 export default {
   name: 'SearchMain',
   components: {
     Navbar,
+    followItem,
   },
   data() {
     return {
       SearchData: "",
       isCurrent: true,
       currentTab: "사람",
+      isEnter: false,
+      Results: [],
     }
+  },
+  watch: {
+    SearchData(data) {
+      if (!data) this.isEnter = false
+    },
   },
   methods: {
     Initialize() {
       this.SearchData = ""
+      this.isEnter = false
     },
     handleClick(event) {
           console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
           if (this.currentTab == '사람') {
             this.isCurrent = true
+            this.searchPeople()
           }
           else {
             this.isCurrent = false
+            this.searchTag()
           }        
-        },
+    },
+    search() {
+      this.isEnter = true;
+      this.searchPeople()
+      
+
+    },
+    searchPeople() {
+      var InputData = new FormData()
+      InputData.append("search", this.SearchData)
+      InputData.append("mynickname", window.sessionStorage.NickName)
+      http.post("/search/user", InputData)
+      .then(({data}) => {
+        this.Results = data;
+      })
+    },
+    searchTag() {
+      var InputData = new FormData()
+      InputData.append("hashtag", this.SearchData)
+      http.post("/search/hashtag", InputData)
+      .then(({data}) => {
+        this.Results = data;
+      })
+
+    },
   },
 
 }
@@ -152,7 +191,7 @@ export default {
 }
 
 .content {
-  /* margin-top: 30px; */
+  margin-top: 5px;
   font-size: 20px;
 }
 #introduce {

@@ -98,7 +98,6 @@ import profileAbility from '../../components/user/profileAbility.vue'
 import http from "@/util/http-common.js";
 
 const storage = window.sessionStorage;
-console.log(storage.getItem("token"))
 
 export default {
     name: "profile",
@@ -177,7 +176,6 @@ export default {
               this.isLoading = false;
         },
         getUserInfo() {
-          console.log("hello")
           var InputData = new FormData();
           InputData.append("nickname", this.nickname)
           InputData.append("pageNickname", this.pagenickname)
@@ -193,10 +191,8 @@ export default {
               this.User.blogURL = data.blogaddr
               this.User.GitURL = data.gitaddr
               this.User.ability = data.abt
-              console.log(this.User)
               this.isMe = data.me
               this.isFollow = data.follow
-              console.log("create", this.isFollow)
           })
           .catch((err) => {
             console.log(err)
@@ -208,7 +204,6 @@ export default {
           InputData.append("To", this.pagenickname)
           http.post("/follow/user", InputData)
           .then(({data}) => {
-            console.log("follow",data)
             this.isFollow = data.flag
             this.User.followingcount = data.followingCnt
             this.User.followercount = data.followerCnt
