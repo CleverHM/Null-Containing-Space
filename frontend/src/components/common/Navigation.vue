@@ -32,6 +32,7 @@
 
 <script>
 const storage = window.sessionStorage;
+
 export default {
   name:"NavBar",
   props: [
@@ -39,6 +40,7 @@ export default {
   ],
   computed: {
       currentRouteName() {
+          console.log(this)
         return this.$route.name;
       }
   },
@@ -49,9 +51,7 @@ export default {
   },
   methods: {
       goBack(){
-          if (this.currentRouteName === 'FeedDetail') {
-              this.$router.push({ name: 'FeedMain'})
-          } else if (this.currentRouteName === 'createTeam') {
+          if (this.currentRouteName === 'createTeam') {
               this.$router.push({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
           } else {
               this.$router.go(-1)

@@ -8,7 +8,7 @@
         <b-icon-three-dots-vertical @click="udButton" class="fixed"></b-icon-three-dots-vertical>
       </div>
       <div v-if="udOn" class="ud-part">
-        <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}">
+        <router-link :to="{ name: 'FeedUpdate', params: { pId: postId }}" replace>
           <li class="update-button"><b-icon-pencil class="mr-3"></b-icon-pencil>수정</li>
         </router-link>
         <li @click="deletePost"><b-icon-trash class="mr-3"></b-icon-trash>삭제</li>
@@ -280,7 +280,7 @@ export default {
         this.article.pid
       )
       .then((res) => {
-        this.$router.push({ name: 'FeedMain' });
+        this.$router.replace({ name: 'FeedMain' });
       })
       .catch((err) => {
         console.log(err)
