@@ -21,6 +21,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,11 +38,13 @@ import com.ssafy.pjt1.dto.Post;
 import com.ssafy.pjt1.dto.PostLike;
 import com.ssafy.pjt1.dto.PostTag;
 import com.ssafy.pjt1.dto.Tag;
+import com.ssafy.pjt1.dto.TagFollow;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FeedDetailData;
+import com.ssafy.pjt1.model.HashSearchResponse;
 import com.ssafy.pjt1.model.ReplyData;
 import com.ssafy.pjt1.service.LikeService;
 import com.ssafy.pjt1.service.PostService;
@@ -1165,7 +1169,7 @@ public class PostController {
 	// 해당 해쉬태그가 있는 모든글 보여주기
 	@PostMapping("/post/getHashtagPostAll")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Set<FeedData> getHashtagPostAll(@Valid @RequestParam String email, String hashtag)
+	public Object getHashtagPostAll(@Valid @RequestParam String email, String hashtag)
 			throws MalformedURLException, IOException {
 
 		Optional<User> optionalUser = userservice.findone(email);
@@ -1188,15 +1192,19 @@ public class PostController {
 			}
 		}
 
-		System.out.println("=================");
-		// 리스트 확인
-		System.out.println("=======최종 리스트==========");
+		// 이 해쉬태그를 팔로우 했는가
 
-		for (int i = 0; i < hasftagPostList.size(); i++) {
-			System.out.println(hasftagPostList.get(i).getPid());
+		Set<TagFollow> tagfollow = user.getTagfollows();
+
+		boolean flag = false;
+
+		for (TagFollow tf : tagfollow) {
+			if (tf.getTag().getName().equals(hashtag)) {
+				System.out.println("태그 있음1");
+				flag = true;
+				break;
+			}
 		}
-
-		System.out.println("=================");
 
 		// 게시물 확인
 		System.out.println("==============내게시물+팔로우==================");
@@ -1218,17 +1226,7 @@ public class PostController {
 				System.out.println("있음");
 				InputStream inputStream = new FileInputStream(hasftagPostList.get(i).getFiles().getFileurl()
 						+ hasftagPostList.get(i).getFiles().getFilename());
-				String type = result.toURL().openConnection()
-						.guessContentTypeFromName(postList.get(i).getFiles().getFilename());
-
-				System.out.println(type);
-
 				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
-
-				HttpHeaders responseHeaders = new HttpHeaders();
-				responseHeaders.add("content-disposition",
-						"attachment; filename=" + hasftagPostList.get(i).getFiles().getFilename());
-				responseHeaders.add("Content-Type", type);
 
 				int count = likeservice.likeCount(hasftagPostList.get(i));
 
@@ -1335,7 +1333,12 @@ public class PostController {
 
 		Set<FeedData> unique = new LinkedHashSet<>(res1);
 
-		return unique;
+		final HashSearchResponse result = new HashSearchResponse();
+		result.status = flag;
+		result.data = "success";
+		result.hashfeeddata = unique;
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 }
