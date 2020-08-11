@@ -22,7 +22,7 @@ export default {
     created() {
         var InputData = new FormData()
         InputData.append("nickname", this.nickname)
-        http.post("/post/myPost", InputData)
+        http.post("/post/myLikePost", InputData)
         .then(({data}) => {
             this.Posts = data
             console.log(this.Posts)
