@@ -53,6 +53,12 @@ public class FollowServiceImpl implements FollowService {
 		tagfollowdao.save(relation);
 	}
 
+	@Override
+	public void unfollowTag(int user, int tag) {
+		// TODO Auto-generated method stub
+		tagfollowdao.deleteRelation(user, tag);
+	}
+	
 	// 특정 태그를 팔로우하고 있는지 알아보는 기능.
 	@Override
 	public TagFollow isFollowTag(int user, int tag) {

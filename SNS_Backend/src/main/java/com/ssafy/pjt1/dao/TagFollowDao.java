@@ -16,7 +16,7 @@ public interface TagFollowDao extends JpaRepository<TagFollow, Integer> {
 	
 	@Transactional
 	@Modifying
-	@Query(value = "select * from tagfollow where user_id=:userId", nativeQuery=true)
-	int deleteRelation(@Param("userId") int userId);
+	@Query(value = "delete from tagfollow where user_id=:userId and tag_id=:tagId", nativeQuery=true)
+	int deleteRelation(@Param("userId") int userId, @Param("tagId") int tagId);
 	
 }

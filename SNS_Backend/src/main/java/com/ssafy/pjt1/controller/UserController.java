@@ -416,7 +416,7 @@ public class UserController {
 			abt.add(user.getAbility().getFrame_vue());
 			abt.add(user.getAbility().getFrame_react());
 			abt.add(user.getAbility().getAlgo());
-
+			
 			// 이미지
 			byte[] reportBytes = null;
 			File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());

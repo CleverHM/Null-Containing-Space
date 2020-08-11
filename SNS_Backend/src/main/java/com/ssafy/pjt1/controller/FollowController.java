@@ -47,7 +47,6 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
 		@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-
 //@CrossOrigin(origins = { "http://localhost:3000" })
 @CrossOrigin(origins = "*")
 
@@ -90,13 +89,12 @@ public class FollowController {
 		int followingCnt = 0;
 		followerCnt = followservice.followerCount(u2);
 		followingCnt = followservice.followingCount(u2);
-		
+
 		System.out.println(followFlag);
 		System.out.println("팔로워 : " + followerCnt + "  팔로잉 : " + followingCnt);
 		// 이미 팔로우한 사람이 없는 경우.
 		if (followFlag == 0) {
 //			// u1이 u2 팔로우하는거임.
-
 
 			UserFollow userfollow = new UserFollow();
 			userfollow.setFrom(u1);
@@ -220,24 +218,62 @@ public class FollowController {
 
 	}
 
+	@PostMapping("/unfollow/tag")
+	@ApiOperation(value = "태그", notes = "사용자가 태그를 언팔로우하는기능 ")
+	public void tagUnFollow(@Valid @RequestParam String nickname, @Valid @RequestParam String tagname) {
+		// u1이 u2 언팔로우하는거임.
+		Optional<User> U1 = userservice.findtwo(nickname);
+		Optional<Tag> T1 = tagdao.findTagByName(tagname);
+
+		User u1 = U1.get();
+		Tag t2 = T1.get();
+
+		followservice.unfollowTag(u1.getUid(), t2.getTid());
+	}
+
 	@PostMapping("/follow/tag")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
-	public void tagFollow(@Valid @RequestParam String nickname, @Valid @RequestParam String tagname) {
+	public Object tagFollow(@Valid @RequestParam String nickname, @Valid @RequestParam String tagname) {
+		Optional<User> U1 = userservice.findtwo(nickname);
+		User user = U1.get();
 		Optional<Tag> optionalTag = tagdao.findTagByName(tagname);
 
 		// 태그가 테이블에 존재하지 않는 경우.
 		if (!optionalTag.isPresent()) {
-			Tag t = new Tag(tagname);
-			tagdao.save(t);
 
-			Optional<User> optionalUser = userservice.findtwo(nickname);
-			User u = optionalUser.get();
+			// 나에게 있는지 판별
 
-			TagFollow tf = new TagFollow();
-			tf.setUser(u);
-			tf.setTag(t);
-			followservice.followTag(tf);
+			Set<TagFollow> tagfollow = user.getTagfollows();
 
+			int flag = 0;
+
+			for (TagFollow tf : tagfollow) {
+				if (tf.getTag().getName().equals(tagname)) {
+					System.out.println("태그 있음1");
+					flag = 1;
+					break;
+				}
+			}
+
+			// flag == 0 이면 팔로우 안되어있다.
+			if (flag == 0) {
+				Tag t = new Tag(tagname);
+				tagdao.save(t);
+
+				Optional<User> optionalUser = userservice.findtwo(nickname);
+				User u = optionalUser.get();
+
+				TagFollow tf = new TagFollow();
+				tf.setUser(u);
+				tf.setTag(t);
+				followservice.followTag(tf);
+				return true;
+			} else {
+				// 언팔
+				Tag t2 = optionalTag.get();
+				followservice.unfollowTag(user.getUid(), t2.getTid());
+				return false;
+			}
 		}
 		// 태그가 테이블에 존재하는 경우.
 		else {
@@ -269,7 +305,15 @@ public class FollowController {
 				tf.setUser(u);
 				tf.setTag(t);
 				followservice.followTag(tf);
+				return true;
+			} else {
+				// 언팔
+				Tag t2 = optionalTag.get();
+				System.out.println(user.getUid() + " " + t2.getTid());
+				followservice.unfollowTag(user.getUid(), t2.getTid());
+				return false;
 			}
+
 		}
 
 	}
