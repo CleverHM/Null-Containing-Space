@@ -75,9 +75,8 @@ export default {
           console.log(this.nickname, this.followFlag)
           http.post("/follow/user/list", InputData)
           .then(({data}) => {
-              for (var idx in data){
-                  this.List.push(data[idx])
-              }
+              this.List = data
+              console.log(this.List)
           })
         },
         handleClick(event) {
@@ -94,14 +93,14 @@ export default {
             this.followFlag = 2
           }
           var InputData = new FormData()
+          console.log(this.followFlag)
           InputData.append("nickname", this.nickname)
           InputData.append("flag", this.followFlag)
           console.log(this.nickname, this.followFlag)
           http.post("/follow/user/list", InputData)
           .then(({data}) => {
-              for (var idx in data){
-                  this.List.push(data[idx])
-              }
+              this.List = data
+              console.log(this.List)
           })
           
         },
@@ -167,7 +166,7 @@ export default {
 }
 
 .content {
-  margin-top: 30px;
+  /* margin-top: 30px; */
   font-size: 20px;
 }
 #introduce {

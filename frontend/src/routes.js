@@ -22,7 +22,6 @@ import FeedComment from './views/SNS/CommentFeed.vue'
 
 // Main
 import Main from './views/Main.vue'
-import Search from './views/search/Search.vue';
 import Notice from './views/Notice.vue'
 
 // study
@@ -38,7 +37,10 @@ import SubjectForm from './views/team/subjectForm.vue'
 import TeamInfo from './views/team/TeamInfo.vue'
 import MatchMember from './views/team/MatchMember.vue'
 
-
+// Search
+import SearchMain from './views/search/SearchMain.vue'
+import TagResult from './views/search/TagResult.vue'
+// etc
 import Components from './views/Components.vue'
 import test from './views/test.vue'
 
@@ -131,11 +133,6 @@ export default [
         component : Main
     },
     {
-        path : '/search',
-        name : 'Search',
-        component : Search
-    },
-    {
         path : '/notice',
         name : 'Notice',
         component : Notice
@@ -226,7 +223,18 @@ export default [
         component: TeamInfo,
         props: true,
     },
-
+    // search
+    {
+        path: '/search',
+        name: 'SearchMain',
+        component: SearchMain,
+    },
+    {
+        path: '/search/tag',
+        name: 'TagResult',
+        component: TagResult,
+        props: true,
+    },
 
     // Component
     {
