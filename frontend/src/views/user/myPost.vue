@@ -1,11 +1,8 @@
 <template>
-    <div v-if="isLoading"></div>
-    <div v-else>
+    <div v-if="isLoading"><Navbar /></div>
+    <div v-else class="myPostView">
         <Navbar />
-        <myPostItem :Post="post"></myPostItem>
-        <myPostItem></myPostItem>
-        <myPostItem></myPostItem>
-        <myPostItem></myPostItem>
+        <myPostItem :post="post" v-for="post in Posts" :key="post.pid"></myPostItem>
     </div>
 </template>
 
@@ -27,7 +24,8 @@ export default {
         InputData.append("nickname", this.nickname)
         http.post("/post/myPost", InputData)
         .then(({data}) => {
-            console.log(data)
+            this.Posts = data
+            console.log(this.Posts)
         })
         this.Loading()
     },
@@ -39,7 +37,7 @@ export default {
     methods: {
         Loading() {
               if (this.isLoading) {
-                  setTimeout(this.delayfinish, 100);
+                  setTimeout(this.delayfinish, 200);
               }
         },
           // 딜레이 화면
@@ -52,5 +50,10 @@ export default {
 </script>
 
 <style scoped>
-
+:root {
+    --rootwidth: 0;
+}
+.myPostView{
+    padding: 5px;
+}
 </style>
