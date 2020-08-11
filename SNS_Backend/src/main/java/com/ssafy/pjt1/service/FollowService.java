@@ -9,6 +9,7 @@ public interface FollowService {
 	public void unfollowUser(int from, int to);
 	//public void deleteUser(int userId);
 	public void followTag(TagFollow relation);
+	public void unfollowTag(int user, int tag);
 	public TagFollow isFollowTag(int user, int tag);
 	public int followerCount(User u);
 	public int followingCount(User u);
