@@ -4,7 +4,7 @@
             <p>{{ currentRouteName }}</p>
             <div>
                 <b-icon-arrow-left @click="goBack" v-if="currentRouteName != 'Main'" class="arrow-left-icon icons" scale="1.3"></b-icon-arrow-left>
-                <b-icon-search class="icons search-icon mx-4" scale="1.3" v-if="currentRouteName === 'FeedMain'"></b-icon-search>
+                <b-icon-search class="icons search-icon mx-4" scale="1.3" v-if="currentRouteName === 'FeedMain'" @click="goSearch"></b-icon-search>
 
                 <!-- 프로필페이지 dropdown -->
                 <b-icon-list v-if="currentRouteName === 'profile'" @click='toggleShow' class='list-icon'></b-icon-list>
@@ -59,7 +59,7 @@ export default {
           }
       },
       goSearch(){
-
+          this.$router.push({name: 'SearchMain'})
       },
       logout() {
           storage.clear()
