@@ -41,7 +41,7 @@
             <!-- 버튼 영역 -->
             <div class="btn-area d-flex justify-content-between">
                 <button style="background-color: #E2DFD8;" @click="goUserProfile">팀원 정보보기</button>
-                <button style="background-color: #ACCCC4;">팀원 요청</button>
+                <button style="background-color: #ACCCC4;" @click="teamJoinRequest">팀원 요청</button>
             </div>
 
         </div>
@@ -50,6 +50,11 @@
 </template>
 
 <script>
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
+
 export default {
     name: "MatchUser",
     props: [
@@ -93,6 +98,22 @@ export default {
     methods: {
         goUserProfile() {
             this.$router.push({ name: 'profile', params: { nickname: this.userData.nickname }})
+        },
+
+        // 팀 가입 권유
+        teamJoinRequest() {
+            let formData = new FormData;
+            formData.append("mynickname", storage.getItem("NickName"))
+            formData.append("tonickname", this.userData.nickname)
+            
+            http
+            .post("/alarm/teamAlarm", formData)
+            .then((res) => {
+                alert(`${this.userData.nickname}님에게 팀원 요청을 보냈습니다.`)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     },
 

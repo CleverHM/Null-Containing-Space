@@ -23,6 +23,10 @@
 
 <script>
 import TeamUser from './TeamUser.vue'
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
 
 export default {
     name: "NoTeam",
@@ -57,7 +61,17 @@ export default {
     
     methods: {
       closeTeam() {
-        console.log('취소취소')
+        let formData = new FormData;
+        formData.append("nickname", storage.getItem("NickName"))
+
+        http
+        .post('/team/memberCancel', formData)
+        .then((res) => {
+          this.$router.go({ name: 'Main' }).catch(()=>{})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
       },
     },
 }

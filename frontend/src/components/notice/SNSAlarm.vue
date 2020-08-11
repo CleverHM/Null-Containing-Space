@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name: 'notice1',
+    name: 'SNSNotice',
 }
 </script>
 
