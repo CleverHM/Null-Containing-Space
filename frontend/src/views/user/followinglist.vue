@@ -166,7 +166,7 @@ export default {
 }
 
 .content {
-  margin-top: 30px;
+  /* margin-top: 30px; */
   font-size: 20px;
 }
 #introduce {
