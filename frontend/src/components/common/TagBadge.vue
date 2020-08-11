@@ -1,5 +1,5 @@
 <template>
-    <div id="TagBadge" class="mx-1">
+    <div id="TagBadge" class="mx-1" @click="goTagResult">
         <button><span>{{ tag }}</span></button>
     </div>
 </template>
@@ -9,7 +9,12 @@ export default {
     name: 'TagBadge',
     props: [
         'tag',
-    ]
+    ],
+    methods: {
+        goTagResult() {
+            this.$router.push({name: 'TagResult', params: { tag: this.tag}})
+        },
+    }
 }
 </script>
 
