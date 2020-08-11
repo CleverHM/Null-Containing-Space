@@ -5,7 +5,8 @@
             <img v-else src="@/assets/images/default_image.png">
         </div>
         <div class="follow-nickname" @click="goProfile">{{ User.nickname }}</div>
-        <button class="follow-button">팔로우</button>
+        <!-- <button class="follow-button" @click="goProfile">프로필</button> -->
+        <hr />
     </div>
 </template>
 
@@ -31,8 +32,8 @@ export default {
 .follow-item {
     position: relative;
     height: 60px;
-    padding: 5px 10px;
-    margin-bottom: 10px;
+    padding: 10px 10px 20px 10px;
+    /* border-bottom: 1px solid #E2DFD8; */
 }
 .follow-img, .follow-nickname, .follow-button{
     cursor: pointer;
@@ -42,18 +43,21 @@ export default {
     width: 50px;
     height: 50px;
     background-color: #464545;
+    margin-bottom: 10px;
     border-radius: 100%;
     overflow: hidden;
 }
 .follow-img img {
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
     
 }
 .follow-nickname {
     position: absolute;
     left: 80px;
-    top: 15px;
+    top: 20px;
+    margin-bottom: 10px;
 }
 .follow-button {
     position: absolute;
@@ -65,5 +69,8 @@ export default {
     border-radius: 5px;
     font-size: 16px;
 
+}
+hr {
+    margin-top: 55px;
 }
 </style>
