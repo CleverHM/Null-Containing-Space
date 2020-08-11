@@ -1,5 +1,17 @@
 <template>
-  <div id="SearchMain">
+  <div v-if="isLoading">
+    <Navbar />
+    <!-- 검색 창 -->
+      <div class="search-bar">
+        <label><b-icon-search /></label>
+        <input type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search">
+        <button v-if="SearchData" @click="Initialize"> x </button>
+      </div>
+
+
+      
+  </div>
+  <div v-else id="SearchMain">
       <Navbar />
       <!-- 검색 창 -->
       <div class="search-bar">
@@ -54,6 +66,7 @@ export default {
       currentTab: "사람",
       isEnter: false,
       Results: [],
+      isLoading: false,
     }
   },
   watch: {
@@ -79,8 +92,11 @@ export default {
           }        
     },
     search() {
+      this.isLoading = true;
       this.isEnter = true;
-      this.searchPeople()
+      if (this.isCurrent) this.searchPeople()
+      else this.searchTag()
+      this.Loading()
       
 
     },
@@ -101,6 +117,15 @@ export default {
         this.Results = data;
       })
 
+    },
+    Loading() {
+        if (this.isLoading) {
+            setTimeout(this.delayfinish, 100);
+        }
+        },
+    // 딜레이 화면
+    delayfinish(){
+        this.isLoading = false;
     },
   },
 
