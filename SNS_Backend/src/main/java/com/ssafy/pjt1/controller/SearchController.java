@@ -2,7 +2,6 @@ package com.ssafy.pjt1.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -16,9 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt1.dao.TagDao;
+import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.PersonData;
 import com.ssafy.pjt1.service.UserService;
 
@@ -40,7 +40,10 @@ public class SearchController {
 	@Autowired
 	UserService userservice;
 	
-	// 계정 검색 검색어 포함된
+	@Autowired
+	TagDao tagdao;
+	
+	// 계정 검색 검색어 포함된 리스트
 	@PostMapping("/search/user")
 	@ApiOperation(value = "계정 검색", notes = "계정 검색 기능을 구현.")
 	public Object postDelete(@Valid @RequestParam String search, String mynickname) throws IOException {
@@ -77,4 +80,20 @@ public class SearchController {
 		return list;
 	}
 	
+	// 해쉬태그 검색 검색어 포함된 리스트
+	@PostMapping("/search/hashtag")
+	@ApiOperation(value = "hashtag 검색", notes = "hashtag 기능을 구현.")
+	public Object hashtag(@Valid @RequestParam String hashtag) throws IOException {
+		List<String> list = new LinkedList<String>();
+		
+		List<Tag> allTag = tagdao.findAll();
+		
+		for(Tag t : allTag) {
+			if(t.getName().contains(hashtag)) {
+				list.add(t.getName());
+			}
+		}
+		
+		return list;
+	}
 }
