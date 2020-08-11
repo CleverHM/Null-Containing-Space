@@ -32,7 +32,7 @@
             <div id="team" class="my-3">
               <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
               <div class="d-flex justify-content-start align-items-center">
-                <div class="displaytags">
+                <div class="team-tags">
                   팀장
                 </div>
                 <div class="team-member-area">
@@ -40,12 +40,12 @@
                 </div>
               </div>
               
-              <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
-                <div class="displaytags">
+              <div v-if="teamExist" class="memberArea d-flex justify-content-start align-items-center mt-4">
+                <div class="team-tags">
                   팀원
                 </div>
-                <div class="team-member-area d-flex flex-row align-items-center">
-                    <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false"></memberImg>
+                <div class="member-info d-flex flex-row align-items-center">
+                    <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="mr-2"></memberImg>
                 </div>
               </div>
             </div>
@@ -204,6 +204,9 @@ export default {
 </script>
 
 <style scoped>
+#teamInfo {
+    margin: 60px 10px 30px 10px;
+}
 
 *:focus { outline:none; }
 
@@ -237,8 +240,34 @@ export default {
     border-radius: 10px;
 }
 
+
+.member-area {
+  overflow: auto;
+}
+
+.team-tags {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #464545;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  float: left;
+  width: 17%;
+}
+
+.member-info {
+  display: inline;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 120px;
+  overflow-x: scroll;
+  white-space:nowrap;
+}
+
+
 .tab-content {
   margin-bottom: 70px;
+  
 }
 
 .displaytags {

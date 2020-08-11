@@ -27,7 +27,7 @@
           <div id="team" class="my-3">
             <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
             <div class="d-flex justify-content-start align-items-center">
-              <div class="displaytags">
+              <div class="team-tags">
                 팀장
               </div>
               <div class="team-member-area">
@@ -35,11 +35,11 @@
               </div>
             </div>
             
-            <div v-if="teamExist" class="d-flex justify-content-start align-items-center mt-4">
-              <div class="displaytags">
+            <div v-if="teamExist" class="memberArea d-flex justify-content-start align-items-center mt-4">
+              <div class="team-tags">
                 팀원
               </div>
-              <div class="team-member-area d-flex flex-row align-items-center">
+              <div class="member-info d-flex flex-row align-items-center">
                   <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
               </div>
             </div>
@@ -141,7 +141,7 @@
 
     <!-- 팀원 매칭 버튼 -->
     <div class="submit-area d-flex justify-content-center">
-      <button v-if="ifLeader" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
+      <button v-if="ifMatch" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
     </div>
     
   </div>
@@ -172,6 +172,7 @@ export default {
   data() {
     return {
       ifLeader: false,
+      ifMatch: false,
       diffTime: '',
       teamExist: false,
       tabs: [
@@ -186,8 +187,8 @@ export default {
       modal: {
         cnt: 0,
         message: [
-          '정말 팀을 탈퇴하시겠습니까?',
-          '정말 팀을 종료하시겠습니까?',
+          '정말 팀을 탈퇴하겠습니까?',
+          '정말 프로젝트를 종료하겠습니까?',
         ],
       }
     }
@@ -197,6 +198,11 @@ export default {
 
     if (storage.getItem("NickName") == this.teamData.leaderNickname.nickname) {
       this.ifLeader = true
+      if (this.teamData.cnt == (Number(this.teamData.members.length) + 1)) {
+        this.ifMatch = false
+      } else {
+        this.ifMatch = true
+      }
     } else {
       this.ifLeader = false
     }
@@ -372,6 +378,29 @@ export default {
     border-radius: 10px;
 }
 
+.member-area {
+  overflow: auto;
+}
+
+.team-tags {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #464545;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  float: left;
+  width: 17%;
+}
+
+.member-info {
+  display: inline;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 120px;
+  overflow-x: scroll;
+  white-space:nowrap;
+}
+
 
 .displaytags {
   padding: 10px;
@@ -441,7 +470,7 @@ export default {
 .modal-container {
   width: 300px;
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 20px 10px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
@@ -460,6 +489,7 @@ export default {
 
 .modal-default-button {
   padding: 5px;
+  min-width: 30%;
   border-radius: 10px;
   color: white;
   background-color: #C4BCB8;
@@ -467,6 +497,7 @@ export default {
 
 .modal-button {
   padding: 5px;
+  min-width: 30%;
   border-radius: 10px;
   color: white;
   background-color: red;

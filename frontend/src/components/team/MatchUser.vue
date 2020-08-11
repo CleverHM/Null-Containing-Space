@@ -33,13 +33,14 @@
                     :key="userData.nickname"
                     :show-progress="showProgress">
                     <b-progress-bar :value="userData.percent" :label="`${userData.percent}%`"></b-progress-bar>
-                </b-progress>    
+                </b-progress>
+                <div class="back-bar"></div>
             </div>
 
 
             <!-- 버튼 영역 -->
             <div class="btn-area d-flex justify-content-between">
-                <button style="background-color: #E2DFD8;" @click="goUserProfile">유저 정보 보기</button>
+                <button style="background-color: #E2DFD8;" @click="goUserProfile">유저 정보</button>
                 <button style="background-color: #ACCCC4;" @click="teamJoinRequest">팀원 요청</button>
             </div>
 
@@ -169,6 +170,7 @@ export default {
     padding: 6px;
     color: white;
     border-radius: 10px;
+    width: 48%;
 }
 
 .none-area {
@@ -180,6 +182,7 @@ export default {
     margin: 13px 7px 13px 7px;
 }
 
+/* 애니메이션 적용 */
 
 .percent-bar {
     height: 9px;
@@ -191,6 +194,14 @@ export default {
 
 @keyframes progressbar { 0% { width: 0%; } 100% { width: 100%; } }
 
-
+.back-bar {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    height: 9px;
+    width: 100%;
+    background-color: #E2DFD8;
+    border-radius: 20px;
+}
 
 </style>

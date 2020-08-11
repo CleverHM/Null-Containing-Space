@@ -18,6 +18,9 @@
         </div>
         <div class="tab-content">
             <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
+                <div class="noprefertags d-flex justify-content-center">
+                    현재 팀과 동일한 주제를 선택한 유저입니다
+                </div>
                 <div class="match-area">
                     <MatchUser v-for="member in team.members1" :key="member.nickname" :userData="member" :noprefer="false"></MatchUser>
                 </div>
