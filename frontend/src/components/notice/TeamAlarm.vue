@@ -1,13 +1,15 @@
 <template>
     <div>
-        <div class="scrap" @click="buttonOpen = !buttonOpen">
+        <div class="scrap" @click="buttonOn">
             <b-icon-people-fill class="scrap-icon"></b-icon-people-fill>
             <div class="notice">
                 {{ teamData.content }} <br/>
             <small class="noticeday ml-1">{{ diffTime }}</small>
             </div>
-            <div v-if="buttonOpen" class="buttonArea">
-                버튼버튼
+            <div v-if="buttonOpen" class="buttonArea d-flex justify-content-around">
+                <button style="background-color: #ACCCC4" @click="goTeamInfo">팀 정보 보기</button>
+                <button style="background-color: #E2DFD8" @click="goReject">거절</button>
+                <button style="background-color: #E2DFD8" @click="goAccept">수락</button>
             </div>
         </div>
         <hr>
@@ -41,6 +43,58 @@ export default {
     },
 
     methods: {
+
+        // 팀 정보 보기
+        goTeamInfo() {
+            this.$router.push({ name: 'TeamInfo', params: { teamId: this.teamData.teamid } })
+        },
+
+        // 팀 수락
+        goAccept() {
+            let formData = new FormData;
+            formData.append('nickname', storage.getItem("NickName"))
+            formData.append('leadernickname', this.teamData.who)
+            
+            http
+            .post('/team/join', formData)
+            .then((res) => {
+                alert(`${res.data.data}`)
+                
+                if (res.data.status == true) {
+                    this.alarmDelete();
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+        },
+
+        // 알람 삭제
+        alarmDelete() {
+            let formData = new FormData;
+            formData.append('aid', this.teamData.aid)
+
+            http
+            .post('/alarm/delete', formData)
+            .then((res) => {
+                this.$router.go({ name: 'Notice' })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        },
+
+        // 팀 거절
+        goReject() {
+            alert(`${this.teamData.who}님의 팀 요청을 거절하였습니다.`)
+            this.alarmDelete();
+        },
+
+        // 버튼 영역 열고 닫기
+        buttonOn() {
+            this.buttonOpen = !this.buttonOpen
+        },
         
         // 날짜 체크
         dateCheck(date) {
@@ -106,6 +160,13 @@ hr {
 }
 
 .buttonArea {
-    margin-top: 10px;
+    margin-top: 20px;
+}
+
+.buttonArea > button {
+    padding: 5px;
+    width: 30%;
+    font-size: 14px;
+    border-radius: 3px;
 }
 </style>
