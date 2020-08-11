@@ -2,8 +2,6 @@ package com.ssafy.pjt1.dto;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,6 +63,11 @@ public class Team {
 	@OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<User> users = new HashSet<User>();
 
+	// 팀 : 채팅방 (1 : 1 관계)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ROOM_ID")
+	private Chatroom chatroom;
+	
 	@CreationTimestamp
 	@Column(updatable = false)
 	private Date createDate;
@@ -100,6 +105,14 @@ public class Team {
 		this.frame_vue = frame_vue;
 		this.frame_react = frame_react;
 		this.algo = algo;
+	}
+	
+	public Chatroom getChatroom() {
+		return chatroom;
+	}
+
+	public void setChatroom(Chatroom chatroom) {
+		this.chatroom = chatroom;
 	}
 
 	public boolean isBack_cpp() {
