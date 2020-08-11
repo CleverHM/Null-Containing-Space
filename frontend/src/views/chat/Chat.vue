@@ -65,7 +65,7 @@ export default {
       if (this.stompClient && this.stompClient.connected) {
         const msg = { 
           userName: this.userName,
-          content: this.message 
+          content: this.message, 
         };
         this.stompClient.send("/receive", JSON.stringify(msg), {});
       }

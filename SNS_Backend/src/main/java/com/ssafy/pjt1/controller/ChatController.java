@@ -29,15 +29,18 @@ public class ChatController {
 	@MessageMapping("/receive")
 	@SendTo("/send")
 	
-	public Chat SocketHandler(Chat chat, int teamId) {
+	public Chat SocketHandler(Chat chat) {
 		String userName = chat.getUserName();
 		String content = chat.getContent();
+		
+		int teamId = chat.getRoom().getTeam().getTeamid();
+		System.out.println(teamId);
 		
 		Optional<Team> temp = teamservice.findone(teamId);
 		Team team = temp.get();
 		Chatroom chatroom = team.getChatroom();
 		
-		Chat result = new Chat(userName, content, chatroom);
+		Chat result = new Chat(userName, content);
 		chatroom.getChat().add(result);
 		
 		return result;

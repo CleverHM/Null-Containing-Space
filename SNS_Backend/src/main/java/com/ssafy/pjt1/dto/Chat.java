@@ -33,7 +33,15 @@ public class Chat{
 	public Chat() {
 		
 	}
+
 	
+	public Chat(String userName, String content) {
+		this.userName = userName;
+		this.content = content;
+	}
+
+
+
 	public Chat(String userName, String content, Chatroom room) {
 		this.userName = userName;
 		this.content = content;

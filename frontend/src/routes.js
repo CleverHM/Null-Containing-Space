@@ -241,12 +241,12 @@ export default [
 
     //chat
     {
-        path: '/chat',
+        path: '/chat/:teamId',
         name: 'chat',
         component: Chat,
         props: true
     },
-    
+
     // search
     {
         path: '/search',
