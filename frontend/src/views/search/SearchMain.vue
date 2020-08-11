@@ -5,7 +5,7 @@
     <!-- 검색 창 -->
       <div class="search-bar">
         <label><b-icon-search /></label>
-        <input type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search">
+        <input name="searchData" type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search" autofocus>
         <button v-if="SearchData" @click="Initialize"> x </button>
       </div>
 
@@ -18,7 +18,7 @@
       <!-- 검색 창 -->
       <div class="search-bar">
         <label><b-icon-search /></label>
-        <input type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search">
+        <input id="SearchBar" type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search" autofocus>
         <button v-if="SearchData" @click="Initialize"> x </button>
       </div>
 
@@ -65,6 +65,10 @@ export default {
     peopleItem,
     tagItem,
   },
+  created() {
+    console.log(document.getElementById('SearchBar'))
+    this.Loading()
+  },
   data() {
     return {
       SearchData: "",
@@ -81,6 +85,7 @@ export default {
     },
   },
   methods: {
+  
     Initialize() {
       this.SearchData = ""
       this.isEnter = false
@@ -90,19 +95,21 @@ export default {
           this.currentTab = event.target.innerText;
           if (this.currentTab == '사람') {
             this.isCurrent = true
-            this.searchPeople()
+            if(this.SearchData) this.searchPeople()
           }
           else {
             this.isCurrent = false
-            this.searchTag()
+            if(this.SearchData) this.searchTag()
           }        
     },
     search() {
       this.isLoading = true;
       this.isEnter = true;
+    if(this.SearchData) {
       if (this.isCurrent) this.searchPeople()
       else this.searchTag()
       this.Loading()
+    }
       
 
     },
@@ -126,7 +133,7 @@ export default {
     },
     Loading() {
         if (this.isLoading) {
-            setTimeout(this.delayfinish, 100);
+            setTimeout(this.delayfinish, 200);
         }
         },
     // 딜레이 화면

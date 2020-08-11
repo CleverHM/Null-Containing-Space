@@ -70,9 +70,8 @@
                 </div>
 
                 <!-- 태그 뱃지 !-->
-                <TagBadge></TagBadge>
-                <TagBadge></TagBadge>
-                <TagBadge></TagBadge>
+                {{ User.tag }}
+                <TagBadge :tag="tag" v-for="tag in User.tags" :key="tag"></TagBadge>
 
               </div>
               <div v-if="currentTab === 'Ability'" >
@@ -124,6 +123,7 @@ export default {
               Introduce: null,
               profileURL: null,
               ability: null,
+              tags: [],
             },
             isMe: false,
             isFollow: false,
@@ -191,6 +191,7 @@ export default {
               this.User.blogURL = data.blogaddr
               this.User.GitURL = data.gitaddr
               this.User.ability = data.abt
+              this.User.tags = data.tag
               this.isMe = data.me
               this.isFollow = data.follow
           })
