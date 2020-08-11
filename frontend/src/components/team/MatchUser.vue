@@ -40,7 +40,7 @@
 
             <!-- 버튼 영역 -->
             <div class="btn-area d-flex justify-content-between">
-                <button style="background-color: #E2DFD8;" @click="goUserProfile">팀원 정보보기</button>
+                <button style="background-color: #E2DFD8;" @click="goUserProfile">유저 정보 보기</button>
                 <button style="background-color: #ACCCC4;" @click="teamJoinRequest">팀원 요청</button>
             </div>
 

@@ -200,6 +200,7 @@ export default {
       this.ifLeader = false
     }
 
+    console.log(this.teamData)
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.teamData.createDate);
     this.diffTime = this.dateCheck(postDate);

@@ -7,7 +7,8 @@
             <small class="noticeday ml-1">{{ diffTime }}</small>
             </div>
             <div v-if="buttonOpen" class="buttonArea d-flex justify-content-around">
-                <button style="background-color: #ACCCC4" @click="goTeamInfo">팀 정보 보기</button>
+                <button v-if="!ifLeader" style="background-color: #ACCCC4" @click="goTeamInfo">팀 정보 보기</button>
+                <button v-if="ifLeader" style="background-color: #ACCCC4" @click="goUserInfo">유저 정보 보기</button>
                 <button style="background-color: #E2DFD8" @click="goReject">거절</button>
                 <button style="background-color: #E2DFD8" @click="goAccept">수락</button>
             </div>
@@ -34,32 +35,51 @@ export default {
         return {
             diffTime: null,
             buttonOpen: false,
+            ifLeader: false,
         }
     },
 
     created() {
         var postDate = new Date(this.teamData.createDate)
         this.diffTime = this.dateCheck(postDate);
+        
+        // teamid가 1이면 본인이 리더임 -> ifLeader = true
+        if ( this.teamData.teamid == 1 ) {
+            this.ifLeader = true
+        }
     },
 
     methods: {
 
         // 팀 정보 보기
         goTeamInfo() {
-            this.$router.push({ name: 'TeamInfo', params: { teamId: this.teamData.teamid } })
+            this.$router.push({ name: 'TeamInfo', params: { teamId: this.teamData.teamid }})
         },
+
+        // 유저 정보 보기
+        goUserInfo() {
+            this.$router.push({ name: 'profile', params: { nickname: this.teamData.who }})
+        },
+
 
         // 팀 수락
         goAccept() {
             let formData = new FormData;
-            formData.append('nickname', storage.getItem("NickName"))
-            formData.append('leadernickname', this.teamData.who)
+            // 팀에 가입 요청일 때 / 팀장이 가입 권유할 때
+            if ( this.teamData.teamid == 1 ) {
+                formData.append('nickname', this.teamData.who)
+                formData.append('leadernickname', storage.getItem("NickName"))
+
+            } else {
+                formData.append('nickname', storage.getItem("NickName"))
+                formData.append('leadernickname', this.teamData.who)
+            }
             
             http
             .post('/team/join', formData)
             .then((res) => {
                 alert(`${res.data.data}`)
-                
+
                 if (res.data.status == true) {
                     this.alarmDelete();
                 }
