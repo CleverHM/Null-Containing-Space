@@ -186,6 +186,12 @@ export default [
         props: true,
     }, 
     {
+        path : '/team/update',
+        name : 'updateTeam',
+        component : createTeam,
+        props: true,
+    }, 
+    {
         path : '/team/specs',
         name : 'Specs',
         component : Specs
@@ -211,7 +217,12 @@ export default [
         name: 'LeaderForm',
         component: SubjectForm,
         props: true,
-
+    },
+    {
+        path: '/team/leader/update',
+        name: 'LeaderUpdateForm',
+        component: SubjectForm,
+        props: true,
     },
     {
         path: '/team/info/:teamId',

@@ -17,7 +17,8 @@
               <!-- 프로젝트 알람 -->
               <div v-if="isCurrent">
                 <!-- 알람이 없을 때 -->
-                <div v-if="!teamExist" class="null-area">
+                <div v-if="!teamExist" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+                  <b-icon-envelope-open scale="1.5" font-scale="1.5" class="mb-4"/>
                   새로운 소식이 없습니다.
                 </div>
 
@@ -32,7 +33,8 @@
               <!-- feed 알람 -->
               <div v-else >
                 <!-- 알람이 없을 때 -->
-                <div v-if="!snsExist" class="null-area">
+                <div v-if="!snsExist" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+                  <b-icon-envelope-open scale="1.5" font-scale="1.5" class="mb-4"/>
                   새로운 소식이 없습니다.
                 </div>
 
@@ -197,7 +199,6 @@ export default {
   font-size: 15px;
   color: #464545;
   font-weight: bold;
-  text-align: center;
 }
 
 </style>

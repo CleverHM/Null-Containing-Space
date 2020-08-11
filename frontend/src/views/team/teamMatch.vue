@@ -60,7 +60,7 @@ export default {
         // 로딩하는가?
         isLoading() {
             if (this.loadingOn) {
-                setTimeout(this.delayfinish, 200);
+                setTimeout(this.delayfinish, 1000);
             }
         },
 
@@ -76,7 +76,7 @@ export default {
 
         // 다시 매칭하기
         reMatchOn() {
-            // this.loadingOn = true;
+            this.loadingOn = true;
             this.isLoading();
             this.MatchReceive();
         },

@@ -86,7 +86,8 @@
 
           <!-- 명세서 수정 (팀장만 가능) -->
           <button style="border: none;"
-            :class="{ noClick: !ifLeader }">
+            :class="{ noClick: !ifLeader }"
+            @click="goUpdateTeam">
             <b-icon-card-checklist class="mr-2"/>
             명세서 수정
             <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
@@ -227,6 +228,11 @@ export default {
     // tab 이동
     handleClick(newTab) {
       this.currentTab = newTab;
+    },
+
+    // 명세서 수정 페이지
+    goUpdateTeam() {
+      this.$router.replace({ name: 'updateTeam', params: { teamData: this.teamData }})
     },
 
     // 날짜 체크

@@ -1,5 +1,4 @@
 <template>
-
   <div id="MatchUser">
       
     <div class="user-area d-flex flex-row">
@@ -50,6 +49,7 @@
 </template>
 
 <script>
+
 import http from "../../util/http-common.js";
 import axios from 'axios';
 
@@ -186,7 +186,11 @@ export default {
     font-size: 8px;
     background-color: #E2DFD8;
     color: #ACCCC4;
+    animation: progressbar 3s ease-out;
 }
+
+@keyframes progressbar { 0% { width: 0%; } 100% { width: 100%; } }
+
 
 
 </style>
