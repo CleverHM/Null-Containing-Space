@@ -35,6 +35,8 @@ import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
 import TeamInfo from './views/team/TeamInfo.vue'
 
+// chat
+import Chat from './views/chat/Chat.vue'
 
 import Components from './views/Components.vue'
 import test from './views/test.vue'
@@ -207,6 +209,13 @@ export default [
         props: true,
     },
 
+    //chat
+    {
+        path: '/chat',
+        name: 'chat',
+        component: Chat,
+        props: true
+    },
 
     // Component
     {
