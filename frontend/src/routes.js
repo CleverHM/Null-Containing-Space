@@ -39,7 +39,7 @@ import MatchMember from './views/team/MatchMember.vue'
 
 // Search
 import SearchMain from './views/search/SearchMain.vue'
-
+import TagResult from './views/search/TagResult.vue'
 // etc
 import Components from './views/Components.vue'
 import test from './views/test.vue'
@@ -228,6 +228,11 @@ export default [
         path: '/search',
         name: 'SearchMain',
         component: SearchMain,
+    },
+    {
+        path: '/search/tag',
+        name: 'TagResult',
+        component: TagResult,
         props: true,
     },
 

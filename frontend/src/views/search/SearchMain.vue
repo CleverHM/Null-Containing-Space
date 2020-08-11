@@ -21,6 +21,15 @@
                 <div class="default-tabs-active-line"></div>
               </div>
             </nav>
+            <div class="content">
+                <div v-if="isCurrent">
+                   사람사람사람
+
+                </div>
+                <div v-else >
+                  태그태그태그
+                </div>
+            </div>
       </div>
 
   </div>
@@ -36,12 +45,24 @@ export default {
   data() {
     return {
       SearchData: "",
+      isCurrent: true,
+      currentTab: "사람",
     }
   },
   methods: {
     Initialize() {
       this.SearchData = ""
     },
+    handleClick(event) {
+          console.log(event.target.innerText)
+          this.currentTab = event.target.innerText;
+          if (this.currentTab == '사람') {
+            this.isCurrent = true
+          }
+          else {
+            this.isCurrent = false
+          }        
+        },
   },
 
 }
@@ -74,8 +95,68 @@ export default {
   border: 0;
   outline: 0;
 }
+/* 검색 결과 */
+.default-tabs {
+  position: relative;
+  padding: 15px 0 0 0 ;
+  /* margin: 0 auto; */
+}
+.default-tabs-item {
+    display: inline-block;
+    padding-bottom: 8px;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    color: gray;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    width: 50%;
+}
+.tabs-item_active{
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
+.default-tabs-item button {
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+}
+.default-tabs-item_active {
+      color: black;
+}
+.default-tabs-item:hover {
+      border-bottom: 2px solid gray;
+      color: black;
+}
+.default-tabs-item:focus {
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
+.default-tabs-item:visited{
+      outline: none;
+      border-bottom: 2px solid gray;
+      color: black;
+}
+.default-tabs-item:first-child {
+      margin-left: 0;
+}
+.default-tabs-item:last-child {
+      margin-right: 0;
+}
 
-.serach-content {
-
+.content {
+  /* margin-top: 30px; */
+  font-size: 20px;
+}
+#introduce {
+  white-space: normal;
+  word-break: break-all;
 }
 </style>
