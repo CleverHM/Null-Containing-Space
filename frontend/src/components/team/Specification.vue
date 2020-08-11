@@ -27,7 +27,8 @@
 
         <div class="content-area">
           프로젝트 요약
-          <div class="page-content" v-html="teamContent" style="font-weight: lighter;">
+          <div class="page-content" style="font-weight: lighter;">
+            {{ teamData.intro }}
           </div>
         </div>
       
@@ -93,8 +94,6 @@ export default {
           checkLen = 0;
         }
       }
-      // 프로젝트 요약 부분 줄바꿈 적용
-      this.teamContent = this.teamData.intro.replace(/(?:\r\n|\r|\n)/g, '<br/>');
     
     },
 
@@ -134,12 +133,14 @@ export default {
 }
 
 .specs-area {
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px 5px 0px;
+  overflow:auto;
 }
 
 .button-area {
+  float: right;
   display: inline;
-  width: 98%;
+  width: 70%;
   padding: 0px 10px 5px 10px;
   margin-bottom: 5px;
 }
@@ -172,7 +173,7 @@ export default {
   padding: 7px;
   border: 1px solid #E2DFD8;
   border-radius: 10px;
-  word-wrap: wrap;
+  white-space: pre-wrap;
   word-break: break-all;
 }
 

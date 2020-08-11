@@ -12,19 +12,36 @@
         <div class="info-area">
 
             <!-- 유저 이름 -->
-            <div class="texttags">
-                {{ userData.nickname }}
+            <div class="d-flex align-items-center justify-content-between texttags">
+                <span>
+                    {{ userData.nickname }}
+                </span>
+                <span v-if="noprefer">
+                    ({{ subjectCheck }})
+                </span>
             </div>
 
-            <!-- 선택한 주제 -->
-            <div class="texttags">
+            <div v-if="!noprefer" class="d-flex align-items-center texttags">
                 {{ subjectCheck }}
             </div>
 
+            <div v-if="noprefer" class="percent-area">
+                <b-progress 
+                    :value="userData.percent"
+                    class="percent-bar"
+                    variant="success"
+                    :key="userData.nickname"
+                    :show-progress="showProgress">
+                    <b-progress-bar :value="userData.percent" :label="`${userData.percent}%`"></b-progress-bar>
+                </b-progress>
+                <div class="back-bar"></div>
+            </div>
+
+
             <!-- 버튼 영역 -->
             <div class="btn-area d-flex justify-content-between">
-                <button style="background-color: #E2DFD8;" @click="goUserProfile">팀원 정보보기</button>
-                <button style="background-color: #ACCCC4;">팀원 요청</button>
+                <button style="background-color: #E2DFD8;" @click="goUserProfile">유저 정보</button>
+                <button style="background-color: #ACCCC4;" @click="teamJoinRequest">팀원 요청</button>
             </div>
 
         </div>
@@ -33,9 +50,18 @@
 </template>
 
 <script>
+
+import http from "../../util/http-common.js";
+import axios from 'axios';
+
+const storage = window.sessionStorage;
+
 export default {
     name: "MatchUser",
-    props: ['userData'],
+    props: [
+        'userData',
+        'noprefer',
+        ],
 
     data() {
         return {
@@ -54,6 +80,8 @@ export default {
             },
             subjectCheck: '',
             imgExist: false,  
+            animated: true,
+            showProgress: true,
         }
     },
 
@@ -71,6 +99,22 @@ export default {
     methods: {
         goUserProfile() {
             this.$router.push({ name: 'profile', params: { nickname: this.userData.nickname }})
+        },
+
+        // 팀 가입 권유
+        teamJoinRequest() {
+            let formData = new FormData;
+            formData.append("mynickname", storage.getItem("NickName"))
+            formData.append("tonickname", this.userData.nickname)
+            
+            http
+            .post("/alarm/teamAlarm", formData)
+            .then((res) => {
+                alert(`${this.userData.nickname}님에게 팀원 요청을 보냈습니다.`)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     },
 
@@ -78,6 +122,9 @@ export default {
 </script>
 
 <style scoped>
+
+*:focus { outline:none; }
+
 .user-area {
     margin: 15px 10px 15px 10px;
     padding: 15px;
@@ -123,6 +170,38 @@ export default {
     padding: 6px;
     color: white;
     border-radius: 10px;
+    width: 48%;
+}
+
+.none-area {
+    height: 21px;
+}
+
+.percent-area {
+    position: relative;
+    margin: 13px 7px 13px 7px;
+}
+
+/* 애니메이션 적용 */
+
+.percent-bar {
+    height: 9px;
+    font-size: 8px;
+    background-color: #E2DFD8;
+    color: #ACCCC4;
+    animation: progressbar 3s ease-out;
+}
+
+@keyframes progressbar { 0% { width: 0%; } 100% { width: 100%; } }
+
+.back-bar {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    height: 9px;
+    width: 100%;
+    background-color: #E2DFD8;
+    border-radius: 20px;
 }
 
 </style>

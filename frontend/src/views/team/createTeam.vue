@@ -65,7 +65,8 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <button class="submit-button" @click="teamCreate">팀 개설하기</button>
+                <button v-if="!ifUpdate" class="submit-button" @click="teamCreateCheck">팀 개설하기</button>
+                <button v-if="ifUpdate" class="submit-button" @click="teamCreateCheck">명세서 수정하기</button>
             </div>
 
         </div>
@@ -84,7 +85,10 @@ const storage = window.sessionStorage;
 export default {
     name: "createTeam",
 
-    props: ['subjectCheck'],
+    props: [
+        'subjectCheck',
+        'teamData',
+        ],
 
     components: {
         Navbar,
@@ -93,6 +97,7 @@ export default {
 
     data() {
         return {
+            ifUpdate: false,
             team: {
                 title: '',
                 techName: [
@@ -116,6 +121,9 @@ export default {
                 techLen: [],
             },
             basic: {
+                techDiv: [
+                    3, 6, 8, 13
+                ],
                 // 전체 클릭 시
                 clicktechAll: [
                     [], [], [], [],
@@ -144,7 +152,10 @@ export default {
     },
 
     created() {
+
         var checkLen;
+
+        // 초기에 click에 false 값 채워주기
         for (let step = 0; step < 4; step++) {
             checkLen = this.team.techs[step].length;
             this.team.techLen.push(checkLen);
@@ -152,14 +163,55 @@ export default {
                 this.team.click[step].push(false)
 
                 // 전체 선택을 위한 All 배열 만들기
-                this.basic.clickAll[step].push(true)
-                this.basic.clicktechAll[step].push(step2)
+                // this.basic.clickAll[step].push(true)
+                // this.basic.clicktechAll[step].push(step2)
             }
         }
+        
+        // 수정 페이지라면
+        if (this.$route.name === 'updateTeam') {
+            if (this.teamData.leaderNickname.nickname === storage.getItem("NickName")) {
+                this.ifUpdate = true
+                console.log(this.ifUpdate)
 
-        // 빈 배열 값 복사 (이중배열 deep copy)
-        this.basic.clickNo = this.team.click.slice();
-        console.log(this.basic.clickNo)
+                // 정보 그대로 넣기
+                this.team.title = this.teamData.title;
+                this.team.intro = this.teamData.intro;
+                this.team.cnt = this.teamData.cnt;
+                
+                var idx = 0;
+                var num = 0;
+                
+                // 알고리즘을 제외하고 리스트(14)를 돌린다.
+                for (let st = 0; st < 14; st++) {
+                    // preTech의 t/f를 click에 집어넣음
+                    this.team.click[idx][num] = this.teamData.preTech[st]
+
+                    // 만약 true라면 해당 기술을 사용하는 것이므로 해당 기술 이름을 선택한 기술에 집어넣자
+                    if (this.team.click[idx][num] == true) {
+                        this.team.clicktech[idx].push(this.team.techs[idx][num])
+                    }
+
+                    // 증가
+                    num = num + 1;
+
+                    // st가 techDiv[idx]와 동일하면 다음 인덱스로 넘어가기 위해 idx를 올리고 num을 0으로
+                    if (st === this.basic.techDiv[idx]) {
+                        idx = idx + 1;
+                        num = 0;
+                    }
+                }
+                console.log(this.team.clicktech)
+
+
+            } else { // 리더가 아닌 접근은 돌린다.
+                alert('명세서 수정은 리더만 가능합니다.')
+                this.$router.go({ name: 'Main '}).catch(()=>{})
+            }
+
+        }
+
+
     },
 
     methods: {
@@ -187,8 +239,16 @@ export default {
 
         // 인원 수 아래
         cntDown () {
-            if (this.team.cnt == 1) {
-                console.log('안됨')
+            
+            if (this.$route.name === 'updateTeam') {
+                if (this.team.cnt == Number(this.teamData.members.length) + 1) {
+                    alert('현재 팀원 수보다 더 작을 순 없습니다.')
+                }
+                else {
+                    this.team.cnt = this.team.cnt - 1;
+                }
+            } else if (this.team.cnt == 1) {
+                alert('1명 미만은 불가능 합니다.')
             } else {
                 this.team.cnt = this.team.cnt - 1;
             }
@@ -246,6 +306,20 @@ export default {
         //     console.log('전체에서 받아온 지 확인', this.team.clicktech)
         // },
 
+        // 팀 개설 전에 체크
+        teamCreateCheck() {
+            if (this.team.title.length < 3) {
+                alert('팀 이름은 3글자 이상 입력하세요.')
+            } else {
+                if (this.$route.name === 'updateTeam') {
+                    this.teamUpdate();
+                } else {
+                    this.teamCreate();
+                }
+            }
+        },
+
+        
         // 팀 개설 제출
         teamCreate() {
             var step;
@@ -279,6 +353,40 @@ export default {
                 console.log(err)
             })
 
+        },
+
+        teamUpdate() {
+            var step;
+            var techList = new Array();
+
+            // 기술들을 하나의 리스트(true/false)로 변환한다.
+            // 1. 기술 4개(back - front - db - framework)의 리스트를 하나의 리스트로 합치기
+            for (step = 0; step < 4; step++) {
+                techList = techList.concat(this.team.click[step])
+            }
+
+            // 2. 원래 ability의 algo가 있으므로 algo는 true로 보내준다.
+            techList = techList.concat(true)
+
+            // 보내줘야할 데이터들을 formData 안에 넣는다.
+            let formData = new FormData();
+            formData.append("teamid", this.teamData.teamid);
+            formData.append("nickname", storage.getItem("NickName"));
+            formData.append("title", this.team.title);
+            formData.append("teamintro", this.team.intro);
+            formData.append("prePro", this.teamData.preferProject);
+            formData.append("preTech", techList);
+            formData.append("cnt", this.team.cnt);
+
+            http
+            .post("/team/modify", formData)
+            .then((res) => {
+                alert('명세서 수정이 완료되었습니다.')
+                this.$router.replace({ name: 'Main' })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         },
         
     }

@@ -33,6 +33,9 @@ export default {
 </script>
 
 <style scoped>
+#MatchUserSmall {
+    display: inline-block;
+}
 .userImg {
     position: relative;
     width: 70px;

@@ -77,6 +77,7 @@ export default {
         for (step = 0 ; step < this.subjectLength; step++) {
             this.isClick.push(false)
         }
+        
         if (this.beforeSubject == undefined) {
             this.isClick[0] = true
             this.subjectCheck = 1

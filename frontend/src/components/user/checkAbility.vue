@@ -7,7 +7,7 @@
 
         <!-- button -->
         <td class="radio-wrap">
-            <input type="radio" value="상" :name="abilityName" checked @click="checkButton">
+            <input type="radio" value="상" :name="abilityName" @click="checkButton">
             <div class="checkmark"></div>  
         </td>
         <td class="radio-wrap">
@@ -25,25 +25,28 @@
 export default {
     name: 'checkAbility',
     props: [
-        'abilityName'
+        'abilityName',
+        'abilityLevel'
     ],
-    data() {
-        return {
-            high : false,
-            medium: false,
-            low: false,
-        
+    mounted() {
+        var value = 0
+        if (this.abilityLevel == 1) {
+            value = document.getElementsByName(this.abilityName)[0].checked = true
+        } else if (this.abilityLevel == 2) {
+            value = document.getElementsByName(this.abilityName)[1].checked = true
+        } else if (this.abilityLevel == 3) {
+            value = document.getElementsByName(this.abilityName)[2].checked = true
         }
     },
     methods: {
         checkButton(event){
             var value = event.toElement.value
             if (value==='상'){
-                this.$emit("getAbility", this.ability.name, 1)
+                this.$emit("getAbility", this.abilityName, 1)
             } else if (value === '중'){
-                this.$emit("getAbility", this.ability.name, 2)
+                this.$emit("getAbility", this.abilityName, 2)
             } else if (value === '하') {
-                this.$emit("getAbility", this.ability.name, 3)
+                this.$emit("getAbility", this.abilityName, 3)
             }
         }
     },

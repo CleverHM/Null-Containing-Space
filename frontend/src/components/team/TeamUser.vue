@@ -12,7 +12,7 @@
         <div class="info-area">
             <!-- 팀이름 -->
             <div class="texttags">
-                {{ teamData.title }}
+                팀명: {{ teamData.title }}
             </div>
             <!-- 유저 이름 -->
             <div class="texttags">
@@ -82,7 +82,8 @@ export default {
 }
 
 .img-area > img {
-    width: 100%;
+    max-width: 100%;
+    height: auto; 
 }
 
 .leaderImg {

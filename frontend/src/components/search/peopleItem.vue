@@ -5,12 +5,15 @@
             <img v-else src="@/assets/images/default_image.png">
         </div>
         <div class="follow-nickname" @click="goProfile">{{ User.nickname }}</div>
-        <!-- <button class="follow-button" @click="goProfile">프로필</button> -->
+        <button v-if="User.followFlag" class="unfollow-button" @click="unfollow">팔로우 취소</button>
+        <button v-else class="follow-button" @click="follow">팔로우</button>
         <hr />
     </div>
 </template>
 
 <script>
+import http from '@/util/http-common.js'
+
 export default {
     name: 'followItem',
     props: [
@@ -23,6 +26,23 @@ export default {
         goProfile() {
             this.$router.push({ name: 'profile', params: { nickname: this.User.nickname }});
         },
+        // 팔로우상태 -> 1, 언팔로우상태 -> 0
+        follow() {
+            this.User.followFlag = 1
+            var InputData = new FormData()
+            InputData.append("From", window.sessionStorage.NickName)
+            InputData.append("To", this.User.nickname)
+            http.post("follow/user", InputData)
+        },
+        unfollow() {
+            this.User.followFlag = 0
+            var InputData = new FormData()
+            InputData.append("From", window.sessionStorage.NickName)
+            InputData.append("To", this.User.nickname)
+            http.post("follow/user", InputData)
+
+        },
+
     }
 
 }
@@ -68,6 +88,21 @@ export default {
     padding: 3px 7px;
     border-radius: 5px;
     font-size: 16px;
+    border: 0;
+    outline: 0;
+
+}
+.unfollow-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #C4BCB8;
+    color: #f7f7f7;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 16px;
+    border: 0;
+    outline: 0;
 
 }
 hr {
