@@ -70,11 +70,11 @@ public class SearchController {
 						list.add(pd);
 					} else {
 						// 팔로우 여부 확인
-						Set<UserFollow> uf = u.getFollowings();
+						Set<UserFollow> uf = u.getFollowers();
 
 						int f = 0;
 						end: for (UserFollow userfollow : uf) {
-							if (userfollow.getTo().getNickname().equals(mynickname)) {
+							if (userfollow.getFrom().getNickname().equals(mynickname)) {
 								f = 1;
 								break end;
 							}
@@ -93,11 +93,11 @@ public class SearchController {
 						list.add(pd);
 					} else {
 						// 팔로우 여부 확인
-						Set<UserFollow> uf = u.getFollowings();
+						Set<UserFollow> uf = u.getFollowers();
 
 						int f = 0;
 						end: for (UserFollow userfollow : uf) {
-							if (userfollow.getTo().getNickname().equals(mynickname)) {
+							if (userfollow.getFrom().getNickname().equals(mynickname)) {
 								f = 1;
 								break end;
 							}
