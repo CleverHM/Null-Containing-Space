@@ -14,7 +14,8 @@ public class TeamData {
 	private List<Boolean> preTech;
 	private TeamPersonData leaderNickname;
 
-	public TeamData(Date createDate, int cnt, List<TeamPersonData> members, String intro, String title, int preProject, List<Boolean> preTech, TeamPersonData leader ) {
+	public TeamData(int teamid,Date createDate, int cnt, List<TeamPersonData> members, String intro, String title, int preProject, List<Boolean> preTech, TeamPersonData leader ) {
+		this.teamid = teamid;
 		this.createDate = createDate;
 		this.cnt = cnt;
 		this.members = members;
