@@ -45,8 +45,8 @@ export default {
         InputData.append("hashtag", this.tag)
         http.post("/post/getHashtagPostAll", InputData)
         .then(({data}) => {
-            console.log(data)
-            this.Results = data
+            this.Results = data.hashfeeddata
+            this.isFollow = data.status
         })
         this.Loading()
     },
@@ -59,7 +59,7 @@ export default {
     methods: {
         Loading() {
               if (this.isLoading) {
-                  setTimeout(this.delayfinish, 200);
+                  setTimeout(this.delayfinish, 100);
               }
         },
           // 딜레이 화면
