@@ -5,7 +5,7 @@
         <div class="contentArea">
             <!-- 로딩 페이지 -->
             <div v-if="loadingOn">
-                <img src="@/assets/images/lionLoading.gif" alt="" style="width:100%;">
+                <!-- <img src="@/assets/images/lionLoading.gif" alt="" style="width:100%;"> -->
             </div>
 
             <!-- 매칭 간략화 화면 -->
@@ -60,7 +60,7 @@ export default {
         // 로딩하는가?
         isLoading() {
             if (this.loadingOn) {
-                setTimeout(this.delayfinish, 4000);
+                setTimeout(this.delayfinish, 200);
             }
         },
 
@@ -76,7 +76,7 @@ export default {
 
         // 다시 매칭하기
         reMatchOn() {
-            this.loadingOn = true;
+            // this.loadingOn = true;
             this.isLoading();
             this.MatchReceive();
         },

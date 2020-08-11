@@ -65,7 +65,7 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <button class="submit-button" @click="teamCreate">팀 개설하기</button>
+                <button class="submit-button" @click="teamCreateCheck">팀 개설하기</button>
             </div>
 
         </div>
@@ -245,6 +245,15 @@ export default {
         //     console.log('전체에서 클릭된 지 확인', this.team.click)
         //     console.log('전체에서 받아온 지 확인', this.team.clicktech)
         // },
+
+        // 팀 개설 전에 체크
+        teamCreateCheck() {
+            if (this.team.title.length < 3) {
+                alert('팀 이름은 3글자 이상 입력하세요.')
+            } else {
+                this.teamCreate()
+            }
+        },
 
         // 팀 개설 제출
         teamCreate() {

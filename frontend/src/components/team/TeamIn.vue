@@ -4,7 +4,6 @@
       {{ teamData.title }}
     </div>
 
-
     <!-- 팀 / 명세서-->
     <div id="tabs">
       <div class="tab-button d-flex justify-content-center">
@@ -78,7 +77,8 @@
           
           <!-- 팀 탈퇴 (팀장은 불가능)-->
           <button
-            :class="{ noClick: ifLeader }">
+            :class="{ noClick: ifLeader }"
+            @click="modalLeave">
             <b-icon-person-dash class="mr-2"/>
             프로젝트 탈퇴
             <span v-if="ifLeader" style="float: right; font-size: 13px;">(팀원만 가능)</span>
@@ -92,22 +92,46 @@
             <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
           </button>
           
-          <!-- 프로젝트 취소 (팀장만 가능)-->
-          <button style="border: none;"
-            :class="{ noClick: !ifLeader }">
-            <b-icon-trash class="mr-2"/>
-            프로젝트 취소
-            <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
-          </button>
-
           <!-- 프로젝트 종료 (팀장만 가능)-->
           <button style="border: none;"
-            :class="{ noClick: !ifLeader }">
+            :class="{ noClick: !ifLeader }"
+            @click="modalExit">
             <b-icon-door-open class="mr-2"/>
             프로젝트 종료
             <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
           </button>
 
+        </div>
+
+        <!-- 모달 -->
+        <div v-if="showModal" @close="showModal = false">
+            <div class="modal-mask">
+              <div class="modal-wrapper">
+                <div class="modal-container">
+
+                  <div class="modal-header d-flex justify-content-start align-items-center">
+                    <b-icon-exclamation-circle-fill style="color:red"/>
+                    <span class="ml-2">경고</span>
+                  </div>
+
+                  <div class="modal-body">
+                    {{ modal.message[modal.cnt] }}
+                  </div>
+
+                  <div class="modal-footer d-flex justify-content-end">
+                    <button class="modal-default-button" @click="closeModal">
+                      취소
+                    </button>
+                    <button v-if="!ifLeader" class="modal-button" @click="teamLeave">
+                      팀 탈퇴
+                    </button>
+                    <button v-if="ifLeader" class="modal-button" @click="teamExit">
+                      프로젝트 종료
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
 
       </div>
@@ -125,8 +149,8 @@
 <script>
 import specs from './Specification.vue'
 import memberImg from './memberImg.vue'
-import Tabs from 'vue-tabs-with-active-line';
-import httpCommon from '../../util/http-common';
+import http from "../../util/http-common.js";
+import axios from 'axios';
 
 const storage = window.sessionStorage;
 var now = new Date(); // 현재 시간 받아오기
@@ -157,6 +181,14 @@ export default {
       currentTab: 0,
       startDate: null,
       nowDate: null,
+      showModal: false,
+      modal: {
+        cnt: 0,
+        message: [
+          '정말 팀을 탈퇴하시겠습니까?',
+          '정말 팀을 종료하시겠습니까?',
+        ],
+      }
     }
   },
 
@@ -168,6 +200,7 @@ export default {
       this.ifLeader = false
     }
 
+    console.log(this.teamData)
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.teamData.createDate);
     this.diffTime = this.dateCheck(postDate);
@@ -229,6 +262,42 @@ export default {
       }
     },
 
+    // 프로젝트 팀 탈퇴
+    teamLeave() {
+      if (this.ifLeader == false) {
+        let formData = new FormData;
+        formData.append("nickname", storage.getItem("NickName"))
+
+        http
+        .post('/team/leave', formData)
+        .then((res) => {
+          alert('프로젝트 팀에서 탈퇴하셨습니다.')
+          this.$router.go({ name: 'Main' }).catch(()=>{})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    },
+
+    // 프로젝트 종료
+    teamExit() {
+      if (this.ifLeader == true) {
+        let formData = new FormData;
+        formData.append("nickname", storage.getItem("NickName"))
+
+        http
+        .post('/team/exit', formData)
+        .then((res) => {
+          alert('프로젝트가 종료되었습니다.')
+          this.$router.go({ name: 'Main' }).catch(()=>{})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    },
+
     // 팀 매칭 페이지로 이동
     teamMatchGo() {
       this.$router.push({ name: 'teamMatch' })
@@ -237,6 +306,27 @@ export default {
     // 유저 페이지 이동
     goUserProfile() {
       console.log('ㅠㅠㅠㅠ')
+    },
+
+    // modal - 팀 탈퇴
+    modalLeave() {
+      if (this.ifLeader == false) {
+        this.showModal = true;
+        this.modal.cnt = 0;
+      }
+    },
+
+    // modal - 팀 종료
+    modalExit() {
+      if (this.ifLeader == true) {
+        this.showModal = true;
+        this.modal.cnt = 1;
+      }
+    },
+
+    // modal 닫기
+    closeModal() {
+      this.showModal = false;
     },
 
   },
@@ -322,6 +412,72 @@ export default {
 
 .noClick {
   color: #cec8c5 !important;
+}
+
+/* modal */
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 300px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header {
+  margin-top: 0;
+  color: red;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-default-button {
+  padding: 5px;
+  border-radius: 10px;
+  color: white;
+  background-color: #C4BCB8;
+}
+
+.modal-button {
+  padding: 5px;
+  border-radius: 10px;
+  color: white;
+  background-color: red;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 </style>

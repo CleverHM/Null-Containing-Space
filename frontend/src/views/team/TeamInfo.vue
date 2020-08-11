@@ -1,5 +1,5 @@
 <template>
-  <div id="teamIn">
+  <div id="teamInfo">
     <Navbar></Navbar>
     <subNav/>
       
@@ -86,7 +86,7 @@ var now = new Date(); // 현재 시간 받아오기
 
 
 export default {
-  name: "teamIn",
+  name: "teamInfo",
 
   components: {
     Navbar,
@@ -184,7 +184,18 @@ export default {
     },
 
     teamSignup() {
-      console.log('가입신청')
+      let formData = new FormData;
+      formData.append("mynickname", storage.getItem("NickName"))
+      formData.append("tonickname", this.teamData.leaderNickname.nickname)
+
+      http
+      .post('/alarm/teamAlarm' , formData)
+      .then((res) => {
+        alert(`${this.teamData.leaderNickname.nickname}님에게 팀 가입 요청을 보냈습니다.`)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
 
   },
