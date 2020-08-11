@@ -184,7 +184,7 @@ export default {
         http
         .post("/post/modifyFalse", formData)
         .then((res) => {
-          this.$router.push({ name: 'FeedDetail', params: { postId: postId }});
+          this.$router.replace({ name: 'FeedDetail', params: { postId: postId }});
         })
         .catch((err) => {
           console.log(err)
@@ -204,7 +204,7 @@ export default {
           }
         )
         .then((res) => {
-          this.$router.push({ name: 'FeedDetail', params: { postId: postId }});
+          this.$router.replace({ name: 'FeedDetail', params: { postId: postId }});
         })
         .catch((err) => {
           console.log(err)
