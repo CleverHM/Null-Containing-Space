@@ -338,6 +338,21 @@ public class TeamController {
 
 		userservice.signUp(user);
 	}
+	
+
+	@PostMapping("/team/memberCancel")
+	@ApiOperation(value = "팀원으로 등록", notes = "팀원으로 등록 기능을 구현")
+	public void memberCancel(@Valid @RequestParam String nickname) {
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+
+		User user = optionalUser.get();
+
+		user.setMatchok(false);
+		user.setPreferProject(0);
+
+		userservice.signUp(user);
+	}
+
 
 	// 팀 아이디로 정보 보내기
 	@PostMapping("/team/teamInfo")
