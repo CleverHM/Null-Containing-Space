@@ -103,7 +103,7 @@ public class TeamController {
 			if (leaderUser.getTeam().getMemberCnt() == (leaderUser.getTeam().getUsers().size())) {
 				final BasicResponse result = new BasicResponse();
 				result.status = false;
-				result.data = "팀인원아 가득 찼습니다.";
+				result.data = "팀인원이 가득 찼습니다.";
 				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				user.setTeam(team);
@@ -314,7 +314,7 @@ public class TeamController {
 			}
 
 			System.out.println(leaderNickname.getNickname());
-			teamdata = new TeamData(user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems,
+			teamdata = new TeamData(user.getTeam().getTeamid(), user.getTeam().getCreateDate(), user.getTeam().getMemberCnt(), mems,
 					user.getTeam().getTeamIntro(), user.getTeam().getTitle(), user.getTeam().getPreferProject(),
 					preferTech, leaderNickname);
 
@@ -425,7 +425,7 @@ public class TeamController {
 		}
 
 		System.out.println(leaderNickname.getNickname());
-		TeamData teamdata = new TeamData(team.getCreateDate(), team.getMemberCnt(), mems, team.getTeamIntro(),
+		TeamData teamdata = new TeamData(team.getTeamid(),team.getCreateDate(), team.getMemberCnt(), mems, team.getTeamIntro(),
 				team.getTitle(), team.getPreferProject(), preferTech, leaderNickname);
 
 		final BasicResponse result = new BasicResponse();
@@ -434,4 +434,53 @@ public class TeamController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	//// 팀 수정
+	@PostMapping("/team/modify")
+	@ApiOperation(value = "팀 수정", notes = "팀 수정 기능을 구현")
+	public void modify(@Valid @RequestParam int teamid, String title, String teamintro, int cnt, int prePro, Boolean[] preTech,
+			String nickname) {
+
+		Optional<Team> t = teamservice.findone(1);
+
+		if (!t.isPresent()) {
+			Team team = new Team("default 팀 입니다.", "default", Integer.MAX_VALUE);
+			teamservice.join(team);
+		}
+
+		Optional<User> optionaluser = userservice.findtwo(nickname);
+		User user = optionaluser.get();
+
+		Optional<Team> optionalTeam = teamservice.findone(teamid);
+		Team team1 = optionalTeam.get();
+		
+		team1.setTitle(title);
+		team1.setTeamIntro(teamintro);
+		team1.setMemberCnt(cnt);
+		team1.setPreferProject(prePro);
+		
+		// protech
+		team1.setBack_cpp(preTech[0]);
+		team1.setBack_java(preTech[1]);
+		team1.setBack_python(preTech[2]);
+		team1.setBack_php(preTech[3]);
+		team1.setFront_html(preTech[4]);
+		team1.setFront_css(preTech[5]);
+		team1.setFront_javascript(preTech[6]);
+		team1.setDb_sql(preTech[7]);
+		team1.setDb_nosql(preTech[8]);
+		team1.setFrame_spring(preTech[9]);
+		team1.setFrame_django(preTech[10]);
+		team1.setFrame_bootstrap(preTech[11]);
+		team1.setFrame_vue(preTech[12]);
+		team1.setFrame_react(preTech[13]);
+		team1.setAlgo(preTech[14]);
+		
+		teamservice.join(team1);
+
+		user.setLeader(true);
+		user.setTeam(team1);
+		user.setMatchok(false);
+		userservice.signUp(user);
+	}
+	
 }
