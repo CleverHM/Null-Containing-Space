@@ -7,14 +7,24 @@ public class MyAlarm {
 	private String who;
 	private Date createDate;
 	private String content;
+	private int teamid;
 	
-	public MyAlarm(int aid, String who, Date createDate, String content) {
+	public MyAlarm(int aid, String who, Date createDate, String content, int teamid) {
 		this.aid = aid;
 		this.who = who;
 		this.createDate = createDate;
 		this.content = content;
+		this.teamid = teamid;
 	}
 	
+	public int getTeamid() {
+		return teamid;
+	}
+
+	public void setTeamid(int teamid) {
+		this.teamid = teamid;
+	}
+
 	public int getAid() {
 		return aid;
 	}
