@@ -1,15 +1,29 @@
 <template>
-  <div id="SearchMain">
+  <div v-if="isLoading">
+    <Navbar />
+    <subnav />
+    <!-- 검색 창 -->
+      <div class="search-bar">
+        <label><b-icon-search /></label>
+        <input name="searchData" type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search" autofocus>
+        <button v-if="SearchData" @click="Initialize"> x </button>
+      </div>
+
+
+      
+  </div>
+  <div v-else id="SearchMain">
       <Navbar />
+      <subnav />
       <!-- 검색 창 -->
       <div class="search-bar">
         <label><b-icon-search /></label>
-        <input type="text" v-model="SearchData" placeholder="검색어를 입력하세요.">
+        <input id="SearchBar" type="text" v-model="SearchData" placeholder="검색어를 입력하세요." @keyup.enter="search" autofocus>
         <button v-if="SearchData" @click="Initialize"> x </button>
       </div>
 
       <!-- 검색 결과 -->
-      <div class="search-content">
+      <div v-if="isEnter" class="search-content">
           <!-- 결과 탭  -->
             <nav class="default-tabs">
               <div class="default-tabs-item" :class="{'tabs-item_active':isCurrent}" @click="handleClick">
@@ -21,13 +35,14 @@
                 <div class="default-tabs-active-line"></div>
               </div>
             </nav>
+            <!-- 검색 결과 -->
             <div class="content">
                 <div v-if="isCurrent">
-                   사람사람사람
+                   <peopleItem :User="user" v-for="user in Results" :key="user.nickname"/>
 
                 </div>
                 <div v-else >
-                  태그태그태그
+                  <tagItem :tag="tag" v-for="tag in Results" :key="tag"/>
                 </div>
             </div>
       </div>
@@ -37,44 +52,104 @@
 
 <script>
 import Navbar from '@/components/common/Navigation.vue'
+import subnav from '@/components/common/subnav.vue'
+import peopleItem from '@/components/search/peopleItem.vue'
+import tagItem from '@/components/search/tagItem.vue'
+import http from '@/util/http-common.js'
+
 export default {
   name: 'SearchMain',
   components: {
     Navbar,
+    subnav,
+    peopleItem,
+    tagItem,
+  },
+  created() {
+    console.log(document.getElementById('SearchBar'))
+    this.Loading()
   },
   data() {
     return {
       SearchData: "",
       isCurrent: true,
       currentTab: "사람",
+      isEnter: false,
+      Results: [],
+      isLoading: false,
     }
   },
+  watch: {
+    SearchData(data) {
+      if (!data) this.isEnter = false
+    },
+  },
   methods: {
+  
     Initialize() {
       this.SearchData = ""
+      this.isEnter = false
     },
     handleClick(event) {
           console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
           if (this.currentTab == '사람') {
             this.isCurrent = true
+            if(this.SearchData) this.searchPeople()
           }
           else {
             this.isCurrent = false
+            if(this.SearchData) this.searchTag()
           }        
+    },
+    search() {
+      this.isLoading = true;
+      this.isEnter = true;
+    if(this.SearchData) {
+      if (this.isCurrent) this.searchPeople()
+      else this.searchTag()
+      this.Loading()
+    }
+      
+
+    },
+    searchPeople() {
+      var InputData = new FormData()
+      InputData.append("search", this.SearchData)
+      InputData.append("mynickname", window.sessionStorage.NickName)
+      http.post("/search/user", InputData)
+      .then(({data}) => {
+        this.Results = data;
+      })
+    },
+    searchTag() {
+      var InputData = new FormData()
+      InputData.append("hashtag", this.SearchData)
+      http.post("/search/hashtag", InputData)
+      .then(({data}) => {
+        this.Results = data;
+      })
+
+    },
+    Loading() {
+        if (this.isLoading) {
+            setTimeout(this.delayfinish, 200);
+        }
         },
+    // 딜레이 화면
+    delayfinish(){
+        this.isLoading = false;
+    },
   },
 
 }
 </script>
 
 <style scoped>
-#SearchMain{
-  padding: 0 10px;
-}
 .search-bar{
   display: flex;
   border-bottom: 1px solid #464545;
+  margin: 0px 10px;
 }
 .search-bar > label {
   line-height: 50px;
@@ -99,7 +174,7 @@ export default {
 .default-tabs {
   position: relative;
   padding: 15px 0 0 0 ;
-  /* margin: 0 auto; */
+  margin: 0px 10px;
 }
 .default-tabs-item {
     display: inline-block;
@@ -152,7 +227,7 @@ export default {
 }
 
 .content {
-  /* margin-top: 30px; */
+  margin: 5px 10px 0 10px;
   font-size: 20px;
 }
 #introduce {
