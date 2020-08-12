@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.model.TeamPersonData;
 import com.ssafy.pjt1.service.ChatService;
@@ -173,7 +174,7 @@ public class TeamController {
     // nick name 으로 프로젝트 페이지판별 하기
     @PostMapping("/team/exist")
     @ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
-    public Object exist(@Valid @RequestParam String nickname) throws MalformedURLException, IOException {
+    public Object exist(@Valid @RequestParam String nickname, int pagenum) throws MalformedURLException, IOException {
 
         Optional<User> optionalUser = userservice.findtwo(nickname);
         User user = optionalUser.get();
@@ -238,8 +239,24 @@ public class TeamController {
 
                     } // ifend
                 }
+                
+                // 10개씩 보내기
+                List<TeamData> pageRes = new LinkedList<TeamData>();
+        		int cnt = 3;
+        		int min = pagenum * cnt - cnt;
+        		int max = pagenum * cnt;
+
+        		if (min < teamdatas.size()) {
+        			for (int i = min; i < max; i++) {
+        				if (i == teamdatas.size()) {
+        					break;
+        				}
+        				pageRes.add(teamdatas.get(i));
+        			}
+        		}
+        		
                 System.out.println("다왔다!");
-                result.teamdates = teamdatas;
+                result.teamdates = pageRes;
                 result.preferProject = user.getPreferProject();
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } else {

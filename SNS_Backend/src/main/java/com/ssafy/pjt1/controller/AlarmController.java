@@ -102,7 +102,7 @@ public class AlarmController {
 		
 		for (int i = 0; i < aList.size(); i++) {
 			MyAlarm ma = new MyAlarm(aList.get(i).getAid(), aList.get(i).getUser().getNickname(),
-					aList.get(i).getCreateDate(), aList.get(i).getContent(), aList.get(i).getUser().getTeam().getTeamid(), aList.get(i).getPid());
+					aList.get(i).getCreateDate(), aList.get(i).getContent(), aList.get(i).getUser().getTeam().getTeamid(), aList.get(i).getPid(), aList.get(i).getFlag());
 			
 			if(aList.get(i).getFlag() == 1) {
 				teamalarm.add(ma);
@@ -133,7 +133,7 @@ public class AlarmController {
 		final AlarmResponse result = new AlarmResponse();
 		
 		for (Alarm a : aList) {
-			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(), a.getUser().getTeam().getTeamid(), a.getPid());
+			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(), a.getUser().getTeam().getTeamid(), a.getPid(), a.getFlag());
 
 			if(a.getFlag() == 1) {
 				teamalarm.add(ma);
