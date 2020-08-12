@@ -161,7 +161,6 @@ export default {
     // 휴대폰번호 체크
     ChangeTelForm(inputNum){
       var phoneNum = inputNum.replace(/[^0-9]/g, '');
-      console.log("before change", phoneNum)
       var tmp = '';
       if (phoneNum.length < 4){
         tmp = phoneNum
@@ -189,7 +188,6 @@ export default {
       http
       .post("/account/nickNameDuplicate", this.FormUser.nickname)
       .then((data) => {
-        console.log(data.data)
         if (data.data.status) {
           this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
           this.error.nickname=false
@@ -202,8 +200,6 @@ export default {
     },
     // 최종 회원가입양식 확인
     confirmForm() {
-      console.log(this.FormUser.password, this.passwordConfirm, this.FormUser.name
-          ,this.FormUser.age,this.FormUser.tel , this.FormUser.nickname)
       if (this.FormUser.password && this.passwordConfirm && this.FormUser.name &&
            this.FormUser.age && this.FormUser.tel && this.FormUser.nickname){
             

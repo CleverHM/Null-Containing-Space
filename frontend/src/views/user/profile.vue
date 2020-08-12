@@ -287,10 +287,12 @@ export default {
           this.$router.push({name: 'followList', params: { PageName: event.target.className, nickname: this.User.nickname}})
         },
         goBlog() {
-          window.open(this.User.blogURL)
+          var toURL = `https://${this.User.blogURL}`
+          window.open(toURL)
         },
         goGit() {
-          window.open(this.User.GitURL)
+          var toURL = `https://${this.User.GitURL}`
+          window.open(toURL)          
         },
     }
 
