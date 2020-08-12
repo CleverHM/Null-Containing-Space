@@ -1,7 +1,12 @@
 <template>
   <div id="NoTeam">
-    <div class="d-flex justify-content-center subjectArea">
+    <div class="d-flex flex-column subjectArea">
+      <div class="d-flex justify-content-center">
         현재 <span class="subjectDesign mx-2">{{ subjectCheck }}</span> 를 선택 중입니다
+      </div>
+      <div class="d-flex justify-content-center">
+        - <span style="font-weight: bold;">매칭 시스템에 등록</span>되었습니다 -
+      </div>
     </div>
 
     <div v-if="noMatch" class="teamDes d-flex justify-content-center align-items-center align-content-center flex-column" style="min-height: 400px;">
@@ -106,7 +111,7 @@ export default {
               this.teamDatas = this.teamDatas.concat(res.data.teamdates)
               $state.loaded()
               this.limit = this.limit + 1
-              console.log("after", this.teamDatas, this.limit)
+              // console.log("after", this.teamDatas, this.limit)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(res.data.teamdates.length / EACH_LEN < 1) {
                 $state.complete()

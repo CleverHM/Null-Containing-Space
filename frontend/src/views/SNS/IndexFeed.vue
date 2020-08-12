@@ -2,7 +2,15 @@
   <div id="IndexFeed">
     <Navbar></Navbar>
     <subNav></subNav>
-    <div class="wrapB">
+    <div>
+      <div v-if="status" class="recommendArea">
+        <div class="text-tags my-2">
+          팔로우가 없습니다. 아래 유저는 어떤가요?
+        </div> 
+        <div class="d-flex justify-content-start">
+          <RecommendUser v-for="userData in userList" :key="userData.nickname" :userData="userData" class="mx-2"/>
+        </div>
+      </div>
       <div class="d-flex justify-content-end align-items-center">
         <button v-for="tag in clicktags" :key="tag" class="btn-sort" style="background-color: #ACCCC4;" @click="tagRemove">{{ tag }}</button>
       </div>
@@ -18,7 +26,7 @@
       @infinite="infiniteHandler" 
       ref="InfiniteLoading"
       spinner="waveDots">
-      <div slot="no-results" style="font-size: 14px; padding: 10px 0px;">아직 게시물이 없습니다</div>
+      <div slot="no-results" style="font-size: 14px; padding: 10px 0px; margin: 180px 0px 180px 0px;">아직 게시물이 없습니다</div>
       <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 게시물이 없습니다</div>
     </infinite-loading>
 
@@ -32,6 +40,7 @@ import "../../components/css/feed/newsfeed.scss";
 import SNSItem from "../../components/SNS/SNSItem.vue";
 import Navbar from '../../components/common/Navigation.vue';
 import subNav from '../../components/common/subnav.vue';
+import RecommendUser from '../../components/SNS/RecommendUser';
 import http from "../../util/http-common.js";
 import axios from 'axios';
 import InfiniteLoading from 'vue-infinite-loading';
@@ -47,6 +56,7 @@ export default {
     Navbar,
     subNav,
     InfiniteLoading,
+    RecommendUser,
   },
   data() {
     return {
@@ -55,6 +65,8 @@ export default {
       hashExist: false,
       limit: 1,   // 무한스크롤 위한 page 번호
       postExist: true,
+      status: false,
+      userList: [],
     }
   },
 
@@ -75,12 +87,12 @@ export default {
       .post('/post/getPost', formData)
       .then((res) => {
         setTimeout(() => {
-          if(res.data.length) {
-            this.articles = this.articles.concat(res.data)
+          if(res.data.feeddata.length) {
+            this.articles = this.articles.concat(res.data.feeddata)
             $state.loaded()
             this.limit = this.limit + 1
             // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-            if(res.data.length / EACH_LEN < 1) {
+            if(res.data.feeddata.length / EACH_LEN < 1) {
               $state.complete()
             }
           } else {
@@ -88,6 +100,10 @@ export default {
             $state.complete()
           }
         }, 400)
+        if (res.data.status == true) {
+          this.status = true
+          this.userReco();
+        }
       })
       .catch(err => {
         console.error(err);
@@ -110,13 +126,13 @@ export default {
       )
       .then((res) => {
         setTimeout(() => {
-          if(res.data.length) {
-            this.articles = this.articles.concat(res.data)
+          if(res.data.hashfeeddata.length) {
+            this.articles = this.articles.concat(res.data.hashfeeddata)
             $state.loaded()
             this.limit = this.limit + 1
             // console.log("after", this.articles, this.limit)
             // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-            if(res.data.length / EACH_LEN < 1) {
+            if(res.data.hashfeeddata.length / EACH_LEN < 1) {
               $state.complete()
             }
           } else {
@@ -177,6 +193,23 @@ export default {
       this.$refs.InfiniteLoading.stateChanger.reset(); 
     },
 
+    // 유저 추천 받기
+    userReco() {
+      let formData = new FormData;
+      formData.append('nickname', storage.getItem("NickName"))
+      
+      http
+      .post('/account/recommendUser', formData)
+      .then((res) => {
+        this.userList = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+
+    }
+
   },
 
 
@@ -185,6 +218,9 @@ export default {
 
 
 <style scoped>
+#IndexFeed {
+  margin: 50px 0px 30px 0px;
+}
 .btn-sort{
     margin: 10px 5px 10px 5px;
     height: 25px;
@@ -205,8 +241,16 @@ export default {
   font-size: 14px;
 }
 
-.wrapB {
-  margin-bottom: 50px;
+.recommendArea {
+  margin: 20px 0px 20px 0px;
+  padding: 5px 0px 15px 0px;
+  border-bottom: 1px solid #464545;
+}
+
+.text-tags {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #464545;
 }
 
 </style>

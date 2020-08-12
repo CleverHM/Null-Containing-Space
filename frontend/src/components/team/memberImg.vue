@@ -56,7 +56,7 @@ export default {
 }
 
 .userImg {
-  display: block;
+  display: relative;
   width: 100px;
   height: 100px;
   border-radius: 100%;
