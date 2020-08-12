@@ -44,6 +44,9 @@ export default {
             InputData.append("From", window.sessionStorage.NickName)
             InputData.append("To", this.User.nickname)
             http.post("follow/user", InputData)
+            .then(() => {
+                this.alarm()
+            })
         },
         unfollow() {
             this.User.followFlag = 0
@@ -52,6 +55,13 @@ export default {
             InputData.append("To", this.User.nickname)
             http.post("follow/user", InputData)
 
+        },
+        alarm(){
+            // 팔로우 알림 보내기
+            var AlarmData = new FormData()
+            AlarmData.append("mynickname", storage.NickName)
+            AlarmData.append("tonickname", this.User.nickname)
+            http.post("/alarm/followAlarm", AlarmData)
         },
 
     }
