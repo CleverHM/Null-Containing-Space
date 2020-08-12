@@ -40,7 +40,7 @@
 
                 <!-- 알람이 있을 때 -->
                 <div v-else>
-                    <SNSAlarm />
+                    <SNSAlarm v-for="snsData in snsList" :key="snsData.id" :snsData="snsData"/>
                 </div>
                 
               </div>
@@ -67,7 +67,9 @@ export default {
       TeamAlarm,
       SNSAlarm,
   },
-
+  props: [
+    'tapId'
+  ],
   data() {
       return {
           isCurrent: true,
@@ -80,7 +82,17 @@ export default {
   },
 
   created() {
+    console.log(this.tapId)
+    if (this.tapId == 2) {
+      this.isCurrent = false
+      this.currentTab = 'SNS'
+    } else {
+      this.isCurrent = true
+      this.currentTab = '프로젝트'
+      
+    }
     this.dataReceive();
+    
   },
 
   methods: {
@@ -93,10 +105,9 @@ export default {
       .post('/alarm/meAlarm', formData)
       .then((res) => {
 
-        console.log(res.data)
+        // console.log(res.data)
         this.snsList = res.data.snsalarm
         this.teamList = res.data.teamalarm
-
         if (res.data.snsalarm.length > 0) {
           this.snsExist = true
         }
@@ -115,12 +126,10 @@ export default {
         this.currentTab = event.target.innerText;
         if (this.currentTab == 'SNS') {
             this.isCurrent = false
-            this.followFlag = 1
         }
         else {
             this.isCurrent = true
             this.currentTab = '프로젝트'
-            this.followFlag = 2
         }
         console.log(this.isCurrent)
     },

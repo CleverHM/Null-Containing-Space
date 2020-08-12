@@ -41,15 +41,15 @@ export default {
         goProfile() {
             console.log(".....")
             this.$router.push({ name: 'profile', params: { nickname: this.nickname }})
-            .then((data) => {
-                console.log("hdsfkdflwkej")
-                location.reload()
-            })
-            .catch((err)=>{
-                console.log(err)
-                console.log("please go")
-                location.reload()
-            })
+            // .then((data) => {
+            //     console.log("hdsfkdflwkej")
+            //     location.reload()
+            // })
+            // .catch((err)=>{
+            //     console.log(err)
+            //     console.log("please go")
+            //     location.reload()
+            // })
         },
         
     }
