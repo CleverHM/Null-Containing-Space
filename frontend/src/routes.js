@@ -37,10 +37,14 @@ import SubjectForm from './views/team/subjectForm.vue'
 import TeamInfo from './views/team/TeamInfo.vue'
 import MatchMember from './views/team/MatchMember.vue'
 
+// chat
+import Chat from './views/chat/Chat.vue'
+
 // Search
 import SearchMain from './views/search/SearchMain.vue'
 import TagResult from './views/search/TagResult.vue'
 // etc
+
 import Components from './views/Components.vue'
 import test from './views/test.vue'
 
@@ -234,12 +238,22 @@ export default [
         component: TeamInfo,
         props: true,
     },
+
+    //chat
+    {
+        path: '/chat/:teamId',
+        name: 'chat',
+        component: Chat,
+        props: true
+    },
+
     // search
     {
         path: '/search',
         name: 'SearchMain',
         component: SearchMain,
     },
+
     {
         path: '/search/:tag',
         name: 'TagResult',
