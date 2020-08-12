@@ -208,7 +208,14 @@ export default {
             this.isFollow = data.flag
             this.User.followingcount = data.followingCnt
             this.User.followercount = data.followerCnt
-            console.log(this.isFollow)
+            // 팔로우 알림 보내기
+            if (this.isFollow) {
+              var AlarmData = new FormData()
+              AlarmData.append("mynickname", this.nickname)
+              AlarmData.append("tonickname", this.pagenickname)
+              http.post("/alarm/followAlarm", AlarmData)
+              .then(() => {})
+            }
           })
           .catch(() => {})
 
