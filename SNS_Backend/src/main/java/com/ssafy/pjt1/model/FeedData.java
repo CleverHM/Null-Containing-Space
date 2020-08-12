@@ -15,10 +15,11 @@ public class FeedData {
     private int replyCount;
     private byte[] userFile;
     private int ViewCount;
+    private boolean rFlag;
     
     private List<String> tags;
     
-    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag, int replycount, byte[] userfile, int viewcount) {
+    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag, int replycount, byte[] userfile, int viewcount, boolean rflag) {
         this.pid = pid;
         this.email = email;
         this.date = date;
@@ -31,9 +32,10 @@ public class FeedData {
         this.replyCount = replycount;
         this.userFile = userfile;
         this.ViewCount = viewcount;
+        this.rFlag = rflag;
     }
     
-    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag, int replycount, byte[] userfile) {
+    public FeedData(int pid, String email, Date date, String title,String userName, byte[] file, List<String> tags, int likeCount, int likeFlag, int replycount, byte[] userfile, boolean rflag) {
         this.pid = pid;
         this.email = email;
         this.date = date;
@@ -45,7 +47,16 @@ public class FeedData {
         this.likeFlag = likeFlag;
         this.replyCount = replycount;
         this.userFile = userfile;
+        this.rFlag = rflag;
     }
+
+	public boolean isrFlag() {
+		return rFlag;
+	}
+
+	public void setrFlag(boolean rFlag) {
+		this.rFlag = rFlag;
+	}
 
 	public int getViewCount() {
 		return ViewCount;
