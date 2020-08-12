@@ -9,16 +9,34 @@ public class MyAlarm {
 	private String content;
 	private int teamid;
 	private int pid;
+	private int flag;
 	
-	public MyAlarm(int aid, String who, Date createDate, String content, int teamid, int pid) {
+	public MyAlarm(int aid, String who, Date createDate, String content, int teamid, int pid, int flag) {
 		this.aid = aid;
 		this.who = who;
 		this.createDate = createDate;
 		this.content = content;
 		this.teamid = teamid;
 		this.pid = pid;
+		this.flag = flag;
 	}
 	
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+
+	public int getPid() {
+		return pid;
+	}
+
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+
 	public int getTeamid() {
 		return teamid;
 	}
