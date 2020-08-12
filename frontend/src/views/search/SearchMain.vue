@@ -76,12 +76,15 @@ export default {
       // 탭 활성화
       this.isEnter = true;
       // 탭 내용 활성화
+      console.log(storage.istagTab)
       if (storage.ispeopleTab) {
         this.isCurrent = true;
         this.Results = JSON.parse(storage.peopleResult)
       }
       else if (storage.istagTab) {
         this.isCurrent = false;
+        console.log(storage.tagResult)
+        console.log(JSON.parse(storage.tagResult))
         this.Results = JSON.parse(storage.tagResult)
       }
 
@@ -130,7 +133,7 @@ export default {
       // 검색할땐 기존 스토리지에 있는 결과는 삭제
       storage.SearchData = this.SearchData
       storage.removeItem('peopleResult')
-      storage.removeItem('tabResult')
+      storage.removeItem('tagResult')
     
       this.isCurrent = true;
       this.searchPeople()
@@ -165,7 +168,7 @@ export default {
       storage.istagTab = true;
       storage.removeItem("ispeopleTab")
       // 스토리지에 태그결과가 있으면
-      if (storage.tagResult) this.Results = JSON.parse(storage.peopleResult)
+      if (storage.tagResult) this.Results = JSON.parse(storage.tagResult)
       // 스토리지에 태그결과가 없으면
       else {
         var InputData = new FormData()
@@ -173,7 +176,8 @@ export default {
         http.post("/search/hashtag", InputData)
         .then(({data}) => {
           this.Results = data;
-          storage.tabResult = JSON.stringify(data)
+          console.log(this.Results)
+          storage.tagResult = JSON.stringify(data)
         })
       }
 
