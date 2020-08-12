@@ -8,6 +8,7 @@
             <small class="noticeday">{{ diffTime }}</small>
             </p>
             <div class="button-list">
+                <button class="button-left" @click="goDetail">게시물로 이동</button>
                 <button class="button-left" @click="goProfile">상대방 프로필</button>
                 <button class="button-right" @click="deleteAlarm">삭제</button>
             </div>
@@ -74,7 +75,6 @@ export default {
         }
         },
         goProfile() {
-
             this.$router.push({ name: 'profile', params: { nickname: this.snsData.who }})
         },
         deleteAlarm() {
@@ -83,6 +83,9 @@ export default {
 
             http.post('/alarm/delete', formData)
             .then(() => { this.$router.go() })
+        },
+        goDetail() {
+            this.$router.push({ name: 'FeedDetail', params: { postId: this.snsData.aid }})
         },
 
     }
