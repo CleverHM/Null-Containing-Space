@@ -51,7 +51,7 @@ public class AlarmController {
 
 		User user = optionalUser.get();
 
-		Alarm alarm = new Alarm(mynickname + "님이 프로젝트 같이하기를 요청했습니다. ", tonickname, 1);
+		Alarm alarm = new Alarm(mynickname + "님이 프로젝트 같이하기를 요청했습니다. ", tonickname, 1, 0);
 
 		alarm.setUser(user);
 
@@ -61,12 +61,12 @@ public class AlarmController {
 	// 댓글알람
 	@PostMapping("/alarm/replyAlarm")
 	@ApiOperation(value = "댓글알람 보내기", notes = "댓글알람 보내기 기능을 구현.")
-	public void replyAlarm(@Valid @RequestParam String mynickname, String tonickname, String title) throws Exception {
+	public void replyAlarm(@Valid @RequestParam String mynickname, String tonickname, int pid) throws Exception {
 		Optional<User> optionalUser = userservice.findtwo(mynickname);
 
 		User user = optionalUser.get();
 
-		Alarm alarm = new Alarm(mynickname + "님이 회원님의 '" + title + "' 게시글에 댓글을 달았습니다. ", tonickname, 2);
+		Alarm alarm = new Alarm(mynickname + "님이 회원님의  게시글에 댓글을 달았습니다. ", tonickname, 2, pid);
 
 		alarm.setUser(user);
 
@@ -81,7 +81,7 @@ public class AlarmController {
 
 		User user = optionalUser.get();
 
-		Alarm alarm = new Alarm(mynickname + "님이 팔로우 했습니다. ", tonickname, 3);
+		Alarm alarm = new Alarm(mynickname + "님이 팔로우 했습니다. ", tonickname, 3, 0);
 
 		alarm.setUser(user);
 
@@ -102,7 +102,7 @@ public class AlarmController {
 		
 		for (int i = 0; i < aList.size(); i++) {
 			MyAlarm ma = new MyAlarm(aList.get(i).getAid(), aList.get(i).getUser().getNickname(),
-					aList.get(i).getCreateDate(), aList.get(i).getContent(), aList.get(i).getUser().getTeam().getTeamid());
+					aList.get(i).getCreateDate(), aList.get(i).getContent(), aList.get(i).getUser().getTeam().getTeamid(), aList.get(i).getPid());
 			
 			if(aList.get(i).getFlag() == 1) {
 				teamalarm.add(ma);
@@ -133,7 +133,7 @@ public class AlarmController {
 		final AlarmResponse result = new AlarmResponse();
 		
 		for (Alarm a : aList) {
-			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(), a.getUser().getTeam().getTeamid());
+			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(), a.getUser().getTeam().getTeamid(), a.getPid());
 
 			if(a.getFlag() == 1) {
 				teamalarm.add(ma);
