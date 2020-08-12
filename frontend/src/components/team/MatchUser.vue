@@ -144,8 +144,11 @@ export default {
     overflow: hidden;
 }
 
-.img-area > img {
-    width: 100%;
+.img-area img {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .info-area {
