@@ -1206,7 +1206,6 @@ public class PostController {
 		}
 
 		Set<FeedData> unique1 = new LinkedHashSet<>(pageRes);
-		System.out.println(unique1.size());
 		return unique1;
 	}
 
