@@ -17,7 +17,9 @@
                             <!-- <li class="menu-tiem"><b-icon-question-circle-fill scale="1.1" class="mr-2"/>QnA</li> -->
                             <li class="menu-tiem" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
                             <li class="menu-tiem" @click="goMyLikePost"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
-                            <li class="menu-tiem" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
+
+                            <li v-if="IsMe" class="menu-tiem" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
+                            <li v-else class="menu-tiem" @click="teamJoinRequest"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>팀원 요청</li>
                             <hr>
                             <li class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
                             <!-- <li class="menu-tiem" @click="goModifyUser"><b-icon-pencil scale="1.1" class="mr-2"/>회원정보 수정</li> -->
@@ -31,6 +33,8 @@
 </template>
 
 <script>
+import http from '@/util/http-common.js'
+
 const storage = window.sessionStorage;
 
 export default {
@@ -41,7 +45,13 @@ export default {
   computed: {
       currentRouteName() {
         return this.$route.name;
-      }
+      },
+      IsMe() {
+          if (storage.NickName == this.$route.params.nickname) return true
+          else return false
+      },
+      
+    
   },
   data() {
       return {
@@ -49,34 +59,49 @@ export default {
       }
   },
   methods: {
-      goBack(){
-          if (this.currentRouteName === 'createTeam') {
-              this.$router.push({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
-          } else {
-              this.$router.go(-1)
-          }
-      },
-      goSearch(){
-          this.$router.push({name: 'SearchMain'})
-      },
-      logout() {
-          storage.clear()
-          alert("로그아웃")
-          this.$router.push('/')
+        goBack(){
+            if (this.currentRouteName === 'createTeam') {
+                this.$router.push({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
+            } else {
+                this.$router.go(-1)
+            }
+        },
+        goSearch(){
+            this.$router.push({name: 'SearchMain'})
+        },
+        logout() {
+            storage.clear()
+            alert("로그아웃")
+            this.$router.push('/')
 
-      },
-      toggleShow() {
-          this.showMenu = !this.showMenu
-      },
-      goModifyAbility() {
-          this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
-      },
-      goMyPost() {
-          this.$router.push({name: 'myPost', params:{ nickname: storage.NickName}})
-      },
-      goMyLikePost() {
-          this.$router.push({name: 'myLikePost', params:{ nickname: storage.NickName}})
-      },
+        },
+        toggleShow() {
+            this.showMenu = !this.showMenu
+        },
+        goModifyAbility() {
+            this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
+        },
+        goMyPost() {
+            this.$router.push({name: 'myPost', params:{ nickname: storage.NickName}})
+        },
+        goMyLikePost() {
+            this.$router.push({name: 'myLikePost', params:{ nickname: storage.NickName}})
+        },
+      // 팀 가입 권유
+        teamJoinRequest() {
+            let formData = new FormData;
+            formData.append("mynickname", storage.NickName)
+            formData.append("tonickname", this.$route.params.nickname)
+            
+            http
+            .post("/alarm/teamAlarm", formData)
+            .then((res) => {
+                alert(`${this.$route.params.nickname}님에게 팀원 요청을 보냈습니다.`)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
 
   },
 };
