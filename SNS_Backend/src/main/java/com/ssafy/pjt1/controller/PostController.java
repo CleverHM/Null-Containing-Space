@@ -994,7 +994,7 @@ public class PostController {
 	// 해당이메일 게시물 보내주기
 	@PostMapping("/post/getHashtagPost")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Set<FeedData> getHashtagPost(@Valid @RequestParam String email, String[] hashtag)
+	public List<FeedData> getHashtagPost(@Valid @RequestParam String email, String[] hashtag, int pagenum)
 			throws MalformedURLException, IOException {
 
 		System.out.println(email);
@@ -1186,9 +1186,22 @@ public class PostController {
 			}
 		});
 
-		Set<FeedData> unique = new LinkedHashSet<>(res1);
+		// page 만큼 자르기
+		List<FeedData> pageRes = new LinkedList<FeedData>();
+		int cnt = 3;
+		int min = pagenum * cnt - cnt;
+		int max = pagenum * cnt;
 
-		return unique;
+		if (min < res.size()) {
+			for (int i = min; i < max; i++) {
+				if (i == res1.size()) {
+					break;
+				}
+				pageRes.add(res1.get(i));
+			}
+		}
+
+		return pageRes;
 	}
 
 	// 해당 해쉬태그가 있는 모든글 보여주기
