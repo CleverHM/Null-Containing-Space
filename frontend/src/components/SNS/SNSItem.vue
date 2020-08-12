@@ -71,7 +71,6 @@ export default {
 
   created() {
     this.likeCheck();
-    console.log(this.article)
 
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.article.date)
@@ -122,7 +121,6 @@ export default {
         this.article.likeFlag = res.data.flag
       })
       .catch((err) => {
-        console.log('좋아요')
         console.log(err)
       })
     },
