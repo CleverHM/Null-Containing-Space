@@ -12,6 +12,12 @@
     </div>
     <!-- 작성 -->
     <button class="createArticle" @click="articleSubmit"><b-icon-pencil-square></b-icon-pencil-square></button>
+
+    <!-- 무한스크롤 -->
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+      <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+    </infinite-loading>
+
   </div>
 </template>
 
@@ -24,6 +30,7 @@ import Navbar from '../../components/common/Navigation.vue';
 import subNav from '../../components/common/subnav.vue';
 import http from "../../util/http-common.js";
 import axios from 'axios';
+import InfiniteLoading from 'vue-infinite-loading';
 
 const storage = window.sessionStorage;
 
@@ -35,16 +42,33 @@ export default {
     SNSItem,
     Navbar,
     subNav,
+    InfiniteLoading,
   },
   data() {
     return {
       clicktags: [],
       articles: null,
+      limit: 1,   // 무한스크롤 위한 page 번호
     }
   },
+  
 
   created() {
     this.bringList();
+
+    async function getTopicFromApi() {
+          try {
+              const init = await fetch(`/api/idol/uwasa/pages/0`, {method: "GET"})
+              const data = await init.json()
+              return data
+          } catch(exc) {
+              console.error(exc)
+          }
+      }
+      getTopicFromApi().then(data => {
+          console.log("fromAPI", data)
+          this.topicData = data
+      })
   },
 
   methods: {
