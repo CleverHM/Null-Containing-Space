@@ -1,5 +1,5 @@
 <template>
-  <div class="feed newsfeed">
+  <div id="IndexFeed">
     <Navbar></Navbar>
     <subNav></subNav>
     <div class="wrapB">
@@ -18,7 +18,8 @@
       @infinite="infiniteHandler" 
       ref="InfiniteLoading"
       spinner="waveDots">
-      <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 게시물이 없습니다.</div>
+      <div slot="no-results" style="font-size: 14px; padding: 10px 0px;">아직 게시물이 없습니다</div>
+      <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 게시물이 없습니다</div>
     </infinite-loading>
 
   </div>
@@ -38,8 +39,8 @@ import InfiniteLoading from 'vue-infinite-loading';
 const storage = window.sessionStorage;
 
 export default {
-  props: ["keyword"],
   name: "IndexFeed",
+  props: ["keyword"],
 
   components: { 
     SNSItem,
@@ -53,9 +54,9 @@ export default {
       articles: [],
       hashExist: false,
       limit: 1,   // 무한스크롤 위한 page 번호
+      postExist: true,
     }
   },
-  
 
   created() {
     // this.bringList();

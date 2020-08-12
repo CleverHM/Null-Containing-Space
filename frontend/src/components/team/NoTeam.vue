@@ -22,7 +22,8 @@
       @infinite="infiniteHandler" 
       ref="InfiniteLoading"
       spinner="waveDots">
-      <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 프로젝트로 진행 중인 팀이 없습니다.</div>
+      <div slot="no-results" style="display: none;"></div>
+      <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 프로젝트로 진행 중인 팀이 없습니다</div>
     </infinite-loading>
 
     <button class="closeTeam" @click="closeTeam">팀원 시작 취소</button>
