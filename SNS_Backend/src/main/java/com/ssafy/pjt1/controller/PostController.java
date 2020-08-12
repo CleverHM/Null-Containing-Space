@@ -666,7 +666,7 @@ public class PostController {
 	// 무한 스크롤
 	@PostMapping("/post/getPost")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> getPost(@Valid @RequestBody String email, @Valid @RequestParam int pagenum)
+	public List<FeedData> getPost(@Valid @RequestParam String email, int pagenum)
 			throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
