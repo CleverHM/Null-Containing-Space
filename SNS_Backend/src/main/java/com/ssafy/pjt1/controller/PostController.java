@@ -448,12 +448,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount(), false));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount(), false));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -489,12 +489,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount(), false));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount(), false));
 				}
 			}
 
@@ -599,12 +599,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount(), false));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount(), false));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -640,12 +640,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount(), false));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount(), false));
 				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
@@ -694,6 +694,11 @@ public class PostController {
 			Set<Post> followPost = user1.getPosts();
 			postList.addAll(followPost);
 		}
+		
+		// 내가 팔로우 0명인가?
+		boolean rflag = false;
+		if(followList.size() == 0) rflag = true;
+		
 		// 게시물 확인
 		System.out.println("==============내게시물+팔로우==================");
 		for (int i = 0; i < postList.size(); i++) {
@@ -755,12 +760,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount(), rflag));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount(), rflag));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -796,12 +801,12 @@ public class PostController {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), out1, postList.get(i).getViewCount(), rflag));
 				} else {
 					res.add(new FeedData(postList.get(i).getPid(), postList.get(i).getUser().getEmail(),
 							postList.get(i).getCreateDate(), postList.get(i).getTitle(),
 							postList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount()));
+							postList.get(i).getReplies().size(), reportBytes1, postList.get(i).getViewCount(), rflag));
 				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
@@ -1041,16 +1046,10 @@ public class PostController {
 			}
 		}
 
-		System.out.println("=================");
-		// 리스트 확인
-		System.out.println("=======최종 리스트==========");
-
-		for (int i = 0; i < hasftagPostList.size(); i++) {
-			System.out.println(hasftagPostList.get(i).getPid());
-		}
-
-		System.out.println("=================");
-
+		// 내가 팔로우 0명인가?
+		boolean rflag = false;
+		if(followList.size() == 0) rflag = true;
+		
 		// 게시물 확인
 		System.out.println("==============내게시물+팔로우==================");
 		for (int i = 0; i < hasftagPostList.size(); i++) {
@@ -1114,12 +1113,12 @@ public class PostController {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), out1));
+							hasftagPostList.get(i).getReplies().size(), out1, rflag));
 				} else {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), reportBytes1));
+							hasftagPostList.get(i).getReplies().size(), reportBytes1, rflag));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -1155,12 +1154,12 @@ public class PostController {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), out1));
+							hasftagPostList.get(i).getReplies().size(), out1, rflag));
 				} else {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), reportBytes1));
+							hasftagPostList.get(i).getReplies().size(), reportBytes1, rflag));
 				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
@@ -1302,12 +1301,12 @@ public class PostController {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), out1));
+							hasftagPostList.get(i).getReplies().size(), out1, false));
 				} else {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), out, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), reportBytes1));
+							hasftagPostList.get(i).getReplies().size(), reportBytes1, false));
 				}
 				// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 			} else {
@@ -1343,12 +1342,12 @@ public class PostController {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), out1));
+							hasftagPostList.get(i).getReplies().size(), out1, false));
 				} else {
 					res.add(new FeedData(hasftagPostList.get(i).getPid(), hasftagPostList.get(i).getUser().getEmail(),
 							hasftagPostList.get(i).getCreateDate(), hasftagPostList.get(i).getTitle(),
 							hasftagPostList.get(i).getUser().getNickname(), null, tag, count, likeFlag,
-							hasftagPostList.get(i).getReplies().size(), reportBytes1));
+							hasftagPostList.get(i).getReplies().size(), reportBytes1, false));
 				}
 				// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 			}
