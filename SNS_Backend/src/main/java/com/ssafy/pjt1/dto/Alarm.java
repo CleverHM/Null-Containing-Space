@@ -27,6 +27,7 @@ public class Alarm {
 	
 	private String content;
 	private String toNickname;
+	private int pid;
 	
 	// 1: 팀, 2: 댓글, 3: 팔로우
 	private int flag;
@@ -44,10 +45,25 @@ public class Alarm {
 		
 	}
 	
+	public Alarm( String content, String toNickname, int flag, int pid) {
+		this.content = content;
+		this.toNickname = toNickname;
+		this.flag = flag;
+		this.pid = pid;
+	}
+	
 	public Alarm( String content, String toNickname, int flag) {
 		this.content = content;
 		this.toNickname = toNickname;
 		this.flag = flag;
+	}
+	
+	public int getPid() {
+		return pid;
+	}
+
+	public void setPid(int pid) {
+		this.pid = pid;
 	}
 
 	public int getFlag() {
