@@ -75,12 +75,52 @@
 
               </div>
               <div v-if="currentTab === 'Ability'" >
-                <div class="ability-header">
-                    <div class="ability-kind">종류</div>
-                    <div class="ability-level">능력</div>
-                  
+                <!-- Backend -->
+                <div class="ability-detail">
+                  <div class="ability-header">
+                      <div class="ability-kind">BackEnd</div>
+                      <div class="ability-level"><b-icon-caret-down /></div>
+                  </div> 
+                  <profileAbility :abilityname="abilities.backend[n-1]" :ability="User.ability[n-1]" :id="n-1" :key="n-1" v-for="n in 4"></profileAbility>
                 </div>
-                <profileAbility :abilityname="abilities[n]" :ability="User.ability[n]" :id="n" :key="n" v-for="n in 15"></profileAbility>
+      
+                <!-- FrontEnd -->
+                <div class="ability-detail">
+                  <div class="ability-header">
+                      <div class="ability-kind">FrontEnd</div>
+                      <div class="ability-level"><b-icon-caret-down /></div>                  
+                  </div> 
+                  <profileAbility :abilityname="abilities.frontend[n-1]" :ability="User.ability[3+n]" :id="n+3" :key="n+3" v-for="n in 3"></profileAbility>
+                </div>
+
+                
+                <!-- DataBase -->
+                <div class="ability-detail">
+                  <div class="ability-header">
+                      <div class="ability-kind">DataBase</div>
+                      <div class="ability-level"><b-icon-caret-down /></div>
+                  </div> 
+                  <profileAbility :abilityname="abilities.DataBase[n-1]" :ability="User.ability[6+n]" :id="n+6" :key="n+6" v-for="n in 2"></profileAbility>
+                </div>
+
+                <!-- FrameWork -->
+                <div class="ability-detail">
+                  <div class="ability-header">
+                      <div class="ability-kind">FrameWork</div>
+                      <div class="ability-level"><b-icon-caret-down /></div>  
+                  </div> 
+                  <profileAbility :abilityname="abilities.framework[n-1]" :ability="User.ability[8+n]" :id="n+8" :key="n+8" v-for="n in 5"></profileAbility>
+                </div>
+
+                <!-- Algorithm -->
+                <div class="ability-detail">
+                  <div class="ability-header">
+                      <div class="ability-kind">Algorithm</div>
+                      <div class="ability-level"><b-icon-caret-down /></div>  
+                  </div> 
+                  <profileAbility :abilityname="abilities.Algorithm[n-1]" :ability="User.ability[13+n]" :id="n+13" :key="n+13" v-for="n in 1"></profileAbility>
+                </div>
+
                 
               </div>
             </div>
@@ -129,7 +169,8 @@ export default {
             isFollow: false,
             isCurrent: true,
             currentTab: 'Introduce',
-            abilities: [
+            abilities: {
+              backend : [
                 { name: 'cpp',
                     id: 0},
                 { name: 'Java',
@@ -138,16 +179,25 @@ export default {
                     id: 2},
                 { name: 'php',
                     id: 3},
+
+              ],
+              frontend: [
                 { name: 'html',
                     id: 4},
                 { name: 'css',
                     id: 5},
                 { name: 'JavaScript',
                     id: 6},
+
+              ],
+              DataBase: [
                 { name: 'SQL',
                     id: 7},
                 { name: 'noSQL',
                     id: 8},
+
+              ],
+              framework: [
                 { name: 'Spring',
                     id: 9},
                 { name: 'Django',
@@ -158,9 +208,14 @@ export default {
                     id: 12},
                 { name: 'React',
                     id: 13},
+
+              ],
+              Algorithm: [
                 { name: 'Algorithm',
                     id: 14},
-            ],
+
+              ]
+            },
             lenAbility: 15,
             isLoading: true,
         }
@@ -369,14 +424,27 @@ export default {
 }
 
 /* ability tab */
+.ability-detail{
+  margin-bottom: 20px;
+}
 .ability-header{
   border-bottom: 1px solid #464545;
 }
-.ability-kind, .ability-level{
+.ability-kind{
   padding-bottom: 10px;
+  font-size: 21px;
   font-weight: bold;
   display: inline-block;
   width: 50%;
-  text-align: center;
+  /* padding-left: 20px; */
+  
+}
+.ability-level{
+  padding-bottom: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+  display: inline-block;
+  width: 50%;
+  text-align: right;
 }
 </style>
