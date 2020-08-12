@@ -1188,7 +1188,8 @@ public class PostController {
 
 		Set<FeedData> unique = new LinkedHashSet<>(res1);
 		List<FeedData> res2 = new LinkedList<>(unique);
-		
+		System.out.println(unique.size());
+		System.out.println(res2.size());
 		// page 만큼 자르기
 		List<FeedData> pageRes = new LinkedList<FeedData>();
 		int cnt = 3;
@@ -1204,8 +1205,8 @@ public class PostController {
 			}
 		}
 
-		Set<FeedData> unique1 = new LinkedHashSet<>(res2);
-		
+		Set<FeedData> unique1 = new LinkedHashSet<>(pageRes);
+		System.out.println(unique1.size());
 		return unique1;
 	}
 

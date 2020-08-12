@@ -38,7 +38,7 @@
         <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
         <span>{{ article.likeCount }}</span>
       </div>
-      <div>
+      <div @click="goPage">
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
         <span>{{ article.replyCount }}</span>
       </div>
@@ -163,6 +163,10 @@ export default {
     goUserProfile() {
       this.$router.push({ name: 'profile', params: { nickname: this.article.userName }});
     },
+
+    goPage() {
+      this.$router.push({ name: 'FeedDetail', params: { postId: this.article.pid }})
+    }
 
   },
 
