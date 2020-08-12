@@ -1204,7 +1204,7 @@ public class PostController {
 			}
 		}
 
-		Set<FeedData> unique1 = new LinkedHashSet<>(res2);
+		Set<FeedData> unique1 = new LinkedHashSet<>(pageRes);
 		
 		return unique1;
 	}
