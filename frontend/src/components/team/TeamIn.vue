@@ -16,7 +16,7 @@
       </div>
       <div class="tab-content">
         <!-- 팀 정보 탭 -->
-        <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
+        <div v-if="currentTab == 0" style="margin-top:20px;">
 
           <!-- 시작일 -->
           <div class="displaytags">

@@ -45,15 +45,23 @@ export default {
     overflow: hidden;
 }
 
-.userImg > img {
-    width: 100%
+.userImg img {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .userName {
+    position: absolute;
+    bottom: 5px;
     background-color: rgba(255, 255, 255, 0.5);
     width: 100%;
     color: #464545;
     font-size: 14px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: clip;
 }
 
 </style>

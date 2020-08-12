@@ -322,8 +322,11 @@ export default {
   overflow: hidden;
 }
 
-.user-img > img {
+.user-img img {
+  margin: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .page-title {
