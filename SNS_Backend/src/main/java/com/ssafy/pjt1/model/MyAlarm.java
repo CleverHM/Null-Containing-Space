@@ -8,13 +8,15 @@ public class MyAlarm {
 	private Date createDate;
 	private String content;
 	private int teamid;
+	private int pid;
 	
-	public MyAlarm(int aid, String who, Date createDate, String content, int teamid) {
+	public MyAlarm(int aid, String who, Date createDate, String content, int teamid, int pid) {
 		this.aid = aid;
 		this.who = who;
 		this.createDate = createDate;
 		this.content = content;
 		this.teamid = teamid;
+		this.pid = pid;
 	}
 	
 	public int getTeamid() {

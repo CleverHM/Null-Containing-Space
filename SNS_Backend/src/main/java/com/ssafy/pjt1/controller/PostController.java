@@ -666,7 +666,7 @@ public class PostController {
 	// 무한 스크롤
 	@PostMapping("/post/getPost")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> getPost(@Valid @RequestBody String email, @Valid @RequestParam int pagenum)
+	public List<FeedData> getPost(@Valid @RequestParam String email, int pagenum)
 			throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
@@ -819,7 +819,7 @@ public class PostController {
 
 		// page 만큼 자르기
 		List<FeedData> pageRes = new LinkedList<FeedData>();
-		int cnt = 2;
+		int cnt = 3;
 		int min = pagenum * cnt - cnt;
 		int max = pagenum * cnt;
 
