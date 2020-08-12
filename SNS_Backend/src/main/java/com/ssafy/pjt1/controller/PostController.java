@@ -1,5 +1,7 @@
 package com.ssafy.pjt1.controller;
 
+import java.awt.Image;
+import java.awt.print.Pageable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,13 +22,16 @@ import javax.validation.Valid;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +58,7 @@ import com.ssafy.pjt1.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.models.Model;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
 		@ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
@@ -657,9 +663,11 @@ public class PostController {
 	}
 
 	// 해당이메일 게시물 보내주기
+	// 무한 스크롤
 	@PostMapping("/post/getPost")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> getPost(@Valid @RequestBody String email) throws FileNotFoundException, IOException {
+	public List<FeedData> getPost(@Valid @RequestBody String email, @Valid @RequestParam int pagenum)
+			throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 
@@ -799,6 +807,7 @@ public class PostController {
 			}
 
 		}
+
 		Collections.sort(res, new Comparator<FeedData>() {
 
 			@Override
@@ -807,7 +816,23 @@ public class PostController {
 				return o2.getPid() - o1.getPid();
 			}
 		});
-		return res;
+
+		// page 만큼 자르기
+		List<FeedData> pageRes = new LinkedList<FeedData>();
+		int cnt = 2;
+		int min = pagenum * cnt - cnt;
+		int max = pagenum * cnt;
+
+		if (min < res.size()) {
+			for (int i = min; i < max; i++) {
+				if (i == res.size()) {
+					break;
+				}
+				pageRes.add(res.get(i));
+			}
+		}
+
+		return pageRes;
 	}
 
 //
@@ -1337,8 +1362,7 @@ public class PostController {
 		result.status = flag;
 		result.data = "success";
 		result.hashfeeddata = unique;
-		
+
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-
 }
