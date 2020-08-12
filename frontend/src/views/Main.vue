@@ -63,6 +63,7 @@ export default {
 
         let formData = new FormData;
         formData.append("nickname", storage.getItem("NickName"));
+        formData.append("pagenum", 1);
 
         http
         .post("/team/exist", formData)
