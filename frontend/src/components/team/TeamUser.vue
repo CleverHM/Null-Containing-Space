@@ -103,12 +103,18 @@ export default {
 
 
 .texttags {
-  margin-bottom: 7px;
-  margin-left: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #464545;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    width: 90%;
+    text-align: left;
+    margin-bottom: 7px;
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #464545;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    white-space: nowrap;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .btn-area {

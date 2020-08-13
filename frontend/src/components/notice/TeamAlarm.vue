@@ -171,7 +171,7 @@ export default {
     
 }
 .button-open-check:checked ~ .scrap{
-    height: 110px;
+    height: 115px;
 }
 
 
@@ -197,6 +197,7 @@ hr {
 
 .buttonArea {
     margin-top: 20px;
+    padding-bottom: 5px;
 }
 
 .buttonArea > button {

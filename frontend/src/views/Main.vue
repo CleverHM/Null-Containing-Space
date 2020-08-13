@@ -59,6 +59,10 @@ export default {
   },
   
   created() {
+      
+        storage.removeItem("members1");
+        storage.removeItem("members2");
+
         setTimeout(this.delayfinish, 200);
 
         let formData = new FormData;

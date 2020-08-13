@@ -2,7 +2,7 @@
   <div id="IndexFeed">
     <Navbar></Navbar>
     <subNav></subNav>
-    <div>
+    <div class="feed-area">
       <div v-if="status" class="recommendArea">
         <div class="text-tags my-2">
           팔로우가 없습니다. 아래 유저는 어떤가요?
@@ -72,6 +72,11 @@ export default {
 
   created() {
     // this.bringList();
+    storage.removeItem("SearchData");
+    storage.removeItem("peopleResult");
+    storage.removeItem("tagResult");
+    storage.removeItem("istagTab");
+    storage.removeItem("ispeopleTab");
   },
 
   methods: {
@@ -242,7 +247,7 @@ export default {
 }
 
 .recommendArea {
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px 10px 0px;
   padding: 5px 0px 15px 0px;
   border-bottom: 1px solid #464545;
 }
@@ -251,6 +256,10 @@ export default {
   margin-left: 10px;
   font-size: 13px;
   color: #464545;
+}
+
+.feed-area {
+  margin: 0px 10px 0px 10px;
 }
 
 </style>
