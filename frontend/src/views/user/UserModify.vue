@@ -192,13 +192,17 @@ export default {
             }
         },
         checkGitURL() {
-            if (this.User.GitURL){
+            console.log(this.User.GitURL)
+            if (this.User.GitURL && this.User.GitURL != null){
                 console.log(('https://' + this.User.GitURL).match(domainreg))
                 if (('https://' + this.User.GitURL).match(domainreg) != null){
                     this.error.GitURL = ""
                 } else {
                     this.error.GitURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
                     }
+            } else {
+                this.error.GitURL = ""
+                this.User.GitURL = ""
             }
         },
         checkblogURL() {
@@ -209,7 +213,10 @@ export default {
                     } else {
                     this.error.blogURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
                 }
-            }
+            } else{
+                this.err.blogURL=""
+                this.User.blogURL = ""
+            } 
 
         },
         imageUpload() {
