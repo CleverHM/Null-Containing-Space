@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt1.dao.ChatDao;
 import com.ssafy.pjt1.dto.Chat;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
@@ -50,6 +51,9 @@ public class TeamController {
 
     @Autowired
     private TeamService teamservice;
+    
+    @Autowired
+    private ChatDao chatdao;
     
 //    @Autowired
 //    private ChatService chatservice;
@@ -148,7 +152,9 @@ public class TeamController {
     @PostMapping("/team/exit")
     @ApiOperation(value = "프로젝트 종료", notes = "프로젝트 종료 기능을 구현")
     public void teamexit(@Valid @RequestParam String nickname) {
-        Optional<User> optionalUser = userservice.findtwo(nickname);
+    	System.out.println("닉네임: " + nickname);
+       
+    	Optional<User> optionalUser = userservice.findtwo(nickname);
         Optional<Team> optionalTeam = teamservice.findone(1);
 
         Team team = optionalTeam.get();
@@ -159,6 +165,9 @@ public class TeamController {
         
         List<Chat> chats = user.getTeam().getChat();
         
+        System.out.println("팀아이디 : " + user.getTeam().getTeamid());
+        chatdao.deleteChat(user.getTeam().getTeamid());
+        
         // 팀: 유저 끊어주기
         for(User u : members) {
             u.setTeam(team);
@@ -168,11 +177,7 @@ public class TeamController {
             u.setMatchok(false);
             userservice.signUp(user);
         }
-        
-        // 팀 : 채팅 관계 끊어주기.
-        for(Chat c : chats) {
-        	chats.remove(c);
-        }
+
     }
     
     // nick name 으로 프로젝트 페이지판별 하기

@@ -23,6 +23,7 @@ public class Chat{
 	
 	private String userName;
 	private String content;
+	private int fakeid;
 	
 	//채팅 : 팀(N : 1관계)
 	@JsonIgnore
@@ -31,9 +32,6 @@ public class Chat{
 	private Team team;
 	
 	
-	private int fakeid;
-	
-
 	public Chat() {
 		
 	}
