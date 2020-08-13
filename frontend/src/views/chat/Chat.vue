@@ -1,5 +1,5 @@
 <template>
-  <div id="app" >
+  <div id="Chat">
    <Navbar></Navbar>
    <!-- <subNav/> -->
 
@@ -49,6 +49,7 @@ import http from '@/util/http-common.js'
 
 const storage = window.sessionStorage;
 
+
 export default {
   name: 'Chat',
 
@@ -73,11 +74,15 @@ export default {
   },
   created() {
     // Chat.vue가 생성되면 소켓 연결을 시도합니다.
-    this.initialize(),
+    this.initialize()
     this.connect()
   },
   mounted() {
-    this.scrolltoBottom()
+    var element = document.querySelector("#Chat")
+    element.scrollTop = element.scrollHeight
+    console.log(element.scrollTop)
+    console.log("scrollheight", element.scrollHeight)
+    
   },
   methods: {
     initialize(){
@@ -136,21 +141,25 @@ export default {
       );        
     },
     scrolltoBottom() {
-      var container = this.$el.querySelector("#chat-wrap");
-      var height = container.clientHeight;
-      container.scrollTop = height;
-
-      console.log("scrollheight", height)
-      console.log("scrolltop", container.scrollTop)
+    var element = document.querySelector("#Chat")
+    element.scrollTop = element.scrollHeight
+    console.log(element.scrollTop)
+    console.log("scrollheight", element.scrollHeight)
     },
   }
 }
 </script>
 
 <style scoped>
-#app {
+#Chat{
   padding-top: 10px;
+  height: 100vh;
+  width: 110vw;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
+
 
 /* chat 입력창 */
 .chat-input{
