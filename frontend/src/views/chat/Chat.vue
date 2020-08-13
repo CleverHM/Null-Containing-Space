@@ -1,26 +1,37 @@
 <template>
-  <div id="app">
+  <div id="app" >
    <Navbar></Navbar>
-   <subNav/>
+   <!-- <subNav/> -->
 
     <!-- 유저이름: 
     <input
       v-model="userName"
       type="text"
     > -->
-    <div
+    <!-- <div
       v-for="(item, idx) in recvList"
       :key="idx"
     >
       <p>{{ item.userName }}: {{ item.content }} </p>
+    </div> -->
+    <div v-for="(item, idx) in recvList" :key="idx">
+      <chatMe :content="item.content" v-if="item.userName === serverUser"/>
+      <chatOther :nickname="item.userName" :content="item.content" v-if="item.userName != serverUser"/>
+
     </div>
 
 
-    내용: <input
-      v-model="message"
-      type="text"
-      @keyup="sendMessage"
-    >
+    <div class="chat-input">
+      <!-- <label for="name">내용: </label> -->
+      <input
+        v-model="message"
+        name="message"
+        type="text"
+        @keyup.enter="sendMessage"
+        autocomplete="off"
+      >
+      <button @click="sendMessage">입력</button>
+    </div>
 
   </div>
 </template>
@@ -29,7 +40,8 @@
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import Navbar from '../../components/common/Navigation.vue'
-import subNav from '../../components/common/subnav.vue'
+import chatMe from '@/components/chat/chatMe.vue'
+import chatOther from '@/components/chat/chatOther.vue'
 import http from '@/util/http-common.js'
 
 const storage = window.sessionStorage;
@@ -39,7 +51,8 @@ export default {
 
    components: {
     Navbar,
-    subNav,
+    chatMe,
+    chatOther,
   },
   
   props: [
@@ -51,7 +64,8 @@ export default {
     return {
       // userName: "",
       message: "",
-      recvList: []
+      recvList: [],
+      serverUser: storage.NickName,
     }
   },
   created() {
@@ -66,8 +80,8 @@ export default {
       });
     },
 
-    sendMessage (e) {
-      if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
+    sendMessage () {
+      if(this.userName !== '' && this.message !== ''){
         this.send()
         this.message = ''
       }
@@ -117,3 +131,29 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#app {
+  padding-top: 10px;
+}
+/* chat 입력창 */
+.chat-input{
+  width: 100%;
+  bottom: 0px;
+  position: fixed;
+  display: flex;
+  background-color: #EDECEA;
+}
+.chat-input input{
+  border: 0;
+  flex: 1;
+}
+.chat-input button{
+  position: absolute;
+  right: 0;
+  border: 0;
+  outline: 0;
+  width: 60px;
+  height: 50px;
+}
+</style>
