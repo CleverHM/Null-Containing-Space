@@ -3,23 +3,25 @@
    <Navbar></Navbar>
    <subNav/>
 
-    유저이름: 
+    <!-- 유저이름: 
     <input
       v-model="userName"
       type="text"
+    > -->
+    <div
+      v-for="(item, idx) in recvList"
+      :key="idx"
     >
+      <p>{{ item.userName }}: {{ item.content }} </p>
+    </div>
+
+
     내용: <input
       v-model="message"
       type="text"
       @keyup="sendMessage"
     >
-    <div
-      v-for="(item, idx) in recvList"
-      :key="idx"
-    >
-      <h3>유저이름: {{ item.userName }}</h3>
-      <h3>내용: {{ item.content }}</h3>
-    </div>
+
   </div>
 </template>
 
@@ -29,6 +31,8 @@ import SockJS from 'sockjs-client'
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
 import http from '@/util/http-common.js'
+
+const storage = window.sessionStorage;
 
 export default {
   name: 'Chat',
@@ -45,7 +49,7 @@ export default {
 
   data() {
     return {
-      userName: "",
+      // userName: "",
       message: "",
       recvList: []
     }
@@ -57,22 +61,9 @@ export default {
   },
   methods: {
     initialize(){
-      // var InputData = new FormData()
-      // InputData.append("teamId", this.teamId
-
       http.get(`/chat/initialize/${this.teamId}`).then(({data}) => {
-        
-            console.log(777777777);
-            console.log(data);
             this.recvList = data;
-
-            // console.log('초기 대화 내용입니다.', res.body);
-
-            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-            // console.log(JSON.parse(res.body));
-            // this.recvList.push(JSON.parse(data))
       });
-        
     },
 
     sendMessage (e) {
@@ -86,7 +77,7 @@ export default {
       console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         const msg = { 
-          userName: this.userName,
+          userName: storage.NickName,
           content: this.message,
           fakeid: this.teamId,
         };
