@@ -5,14 +5,18 @@
             <img v-else src="@/assets/images/default_image.png">
         </div>
         <div class="follow-nickname" @click="goProfile">{{ User.nickname }}</div>
-        <button v-if="User.followFlag" class="unfollow-button" @click="unfollow">팔로우 취소</button>
-        <button v-else class="follow-button" @click="follow">팔로우</button>
+        <div v-if="!IsMe">
+            <button v-if="User.followFlag" class="unfollow-button" @click="unfollow">팔로우 취소</button>
+            <button v-else class="follow-button" @click="follow">팔로우</button>
+        </div>
         <hr />
     </div>
 </template>
 
 <script>
 import http from '@/util/http-common.js'
+
+const storage = window.sessionStorage
 
 export default {
     name: 'followItem',
@@ -21,6 +25,13 @@ export default {
     ],
     created() {
         console.log(this.User)
+    },
+    computed: {
+        IsMe() {
+            if (storage.NickName === this.User.nickname) return true
+            else return false
+            
+        },
     },
     methods: {
         goProfile() {
@@ -33,6 +44,9 @@ export default {
             InputData.append("From", window.sessionStorage.NickName)
             InputData.append("To", this.User.nickname)
             http.post("follow/user", InputData)
+            .then(() => {
+                this.alarm()
+            })
         },
         unfollow() {
             this.User.followFlag = 0
@@ -41,6 +55,13 @@ export default {
             InputData.append("To", this.User.nickname)
             http.post("follow/user", InputData)
 
+        },
+        alarm(){
+            // 팔로우 알림 보내기
+            var AlarmData = new FormData()
+            AlarmData.append("mynickname", storage.NickName)
+            AlarmData.append("tonickname", this.User.nickname)
+            http.post("/alarm/followAlarm", AlarmData)
         },
 
     }

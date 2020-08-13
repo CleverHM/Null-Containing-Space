@@ -1,5 +1,5 @@
 <template>
-    <div id="TagBadge" class="mx-1" @click="goTagResult">
+    <div v-if="tag" id="TagBadge" class="mx-1" @click="goTagResult">
         <button><span>{{ tag }}</span></button>
     </div>
 </template>
