@@ -434,7 +434,7 @@ export default {
 }
 .ability-kind{
   padding-bottom: 10px;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: bold;
   display: inline-block;
   width: 50%;

@@ -8,6 +8,7 @@ import step4 from './views/user/Join/step4.vue'
 import step5 from './views/user/Join/step5.vue'
 
 import findPassword from './views/user/FindPassword.vue'
+import modifyPassword from './views/user/modifyPassword.vue'
 import profile from './views/user/profile.vue'
 import followList from './views/user/followinglist.vue'
 import myPost from './views/user/myPost.vue'
@@ -89,6 +90,11 @@ export default [
         path : '/find/password',
         name : 'findPassword',
         component : findPassword
+    },
+    {
+        path : '/modify/password',
+        name : 'modifyPassword',
+        component : modifyPassword
     },
     {
         path : '/getAbility',
