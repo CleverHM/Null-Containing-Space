@@ -13,7 +13,7 @@
         ref="InfiniteLoading"
         spinner="waveDots">
             <div slot="no-results" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
-                <b-icon-envelope-open scale="1.5" font-scale="1.5" class="mb-4"/>
+                <b-icon-file-earmark-break scale="1.5" font-scale="1.5" class="mb-4"/>
                 좋아요한 글이 없습니다.
             </div>
             <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 좋아요한 글이 존재하지 않습니다.</div>
@@ -94,5 +94,12 @@ export default {
 }
 .myPostView{
     padding: 5px;
+}
+.null-area {
+  width: 100%;
+  height: 500px;
+  font-size: 15px;
+  color: #464545;
+  font-weight: bold;
 }
 </style>
