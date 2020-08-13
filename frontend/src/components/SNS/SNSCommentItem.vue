@@ -127,8 +127,11 @@ export default {
   overflow: hidden;
 }
 
-.comment-img > img {
+.comment-img img {
+  margin: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .comment-name {

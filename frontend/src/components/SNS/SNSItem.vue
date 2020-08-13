@@ -38,7 +38,7 @@
         <b-icon icon="heart-fill" font-scale="1.2" :color="likeChange" @click="likeButton"></b-icon>
         <span>{{ article.likeCount }}</span>
       </div>
-      <div>
+      <div @click="goPage">
         <b-icon icon="chat-square-fill" font-scale="1.2" class="style-icon"></b-icon>
         <span>{{ article.replyCount }}</span>
       </div>
@@ -71,7 +71,6 @@ export default {
 
   created() {
     this.likeCheck();
-    console.log(this.article)
 
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.article.date)
@@ -122,7 +121,6 @@ export default {
         this.article.likeFlag = res.data.flag
       })
       .catch((err) => {
-        console.log('좋아요')
         console.log(err)
       })
     },
@@ -166,6 +164,10 @@ export default {
       this.$router.push({ name: 'profile', params: { nickname: this.article.userName }});
     },
 
+    goPage() {
+      this.$router.push({ name: 'FeedDetail', params: { postId: this.article.pid }})
+    }
+
   },
 
 }
@@ -190,8 +192,11 @@ export default {
   overflow: hidden;
 }
 
-.user-img > img {
+.user-img img {
+  margin: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .user-name {

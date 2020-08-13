@@ -1,12 +1,13 @@
 <template>
     <div>
+        <input type="radio" class="button-open-check" name="temp">
         <div class="scrap" @click="buttonOn">
             <b-icon-people-fill class="scrap-icon"></b-icon-people-fill>
             <div class="notice">
                 {{ teamData.content }} <br/>
             <small class="noticeday ml-1">{{ diffTime }}</small>
             </div>
-            <div v-if="buttonOpen" class="buttonArea d-flex justify-content-around">
+            <div class="button-list buttonArea d-flex justify-content-around">
                 <button v-if="!ifLeader" style="background-color: #ACCCC4" @click="goTeamInfo">팀 정보 보기</button>
                 <button v-if="ifLeader" style="background-color: #ACCCC4" @click="goUserInfo">유저 정보 보기</button>
                 <button style="background-color: #E2DFD8" @click="goReject">거절</button>
@@ -98,7 +99,7 @@ export default {
             http
             .post('/alarm/delete', formData)
             .then((res) => {
-                this.$router.go({ name: 'Notice' })
+                this.$router.go({ name: 'Notice', params: { tapId: 1 } })
             })
             .catch((err) => {
                 console.log(err)
@@ -154,10 +155,25 @@ export default {
 </script>
 
 <style scoped>
-.scrap {
+.button-open-check{
+    position: absolute;
+    height: 70px;
+    width: 100%;
+    z-index: 9999;
+    opacity: 0;
+}
+.scrap{
     padding: 15px 0 15px 0;
+    height: 70px;
+    overflow: hidden;
+    transition: height 0.3s;
+
     
 }
+.button-open-check:checked ~ .scrap{
+    height: 110px;
+}
+
 
 .notice {
     font-size: 14px;

@@ -21,7 +21,7 @@
           </button>
         </div>
         <div class="tab-content">
-          <div v-if="currentTab == 0" style="margin-left:10px; margin-top:20px;">
+          <div v-if="currentTab == 0" style="margin-top:20px;">
 
             <!-- 시작일 -->
             <div class="displaytags">

@@ -56,7 +56,7 @@ export default {
 }
 
 .userImg {
-  display: block;
+  display: relative;
   width: 100px;
   height: 100px;
   border-radius: 100%;
@@ -64,8 +64,11 @@ export default {
   overflow: hidden;
 }
 
-.userImg > img {
-  width: 100px;
+.userImg img {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 
@@ -75,7 +78,7 @@ export default {
   font-size: 15px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
-  bottom: 7px;
+  bottom: 5px;
   width: 100px;
   background-color: rgba( 255, 255, 255, 0.5 );
   white-space: nowrap; 

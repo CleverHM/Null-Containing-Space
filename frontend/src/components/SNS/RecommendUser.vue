@@ -1,19 +1,24 @@
 <template>
-    <div id="MatchUserSmall">
-        <div class="userImg">
-            <img v-if="imgExist" :src="'data:image/png;base64, ' + userData.file" alt="user-image">
-            <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
-            <div class="userName d-flex justify-content-center">
-                {{ userData.nickname }}
+    <div id="RecommendUser">
+        <router-link :to="{ name: 'profile', params: { nickname: userData.nickname }}">
+            <div class="userImg">
+                <img v-if="imgExist" :src="'data:image/png;base64, ' + userData.file" alt="user-image">
+                <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
+                <div class="userName d-flex justify-content-center">
+                    {{ userData.nickname }}
+                </div>
             </div>
-        </div>
+        </router-link>
     </div>
 </template>
 
 <script>
 export default {
-    name: "MatchUserSmall",
-    props: ["userData"],
+    name: "RecommendUser",
+    props: [
+        "userData",
+        "uid",
+    ],
     
     data() {
         return {
@@ -33,13 +38,13 @@ export default {
 </script>
 
 <style scoped>
-#MatchUserSmall {
-    display: inline-block;
+#RecommendUser {
+    display: relative;
 }
 .userImg {
     position: relative;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background-color: grey;
     border-radius: 100%;
     overflow: hidden;
@@ -54,14 +59,16 @@ export default {
 
 .userName {
     position: absolute;
-    bottom: 5px;
+    bottom: 1px;
     background-color: rgba(255, 255, 255, 0.5);
     width: 100%;
     color: #464545;
-    font-size: 14px;
+    font-size: 12px;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: clip;
+    font-weight: bold;
 }
+
 
 </style>

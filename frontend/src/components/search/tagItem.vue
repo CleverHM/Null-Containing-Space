@@ -21,9 +21,6 @@ export default {
     components: {
         // myPostItem,
     },
-    created() {
-        console.log(this.tag)
-    },
     methods: {  
         goTagResult() {
             this.$router.push({name: 'TagResult', params: { tag: this.tag}})

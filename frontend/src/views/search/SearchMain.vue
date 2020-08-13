@@ -57,6 +57,8 @@ import peopleItem from '@/components/search/peopleItem.vue'
 import tagItem from '@/components/search/tagItem.vue'
 import http from '@/util/http-common.js'
 
+const storage = window.sessionStorage
+
 export default {
   name: 'SearchMain',
   components: {
@@ -66,8 +68,29 @@ export default {
     tagItem,
   },
   created() {
-    console.log(document.getElementById('SearchBar'))
-    this.Loading()
+    var data = storage.SearchData
+    if (!data) {
+      this.SearchData = ""
+    } else {
+      this.SearchData = data
+      // 탭 활성화
+      this.isEnter = true;
+      // 탭 내용 활성화
+      console.log(storage.istagTab)
+      if (storage.ispeopleTab) {
+        this.isCurrent = true;
+        this.Results = JSON.parse(storage.peopleResult)
+      }
+      else if (storage.istagTab) {
+        this.isCurrent = false;
+        console.log(storage.tagResult)
+        console.log(JSON.parse(storage.tagResult))
+        this.Results = JSON.parse(storage.tagResult)
+      }
+
+      
+    }
+
   },
   data() {
     return {
@@ -100,38 +123,67 @@ export default {
           else {
             this.isCurrent = false
             if(this.SearchData) this.searchTag()
+            this.Loading()
           }        
     },
     search() {
       this.isLoading = true;
       this.isEnter = true;
     if(this.SearchData) {
-      if (this.isCurrent) this.searchPeople()
-      else this.searchTag()
+      // 검색할땐 기존 스토리지에 있는 결과는 삭제
+      storage.SearchData = this.SearchData
+      storage.removeItem('peopleResult')
+      storage.removeItem('tagResult')
+    
+      this.isCurrent = true;
+      this.searchPeople()
       this.Loading()
     }
       
 
     },
     searchPeople() {
-      var InputData = new FormData()
-      InputData.append("search", this.SearchData)
-      InputData.append("mynickname", window.sessionStorage.NickName)
-      http.post("/search/user", InputData)
-      .then(({data}) => {
-        this.Results = data;
-      })
+      // 스토리지에서 사람 탭의 활성화 정보 담기
+      storage.ispeopleTab = true;
+      storage.removeItem("istagTab")
+      // 스토리지에 사람탭의 결과가 있으면
+      if (storage.peopleResult) {
+        this.Results = JSON.parse(storage.peopleResult)
+      }
+      // 스토리지에 사람탭의 결과가 없으면 axios로 불러오기
+      else {
+        var InputData = new FormData()
+        InputData.append("search", this.SearchData)
+        InputData.append("mynickname", window.sessionStorage.NickName)
+        http.post("/search/user", InputData)
+        .then(({data}) => {
+          this.Results = data;
+          storage.peopleResult = JSON.stringify(data)        
+        })
+      }
+      
     },
     searchTag() {
-      var InputData = new FormData()
-      InputData.append("hashtag", this.SearchData)
-      http.post("/search/hashtag", InputData)
-      .then(({data}) => {
-        this.Results = data;
-      })
+      // 스토리지에서 tab정보 활성화, 사람탭정보 비활성화
+      storage.istagTab = true;
+      storage.removeItem("ispeopleTab")
+      // 스토리지에 태그결과가 있으면
+      if (storage.tagResult) this.Results = JSON.parse(storage.tagResult)
+      // 스토리지에 태그결과가 없으면
+      else {
+        var InputData = new FormData()
+        InputData.append("hashtag", this.SearchData)
+        http.post("/search/hashtag", InputData)
+        .then(({data}) => {
+          this.Results = data;
+          console.log(this.Results)
+          storage.tagResult = JSON.stringify(data)
+        })
+      }
 
     },
     Loading() {
+      this.isLoading = true;
         if (this.isLoading) {
             setTimeout(this.delayfinish, 200);
         }

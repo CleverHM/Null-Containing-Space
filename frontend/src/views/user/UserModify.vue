@@ -35,11 +35,11 @@
             <!-- 닉네임 -->
             <div class="input-form">
                 <label for="nickname">닉네임</label>
-                <input v-model="User.nickname" 
+                <input v-model="newnickname" 
                 id="nickname"
                 type="text"/>
                 <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
-                <div class="Success" v-if="error.nicknameSuccess"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
+                <div class="Success" v-if="error.nicknameSuccess && error.nicknameSuccess!='me'"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
 
                 <button @click="isDuplicate">중복체크</button>
             </div>
@@ -49,7 +49,9 @@
                 <label for="gitUrl">Git URL</label>
                 <input v-model="User.GitURL" 
                 id="gitUrl"
-                type="text"/>
+                type="text"
+                @keyup="checkGitURL" />
+                <div class="errorMsg" v-if="error.GitURL"><i class="fas fa-exclamation-triangle"></i>{{ error.GitURL }}</div>
             </div>
 
             <!-- blog 주소 -->
@@ -57,7 +59,9 @@
                 <label for="blogUrl">Blog URL</label>
                 <input v-model="User.blogURL" 
                 id="blogUrl"
-                type="text"/>
+                type="text"
+                @keyup="checkblogURL" />
+                <div class="errorMsg" v-if="error.blogURL"><i class="fas fa-exclamation-triangle"></i>{{ error.blogURL }}</div>
             </div>
             <!-- 자기소개 -->
             <div class="textarea-form">
@@ -132,28 +136,29 @@ export default {
                 GitURL: null,
                 Introduce: null,
                 profileURL: null,
-                password: "gpffhdn1234"
             },
             error: {
                 nickname: "",
                 nicknameSuccess: "",
+                GitURL: "",
+                blogURL: "",
             },
             previewImg: {
                 file: "",
                 preview: "",
             },
+            newnickname: "",
         }
     },
     methods: {
         getInfo() {
-            this.User.nickname = storage.NickName;
             var InputData = new FormData();
-            InputData.append("nickname", this.User.nickname)
-            InputData.append("pageNickname", this.User.nickname)
+            InputData.append("nickname", storage.NickName)
+            InputData.append("pageNickname", storage.NickName)
             http
             .post("/account/myPage", InputData)
             .then(({data}) => {
-                this.User.nickname = data.nickname
+                this.newnickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
                 if (data.blogaddr && data.blogaddr != null) this.User.blogURL = data.blogaddr
@@ -165,21 +170,47 @@ export default {
             console.log(err)
             })
         },
+        // 닉네임 중복 체크
         isDuplicate() {
-            http
-            .post("/account/nickNameDuplicate", this.User.nickname)
-            .then((data) => {
-                console.log(data.data)
-                if (data.data.status) {
-                this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
-                this.error.nickname=""
-
+            if (storage.NickName != this.newnickname){
+                http
+                .post("/account/nickNameDuplicate", this.newnickname)
+                .then((data) => {
+                    console.log(data.data)
+                    if (data.data.status) {
+                    this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
+                    this.error.nickname=""
+    
+                    }
+                })
+                .catch((err) => {
+                    this.error.nickname="사용할 수 없는 닉네임입니다."
+                    this.error.nicknameSuccess=""
+                })
+            } else {
+                this.error.nicknameSuccess= 'me'
+            }
+        },
+        checkGitURL() {
+            if (this.User.GitURL){
+                console.log(('https://' + this.User.GitURL).match(domainreg))
+                if (('https://' + this.User.GitURL).match(domainreg) != null){
+                    this.error.GitURL = ""
+                } else {
+                    this.error.GitURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
+                    }
+            }
+        },
+        checkblogURL() {
+            if (this.User.blogURL){
+                console.log(('https://' + this.User.blogURL).match(domainreg))
+                if (('https://' + this.User.blogURL).match(domainreg) != null){
+                    this.error.blogURL = ""
+                    } else {
+                    this.error.blogURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
                 }
-            })
-            .catch((err) => {
-                this.error.nickname="사용할 수 없는 닉네임입니다."
-                this.error.nicknameSuccess=""
-            })
+            }
+
         },
         imageUpload() {
             console.log(this.$refs.files.files);
@@ -193,49 +224,66 @@ export default {
         },
         Modify() {
             var InputData = new FormData()
-            if (this.User.blogURL === 'https://') this.User.blogURL = ""
-            if (this.User.GitURL === 'https://') this.User.GitURL = ""
-            if (this.previewImg.file) {
-                InputData.append("profile", this.previewImg.file)
-                InputData.append("email", this.User.email)
-                InputData.append("nickname", this.User.nickname)
-                InputData.append("blog", this.User.blogURL)
-                InputData.append("git", this.User.GitURL)
-                InputData.append("intro", this.User.Introduce)
-                console.log("inputdata", InputData)
-                 http
-                .post("/account/modifyTrue", InputData)
-                .then(({data}) => {
-                    console.log(data)
-                    storage.NickName = this.User.nickname
-                   this.$router.push({name:'profile', params: {nickname: this.User.nickname}})
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            // 수정전 다시 체크
+            this.checkGitURL()
+            this.checkblogURL()
+            this.isDuplicate()
+            console.log("nick", this.error.nickname,"nickSuccess", this.error.nicknameSuccess,"git", this.error.GitURL,"blog", this.error.blogURL)
+            if (this.error.nickname || !this.error.nicknameSuccess || this.error.GitURL || this.error.blogURL ){
+                alert("다시 입력해주세요.")
             } else {
-                InputData.append("email", this.User.email)
-                InputData.append("nickname", this.User.nickname)
-                InputData.append("blog", this.User.blogURL)
-                InputData.append("git", this.User.GitURL)
-                InputData.append("intro", this.User.Introduce)
-                console.log("inputdata", InputData)
+                if (this.previewImg.file) {
+                    this.WithNoProfile()
+                } else {
+                    this.WithProfile()
+                    
+                }            
+            }
+        },
+        WithNoProfile() {
+            var InputData = new FormData()
+            InputData.append("profile", this.previewImg.file)
+            InputData.append("email", this.User.email)
+            InputData.append("nickname", this.newnickname)
+            InputData.append("blog", this.User.blogURL)
+            InputData.append("git", this.User.GitURL)
+            InputData.append("intro", this.User.Introduce)
+            console.log("inputdata", InputData)
+            http
+            .post("/account/modifyTrue", InputData)
+            .then(({data}) => {
+                console.log(data)
+                storage.NickName = this.newnickname
+                this.$router.push({name:'profile', params: {nickname: this.newnickname}})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        },
+        WithProfile() {
+            var InputData = new FormData()
+            InputData.append("email", this.User.email)
+            InputData.append("nickname", this.newnickname)
+            InputData.append("blog", this.User.blogURL)
+            InputData.append("git", this.User.GitURL)
+            InputData.append("intro", this.User.Introduce)
+            console.log("inputdata", InputData)
 
-                http
-                .post("/account/modifyFalse", InputData)
-                .then(({data}) => {
-                    console.log(data)
-                    storage.NickName = this.User.nickname
-                   this.$router.push({name:'profile', params: {nickname: this.User.nickname}})
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-            }            
+            http
+            .post("/account/modifyFalse", InputData)
+            .then(({data}) => {
+                console.log(data)
+                storage.NickName = this.newnickname
+                this.$router.push({name:'profile', params: {nickname: this.newnickname}})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
         },
         deleteUser() {
             var InputData = new FormData()
-            InputData.append("nickname", this.User.nickname)
+            InputData.append("nickname", storage.NickName)
             http.put("/account/delete", InputData)
             .then((data) => {
                 console.log(data)
@@ -380,6 +428,10 @@ input[type="text"]:focus{
     height: 50px;
     border-radius: 3px;
 
+}
+.errorMsg{
+  font-size: 13px;
+  color: red;  
 }
 .Success{
   font-size: 13px;

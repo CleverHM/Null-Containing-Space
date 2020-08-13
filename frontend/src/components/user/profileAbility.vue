@@ -1,8 +1,11 @@
 <template>
     <div class="ability-body">
-        <div class="ability-kinds"> {{ abilityname.name }} </div>
+        <div class="ability-kinds"> 
+            {{ abilityname.name }} 
+
+        </div>
         <div class="ability-ability" v-if="ability === 1">
-            <div class="high">
+            <div class="high"> 
                 <i class="far fa-gem gem-icon-low" aria-hidden="true"/>
                 <i class="far fa-gem gem-icon-middle" aria-hidden="true"/>
                 <i class="far fa-gem gem-icon-high" aria-hidden="true"/>
@@ -35,6 +38,9 @@ export default {
         },
         ability: {
             type: Number,
+        },
+        tag: {
+            type: String,
         }
     },
 }   

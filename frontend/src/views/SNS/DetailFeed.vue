@@ -242,6 +242,19 @@ export default {
       .then((res) => {
         this.comment.content = "";
         this.dataReceive();
+
+        // 댓글 알람
+        if (this.article.userNickname == storage.getItem("NickName")){
+          let AlarmData = new FormData();
+          console.log(storage.getItem("User"), this.article.userNickname, this.article.pid)
+          AlarmData.append("mynickname", storage.getItem("NickName"))
+          AlarmData.append("tonickname", this.article.userNickname)
+          AlarmData.append("pid", this.article.pid)
+          
+          http.post("/alarm/replyAlarm", AlarmData)
+        }
+        
+
       })
       .catch((err) => {
         console.log(err);
@@ -322,8 +335,11 @@ export default {
   overflow: hidden;
 }
 
-.user-img > img {
+.user-img img {
+  margin: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .page-title {

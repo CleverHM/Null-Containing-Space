@@ -212,8 +212,6 @@ export default {
 .loadingimg{
     margin-top: 20.5%;
     width:100%;
-    filter: grayscale(80%) opacity(0.6); 
 }
-.loadingimg:hover { filter: none; }
 
 </style>
