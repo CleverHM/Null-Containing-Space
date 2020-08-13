@@ -26,7 +26,7 @@
 <script>
 import Navbar from '@/components/common/Navigation.vue'
 import subnav from '@/components/common/subnav.vue'
-import myPostItem from '@/components/user/myPostItem.vue'
+import myPostItem from '@/components/search/searchPostItem.vue'
 import http from '@/util/http-common.js'
 
 export default {

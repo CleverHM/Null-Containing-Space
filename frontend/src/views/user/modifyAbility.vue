@@ -83,9 +83,9 @@ export default {
       },
       saveAbility(name, level){
         for (var i=0; i<15; i++){
-          var ability = this.abilities[i-1]
+          var ability = this.abilities[i]
           if (ability === name){
-            this.modifyAbility[i-1] = level
+            this.modifyAbility[i] = level
           }
         }
       },
