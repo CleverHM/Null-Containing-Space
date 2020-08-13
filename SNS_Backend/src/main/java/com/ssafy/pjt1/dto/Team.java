@@ -67,7 +67,7 @@ public class Team {
 
 	// 팀 : 채팅  (1 : N 관계)
 	@JsonIgnore
-	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Chat> chats = new LinkedList<Chat>();
 	
 	@CreationTimestamp
