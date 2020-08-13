@@ -80,7 +80,8 @@
           <input v-model="FormUser.nickname" 
           id="nickname"
           placeholder="ex) 알골마스터"
-          type="text"/>
+          type="text"
+           maxlength="5"/>
           <div class="Warning" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
           <div class="Success" v-if="error.nicknameSuccess"><i class="fas fa-exclamation-triangle"></i>사용할 수 있는 닉네임입니다.</div>
           <button @click="isDuplicate">중복체크</button>
