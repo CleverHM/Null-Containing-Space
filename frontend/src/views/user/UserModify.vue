@@ -37,7 +37,8 @@
                 <label for="nickname">닉네임</label>
                 <input v-model="newnickname" 
                 id="nickname"
-                type="text"/>
+                type="text"
+                maxlength="5"/>
                 <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
                 <div class="Success" v-if="error.nicknameSuccess && error.nicknameSuccess!='me'"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
 
@@ -161,10 +162,10 @@ export default {
                 this.newnickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
-                if (data.blogaddr && data.blogaddr != null) this.User.blogURL = data.blogaddr
-                else this.User.blogURL = 'https://'
-                if (data.gitaddr && data.gitaddr != null) this.User.GitURL = data.gitaddr
-                else this.User.GitURL = 'https://'
+                if(!data.blogaddr || data.blogaddr === null) this.User.blogURL = ""
+                else this.User.blogURL = data.blogaddr
+                if(!data.gitaddr || data.gitaddr === null) this.User.GitURL = ""
+                else this.User.GitURL = data.gitaddr
             })
             .catch((err) => {
             console.log(err)
