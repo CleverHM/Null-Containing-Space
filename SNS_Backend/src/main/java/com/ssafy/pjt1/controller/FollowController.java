@@ -35,6 +35,7 @@ import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FollowList;
+import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.service.FollowService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -146,7 +147,7 @@ public class FollowController {
 
 	@PostMapping("/follow/user/list")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	public List<FollowList> userFollowList(@Valid @RequestParam String nickname, int flag) throws IOException {
+	public List<FollowList> userFollowList(@Valid @RequestParam String nickname, int flag, int pagenum) throws IOException {
 
 		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
 		// flag : 1 -> 팔로잉 / 2 -> 팔로워
@@ -214,8 +215,24 @@ public class FollowController {
 
 		}
 
-		return list;
+		// 알람 10개씩 보내기
+		// page 만큼 자르기
+		List<FollowList> listPage = new LinkedList<FollowList>();
 
+		int tcnt = 10;
+		int tmin = pagenum * tcnt - tcnt;
+		int tmax = pagenum * tcnt;
+
+		if (tmin < list.size()) {
+			for (int i = tmin; i < tmax; i++) {
+				if (i == list.size()) {
+					break;
+				}
+				listPage.add(list.get(i));
+			}
+		}
+
+		return listPage;
 	}
 
 	@PostMapping("/unfollow/tag")

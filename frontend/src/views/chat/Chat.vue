@@ -3,23 +3,25 @@
    <Navbar></Navbar>
    <subNav/>
 
-    유저이름: 
+    <!-- 유저이름: 
     <input
       v-model="userName"
       type="text"
+    > -->
+    <div
+      v-for="(item, idx) in recvList"
+      :key="idx"
     >
+      <p>{{ item.userName }}: {{ item.content }} </p>
+    </div>
+
+
     내용: <input
       v-model="message"
       type="text"
       @keyup="sendMessage"
     >
-    <div
-      v-for="(item, idx) in recvList"
-      :key="idx"
-    >
-      <h3>유저이름: {{ item.userName }}</h3>
-      <h3>내용: {{ item.content }}</h3>
-    </div>
+
   </div>
 </template>
 
@@ -28,6 +30,9 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import Navbar from '../../components/common/Navigation.vue'
 import subNav from '../../components/common/subnav.vue'
+import http from '@/util/http-common.js'
+
+const storage = window.sessionStorage;
 
 export default {
   name: 'Chat',
@@ -44,33 +49,42 @@ export default {
 
   data() {
     return {
-      userName: "",
+      // userName: "",
       message: "",
       recvList: []
     }
   },
   created() {
     // Chat.vue가 생성되면 소켓 연결을 시도합니다.
+    this.initialize(),
     this.connect()
   },
   methods: {
+    initialize(){
+      http.get(`/chat/initialize/${this.teamId}`).then(({data}) => {
+            this.recvList = data;
+      });
+    },
+
     sendMessage (e) {
       if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
         this.send()
         this.message = ''
       }
     },    
+
     send() {
       console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         const msg = { 
-          userName: this.userName,
+          userName: storage.NickName,
           content: this.message,
           fakeid: this.teamId,
         };
         this.stompClient.send("/publish/chat/message",JSON.stringify(msg),{});
       }
-    },    
+    },
+
     connect() {
       const serverURL = "http://localhost:8080"
       let socket = new SockJS(serverURL);

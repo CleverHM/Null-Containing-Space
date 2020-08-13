@@ -22,6 +22,7 @@ import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.PersonData;
+import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +49,7 @@ public class SearchController {
 	// 계정 검색 검색어 포함된 리스트
 	@PostMapping("/search/user")
 	@ApiOperation(value = "계정 검색", notes = "계정 검색 기능을 구현.")
-	public Object postDelete(@Valid @RequestParam String search, String mynickname) throws IOException {
+	public Object postDelete(@Valid @RequestParam String search, String mynickname, int pagenum) throws IOException {
 		List<PersonData> list = new LinkedList<PersonData>();
 
 		List<User> allUser = userservice.findall();
@@ -113,14 +114,29 @@ public class SearchController {
 				}
 			}
 		}
+		
+        // 10개씩 보내기
+		List<PersonData> listPage = new LinkedList<PersonData>();
+		int cnt = 10;
+		int min = pagenum * cnt - cnt;
+		int max = pagenum * cnt;
 
-		return list;
+		if (min < list.size()) {
+			for (int i = min; i < max; i++) {
+				if (i == list.size()) {
+					break;
+				}
+				listPage.add(list.get(i));
+			}
+		}
+		
+		return listPage;
 	}
 
 	// 해쉬태그 검색 검색어 포함된 리스트
 	@PostMapping("/search/hashtag")
 	@ApiOperation(value = "hashtag 검색", notes = "hashtag 기능을 구현.")
-	public Object hashtag(@Valid @RequestParam String hashtag) throws IOException {
+	public Object hashtag(@Valid @RequestParam String hashtag, int pagenum) throws IOException {
 		List<String> list = new LinkedList<String>();
 
 		List<Tag> allTag = tagdao.findAll();
@@ -130,7 +146,22 @@ public class SearchController {
 				list.add(t.getName());
 			}
 		}
+		
+        // 10개씩 보내기
+		List<String> listPage = new LinkedList<String>();
+		int cnt = 10;
+		int min = pagenum * cnt - cnt;
+		int max = pagenum * cnt;
 
-		return list;
+		if (min < list.size()) {
+			for (int i = min; i < max; i++) {
+				if (i == list.size()) {
+					break;
+				}
+				listPage.add(list.get(i));
+			}
+		}
+		
+		return listPage;
 	}
 }
