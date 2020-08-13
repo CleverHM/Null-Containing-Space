@@ -96,9 +96,9 @@
                     <div class="Modal-backdrop">
                         <div class="Modal-content">
                             <label class="Modal-close" for="Modal-toggle">x</label>
-                            <h2>회원탈퇴</h2>
+                            <h3>회원탈퇴</h3>
                             <hr />
-                            <p>회원탈퇴 하시겠습니까?</p>
+                            <p>회원님과 관련된 모든 정보가 삭제됩니다. <br />정말로 회원탈퇴 하시겠습니까?</p>
                             <label class="Modal-close close-button" for="Modal-toggle">취소</label>
                             <label class="Modal-close delete-button" @click="deleteUser">탈퇴</label>
                         </div>
@@ -297,12 +297,12 @@ export default {
             http.put("/account/delete", InputData)
             .then((data) => {
                 console.log(data)
-                alert("회원탈퇴 완료!")
+                alert("회원탈퇴하였습니다.")
                 this.$router.push("/")
             })
         },
         goPassword() {
-            this.$router.push({name: 'findPassword'})
+            this.$router.push({name: 'modifyPassword'})
         },    
     },
 }
@@ -457,6 +457,10 @@ input[type="text"]:focus{
 .Modal-container > label {
     font-size: 16px;
 }
+.Modal-container hr{
+    margin: 0 0 10px 0 ;
+    width: 100%;
+}
 .Modal-container button {
   display: block;
   color: #f7f7f7;
@@ -534,7 +538,7 @@ input[type="text"]:focus{
   left: 90%;
   right: 0px;
   top: 0;
-  padding-top: 7px;
+  padding-top: 15px;
   background: #fff;
   font-size: 16px;
   width: 25px;
@@ -546,7 +550,7 @@ input[type="text"]:focus{
 
 .Modal-container #Modal-toggle:checked ~ .Modal-backdrop .Modal-content .Modal-close.close-button {
   top: initial;
-  padding: 2px;
+  padding: 3px;
   position: absolute;
   left: 83%;
   bottom: 10px;

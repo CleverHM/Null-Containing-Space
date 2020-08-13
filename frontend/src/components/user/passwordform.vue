@@ -71,12 +71,28 @@ export default {
     },
     updatePassword(){
       var InputData = new FormData()
-      InputData.append("email", this.email)
-      InputData.append("NewPassword", this.password)
-      http.post("account/findPasswordModify", InputData)
-      .then(() => {
-        this.$emit("Complete3")
-      })
+      if (this.$route.name === "modifyPassword"){
+        InputData.append("email", window.sessionStorage.User)
+        InputData.append("NewPassword", this.password)
+      }else {
+        InputData.append("email", this.email)
+        InputData.append("NewPassword", this.password)
+      }
+      this.checkpassword()
+      this.checkpasswordconfirm()
+      if (this.error.password || this.error.passwordConfirm){
+        alert("비밀번호를 다시 입력해주세요.")
+      }
+      else {
+        http.post("account/findPasswordModify", InputData)
+        .then((data) => {  
+          if (!data.data.status) alert("현재 비밀번호와 동일한 비밀번호입니다. 다시 입력해주세요.")
+          else {
+            alert("비밀번호 변경이 완료되었습니다.")
+            this.$emit("Complete3")
+          }
+        })
+      }
     }
   }
 }

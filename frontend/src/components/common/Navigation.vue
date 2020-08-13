@@ -42,6 +42,15 @@ export default {
   props: [
       'subjectCheck', // LeaderForm에서 가지고있는 subject 정보
   ],
+  created() {
+    // 로그인 안되어있을 시 로그인 창으로 이동
+    const email = storage.User
+    const nickname = storage.NickName
+    if (!email || !nickname) {
+        alert("로그인이 필요합니다.")
+        this.$router.replace({name: 'Login'})
+    }
+  },
   computed: {
       currentRouteName() {
         return this.$route.name;
@@ -82,10 +91,10 @@ export default {
             this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
         },
         goMyPost() {
-            this.$router.push({name: 'myPost', params:{ nickname: storage.NickName}})
+            this.$router.push({name: 'myPost', params:{ nickname: this.$route.params.nickname}})
         },
         goMyLikePost() {
-            this.$router.push({name: 'myLikePost', params:{ nickname: storage.NickName}})
+            this.$router.push({name: 'myLikePost', params:{ nickname: this.$route.params.nickname}})
         },
       // 팀 가입 권유
         teamJoinRequest() {

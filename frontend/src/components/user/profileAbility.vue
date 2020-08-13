@@ -61,6 +61,7 @@ export default {
   text-align: center;
 }
 .ability-kinds{
+    font-size: 15px;
     text-align: left;
 }
 
