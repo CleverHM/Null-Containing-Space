@@ -44,6 +44,16 @@
                 <div v-else >
                   <tagItem :tag="tag" v-for="tag in Results" :key="tag"/>
                 </div>
+                <infinite-loading 
+                @infinite="infiniteHandler" 
+                ref="InfiniteLoading"
+                spinner="waveDots">
+                <div slot="no-results" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+                  <b-icon-x-circle scale="1.5" font-scale="1.5" class="mb-4"/>
+                  검색 결과가 존재하지 않습니다.
+                </div>
+                <div slot="no-more" style="display: none;"></div>
+              </infinite-loading>
             </div>
       </div>
 
@@ -56,6 +66,7 @@ import subnav from '@/components/common/subnav.vue'
 import peopleItem from '@/components/search/peopleItem.vue'
 import tagItem from '@/components/search/tagItem.vue'
 import http from '@/util/http-common.js'
+import InfiniteLoading from 'vue-infinite-loading';
 
 const storage = window.sessionStorage
 
@@ -66,6 +77,7 @@ export default {
     subnav,
     peopleItem,
     tagItem,
+    InfiniteLoading,
   },
   created() {
     var data = storage.SearchData
@@ -76,19 +88,12 @@ export default {
       // 탭 활성화
       this.isEnter = true;
       // 탭 내용 활성화
-      console.log(storage.istagTab)
-      if (storage.ispeopleTab) {
+      if (storage.searchTab == true || storage.searchTab == undefined) {
         this.isCurrent = true;
-        this.Results = JSON.parse(storage.peopleResult)
       }
-      else if (storage.istagTab) {
+      else if (storage.searchTab == false) {
         this.isCurrent = false;
-        console.log(storage.tagResult)
-        console.log(JSON.parse(storage.tagResult))
-        this.Results = JSON.parse(storage.tagResult)
       }
-
-      
     }
 
   },
@@ -100,11 +105,15 @@ export default {
       isEnter: false,
       Results: [],
       isLoading: false,
+      limit: 1,
     }
   },
   watch: {
     SearchData(data) {
-      if (!data) this.isEnter = false
+      if (!data) {
+        this.isEnter = false
+        storage.searchTab = true
+      }
     },
   },
   methods: {
@@ -114,73 +123,87 @@ export default {
       this.isEnter = false
     },
     handleClick(event) {
-          console.log(event.target.innerText)
-          this.currentTab = event.target.innerText;
-          if (this.currentTab == '사람') {
-            this.isCurrent = true
-            if(this.SearchData) this.searchPeople()
-          }
-          else {
-            this.isCurrent = false
-            if(this.SearchData) this.searchTag()
-            this.Loading()
-          }        
+      if (this.currentTab != event.target.innerText) {
+        this.currentTab = event.target.innerText;
+        this.limit = 1;
+        this.Results = [];
+        this.$refs.InfiniteLoading.stateChanger.reset(); 
+        
+        if (this.currentTab == '사람') {
+          this.isCurrent = true
+        }
+        else {
+          this.isCurrent = false
+        }
+        storage.searchTab = this.isCurrent;
+      }     
     },
     search() {
       this.isLoading = true;
       this.isEnter = true;
-    if(this.SearchData) {
-      // 검색할땐 기존 스토리지에 있는 결과는 삭제
-      storage.SearchData = this.SearchData
-      storage.removeItem('peopleResult')
-      storage.removeItem('tagResult')
-    
-      this.isCurrent = true;
-      this.searchPeople()
-      this.Loading()
-    }
+      if(this.SearchData) {
+        // 검색할땐 기존 스토리지에 있는 결과는 삭제
+        storage.SearchData = this.SearchData
       
-
+        this.isCurrent = true;
+        this.limit = 1;
+        this.Results = [];
+        this.Loading()
+      }
     },
-    searchPeople() {
-      // 스토리지에서 사람 탭의 활성화 정보 담기
-      storage.ispeopleTab = true;
-      storage.removeItem("istagTab")
-      // 스토리지에 사람탭의 결과가 있으면
-      if (storage.peopleResult) {
-        this.Results = JSON.parse(storage.peopleResult)
-      }
-      // 스토리지에 사람탭의 결과가 없으면 axios로 불러오기
-      else {
-        var InputData = new FormData()
-        InputData.append("search", this.SearchData)
-        InputData.append("mynickname", window.sessionStorage.NickName)
-        http.post("/search/user", InputData)
-        .then(({data}) => {
-          this.Results = data;
-          storage.peopleResult = JSON.stringify(data)        
-        })
-      }
-      
-    },
-    searchTag() {
-      // 스토리지에서 tab정보 활성화, 사람탭정보 비활성화
-      storage.istagTab = true;
-      storage.removeItem("ispeopleTab")
-      // 스토리지에 태그결과가 있으면
-      if (storage.tagResult) this.Results = JSON.parse(storage.tagResult)
-      // 스토리지에 태그결과가 없으면
-      else {
-        var InputData = new FormData()
-        InputData.append("hashtag", this.SearchData)
-        http.post("/search/hashtag", InputData)
-        .then(({data}) => {
-          this.Results = data;
-          console.log(this.Results)
-          storage.tagResult = JSON.stringify(data)
-        })
-      }
+    searchPeople($state) {
+      const EACH_LEN = 10
 
+      var InputData = new FormData()
+      InputData.append("search", this.SearchData)
+      InputData.append("mynickname", window.sessionStorage.NickName)
+      InputData.append("pagenum", this.limit)
+
+      http.post("/search/user", InputData)
+      .then(({data}) => {
+        setTimeout(() => {
+          if(data.length) {
+            this.Results = [...this.Results, ...data]
+            $state.loaded()
+            this.limit++
+            if(data.length / EACH_LEN < 1) {
+              $state.complete()
+            }
+          } else {
+            $state.complete()
+          }
+        }, 300)
+      })
+    },
+    searchTag($state) {
+      const EACH_LEN = 10
+
+      var InputData = new FormData()
+      InputData.append("hashtag", this.SearchData)
+      InputData.append("pagenum", this.limit)
+
+      http.post("/search/hashtag", InputData)
+      .then(({data}) => {
+        setTimeout(() => {
+          if(data.length) {
+            this.Results = [...this.Results, ...data]
+            $state.loaded()
+            this.limit++
+            if(data.length / EACH_LEN < 1) {
+              $state.complete()
+            }
+          } else {
+            $state.complete()
+          }
+        }, 300)
+      })
+    },
+    infiniteHandler($state) {
+      if (this.isCurrent == true) {
+        this.searchPeople($state);
+      } else {
+        this.searchTag($state);
+      }
     },
     Loading() {
       this.isLoading = true;
@@ -285,5 +308,12 @@ export default {
 #introduce {
   white-space: normal;
   word-break: break-all;
+}
+.null-area {
+  width: 100%;
+  height: 400px;
+  font-size: 15px;
+  color: #464545;
+  font-weight: bold;
 }
 </style>

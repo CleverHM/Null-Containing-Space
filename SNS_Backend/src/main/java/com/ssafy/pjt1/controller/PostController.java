@@ -1426,7 +1426,7 @@ public class PostController {
 		
 		// page 만큼 자르기
 		List<FeedData> pageRes = new LinkedList<FeedData>();
-		int cnt = 5;
+		int cnt = 10;
 		int min = pagenum * cnt - cnt;
 		int max = pagenum * cnt;
 

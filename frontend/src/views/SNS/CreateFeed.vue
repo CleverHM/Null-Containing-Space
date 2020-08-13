@@ -161,7 +161,7 @@ export default {
       if (this.article.title === "") {
         this.errorMsg();
       } else if (this.$route.name === 'FeedUpdate') {
-        console.log('글 수정')
+        // console.log('글 수정')
         this.submitModify();
       } else {
         this.submitOn();
@@ -255,7 +255,7 @@ export default {
         var isDouble = this.article.hashtags.find(function(n){
           return hashtag === n
         })
-      console.log(isDouble)
+      // console.log(isDouble)
       if (!isDouble) {
         this.article.hashtags.push(hashtag)
       }
