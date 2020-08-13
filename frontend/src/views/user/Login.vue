@@ -36,17 +36,8 @@
         :disabled="!isSubmit"
         :class="{disabled : !isSubmit}"
       >로그인</button>
-
-      <div class="sns-login">
-        <div class="text">
-          <p>SNS 간편 로그인</p>
-          <div class="bar"></div>
-        </div>
-
-        <kakaoLogin :component="component" />
-        <GoogleLogin :component="component" />
-      </div>
-      <div class="add-option">
+      
+      <div class="add-option mt-4">
         <div class="text">
           <p>혹시</p>
           <div class="bar"></div>
@@ -69,8 +60,6 @@ import "../../components/css/user.scss";
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
 import Logo from "../../components/user/Logo.vue";
-import KakaoLogin from "../../components/user/snsLogin/Kakao.vue";
-import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import UserApi from "../../api/UserApi";
 import http from "../../util/http-common.js";
 
@@ -79,8 +68,6 @@ const storage = window.sessionStorage;
 export default {
   components: {
     Logo,
-    KakaoLogin,
-    GoogleLogin
   },
   data: () => {
     return {
@@ -145,6 +132,7 @@ export default {
         storage.setItem("token", "");
         storage.setItem("User", "");
         storage.setItem("NickName", "");
+        storage.setItem("alarmTab", 1);
         
         let msg = "";
         
@@ -189,5 +177,3 @@ export default {
  
 };
 </script>
-
-

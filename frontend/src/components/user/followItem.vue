@@ -17,7 +17,7 @@ export default {
         'User',
     ],
     created() {
-        console.log(this.User)
+        // console.log(this.User)
     },
     methods: {
         goProfile() {
