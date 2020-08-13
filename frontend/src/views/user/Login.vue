@@ -183,7 +183,7 @@ export default {
   },
 
   moveFeed(){
-        this.$router.push("/feed");
+        this.$router.push("/main");
   },
 },
  
