@@ -24,12 +24,16 @@ public class Chat{
 	private String userName;
 	private String content;
 	
-	//채팅 : 채팅방(N : 1관계)
+	//채팅 : 팀(N : 1관계)
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "room_id")
-	private Chatroom room;
+	@JoinColumn(name = "team_id")
+	private Team team;
 	
+	
+	private int fakeid;
+	
+
 	public Chat() {
 		
 	}
@@ -40,15 +44,32 @@ public class Chat{
 		this.content = content;
 	}
 
-
-
-	public Chat(String userName, String content, Chatroom room) {
+	
+	public Chat(String userName, String content, Team team) {
 		this.userName = userName;
 		this.content = content;
-		this.room = room;
+		this.team = team;
+	}
+	
+
+
+
+	/**
+	 * @return the fakeid
+	 */
+	public int getFakeid() {
+		return fakeid;
 	}
 
-	
+
+	/**
+	 * @param fakeid the fakeid to set
+	 */
+	public void setFakeid(int fakeid) {
+		this.fakeid = fakeid;
+	}
+
+
 	public String getUserName() {
 		return userName;
 	}
@@ -77,14 +98,15 @@ public class Chat{
 	public void setcId(int cId) {
 		this.cId = cId;
 	}
-
 	
-	public Chatroom getRoom() {
-		return room;
-	}
 
-	
-	public void setRoom(Chatroom room) {
-		this.room = room;
+	public Team getTeam() {
+		return team;
 	}
+	
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+	
 }

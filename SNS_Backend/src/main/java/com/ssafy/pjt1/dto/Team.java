@@ -2,6 +2,8 @@ package com.ssafy.pjt1.dto;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -63,10 +65,10 @@ public class Team {
 	@OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<User> users = new HashSet<User>();
 
-	// 팀 : 채팅방 (1 : 1 관계)
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ROOM_ID")
-	private Chatroom chatroom;
+	// 팀 : 채팅  (1 : N 관계)
+	@JsonIgnore
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Chat> chats = new LinkedList<Chat>();
 	
 	@CreationTimestamp
 	@Column(updatable = false)
@@ -107,12 +109,13 @@ public class Team {
 		this.algo = algo;
 	}
 	
-	public Chatroom getChatroom() {
-		return chatroom;
+	
+	public List<Chat> getChat() {
+		return chats;
 	}
 
-	public void setChatroom(Chatroom chatroom) {
-		this.chatroom = chatroom;
+	public void setChat(List<Chat> chats) {
+		this.chats = chats;
 	}
 
 	public boolean isBack_cpp() {
