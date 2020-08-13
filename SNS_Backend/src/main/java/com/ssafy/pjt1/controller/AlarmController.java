@@ -19,6 +19,7 @@ import com.ssafy.pjt1.dto.Alarm;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.AlarmResponse;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.service.AlarmService;
 import com.ssafy.pjt1.service.UserService;
@@ -120,9 +121,9 @@ public class AlarmController {
 	}
 
 	// 보낸 알림함 확인
-	@PostMapping("/alarm/meSendAlarm")
+	@PostMapping("/alarm/meSendAlarmTeam")
 	@ApiOperation(value = "내가 보낸 알람 확인", notes = "내가 보낸 알람 구현.")
-	public Object meSendAlarm(@Valid @RequestParam String mynickname) throws Exception {
+	public Object meSendAlarmTeam(@Valid @RequestParam String mynickname, int pagenum) throws Exception {
 		Optional<User> optionalUser = userservice.findtwo(mynickname);
 		User user = optionalUser.get();
 
@@ -142,10 +143,73 @@ public class AlarmController {
 			}
 		}
 
+		// 알람 10개씩 보내기 
+		// page 만큼 자르기
+		List<MyAlarm> teamalarmPage = new LinkedList<MyAlarm>();
+		
+		int tcnt = 10;
+		int tmin = pagenum * tcnt - tcnt;
+		int tmax = pagenum * tcnt;
+
+		if (tmin < teamalarm.size()) {
+			for (int i = tmin; i < tmax; i++) {
+				if (i == teamalarm.size()) {
+					break;
+				}
+				teamalarmPage.add(teamalarm.get(i));
+			}
+		}
+		
 		result.status = true;
 		result.data = "success";
-		result.teamalarm = teamalarm;
-		result.snsalarm = snsalarm;
+		result.teamalarm = teamalarmPage;
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@PostMapping("/alarm/meSendAlarmSns")
+	@ApiOperation(value = "내가 보낸 알람 확인", notes = "내가 보낸 알람 구현.")
+	public Object meSendAlarmSns(@Valid @RequestParam String mynickname, int pagenum) throws Exception {
+		Optional<User> optionalUser = userservice.findtwo(mynickname);
+		User user = optionalUser.get();
+
+		Set<Alarm> aList = user.getAlarms();
+		List<MyAlarm> teamalarm = new LinkedList<MyAlarm>();
+		List<MyAlarm> snsalarm = new LinkedList<MyAlarm>();
+
+		final AlarmResponse result = new AlarmResponse();
+		
+		for (Alarm a : aList) {
+			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(), a.getUser().getTeam().getTeamid(), a.getPid(), a.getFlag());
+
+			if(a.getFlag() == 1) {
+				teamalarm.add(ma);
+			} else {
+				snsalarm.add(ma);
+			}
+		}
+
+		// 알람 10개씩 보내기 
+		// page 만큼 자르기
+		List<MyAlarm> snsalarmPage = new LinkedList<MyAlarm>();
+		
+		int scnt = 10;
+		int smin = pagenum * scnt - scnt;
+		int smax = pagenum * scnt;
+
+		if (smin < snsalarm.size()) {
+			for (int i = smin; i < smax; i++) {
+				if (i == snsalarm.size()) {
+					break;
+				}
+				snsalarmPage.add(snsalarm.get(i));
+			}
+		}
+		
+		
+		result.status = true;
+		result.data = "success";
+		result.snsalarm = snsalarmPage;
 		
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
