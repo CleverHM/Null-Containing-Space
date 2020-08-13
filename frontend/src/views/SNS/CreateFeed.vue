@@ -4,7 +4,12 @@
     <div class="feed-form">
       <!-- 제목 -->
       <div class="inputForm">
-        <input v-model="article.title" id="title" placeholder="제목(3글자 이상 입력해주세요)" type="text" />
+        <input 
+        v-model="article.title" 
+        id="title" 
+        placeholder="제목(3글자 이상 입력해주세요)" 
+        maxlength="50" 
+        type="text" />
       </div>
 
       <!-- 본문 -->
