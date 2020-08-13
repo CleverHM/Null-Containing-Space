@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt1.dto.Chat;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.model.TeamPersonData;
-import com.ssafy.pjt1.service.ChatService;
 import com.ssafy.pjt1.service.TeamService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -50,8 +50,8 @@ public class TeamController {
     @Autowired
     private TeamService teamservice;
     
-    @Autowired
-    private ChatService chatservice;
+//    @Autowired
+//    private ChatService chatservice;
 
     @PostMapping("/team/binTeam")
     @ApiOperation(value = "1 번팀 생성", notes = "1번 팀 생성 기능을 구현")
@@ -78,9 +78,7 @@ public class TeamController {
         Team team = new Team(title, teamintro, cnt, prePro, preTech[0], preTech[1], preTech[2], preTech[3], preTech[4],
                 preTech[5], preTech[6], preTech[7], preTech[8], preTech[9], preTech[10], preTech[11], preTech[12],
                 preTech[13], preTech[14]);
-
-        
-        team.setChatroom(chatservice.createChatRoom()); // 팀 생성시 방 만들어주기.
+      
         
         teamservice.join(team);
 
@@ -158,6 +156,8 @@ public class TeamController {
 
         Set<User> members = user.getTeam().getUsers(); 
         
+        List<Chat> chats = user.getTeam().getChat();
+        
         // 팀: 유저 끊어주기
         for(User u : members) {
             u.setTeam(team);
@@ -167,7 +167,11 @@ public class TeamController {
             u.setMatchok(false);
             userservice.signUp(user);
         }
-    
+        
+        // 팀 : 채팅 관계 끊어주기.
+        for(Chat c : chats) {
+        	chats.remove(c);
+        }
     }
     
     // nick name 으로 프로젝트 페이지판별 하기
