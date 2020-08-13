@@ -159,7 +159,7 @@ export default {
     position: absolute;
     height: 70px;
     width: 100%;
-    z-index: 9999;
+    z-index: 500;
     opacity: 0;
 }
 .scrap{
@@ -189,7 +189,7 @@ hr {
     height: 48px;
     width: 48px;
     padding: 10px;
-    margin: 0 10px 0 10px;
+    margin: 0 7px 0 7px;
     border: 1px solid green;
     border-radius: 100%;
     color: green;

@@ -44,6 +44,19 @@
                 </div>
                 
               </div>
+              
+              <!-- 무한스크롤 -->
+              <infinite-loading 
+                @infinite="infiniteHandler" 
+                ref="InfiniteLoading"
+                spinner="waveDots">
+                <div slot="no-results" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+                  <b-icon-envelope-open scale="1.5" font-scale="1.5" class="mb-4"/>
+                  새로운 소식이 없습니다.
+                </div>
+                <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 알림이 없습니다.</div>
+              </infinite-loading>
+
             </div>
 
     </div>
@@ -56,16 +69,18 @@ import TeamAlarm from '../components/notice/TeamAlarm.vue'
 import SNSAlarm from '../components/notice/SNSAlarm.vue'
 import http from "../util/http-common.js";
 import axios from 'axios';
+import InfiniteLoading from 'vue-infinite-loading';
 
 const storage = window.sessionStorage;
 
 export default {
   name: 'notice',
   components: {
-      Navbar,
-      subNav,
-      TeamAlarm,
-      SNSAlarm,
+    Navbar,
+    subNav,
+    TeamAlarm,
+    SNSAlarm,
+    InfiniteLoading,
   },
   props: [
     'tapId'
@@ -82,7 +97,7 @@ export default {
   },
 
   created() {
-    console.log(this.tapId)
+    // console.log(this.tapId)
     if (this.tapId == 2) {
       this.isCurrent = false
       this.currentTab = 'SNS'
@@ -91,13 +106,12 @@ export default {
       this.currentTab = '프로젝트'
       
     }
-    this.dataReceive();
     
   },
 
   methods: {
     // axios 요청으로 알림 정보 받아오기
-    dataReceive() {
+    teamReceive($state) {
       let formData = new FormData;
       formData.append("mynickname", storage.getItem("NickName"))
 
@@ -121,6 +135,18 @@ export default {
 
     },
 
+    // 무한 스크롤
+    infiniteHandler($state) {
+      if (this.isCurrent == true) {
+        // 팀 알람
+        this.teamReceive($state);
+      } else {
+        // 피드 알람
+        this.feedReceive($state);
+      }
+      
+    },
+
     // 탭 구현
     handleClick(event) {
         this.currentTab = event.target.innerText;
@@ -131,7 +157,7 @@ export default {
             this.isCurrent = true
             this.currentTab = '프로젝트'
         }
-        console.log(this.isCurrent)
+        // console.log(this.isCurrent)
     },
   }
 }

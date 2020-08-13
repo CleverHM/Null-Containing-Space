@@ -82,7 +82,7 @@ export default {
   methods: {
     // 피드 가져오기 (해시태그 x)
     bringList($state) {
-      const EACH_LEN = 3
+      const EACH_LEN = 5
 
       let formData = new FormData;
       formData.append("email", storage.getItem("User"));
@@ -117,7 +117,7 @@ export default {
 
     // 해시태그 있을 때 피드 가져오기
     bringListHash($state) {
-      const EACH_LEN = 3
+      const EACH_LEN = 5
 
       let formData = new FormData();
       formData.append("email", storage.getItem("User"));
