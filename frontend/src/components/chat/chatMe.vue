@@ -18,7 +18,7 @@ export default {
 
 <style scoped>
 .chat-box{
-    position: relative;
+    /* position: relative; */
 }
 .chat-name{
     text-align: right;

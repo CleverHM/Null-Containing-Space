@@ -14,9 +14,12 @@
     >
       <p>{{ item.userName }}: {{ item.content }} </p>
     </div> -->
-    <div v-for="(item, idx) in recvList" :key="idx">
-      <chatMe :content="item.content" v-if="item.userName === serverUser"/>
-      <chatOther :nickname="item.userName" :content="item.content" v-if="item.userName != serverUser"/>
+    <div id="chat-wrap">
+      <div v-for="(item, idx) in recvList" :key="idx">
+        <chatMe :content="item.content" v-if="item.userName === serverUser"/>
+        <chatOther :nickname="item.userName" :content="item.content" v-if="item.userName != serverUser"/>
+
+      </div>
 
     </div>
 
@@ -73,6 +76,9 @@ export default {
     this.initialize(),
     this.connect()
   },
+  mounted() {
+    this.scrolltoBottom()
+  },
   methods: {
     initialize(){
       http.get(`/chat/initialize/${this.teamId}`).then(({data}) => {
@@ -119,6 +125,7 @@ export default {
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             console.log(JSON.parse(res.body));
             this.recvList.push(JSON.parse(res.body))
+            this.scrolltoBottom()
           });
         },
         error => {
@@ -127,7 +134,15 @@ export default {
           this.connected = false;
         }
       );        
-    }
+    },
+    scrolltoBottom() {
+      var container = this.$el.querySelector("#chat-wrap");
+      var height = container.clientHeight;
+      container.scrollTop = height;
+
+      console.log("scrollheight", height)
+      console.log("scrolltop", container.scrollTop)
+    },
   }
 }
 </script>
@@ -136,6 +151,7 @@ export default {
 #app {
   padding-top: 10px;
 }
+
 /* chat 입력창 */
 .chat-input{
   width: 100%;
