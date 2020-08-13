@@ -70,7 +70,7 @@
           </button>
           
           <!-- 실시간 채팅 -->
-          <button>
+          <button @click="goChat">
             <b-icon-chat-dots class="mr-2"/>
             실시간 채팅
           </button>
@@ -239,6 +239,11 @@ export default {
     // 명세서 수정 페이지
     goUpdateTeam() {
       this.$router.replace({ name: 'updateTeam', params: { teamData: this.teamData }})
+    },
+
+    // chat페이지
+    goChat() {
+      this.$router.push({ name: 'chat', params: { teamId: this.teamData.teamid } })
     },
 
     // 날짜 체크
