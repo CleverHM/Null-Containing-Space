@@ -97,14 +97,7 @@ export default {
 
   created() {
     // console.log(this.tapId)
-    if (this.tapId == 2) {
-      this.isCurrent = false
-      this.currentTab = 'SNS'
-    } else {
-      this.isCurrent = true
-      this.currentTab = '프로젝트'
-      
-    }
+    this.currentHandle();
     
   },
 
@@ -124,7 +117,7 @@ export default {
           if(res.data.teamalarm.length) {
             this.teamList = [...this.teamList, ...res.data.teamalarm]
             $state.loaded()
-            this.teamLimit = this.teamLimit + 1
+            this.teamLimit++
             if(res.data.teamalarm.length / EACH_LEN < 1) {
               $state.complete()
             }
@@ -154,7 +147,7 @@ export default {
           if(res.data.snsalarm.length) {
             this.snsList = [...this.snsList, ...res.data.snsalarm]
             $state.loaded()
-            this.snsLimit = this.snsLimit + 1
+            this.snsLimit++
             if(res.data.snsalarm.length / EACH_LEN < 1) {
               $state.complete()
             }
@@ -180,21 +173,34 @@ export default {
 
     // 탭 구현
     handleClick(event) {
+      if (this.currentTab != event.target.innerText) {
         this.currentTab = event.target.innerText;
         this.$refs.InfiniteLoading.stateChanger.reset(); 
         if (this.currentTab == 'SNS') {
             this.isCurrent = false
             this.snsLimit = 1
             this.snsList = []
+            storage.setItem("alarmTab", 2)
         }
         else {
             this.isCurrent = true
             this.currentTab = '프로젝트'
             this.teamLimit = 1
             this.teamList = []
+            storage.setItem("alarmTab", 1)
         }
-        // console.log(this.isCurrent)
+      }
     },
+
+    currentHandle() {
+      if (storage.getItem("alarmTab") == 1) {
+        this.isCurrent = true
+        this.currentTab = '프로젝트'
+      } else {
+        this.isCurrent = false
+        this.currentTab == 'SNS'
+      }
+    }
   }
 }
 </script>
