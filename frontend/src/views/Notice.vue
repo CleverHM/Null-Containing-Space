@@ -17,34 +17,33 @@
               <!-- 프로젝트 알람 -->
               <div v-if="isCurrent">
                 <!-- 알람이 없을 때 -->
-                <div v-if="!teamExist" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+                <!-- <div v-if="!teamExist" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
                   <b-icon-envelope-open scale="1.5" font-scale="1.5" class="mb-4"/>
                   새로운 소식이 없습니다.
-                </div>
+                </div> -->
 
                 <!-- 알람이 있을 때 -->
-                <div v-else>
+                <div>
                   <TeamAlarm v-for="teamData in teamList" :key="teamData.aid" :teamData="teamData" />
                 </div>
-                
+                  
 
               </div>
 
               <!-- feed 알람 -->
               <div v-else >
                 <!-- 알람이 없을 때 -->
-                <div v-if="!snsExist" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+                <!-- <div v-if="!snsExist" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
                   <b-icon-envelope-open scale="1.5" font-scale="1.5" class="mb-4"/>
                   새로운 소식이 없습니다.
-                </div>
+                </div> -->
 
                 <!-- 알람이 있을 때 -->
-                <div v-else>
+                <div>
                     <SNSAlarm v-for="snsData in snsList" :key="snsData.id" :snsData="snsData"/>
                 </div>
-                
               </div>
-              
+                
               <!-- 무한스크롤 -->
               <infinite-loading 
                 @infinite="infiniteHandler" 
@@ -86,14 +85,14 @@ export default {
     'tapId'
   ],
   data() {
-      return {
-          isCurrent: true,
-          currentTab: "",
-          snsList: null,
-          teamList: null,
-          snsExist: false,
-          teamExist: false,
-      }
+    return {
+      isCurrent: true,
+      currentTab: "",
+      snsList: [],
+      teamList: [],
+      teamLimit: 1,
+      snsLimit: 1,
+    }
   },
 
   created() {
@@ -112,22 +111,28 @@ export default {
   methods: {
     // axios 요청으로 알림 정보 받아오기
     teamReceive($state) {
+      const EACH_LEN = 10
+
       let formData = new FormData;
       formData.append("mynickname", storage.getItem("NickName"))
+      formData.append("pagenum", this.teamLimit)
 
       http
-      .post('/alarm/meAlarm', formData)
+      .post('/alarm/meAlarmTeam', formData)
       .then((res) => {
-
-        // console.log(res.data)
-        this.snsList = res.data.snsalarm
-        this.teamList = res.data.teamalarm
-        if (res.data.snsalarm.length > 0) {
-          this.snsExist = true
-        }
-        if (res.data.teamalarm.length > 0) {
-          this.teamExist = true
-        }
+        setTimeout(() => {
+          if(res.data.teamalarm.length) {
+            this.teamList = [...this.teamList, ...res.data.teamalarm]
+            $state.loaded()
+            this.teamLimit = this.teamLimit + 1
+            if(res.data.teamalarm.length / EACH_LEN < 1) {
+              $state.complete()
+            }
+          } else {
+            // 끝 지정(No more data)
+            $state.complete()
+          }
+        }, 400)
       })
       .catch((err) => {
         console.log(err)
@@ -135,27 +140,58 @@ export default {
 
     },
 
+    snsReceive($state) {
+      const EACH_LEN = 10
+
+      let formData = new FormData;
+      formData.append("mynickname", storage.getItem("NickName"))
+      formData.append("pagenum", this.snsLimit)
+
+      http
+      .post('/alarm/meAlarmSns', formData)
+      .then((res) => {
+        setTimeout(() => {
+          if(res.data.snsalarm.length) {
+            this.snsList = [...this.snsList, ...res.data.snsalarm]
+            $state.loaded()
+            this.snsLimit = this.snsLimit + 1
+            if(res.data.snsalarm.length / EACH_LEN < 1) {
+              $state.complete()
+            }
+          } else {
+            // 끝 지정(No more data)
+            $state.complete()
+          }
+        }, 400)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+
     // 무한 스크롤
     infiniteHandler($state) {
       if (this.isCurrent == true) {
-        // 팀 알람
         this.teamReceive($state);
       } else {
-        // 피드 알람
-        this.feedReceive($state);
+        this.snsReceive($state);
       }
-      
     },
 
     // 탭 구현
     handleClick(event) {
         this.currentTab = event.target.innerText;
+        this.$refs.InfiniteLoading.stateChanger.reset(); 
         if (this.currentTab == 'SNS') {
             this.isCurrent = false
+            this.snsLimit = 1
+            this.snsList = []
         }
         else {
             this.isCurrent = true
             this.currentTab = '프로젝트'
+            this.teamLimit = 1
+            this.teamList = []
         }
         // console.log(this.isCurrent)
     },
