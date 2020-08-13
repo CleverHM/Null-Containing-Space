@@ -654,7 +654,7 @@ public class UserController {
 	@PostMapping("/account/abilityModify")
 	@ApiOperation(value = "능력치 수정", notes = "능력치 수정 기능을 구현.")
 	public void abilityInfo(@Valid @RequestParam String nickname, int[] ability) throws FileNotFoundException, IOException {
-
+		System.out.println("algo"+ability[14]);
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 

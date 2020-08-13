@@ -246,7 +246,7 @@ public class TeamController {
                 
                 // 10개씩 보내기
                 List<TeamData> pageRes = new LinkedList<TeamData>();
-        		int cnt = 3;
+        		int cnt = 10;
         		int min = pagenum * cnt - cnt;
         		int max = pagenum * cnt;
 
