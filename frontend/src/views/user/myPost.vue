@@ -32,6 +32,7 @@ export default {
     data() {
         return {
             isLoading: true,
+            Posts: [],
         }
     },
     methods: {

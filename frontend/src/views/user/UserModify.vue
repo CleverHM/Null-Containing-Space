@@ -37,7 +37,8 @@
                 <label for="nickname">닉네임</label>
                 <input v-model="newnickname" 
                 id="nickname"
-                type="text"/>
+                type="text"
+                maxlength="5"/>
                 <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
                 <div class="Success" v-if="error.nicknameSuccess && error.nicknameSuccess!='me'"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
 
@@ -50,7 +51,8 @@
                 <input v-model="User.GitURL" 
                 id="gitUrl"
                 type="text"
-                @keyup="checkGitURL" />
+                @keyup="checkGitURL" 
+                placeholder="https:// 를 제외한 주소를 적어주세요"/>
                 <div class="errorMsg" v-if="error.GitURL"><i class="fas fa-exclamation-triangle"></i>{{ error.GitURL }}</div>
             </div>
 
@@ -60,7 +62,8 @@
                 <input v-model="User.blogURL" 
                 id="blogUrl"
                 type="text"
-                @keyup="checkblogURL" />
+                @keyup="checkblogURL"
+                placeholder="https:// 를 제외한 주소를 적어주세요" />
                 <div class="errorMsg" v-if="error.blogURL"><i class="fas fa-exclamation-triangle"></i>{{ error.blogURL }}</div>
             </div>
             <!-- 자기소개 -->
@@ -161,10 +164,10 @@ export default {
                 this.newnickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
-                if (data.blogaddr && data.blogaddr != null) this.User.blogURL = data.blogaddr
-                else this.User.blogURL = 'https://'
-                if (data.gitaddr && data.gitaddr != null) this.User.GitURL = data.gitaddr
-                else this.User.GitURL = 'https://'
+                if(!data.blogaddr || data.blogaddr === null) this.User.blogURL = ""
+                else this.User.blogURL = data.blogaddr
+                if(!data.gitaddr || data.gitaddr === null) this.User.GitURL = ""
+                else this.User.GitURL = data.gitaddr
             })
             .catch((err) => {
             console.log(err)
@@ -192,13 +195,17 @@ export default {
             }
         },
         checkGitURL() {
-            if (this.User.GitURL){
+            console.log(this.User.GitURL)
+            if (this.User.GitURL && this.User.GitURL != null){
                 console.log(('https://' + this.User.GitURL).match(domainreg))
                 if (('https://' + this.User.GitURL).match(domainreg) != null){
                     this.error.GitURL = ""
                 } else {
                     this.error.GitURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
                     }
+            } else {
+                this.error.GitURL = ""
+                this.User.GitURL = ""
             }
         },
         checkblogURL() {
@@ -209,7 +216,10 @@ export default {
                     } else {
                     this.error.blogURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
                 }
-            }
+            } else{
+                this.err.blogURL=""
+                this.User.blogURL = ""
+            } 
 
         },
         imageUpload() {

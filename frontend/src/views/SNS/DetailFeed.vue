@@ -244,9 +244,8 @@ export default {
         this.dataReceive();
 
         // 댓글 알람
-        if (this.article.userNickname == storage.getItem("NickName")){
+        if (this.article.userNickname != storage.getItem("NickName")){
           let AlarmData = new FormData();
-          console.log(storage.getItem("User"), this.article.userNickname, this.article.pid)
           AlarmData.append("mynickname", storage.getItem("NickName"))
           AlarmData.append("tonickname", this.article.userNickname)
           AlarmData.append("pid", this.article.pid)

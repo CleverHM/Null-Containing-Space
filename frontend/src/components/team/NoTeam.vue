@@ -97,7 +97,7 @@ export default {
       
       // 무한 스크롤
       infiniteHandler($state) {
-        const EACH_LEN = 3
+        const EACH_LEN = 10
 
         let formData = new FormData;
         formData.append("nickname", storage.getItem("NickName"));

@@ -75,7 +75,7 @@ export default {
 .user-name {
   position: absolute;
   color: #464545;
-  font-size: 15px;
+  font-size: 14px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
   bottom: 5px;

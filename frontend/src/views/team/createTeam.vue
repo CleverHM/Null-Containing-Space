@@ -5,7 +5,12 @@
         <div class="team-form">
             <!-- 프로젝트 이름 -->
             <div class="inputForm">
-                <input v-model="team.title" id="title" placeholder="프로젝트 팀 이름(3글자 이상 입력해주세요)" type="text" />
+                <input 
+                v-model="team.title" 
+                id="title" 
+                placeholder="프로젝트 팀 이름(3글자 이상 입력해주세요)" 
+                maxlength="20" 
+                type="text" />
             </div>
 
             <!-- 프로젝트 인원 -->

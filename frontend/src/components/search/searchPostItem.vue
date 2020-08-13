@@ -5,13 +5,10 @@
             <img :src="'data:image/png;base64, ' + post.file" alt="image" class="img-part">
         </div>
         <div class="mypost-info">
-            <div class="mypost-title-data">
-                <!-- title -->
-                <div class="mypost-title">{{ post.title }}</div>
-                <!-- 작성일 -->
+            <!-- title -->
+            <div class="mypost-title">{{ post.title }}</div>
+            <!-- 작성일 -->
                 <div class="mypost-date">{{ diffTime }}</div>
-            </div>
-
             <!-- 조회수, 좋아요, 댓글 -->
             <div class="mypost-etc">
                 <!-- 조회수 -->
@@ -87,48 +84,72 @@ export default {
 </script>
 
 <style scoped>
+:root {
+    --rootwidth: 10px;
+}
 .mypost{
+    display: inline-block;
     position: relative;
-    padding: 5px 0 5px 0;
-    border-bottom: 1px solid #E2DFD8;
+    padding: 10px 5px 10px 0px;
+    /* border-bottom: 1.5px solid #464545; */
+}
+.mypost-image, .mypost-info {
+    display: inline-block;
+    width: 110px;
+    height: 110px;
 }
 .mypost-image{
-    display: inline-block;
-    width: 70px; 
-    height: 70px;
-
+    background-color: #464545;
 }
-.mypost-image img{
-    width: 70px;
-    height: 70px;
+.mypost-image img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 .mypost-info{
-    display: inline-block;
-}
-.mypost-title, .mypost-date{
+    background-color: #f7f7f7;
+    left: 0px;
     position: absolute;
+    opacity: 0;
+    transition: opacity 0.5s;
 }
-.mypost-title {
-    top: 5px;
-    left: 80px;
-    width: 40vw;
+/* hover */
+.mypost-info:hover{
+    opacity: 0.8;
+}
+.mypost-title{
+    position: absolute;
+    width: 100%;
+    padding: 0 10px 0 10px;
+    top: 20px;
+    left: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
     overflow:hidden;
     text-overflow: ellipsis;
     white-space:nowrap;
-    font-weight: bold;
-    font-size: 18px;
-}
-.mypost-date{
-    right: 10px;
-    top: 5px;
 }
 .mypost-etc {
     position: absolute;
+    width: 100%;
     bottom: 10px;
-    left: 80px;
+    left: 4px;
+    text-align: center;
 }
-.mypost-etc div {
-    display: inline;
-    padding: 0 10px 0 0;
+.mypost-date{
+    position: absolute;
+    top: 56px;
+    left: 38px;
+    text-align: center;
+    font-size: 13px;
+
 }
+.mypost-etc .etc {
+    display: inline-block;
+    padding-right: 10px;
+    font-size: 13px;
+}
+
+
 </style>
