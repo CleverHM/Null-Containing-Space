@@ -51,7 +51,8 @@
                 <input v-model="User.GitURL" 
                 id="gitUrl"
                 type="text"
-                @keyup="checkGitURL" />
+                @keyup="checkGitURL" 
+                placeholder="https:// 를 제외한 주소를 적어주세요"/>
                 <div class="errorMsg" v-if="error.GitURL"><i class="fas fa-exclamation-triangle"></i>{{ error.GitURL }}</div>
             </div>
 
@@ -61,7 +62,8 @@
                 <input v-model="User.blogURL" 
                 id="blogUrl"
                 type="text"
-                @keyup="checkblogURL" />
+                @keyup="checkblogURL"
+                placeholder="https:// 를 제외한 주소를 적어주세요" />
                 <div class="errorMsg" v-if="error.blogURL"><i class="fas fa-exclamation-triangle"></i>{{ error.blogURL }}</div>
             </div>
             <!-- 자기소개 -->
