@@ -82,10 +82,10 @@ export default {
             this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
         },
         goMyPost() {
-            this.$router.push({name: 'myPost', params:{ nickname: storage.NickName}})
+            this.$router.push({name: 'myPost', params:{ nickname: this.$route.params.nickname}})
         },
         goMyLikePost() {
-            this.$router.push({name: 'myLikePost', params:{ nickname: storage.NickName}})
+            this.$router.push({name: 'myLikePost', params:{ nickname: this.$route.params.nickname}})
         },
       // 팀 가입 권유
         teamJoinRequest() {
