@@ -565,7 +565,7 @@ input::placeholder {
     overflow: auto;
     resize: vertical;
     text-rendering: auto;
-    color: -internal-light-dark(#464545;, white);
+    color: -internal-light-dark(#464545, white);
     background-color: #f7f7f7;
     letter-spacing: normal;
     word-spacing: normal;
