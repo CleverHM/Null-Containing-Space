@@ -17,7 +17,18 @@
         <hr>
         <div class="tag-content">
             <myPostItem :post="post" v-for="post in Results" :key="post.pid" />
+        <infinite-loading 
+        @infinite="infiniteHandler" 
+        ref="InfiniteLoading"
+        spinner="waveDots">
+        <div slot="no-results" class="null-area d-flex justify-content-center align-items-center align-content-center flex-column">
+            <b-icon-x-circle scale="1.5" font-scale="1.5" class="mb-4"/>
+            게시글이 존재하지 않습니다.
         </div>
+        <div slot="no-more" style="display: none;"></div>
+        </infinite-loading>
+        </div>
+        
 
 
     </div>
@@ -28,6 +39,7 @@ import Navbar from '@/components/common/Navigation.vue'
 import subnav from '@/components/common/subnav.vue'
 import myPostItem from '@/components/search/searchPostItem.vue'
 import http from '@/util/http-common.js'
+import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
     name: 'TagResult',
@@ -38,22 +50,16 @@ export default {
         Navbar,
         subnav,
         myPostItem,
+        InfiniteLoading,
     },
     created() {
-        var InputData = new FormData()
-        InputData.append("email", window.sessionStorage.User)
-        InputData.append("hashtag", this.tag)
-        http.post("/post/getHashtagPostAll", InputData)
-        .then(({data}) => {
-            this.Results = data.hashfeeddata
-            this.isFollow = data.status
-        })
         this.Loading()
     },
     data() {
         return {
             Results: [],
             isFollow: true,
+            limit: 1,
         }
     },
     methods: {
@@ -66,6 +72,33 @@ export default {
         delayfinish(){
               this.isLoading = false;
         },
+
+        infiniteHandler($state) {
+            const EACH_LEN = 10
+
+            var InputData = new FormData()
+            InputData.append("email", window.sessionStorage.User)
+            InputData.append("hashtag", this.tag)
+            InputData.append("pagenum", this.limit)
+            
+            http.post("/post/getHashtagPostAll", InputData)
+            .then(({data}) => {
+                setTimeout(() => {
+                    if(data.hashfeeddata.length) {
+                    this.Results = [...this.Results, ...data.hashfeeddata]
+                    if (this.limit == 1) { this.isFollow = data.status }
+                    $state.loaded()
+                    this.limit++
+                    if(data.hashfeeddata.length / EACH_LEN < 1) {
+                        $state.complete()
+                        }
+                    } else {
+                        $state.complete()
+                    }
+                }, 300)
+            })
+        },
+
         followtag() {
             var InputData = new FormData()
             InputData.append("nickname", window.sessionStorage.NickName)
@@ -145,5 +178,17 @@ export default {
 hr{
     margin: 0;
     padding: 0;
+}
+
+.tag-content {
+    margin-left: 10px;
+}
+
+.null-area {
+  width: 100%;
+  height: 400px;
+  font-size: 15px;
+  color: #464545;
+  font-weight: bold;
 }
 </style>
