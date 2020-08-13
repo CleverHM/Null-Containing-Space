@@ -27,9 +27,13 @@
       @infinite="infiniteHandler" 
       ref="InfiniteLoading"
       spinner="waveDots">
-      <div slot="no-results" style="display: none;"></div>
+      <div slot="no-results">
+        <div v-if="!noMatch" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 프로젝트로 진행 중인 팀이 없습니다</div>
+      </div>
       <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 프로젝트로 진행 중인 팀이 없습니다</div>
     </infinite-loading>
+
+    <div style="height:50px;"></div>
 
     <button class="closeTeam" @click="closeTeam">팀원 시작 취소</button>
   
@@ -108,9 +112,9 @@ export default {
         .then((res) => {
           setTimeout(() => {
             if(res.data.teamdates.length) {
-              this.teamDatas = this.teamDatas.concat(res.data.teamdates)
+              this.teamDatas = [...this.teamDatas, ...res.data.teamdates]
               $state.loaded()
-              this.limit = this.limit + 1
+              this.limit++
               // console.log("after", this.teamDatas, this.limit)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(res.data.teamdates.length / EACH_LEN < 1) {

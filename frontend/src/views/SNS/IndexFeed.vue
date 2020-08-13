@@ -93,9 +93,9 @@ export default {
       .then((res) => {
         setTimeout(() => {
           if(res.data.feeddata.length) {
-            this.articles = this.articles.concat(res.data.feeddata)
+            this.articles = [...this.articles, ...res.data.feeddata]
             $state.loaded()
-            this.limit = this.limit + 1
+            this.limit++
             // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
             if(res.data.feeddata.length / EACH_LEN < 1) {
               $state.complete()
@@ -132,9 +132,9 @@ export default {
       .then((res) => {
         setTimeout(() => {
           if(res.data.hashfeeddata.length) {
-            this.articles = this.articles.concat(res.data.hashfeeddata)
+            this.articles = [...this.articles, ...res.data.hashfeeddata]
             $state.loaded()
-            this.limit = this.limit + 1
+            this.limit++
             // console.log("after", this.articles, this.limit)
             // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
             if(res.data.hashfeeddata.length / EACH_LEN < 1) {
@@ -186,8 +186,6 @@ export default {
       this.clicktags.splice(this.clicktags.indexOf(event.target.innerText),1)
       this.articles = []
       this.hashExist = true
-
-
       this.limit = 1
       
       if (this.clicktags.length === 0) {
