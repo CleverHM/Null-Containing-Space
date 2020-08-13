@@ -302,7 +302,7 @@ export default {
             })
         },
         goPassword() {
-            this.$router.push({name: 'findPassword'})
+            this.$router.push({name: 'modifyPassword'})
         },    
     },
 }
