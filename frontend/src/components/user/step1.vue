@@ -56,7 +56,7 @@ export default {
           if (this.email.match(EmailregExp) != null){
               http
               .post("/auth/passwordUpdateMailSend", this.email)
-              .then(({data}) => {
+              .then(() => {
                   this.$emit("Complete1", this.email)
               })
               .catch(() => {
@@ -69,12 +69,11 @@ export default {
         // 회원가입
         }else {
           if (this.email.match(EmailregExp) != null){
-              http
-              .post("/account/emailDuplicate", this.email)
-              .then(({data}) => {
+              http.get(`/account/emailDuplicate/${this.email}`)
+              .then(() => {
                   this.$emit("CompleteStep1", this.email)
               })
-              .catch((err) => {
+              .catch(() => {
                   this.ErrorMessage = "이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요."
               })
           }else {
@@ -82,11 +81,11 @@ export default {
           }
         }      
     },
+
     confirmPassword() {
       var InputData = new FormData()
-      InputData.append("email", window.sessionStorage.User)
       InputData.append("NewPassword", this.password)
-      http.post("/account/findPasswordModify", InputData)
+      http.put(`/account/findPasswordModify/${window.sessionStorage.User}`, InputData)
       .then(({data}) => {
         if (data.status) this.ErrorMessage = "다시 입력해주세요."
         else {

@@ -1,7 +1,7 @@
 <template>
     <div class="fixed-top">
         <div class="Navi">
-            <p>{{ currentRouteName }}</p>
+            <p>Null 담은 공간</p>
             <div>
                 <b-icon-arrow-left @click="goBack" class="arrow-left-icon icons" scale="1.3"></b-icon-arrow-left>
                 <b-icon-search class="icons search-icon mx-4" scale="1.3" v-if="currentRouteName === 'FeedMain'" @click="goSearch"></b-icon-search>
@@ -128,6 +128,7 @@ export default {
     text-align : center;
     font-weight: bold;
     font-size: 1.11em;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .icons{
     cursor: pointer;

@@ -165,13 +165,8 @@ export default {
     },
 
     dataReceive() {
-      let formData = new FormData();
-      formData.append("email", storage.getItem("User"));
-      formData.append("pid", this.postId);
-
-
       http
-      .post('/post/postDetail', formData)
+      .get(`/post/detail/${this.postId}/${storage.getItem("NickName")}`)
       .then((res) => {
         // 받아온 데이터를 집어 넣기
         this.article = res.data
@@ -288,9 +283,7 @@ export default {
     deletePost() {
       
       http
-      .post("/post/postDelete",
-        this.article.pid
-      )
+      .delete(`/post/${this.article.pid}`)
       .then((res) => {
         this.$router.replace({ name: 'FeedMain' });
       })

@@ -142,7 +142,7 @@ export default {
       var postId = parseInt(this.pId) // string -> 정수 변환
 
       http
-      .post('/post/modifyData', postId)
+      .get(`/post/modifyData/${postId}`)
       .then((res) => {
         // 직접 값 집어넣기
         this.article.title = res.data.title
@@ -181,13 +181,12 @@ export default {
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
-      formData.append("pid", postId);
 
       // 이미지 변화가 없을 때 / 있을 때
       if (this.notchangeImage) {
         
         http
-        .post("/post/modifyFalse", formData)
+        .put(`/post/isFalse/${postId}`, formData)
         .then((res) => {
           this.$router.replace({ name: 'FeedDetail', params: { postId: postId }});
         })
@@ -200,7 +199,7 @@ export default {
         formData.append("files", this.article.file);
 
         http
-        .post("/post/modifyTrue", 
+        .put(`/post/isTrue/${postId}`, 
           formData,
           {
             headers: {

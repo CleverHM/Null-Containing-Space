@@ -84,11 +84,7 @@ export default {
     dataReceive($state) {
       const EACH_LEN = 10
 
-      var InputData = new FormData()
-      InputData.append("nickname", this.nickname)
-      InputData.append("flag", this.followFlag)
-      InputData.append("pagenum", this.limit)
-      http.post("/follow/user/list", InputData)
+      http.get(`/follow/user/${this.nickname}/${this.followFlag}/${this.limit}`)
       .then((res) => {
         setTimeout(() => {
           if(res.data.length) {

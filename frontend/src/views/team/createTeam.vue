@@ -28,16 +28,6 @@
                     (필요한 기술을 클릭해주세요)
                 </span>
             </div>
-            <!-- 전체 선택 취소하기 위한 버튼 -->
-            <!-- <div class="button-all">
-                <div v-for="i in 1" :key="i + '^'" :id="i + '^'">
-                    <div @click="clickAll"
-                    :class="{boxCheckOn: basic.clickTFAll[i-1], boxCheckOff: !basic.clickTFAll[i-1]}">
-                    </div>
-                    <div @click="clickAll">{{ basic.techalllist[i-1] }}</div>
-                    <div style="display: none;">{{ team.click }}</div>
-                </div>
-            </div> -->
 
             <div v-for="n in 4" :key="n-1" :id="n + '/'" class="mx-1 mb-2">
                 <div class="displaytags">
@@ -129,29 +119,6 @@ export default {
                 techDiv: [
                     3, 6, 8, 13
                 ],
-                // 전체 클릭 시
-                clicktechAll: [
-                    [], [], [], [],
-                ],
-                clickAll: [
-                    [], [], [], [], 
-                ],
-
-                // 전체 취소 시
-                clicktechNo: [
-                    [], [], [], [],
-                ],
-                clickNo: [
-                    [], [], [], [],
-                ],
-
-                // 클릭 상태
-                techalllist: [
-                    '전체', 'Back', 'Front', 'DB', 'Frame',
-                ],
-                clickTFAll: [
-                    false, false, false, false, false,
-                ],
             },
         }
     },
@@ -167,9 +134,6 @@ export default {
             for (let step2 = 0; step2 < checkLen; step2++) {
                 this.team.click[step].push(false)
 
-                // 전체 선택을 위한 All 배열 만들기
-                // this.basic.clickAll[step].push(true)
-                // this.basic.clicktechAll[step].push(step2)
             }
         }
         
@@ -224,7 +188,6 @@ export default {
         // 클릭한 기술 가져오기
         clickTech(event) {
             // 이중 배열의 m, n 순으로 가져오기 (배열에서는 [n][m]임)
-            // console.log(event.target.innerText)
             var sidx = Number(event.target.id.split(',')[0]) - 1
             var pidx = Number(event.target.parentElement.parentElement.id.split('/')[0]) - 1
             this.team.click[pidx][sidx] = !this.team.click[pidx][sidx]
@@ -259,57 +222,6 @@ export default {
             }
         },
 
-        // 안 됨...
-        // clickAll(event) {
-        //     var cidx = Number(event.target.parentElement.id.split('^')[0] - 1)
-
-        //     // true - false를 변경
-        //     this.basic.clickTFAll[cidx] = !this.basic.clickTFAll[cidx]
-        //     console.log(cidx)
-        //     console.log(this.basic.clickTFAll[cidx])
-
-        //     // 전체는 해당 방식으로 바꿀 수 있음
-        //     if (cidx == 0) {
-        //         if (this.basic.clickTFAll[cidx]) {
-        //             for (const i in this.team.click) {
-        //                 this.team.clicktech[i] = []
-        //                 for (const j in this.team.click[i]) {
-        //                     this.team.click[i][j] = true
-        //                     this.team.clicktech[i].push(Number(j))
-        //                 }
-        //             }
-        //             this.basic.clickTFAll = [true, true, true, true, true];
-        //         } else {
-        //             for (const i in this.team.click) {
-        //                 this.team.clicktech[i] = []
-        //                 for (const j in this.team.click[i]) {
-        //                     this.team.click[i][j] = false
-        //                 }
-        //             }
-        //             this.basic.clickTFAll = [false, false, false, false, false];
-        //         }
-        //     } else {
-        //         // 전체가 아니면 하나하나 for문을 돌아야하는 듯
-        //         if (this.basic.clickTFAll[cidx]) {
-        //             this.team.click[cidx-1] = this.basic.clickAll[cidx-1]
-        //             this.team.clicktech[cidx-1] = this.basic.clicktechAll[cidx-1]
-                    
-        //             console.log('부분만 클릭 확인', this.team.click[cidx-1])
-        //             console.log('부분만 받은 것 확인', this.team.clicktech[cidx-1])
-        //         } else {
-        //             this.team.click[cidx-1] = this.basic.clickNo[cidx-1]
-        //             this.team.clicktech[cidx-1] = []
-        //             this.basic.clickTFAll[0] = false
-
-        //             console.log('부분만 클릭 확인', this.team.click[cidx-1])
-        //             console.log('부분만 받은 것 확인', this.team.clicktech[cidx-1])
-
-        //         } 
-        //     }
-            
-        //     console.log('전체에서 클릭된 지 확인', this.team.click)
-        //     console.log('전체에서 받아온 지 확인', this.team.clicktech)
-        // },
 
         // 팀 개설 전에 체크
         teamCreateCheck() {
@@ -375,7 +287,6 @@ export default {
 
             // 보내줘야할 데이터들을 formData 안에 넣는다.
             let formData = new FormData();
-            formData.append("teamid", this.teamData.teamid);
             formData.append("nickname", storage.getItem("NickName"));
             formData.append("title", this.team.title);
             formData.append("teamintro", this.team.intro);
@@ -384,7 +295,7 @@ export default {
             formData.append("cnt", this.team.cnt);
 
             http
-            .post("/team/modify", formData)
+            .put(`/team/modify/${this.teamData.teamid}`, formData)
             .then((res) => {
                 alert('명세서 수정이 완료되었습니다.')
                 this.$router.replace({ name: 'Main' })

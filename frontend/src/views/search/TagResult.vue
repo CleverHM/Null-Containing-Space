@@ -41,6 +41,8 @@ import myPostItem from '@/components/search/searchPostItem.vue'
 import http from '@/util/http-common.js'
 import InfiniteLoading from 'vue-infinite-loading';
 
+const storage = window.sessionStorage;
+
 export default {
     name: 'TagResult',
     props: [
@@ -75,13 +77,12 @@ export default {
 
         infiniteHandler($state) {
             const EACH_LEN = 10
-
-            var InputData = new FormData()
-            InputData.append("email", window.sessionStorage.User)
-            InputData.append("hashtag", this.tag)
-            InputData.append("pagenum", this.limit)
             
-            http.post("/post/getHashtagPostAll", InputData)
+            http.get(`/post/hashall/${storage.getItem("NickName")}/${this.limit}`, {
+                params: {
+                    hashtag: this.tag + ''
+                }
+            })
             .then(({data}) => {
                 setTimeout(() => {
                     if(data.hashfeeddata.length) {

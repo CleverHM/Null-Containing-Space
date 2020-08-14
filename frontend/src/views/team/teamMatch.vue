@@ -96,14 +96,11 @@ export default {
         },
 
         MatchReceive() {
-            let formData = new FormData;
-            formData.append("nickname", storage.getItem("NickName"));
 
             http
-            .post('/match/teammember', formData)
+            .get(`/match/${storage.getItem("NickName")}`)
             .then((res) => {
                 this.matchData = res.data
-                console.log(res.data)
                 this.MatchPossible();
                 storage.setItem("members1", JSON.stringify(this.matchData.prefermember));
                 storage.setItem("members2", JSON.stringify(this.matchData.noprefermember));

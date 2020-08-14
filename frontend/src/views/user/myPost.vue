@@ -53,10 +53,7 @@ export default {
          infiniteHandler($state) {
             var EACH_LEN = 10;
 
-            var InputData = new FormData();
-            InputData.append("nickname", this.nickname);
-            InputData.append("pagenum", this.limit);
-            http.post("/post/myPost", InputData)
+            http.get(`/post/upload/${this.nickname}/${this.limit}`)
             .then((res) => {
                 setTimeout(() => {
                 if(res.data.length) {

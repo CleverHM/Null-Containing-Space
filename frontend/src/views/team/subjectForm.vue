@@ -117,7 +117,7 @@ export default {
             http
             .post('/team/memberRegister', formData)
             .then((res) => {
-                this.$router.push({ name: 'Main' })
+                this.$router.push({ name: 'Main' }).catch(()=>{})
             })
             .catch((err) => {
                 console.log(err)

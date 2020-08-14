@@ -71,20 +71,19 @@ export default {
     },
     updatePassword(){
       var InputData = new FormData()
-      if (this.$route.name === "modifyPassword"){
-        InputData.append("email", window.sessionStorage.User)
-        InputData.append("NewPassword", this.password)
-      }else {
-        InputData.append("email", this.email)
-        InputData.append("NewPassword", this.password)
-      }
-      this.checkpassword()
+      InputData.append("NewPassword", this.password)
+
+      var email = ""
+      if (this.$route.name === "modifyPassword") email =  window.sessionStorage.User
+      else email = this.email
+
+this.checkpassword()
       this.checkpasswordconfirm()
       if (this.error.password || this.error.passwordConfirm){
         alert("비밀번호를 다시 입력해주세요.")
       }
       else {
-        http.post("account/findPasswordModify", InputData)
+        http.put(`account/findPasswordModify/${email}`, InputData)
         .then((data) => {  
           if (!data.data.status) alert("현재 비밀번호와 동일한 비밀번호입니다. 다시 입력해주세요.")
           else {
