@@ -88,7 +88,7 @@ export default {
       Modify() {
         var InputData = new FormData()
         InputData.append("ability", this.modifyAbility)
-        http.get(`/account/abilityModify/${this.nickname}`, InputData)
+        http.put(`/account/abilityModify/${this.nickname}`, InputData)
         .then(({data}) => {
           this.$router.push({ name: 'profile', params: { nickname: this.nickname }});
         })
