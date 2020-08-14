@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,21 +72,21 @@ public class AuthController {
 		}
 	}
 
-	@PostMapping("/auth/loginMailConfirm")
+	@GetMapping("/auth/confirm/{email}/{auth}")
 	@ApiOperation(value = "회원가입시 메일인증", notes = "회원가입시 메일인증 기능 구현")
-	public Object loginMailConfirm(@Valid @RequestBody Auth auth) {
+	public Object loginMailConfirm(@PathVariable String email, @PathVariable String auth) {
 		// 확인 하기
-		System.out.println(auth.getAuth_email());
-		System.out.println(auth.getAuth_number());
+		System.out.println(email);
+		System.out.println(auth);
 
-		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
+		Optional<Auth> flag = authservice.findone(auth);
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
 		});
 
 		if (flag.isPresent()) {
-			if (num.equals(auth.getAuth_number())) {
+			if (num.equals(auth)) {
 				final BasicResponse result = new BasicResponse();
 				result.status = true;
 				result.data = "success";
@@ -132,42 +134,6 @@ public class AuthController {
 			result.status = true;
 			result.data = "success";
 			return new ResponseEntity<>(result, HttpStatus.OK);
-		}
-	}
-
-	@PostMapping("/auth/passwordUpdateMailConfirm")
-	@ApiOperation(value = "비밀번호 변경시 메일인증", notes = "비밀번호 변경시 메일인증 기능 구현")
-	public Object passwordUpdateMailConfirm(@Valid @RequestBody Auth auth) {
-		// 확인 하기
-		System.out.println(auth.getAuth_email());
-		System.out.println(auth.getAuth_number());
-
-		Optional<Auth> flag = authservice.findone(auth.getAuth_email());
-
-		flag.ifPresent(selectUser -> {
-			num = selectUser.getAuth_number();
-		});
-
-		if (flag.isPresent()) {
-			if (num.equals(auth.getAuth_number())) {
-				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "success";
-				System.out.println(num);
-				return new ResponseEntity<>(result, HttpStatus.OK);
-			} else {
-				System.out.println("실패");
-				final BasicResponse result = new BasicResponse();
-				result.status = true;
-				result.data = "인증번호가 다릅니다";
-				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-			}
-		} else {
-			System.out.println("인증을 안받았습니다");
-			final BasicResponse result = new BasicResponse();
-			result.status = true;
-			result.data = "인증번호가 없습니다";
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 	}
 
