@@ -73,7 +73,6 @@ export default {
         .post("/team/exist", formData)
         .then((res) => {
             this.team = res.data
-            console.log(res.data)
         })
         .catch((err) => {
             console.log(err)

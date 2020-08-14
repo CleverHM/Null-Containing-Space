@@ -207,7 +207,6 @@ export default {
       this.ifLeader = false
     }
 
-    console.log(this.teamData)
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.teamData.createDate);
     this.diffTime = this.dateCheck(postDate);
@@ -318,11 +317,6 @@ export default {
     // 팀 매칭 페이지로 이동
     teamMatchGo() {
       this.$router.push({ name: 'teamMatch' })
-    },
-
-    // 유저 페이지 이동
-    goUserProfile() {
-      console.log('ㅠㅠㅠㅠ')
     },
 
     // modal - 팀 탈퇴
