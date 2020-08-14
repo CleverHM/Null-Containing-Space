@@ -24,6 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,10 +81,10 @@ public class UserController {
 	private TeamService teamservice;
 
 	// eamil 중복 체크
-	@PostMapping("/account/emailDuplicate")
+	@GetMapping("/account/emailDuplicate/{email}")
 	@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
 
-	public Object emailDuplicate(@Valid @RequestBody String email) {
+	public Object emailDuplicate(@PathVariable String email) {
 		Optional<User> optionaluser = userservice.findone(email);
 
 		if (optionaluser.isPresent()) {
@@ -101,10 +103,10 @@ public class UserController {
 	}
 
 // 중복 체크
-	@PostMapping("/account/nickNameDuplicate")
+	@GetMapping("/account/nickNameDuplicate/{nickname}")
 	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
 
-	public Object nickNameDuplicate(@Valid @RequestBody String nickname) {
+	public Object nickNameDuplicate(@PathVariable String nickname) {
 		Optional<User> optionaluser = userservice.duplNick(nickname);
 
 		if (optionaluser.isPresent()) {
