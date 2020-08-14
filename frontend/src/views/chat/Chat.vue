@@ -1,8 +1,9 @@
 <template>
-  <div id="Chat">
+  <!-- chatbox -->
+  <div id="chatbox">
    <Navbar></Navbar>
-
-    <div id="chat-wrap">
+    <!-- chat-messages -->
+    <div id="chat-messages">
       <div v-for="(item, idx) in recvList" :key="idx">
         <chatMe :content="item.content" v-if="item.userName === serverUser"/>
         <chatOther :nickname="item.userName" :content="item.content" v-if="item.userName != serverUser"/>
@@ -140,16 +141,30 @@ export default {
 </script>
 
 <style scoped>
-#Chat{
-  /* max-height: 840px; */
+
+.chatbox {
+  width: 400px;
+  height: 400px;
+  margin: 0 20px 0 0;
+  position: relative;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
+  display: flex;
+  flex-flow: column;
+  border-radius: 10px 10px 0 0;
+  background: white;
+  bottom: 0;
+  transition: .1s ease-out;
 }
-#chat-wrap{
-  padding-top: 10px;
-  /* height: 100%; */
-  /* max-height: 1080px; */
-  overflow: scroll;
-  overflow-x: hidden;
-  overflow-y: hidden;
+
+
+.chat-messages {
+  border-top: 1px solid rgba(0, 0, 0, .05);
+  padding: 10px;
+  overflow: auto;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  flex: 1;
 }
 
 

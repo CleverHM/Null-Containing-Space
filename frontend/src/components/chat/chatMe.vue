@@ -1,7 +1,7 @@
 <template>
-    <div class="chat-box">
+    <div class="message-box-holder">
         <!-- <div class="chat-name">{{ nickname }}</div> -->
-        <div class="chat-content">{{ content }}</div>
+        <div class="message-box">{{ content }}</div>
     </div>
 </template>
 
@@ -17,38 +17,30 @@ export default {
 </script>
 
 <style scoped>
-.chat-box{
-    /* position: relative; */
+.message-box-holder {
+  width: 100%;
+  margin: 0 0 10px 0;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
 }
-.chat-name{
-    text-align: right;
-    padding: 0 40px 0 0;
-    right: 0;
+.message-box {
+  margin: 10px 10px 0 10px;
+  padding: 6px 10px;
+  border-radius: 6px 0 6px 0;
+  position: relative;
+  background: #c6dfd6 ;
+  border: 2px solid #ACCCC4;
+  color: #6c6c6c;
+  font-size: 12px;
 }
-.chat-content{
-    width: 40vw;
-    background: #c6dfd6;
-    padding: 15px;
-    text-align: right;
-    font-weight: 900;
-    border-radius: 10px;
-    color: #fff;
-    margin: 0 0 10px 0;
-    white-space: pre-wrap;
-    word-break: break-all;
-    position: relative;
-    left: 55vw;
-}
-.chat-content:before{
-    content: "";
-    width: 0px;
-    height: 0px;
-    position: absolute;
-    border-left: 10px solid #c6dfd6;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #c6dfd6;
-    border-bottom: 10px solid transparent;
-    right: -14px;
-    top: 6px;
+.message-box:after {
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid #ACCCC4;
+  border-right: none;
+  bottom: -22px;
+  right: 10px;
 }
 </style>
