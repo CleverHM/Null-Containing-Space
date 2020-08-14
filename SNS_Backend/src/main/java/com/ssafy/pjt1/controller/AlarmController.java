@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +21,6 @@ import com.ssafy.pjt1.dto.Alarm;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.AlarmResponse;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.service.AlarmService;
 import com.ssafy.pjt1.service.UserService;
@@ -89,9 +90,9 @@ public class AlarmController {
 		alarmservice.sendAlarm(alarm);
 	}
 
-	@PostMapping("/alarm/meAlarmTeam")
+	@GetMapping("/alarm/{mynickname}/{pagenum}")
 	@ApiOperation(value = "나에게 온 메세지 확인", notes = "나에게 온 메세지 확인을 구현.")
-	public Object meAlarmTeam(@Valid @RequestParam String mynickname, int pagenum) throws Exception {
+	public Object meAlarmTeam(@PathVariable String mynickname, @PathVariable int pagenum) throws Exception {
 
 		List<Alarm> aList = alarmservice.meAlarm(mynickname);
 
