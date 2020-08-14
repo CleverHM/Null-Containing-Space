@@ -1035,9 +1035,9 @@ public class PostController {
 	}
 
 	// 해당이메일 게시물 보내주기
-	@GetMapping("/post/hash/{nickname}")
+	@GetMapping("/post/hash/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPost(@PathVariable String nickname, @Valid @RequestParam(required = false) String[] hashtag, int pagenum)
+	public Object getHashtagPost(@PathVariable String nickname, @PathVariable int pagenum, @Valid @RequestParam(required = false) String[] hashtag)
 			throws MalformedURLException, IOException {
 
 
