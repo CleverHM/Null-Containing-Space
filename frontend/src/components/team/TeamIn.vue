@@ -30,7 +30,7 @@
               <div class="team-tags">
                 팀장
               </div>
-              <div class="member-info d-flex flex-row align-items-center" style="height:110px;">
+              <div class="leader-info d-flex flex-row align-items-center">
                 <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="ml-2"></memberImg>
               </div>
             </div>
@@ -389,6 +389,12 @@ export default {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   float: left;
   width: 17%;
+}
+
+.leader-info {
+  display: inline;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .member-info {
