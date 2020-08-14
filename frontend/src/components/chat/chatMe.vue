@@ -31,7 +31,7 @@ export default {
   position: relative;
   background: #D3E8EB;
   border: 2px solid #BAD1CC;
-  color: #6c6c6c;
+  color: #464545;
   font-size: 14px;
 }
 .message-box:after {

@@ -35,9 +35,9 @@ import Navbar from '../../components/common/Navigation.vue'
 import chatMe from '@/components/chat/chatMe.vue'
 import chatOther from '@/components/chat/chatOther.vue'
 import http from '@/util/http-common.js'
+import $ from 'jquery'
 
 const storage = window.sessionStorage;
-
 
 export default {
   name: 'Chat',
@@ -67,12 +67,8 @@ export default {
     this.connect()
   },
   mounted() {
-    console.log("hello")
-    var element = document.querySelector("#Chat")
-    element.scrollTop = element.scrollHeight
-    console.log(element.scrollTop)
-    console.log("scrollheight", element.scrollHeight)
-    
+    console.log("mount")
+    this.scrolltoBottom()
   },
   methods: {
     initialize(){
@@ -131,42 +127,13 @@ export default {
       );        
     },
     scrolltoBottom() {
-    var element = document.querySelector("#Chat")
-    element.scrollTop = element.scrollHeight
-    console.log(element.scrollTop)
-    console.log("scrollheight", element.scrollHeight)
+    $('html,body').animate({scrollTop: 1000000000},100);
     },
   }
 }
 </script>
 
 <style scoped>
-
-.chatbox {
-  width: 400px;
-  height: 400px;
-  margin: 0 20px 0 0;
-  position: relative;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
-  display: flex;
-  flex-flow: column;
-  border-radius: 10px 10px 0 0;
-  background: white;
-  bottom: 0;
-  transition: .1s ease-out;
-}
-
-
-.chat-messages {
-  border-top: 1px solid rgba(0, 0, 0, .05);
-  padding: 10px;
-  overflow: auto;
-  display: flex;
-  flex-flow: row wrap;
-  align-content: flex-start;
-  flex: 1;
-}
-
 
 /* chat 입력창 */
 .chat-input{

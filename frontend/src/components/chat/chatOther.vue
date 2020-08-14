@@ -26,7 +26,7 @@ export default {
 }
 
 .message-sender {
-  font-size: 12px;
+  font-size: 14px;
   margin: 10px 0 15px 10px;
   color: #464545;
   align-self: flex-start;
@@ -39,16 +39,16 @@ export default {
   padding: 6px 10px;
   border-radius: 6px 0 6px 0;
   position: relative;
-  background: #EDECEA;
-  border: 2px solid #E2DFD8;
-  color: #6c6c6c;
+  background: #E2DFD8;
+  border: 2px solid #C4BCB8;
+  color: #464545;
   font-size: 14px;
 }
 .message-box:after {
   content: "";
   position: absolute;
   border: 10px solid transparent;
-  border-top: 10px solid #E2DFD8;
+  border-top: 10px solid #C4BCB8;
   border-right: none;
   bottom: -22px;
   right: 10px;
@@ -56,8 +56,8 @@ export default {
 
 .message-partner {
   margin: 0 10px;
-  background: #EDECEA;
-  border: 2px solid #E2DFD8;
+  background: #E2DFD8;
+  border: 2px solid #C4BCB8;
   align-self: flex-start;
 }
 
@@ -67,7 +67,7 @@ export default {
   top: -22px;
   left: 9px;
   border: 10px solid transparent;
-  border-bottom: 10px solid #E2DFD8;
+  border-bottom: 10px solid #C4BCB8;
   border-left: none;
 }
 </style>
