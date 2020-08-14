@@ -90,7 +90,7 @@ public class AlarmController {
 		alarmservice.sendAlarm(alarm);
 	}
 
-	@GetMapping("/alarm/{mynickname}/{pagenum}")
+	@GetMapping("/alarm/team/{mynickname}/{pagenum}")
 	@ApiOperation(value = "나에게 온 메세지 확인", notes = "나에게 온 메세지 확인을 구현.")
 	public Object meAlarmTeam(@PathVariable String mynickname, @PathVariable int pagenum) throws Exception {
 
@@ -137,9 +137,9 @@ public class AlarmController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@PostMapping("/alarm/meAlarmSns")
+	@PostMapping("/alarm/sns/{mynickname}/{pagenum}")
 	@ApiOperation(value = "나에게 온 메세지 확인", notes = "나에게 온 메세지 확인을 구현.")
-	public Object meAlarmSns(@Valid @RequestParam String mynickname, int pagenum) throws Exception {
+	public Object meAlarmSns(@PathVariable String mynickname, @PathVariable int pagenum) throws Exception {
 
 		List<Alarm> aList = alarmservice.meAlarm(mynickname);
 
