@@ -11,6 +11,7 @@
           <RecommendUser v-for="userData in userList" :key="userData.nickname" :userData="userData" class="mx-2"/>
         </div>
       </div>
+
       <div class="d-flex justify-content-end align-items-center">
         <button v-for="tag in clicktags" :key="tag" class="btn-sort" style="background-color: #ACCCC4;" @click="tagRemove">{{ tag }}</button>
       </div>
@@ -189,11 +190,7 @@ export default {
 
     // 유저 추천 받기
     userReco() {
-      let formData = new FormData;
-      formData.append('nickname', storage.getItem("NickName"))
-      
-      http
-      .post('/account/recommendUser', formData)
+      http.get(`/account/recommendUser/${storage.NickName}`)
       .then((res) => {
         this.userList = res.data
       })
