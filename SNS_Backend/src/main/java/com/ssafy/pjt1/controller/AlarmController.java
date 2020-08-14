@@ -3,7 +3,6 @@ package com.ssafy.pjt1.controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -184,105 +184,10 @@ public class AlarmController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	// 보낸 알림함 확인
-	@PostMapping("/alarm/meSendAlarmTeam")
-	@ApiOperation(value = "내가 보낸 알람 확인", notes = "내가 보낸 알람 구현.")
-	public Object meSendAlarmTeam(@Valid @RequestParam String mynickname, int pagenum) throws Exception {
-		Optional<User> optionalUser = userservice.findtwo(mynickname);
-		User user = optionalUser.get();
-
-		Set<Alarm> aList = user.getAlarms();
-		List<MyAlarm> teamalarm = new LinkedList<MyAlarm>();
-		List<MyAlarm> snsalarm = new LinkedList<MyAlarm>();
-
-		final AlarmResponse result = new AlarmResponse();
-
-		for (Alarm a : aList) {
-			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(),
-					a.getUser().getTeam().getTeamid(), a.getPid(), a.getFlag());
-
-			if (a.getFlag() == 1) {
-				teamalarm.add(ma);
-			} else {
-				snsalarm.add(ma);
-			}
-		}
-
-		// 알람 10개씩 보내기
-		// page 만큼 자르기
-		List<MyAlarm> teamalarmPage = new LinkedList<MyAlarm>();
-
-		int tcnt = 10;
-		int tmin = pagenum * tcnt - tcnt;
-		int tmax = pagenum * tcnt;
-
-		if (tmin < teamalarm.size()) {
-			for (int i = tmin; i < tmax; i++) {
-				if (i == teamalarm.size()) {
-					break;
-				}
-				teamalarmPage.add(teamalarm.get(i));
-			}
-		}
-
-		result.status = true;
-		result.data = "success";
-		result.teamalarm = teamalarmPage;
-
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
-
-	@PostMapping("/alarm/meSendAlarmSns")
-	@ApiOperation(value = "내가 보낸 알람 확인", notes = "내가 보낸 알람 구현.")
-	public Object meSendAlarmSns(@Valid @RequestParam String mynickname, int pagenum) throws Exception {
-		Optional<User> optionalUser = userservice.findtwo(mynickname);
-		User user = optionalUser.get();
-
-		Set<Alarm> aList = user.getAlarms();
-		List<MyAlarm> teamalarm = new LinkedList<MyAlarm>();
-		List<MyAlarm> snsalarm = new LinkedList<MyAlarm>();
-
-		final AlarmResponse result = new AlarmResponse();
-
-		for (Alarm a : aList) {
-			MyAlarm ma = new MyAlarm(a.getAid(), a.getToNickname(), a.getCreateDate(), a.getContent(),
-					a.getUser().getTeam().getTeamid(), a.getPid(), a.getFlag());
-
-			if (a.getFlag() == 1) {
-				teamalarm.add(ma);
-			} else {
-				snsalarm.add(ma);
-			}
-		}
-
-		// 알람 10개씩 보내기
-		// page 만큼 자르기
-		List<MyAlarm> snsalarmPage = new LinkedList<MyAlarm>();
-
-		int scnt = 10;
-		int smin = pagenum * scnt - scnt;
-		int smax = pagenum * scnt;
-
-		if (smin < snsalarm.size()) {
-			for (int i = smin; i < smax; i++) {
-				if (i == snsalarm.size()) {
-					break;
-				}
-				snsalarmPage.add(snsalarm.get(i));
-			}
-		}
-
-		result.status = true;
-		result.data = "success";
-		result.snsalarm = snsalarmPage;
-
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
-
 	// 알람 삭제
-	@PostMapping("/alarm/delete")
+	@DeleteMapping("/alarm/{aid}")
 	@ApiOperation(value = "알람 삭제", notes = "알람 삭제 구현")
-	public void delete(@Valid @RequestParam int aid) throws Exception {
+	public void delete(@PathVariable int aid) throws Exception {
 		Optional<Alarm> optionalAlarm = alarmservice.findById(aid);
 		Alarm alarm = optionalAlarm.get();
 
