@@ -1,20 +1,9 @@
 <template>
-  <div id="Chat">
+  <!-- chatbox -->
+  <div id="chatbox">
    <Navbar></Navbar>
-   <!-- <subNav/> -->
-
-    <!-- 유저이름: 
-    <input
-      v-model="userName"
-      type="text"
-    > -->
-    <!-- <div
-      v-for="(item, idx) in recvList"
-      :key="idx"
-    >
-      <p>{{ item.userName }}: {{ item.content }} </p>
-    </div> -->
-    <div id="chat-wrap">
+    <!-- chat-messages -->
+    <div id="chat-messages">
       <div v-for="(item, idx) in recvList" :key="idx">
         <chatMe :content="item.content" v-if="item.userName === serverUser"/>
         <chatOther :nickname="item.userName" :content="item.content" v-if="item.userName != serverUser"/>
@@ -46,9 +35,9 @@ import Navbar from '../../components/common/Navigation.vue'
 import chatMe from '@/components/chat/chatMe.vue'
 import chatOther from '@/components/chat/chatOther.vue'
 import http from '@/util/http-common.js'
+import $ from 'jquery'
 
 const storage = window.sessionStorage;
-
 
 export default {
   name: 'Chat',
@@ -78,11 +67,8 @@ export default {
     this.connect()
   },
   mounted() {
-    var element = document.querySelector("#Chat")
-    element.scrollTop = element.scrollHeight
-    console.log(element.scrollTop)
-    console.log("scrollheight", element.scrollHeight)
-    
+    console.log("mount")
+    this.scrolltoBottom()
   },
   methods: {
     initialize(){
@@ -141,25 +127,13 @@ export default {
       );        
     },
     scrolltoBottom() {
-    var element = document.querySelector("#Chat")
-    element.scrollTop = element.scrollHeight
-    console.log(element.scrollTop)
-    console.log("scrollheight", element.scrollHeight)
+    $('html,body').animate({scrollTop: 1000000000},100);
     },
   }
 }
 </script>
 
 <style scoped>
-#Chat{
-  padding-top: 10px;
-  height: 100vh;
-  width: 110vw;
-  overflow: scroll;
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
 
 /* chat 입력창 */
 .chat-input{

@@ -1,7 +1,7 @@
 <template>
-    <div class="chat-box">
-        <div class="chat-name">{{ nickname }}</div>
-        <div class="chat-content">{{ content }}</div>
+    <div class="message-box-holder">
+        <div class="message-sender">{{ nickname }}</div>
+        <div class="message-box message-partner">{{ content }}</div>
     </div>
 </template>
 
@@ -17,39 +17,57 @@ export default {
 </script>
 
 <style scoped>
-.chat-box{
-    position: relative;
+.message-box-holder {
+  width: 100%;
+  margin: 0 0 10px;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
 }
-.chat-name{
-    text-align: left;
-    font-weight: bold;
-    padding: 0 0 0 20px;
-    right: 0;
+
+.message-sender {
+  font-size: 14px;
+  margin: 10px 0 15px 10px;
+  color: #464545;
+  align-self: flex-start;
+   color: #464545;
+  text-decoration: none;
 }
-.chat-content{
-    width: 40vw;
-    background: #C4BCB8;
-    padding: 15px;
-    text-align: left;
-    font-weight: 900;
-    border-radius: 10px;
-    color: #fff;
-    margin: 0 0 10px 0;
-    white-space: pre-wrap;
-    word-break: break-all;
-    position: relative;
-    left: 20px;
+
+.message-box {
+ 
+  padding: 6px 10px;
+  border-radius: 6px 0 6px 0;
+  position: relative;
+  background: #E2DFD8;
+  border: 2px solid #C4BCB8;
+  color: #464545;
+  font-size: 14px;
 }
-.chat-content:before{
-    content: "";
-    width: 0px;
-    height: 0px;
-    position: absolute;
-    border-left: 10px solid transparent;
-    border-right: 10px solid #C4BCB8;
-    border-top: 10px solid #C4BCB8;
-    border-bottom: 10px solid transparent;
-    left: -14px;
-    top: 6px;
+.message-box:after {
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid #C4BCB8;
+  border-right: none;
+  bottom: -22px;
+  right: 10px;
+}
+
+.message-partner {
+  margin: 0 10px;
+  background: #E2DFD8;
+  border: 2px solid #C4BCB8;
+  align-self: flex-start;
+}
+
+.message-partner:after {
+  right: auto;
+  bottom: auto;
+  top: -22px;
+  left: 9px;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #C4BCB8;
+  border-left: none;
 }
 </style>
