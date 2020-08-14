@@ -238,7 +238,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/modifyFalse/{nickname}")
+	@PutMapping("/account/modifyFalse/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
 	public Object updatefalse(@PathVariable String nickname, @Valid @RequestParam String email, String blog, String git, String intro)
 			throws Exception {
