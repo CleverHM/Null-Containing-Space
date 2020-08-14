@@ -288,9 +288,7 @@ export default {
     deletePost() {
       
       http
-      .post("/post/postDelete",
-        this.article.pid
-      )
+      .delete(`/post/${this.article.pid}`)
       .then((res) => {
         this.$router.replace({ name: 'FeedMain' });
       })
