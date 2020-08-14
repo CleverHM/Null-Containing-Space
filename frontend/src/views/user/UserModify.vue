@@ -135,10 +135,10 @@ export default {
         return {
             User : {
                 email: storage.User,
-                nickname: null,
+                nickname: "",
                 blogURL: "",
                 GitURL: "",
-                Introduce: null,
+                Introduce: "",
                 profileURL: null,
             },
             error: {
@@ -156,8 +156,10 @@ export default {
     },
     methods: {
         getInfo() {
-            http.get(`/account/myPage/${this.nickname}/${this.pagenickname}`)
+            console.log()
+            http.get(`/account/myPage/${this.newnickname}/${this.newnickname}`)
             .then(({data}) => {
+                console.log(data)
                 this.newnickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
