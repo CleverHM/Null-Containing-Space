@@ -216,19 +216,6 @@ public class FollowController {
 		return listPage;
 	}
 
-	@PostMapping("/unfollow/tag")
-	@ApiOperation(value = "태그", notes = "사용자가 태그를 언팔로우하는기능 ")
-	public void tagUnFollow(@Valid @RequestParam String nickname, @Valid @RequestParam String tagname) {
-		// u1이 u2 언팔로우하는거임.
-		Optional<User> U1 = userservice.findtwo(nickname);
-		Optional<Tag> T1 = tagdao.findTagByName(tagname);
-
-		User u1 = U1.get();
-		Tag t2 = T1.get();
-
-		followservice.unfollowTag(u1.getUid(), t2.getTid());
-	}
-
 	@PostMapping("/follow/tag")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
 	public Object tagFollow(@Valid @RequestParam String nickname, @Valid @RequestParam String tagname) {
