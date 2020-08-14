@@ -181,13 +181,12 @@ export default {
       formData.append("title", this.article.title);
       formData.append("content", this.article.content);
       formData.append("hashtags", this.article.hashtags);
-      formData.append("pid", postId);
 
       // 이미지 변화가 없을 때 / 있을 때
       if (this.notchangeImage) {
         
         http
-        .put("/post/isFalse", formData)
+        .put(`/post/isFalse/${postId}`, formData)
         .then((res) => {
           this.$router.replace({ name: 'FeedDetail', params: { postId: postId }});
         })
@@ -200,7 +199,7 @@ export default {
         formData.append("files", this.article.file);
 
         http
-        .put("/post/isTrue", 
+        .put(`/post/isTrue/${postId}`, 
           formData,
           {
             headers: {

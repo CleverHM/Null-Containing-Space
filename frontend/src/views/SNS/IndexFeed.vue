@@ -78,18 +78,13 @@ export default {
     storage.removeItem("istagTab");
     storage.removeItem("ispeopleTab");
   },
-
   methods: {
     // 피드 가져오기 (해시태그 x)
     bringList($state) {
       const EACH_LEN = 5
 
-      let formData = new FormData;
-      formData.append("email", storage.getItem("User"));
-      formData.append("pagenum", this.limit);
-
       http
-      .post('/post/getPost', formData)
+      .get(`/post/${storage.getItem("NickName")}/${this.limit}`)
       .then((res) => {
         setTimeout(() => {
           if(res.data.feeddata.length) {
@@ -120,13 +115,12 @@ export default {
       const EACH_LEN = 5
 
       let formData = new FormData();
-      formData.append("email", storage.getItem("User"));
       formData.append("hashtag", this.clicktags);
       formData.append("pagenum", this.limit);
       // console.log('해시', this.clicktags)
 
       http
-      .post('/post/getHashtagPost', 
+      .get(`/post/hash/${storage.getItem("NickName")}`, 
         formData
       )
       .then((res) => {

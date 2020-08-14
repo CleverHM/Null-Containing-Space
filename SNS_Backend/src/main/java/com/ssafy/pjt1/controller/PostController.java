@@ -375,7 +375,7 @@ public class PostController {
 	}
 
 	// 내게시물 보내주기
-	@PostMapping("/post/upload/{nickname}/{pagenum}")
+	@GetMapping("/post/upload/{nickname}/{pagenum}")
 	@ApiOperation(value = "내게시물 Vue로보내기", notes = "내게시물 Vue로보내기 기능을 구현.")
 	public List<FeedData> myPost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
 
@@ -527,7 +527,7 @@ public class PostController {
 	}
 
 	// 내가 좋아요한 게시물 보내주기
-	@PostMapping("/post/like/{nickname}/{pagenum}")
+	@GetMapping("/post/like/{nickname}/{pagenum}")
 	@ApiOperation(value = "내가 좋아요한 게시물 Vue로보내기", notes = "내가 좋아요한 게시물 Vue로보내기 기능을 구현.")
 	public List<FeedData> myLikePost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
 
