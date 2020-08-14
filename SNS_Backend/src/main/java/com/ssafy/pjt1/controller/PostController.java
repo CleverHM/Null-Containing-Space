@@ -1045,8 +1045,6 @@ public class PostController {
 		}
 		
 		List<FeedData> res = new LinkedList<FeedData>();
-		System.out.println("============해시태그 클릭 시 =============");
-		System.out.println(nickname);
 		List<Post> postList = new LinkedList<>();
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
@@ -1243,12 +1241,12 @@ public class PostController {
 	}
 
 	// 해당 해쉬태그가 있는 모든글 보여주기
-	@PostMapping("/post/getHashtagPostAll")
+	@GetMapping("/post/hashall/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPostAll(@Valid @RequestParam String email, String hashtag, int pagenum)
+	public Object getHashtagPostAll( @PathVariable String nickname, int pagenum, @RequestParam String hashtag)
 			throws MalformedURLException, IOException {
 
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		List<Post> postList = postservice.findall();
