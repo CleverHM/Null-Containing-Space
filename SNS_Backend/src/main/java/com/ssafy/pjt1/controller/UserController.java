@@ -566,9 +566,9 @@ public class UserController {
 	}
 
 	// user 랜덤 추천
-	@PostMapping("/account/recommendUser")
+	@GetMapping("/account/recommendUser/{nickname}")
 	@ApiOperation(value = "유저 랜덤 추천", notes = "유저 랜덤 추천 기능을 구현.")
-	public List<RecommendUser> recommendUser(@Valid @RequestParam String nickname) {
+	public List<RecommendUser> recommendUser(@PathVariable String nickname) {
 
 		List<RecommendUser> list = new LinkedList<RecommendUser>();
 
