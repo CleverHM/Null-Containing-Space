@@ -381,6 +381,7 @@ public class UserController {
 	@ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
 	public MyPageData myPageDetail(@PathVariable String nickname,@PathVariable String pageNickname)
 			throws FileNotFoundException, IOException {
+		System.out.println(nickname + " " + pageNickname);
 		List<String> tag = new ArrayList<>();
 		List<Integer> abt = new ArrayList<>();
 
