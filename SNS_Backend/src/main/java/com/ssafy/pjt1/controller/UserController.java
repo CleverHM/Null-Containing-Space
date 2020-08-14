@@ -627,9 +627,9 @@ public class UserController {
 		return list;
 	}
 
-	@PostMapping("/account/abilityInfo")
+	@GetMapping("/account/abilityInfo/{nickname}")
 	@ApiOperation(value = "능력치 넘기기", notes = "능력치 넘기기 기능을 구현.")
-	public List<Integer> abilityInfo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+	public List<Integer> abilityInfo(@PathVariable String nickname) throws FileNotFoundException, IOException {
 		List<Integer> abt = new ArrayList<>();
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
@@ -654,9 +654,9 @@ public class UserController {
 		return abt;
 	}
 	
-	@PostMapping("/account/abilityModify")
+	@PutMapping("/account/abilityModify/{nickname}")
 	@ApiOperation(value = "능력치 수정", notes = "능력치 수정 기능을 구현.")
-	public void abilityInfo(@Valid @RequestParam String nickname, int[] ability) throws FileNotFoundException, IOException {
+	public void abilityInfo(@PathVariable String nickname, @Valid @RequestParam int[] ability) throws FileNotFoundException, IOException {
 		System.out.println("algo"+ability[14]);
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
