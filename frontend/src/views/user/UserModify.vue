@@ -38,7 +38,8 @@
                 <input v-model="newnickname" 
                 id="nickname"
                 type="text"
-                maxlength="5"/>
+                maxlength="5"
+                @keyup.enter="isDuplicate"/>
                 <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
                 <div class="Success" v-if="error.nicknameSuccess && error.nicknameSuccess!='me'"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
 
@@ -191,6 +192,7 @@ export default {
                     this.error.nicknameSuccess=""
                 })
             } else {
+                this.error.nickname=""
                 this.error.nicknameSuccess= 'me'
             }
         },
@@ -223,7 +225,7 @@ export default {
 
         },
         imageUpload() {
-            console.log(this.$refs.files.files);
+            // console.log(this.$refs.files.files);
             this.previewImg = {
                 file: this.$refs.files.files[0],
                 preview: URL.createObjectURL(this.$refs.files.files[0]),
