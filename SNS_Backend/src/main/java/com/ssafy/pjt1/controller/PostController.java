@@ -237,9 +237,9 @@ public class PostController {
 	}
 
 	// 게시물 사진 변화 O
-	@PutMapping("/post/isTrue")
+	@PutMapping("/post/isTrue/{pid}")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public void modifytrue(@Valid @RequestParam int pid, MultipartFile files, String email, String title,
+	public void modifytrue(@PathVariable int pid, @Valid @RequestParam MultipartFile files, String email, String title,
 			String content, String[] hashtags) throws MalformedURLException, IOException {
 
 		Optional<Post> p = postdao.findById(pid);
@@ -319,9 +319,9 @@ public class PostController {
 	}
 	
 	// 게시물 사진 변화 X
-	@PutMapping("/post/isFalse")
+	@PutMapping("/post/isFalse/{pid}")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public void modifyfalse(@Valid @RequestParam int pid, String email, String title, String content, String[] hashtags)
+	public void modifyfalse(@PathVariable int pid, @Valid @RequestParam String email, String title, String content, String[] hashtags)
 			throws MalformedURLException, IOException {
 
 		Optional<Post> p = postdao.findById(pid);
