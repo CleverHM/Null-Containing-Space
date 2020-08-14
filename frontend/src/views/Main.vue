@@ -65,12 +65,8 @@ export default {
 
         setTimeout(this.delayfinish, 200);
 
-        let formData = new FormData;
-        formData.append("nickname", storage.getItem("NickName"));
-        formData.append("pagenum", 1);
-
         http
-        .post("/team/exist", formData)
+        .get(`/team/${storage.getItem("NickName")}/${1}`)
         .then((res) => {
             this.team = res.data
         })

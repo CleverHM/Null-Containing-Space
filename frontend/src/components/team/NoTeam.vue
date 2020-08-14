@@ -103,12 +103,8 @@ export default {
       infiniteHandler($state) {
         const EACH_LEN = 10
 
-        let formData = new FormData;
-        formData.append("nickname", storage.getItem("NickName"));
-        formData.append("pagenum", this.limit);
-
         http
-        .post("/team/exist", formData)
+        .get(`/team/${storage.getItem("NickName")}/${this.limit}`)
         .then((res) => {
           setTimeout(() => {
             if(res.data.teamdates.length) {

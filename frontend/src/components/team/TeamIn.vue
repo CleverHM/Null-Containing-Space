@@ -281,11 +281,9 @@ export default {
     // 프로젝트 팀 탈퇴
     teamLeave() {
       if (this.ifLeader == false) {
-        let formData = new FormData;
-        formData.append("nickname", storage.getItem("NickName"))
 
         http
-        .post('/team/leave', formData)
+        .delete(`/team/leave/${storage.getItem("NickName")}`)
         .then((res) => {
           alert('프로젝트 팀에서 탈퇴하셨습니다.')
           this.$router.go({ name: 'Main' }).catch(()=>{})
@@ -299,11 +297,9 @@ export default {
     // 프로젝트 종료
     teamExit() {
       if (this.ifLeader == true) {
-        let formData = new FormData;
-        formData.append("nickname", storage.getItem("NickName"))
 
         http
-        .post('/team/exit', formData)
+        .delete(`/team/${storage.getItem("NickName")}`)
         .then((res) => {
           alert('프로젝트가 종료되었습니다.')
           this.$router.go({ name: 'Main' }).catch(()=>{})
