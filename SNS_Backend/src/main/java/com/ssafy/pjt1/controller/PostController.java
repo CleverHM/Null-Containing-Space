@@ -1037,7 +1037,7 @@ public class PostController {
 	// 해당이메일 게시물 보내주기
 	@GetMapping("/post/hash/{nickname}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPost(@PathVariable String nickname, @Valid @RequestParam String[] hashtag, int pagenum)
+	public Object getHashtagPost(@PathVariable String nickname, @Valid @RequestParam(required = false) String[] hashtag, int pagenum)
 			throws MalformedURLException, IOException {
 
 
@@ -1106,17 +1106,9 @@ public class PostController {
 				System.out.println("있음");
 				InputStream inputStream = new FileInputStream(hasftagPostList.get(i).getFiles().getFileurl()
 						+ hasftagPostList.get(i).getFiles().getFilename());
-				String type = result.toURL().openConnection()
-						.guessContentTypeFromName(postList.get(i).getFiles().getFilename());
-
-				System.out.println(type);
 
 				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-				HttpHeaders responseHeaders = new HttpHeaders();
-				responseHeaders.add("content-disposition",
-						"attachment; filename=" + hasftagPostList.get(i).getFiles().getFilename());
-				responseHeaders.add("Content-Type", type);
 
 				int count = likeservice.likeCount(hasftagPostList.get(i));
 
