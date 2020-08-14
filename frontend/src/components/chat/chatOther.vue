@@ -42,7 +42,7 @@ export default {
   background: #EDECEA;
   border: 2px solid #E2DFD8;
   color: #6c6c6c;
-  font-size: 12px;
+  font-size: 14px;
 }
 .message-box:after {
   content: "";

@@ -29,16 +29,16 @@ export default {
   padding: 6px 10px;
   border-radius: 6px 0 6px 0;
   position: relative;
-  background: #c6dfd6 ;
-  border: 2px solid #ACCCC4;
+  background: #D3E8EB;
+  border: 2px solid #BAD1CC;
   color: #6c6c6c;
-  font-size: 12px;
+  font-size: 14px;
 }
 .message-box:after {
   content: "";
   position: absolute;
   border: 10px solid transparent;
-  border-top: 10px solid #ACCCC4;
+  border-top: 10px solid #BAD1CC;
   border-right: none;
   bottom: -22px;
   right: 10px;
