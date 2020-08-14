@@ -46,29 +46,14 @@ export default {
   },
   methods:{
    confirmCode() {
-     if (this.linkname == 'findPassword'){
-       http.post('/auth/passwordUpdateMailConfirm', {
-         'auth_email' : this.email,
-         'auth_number' : this.authNum
-       })
+     http.get(`/auth/confirm/${this.email}/${this.authNum}`) 
        .then(() => {
-         this.$emit("Complete2")
+         if (this.linkname == 'findPassword')  this.$emit("Complete2")
+         else this.$emit("CompleteStep2", this.email)
        })
-     } else {
-       http.post('/auth/loginMailConfirm', 
-          {
-            "auth_email": this.email,
-            "auth_number": this.authNum,
-          }
-        )
-        .then((data) => {
-          this.$emit("CompleteStep2", this.email)
-        })
-        .catch((err) => {
+        .catch(() => {
           this.ErrorMessage = "인증번호가 일치하지 않습니다. 다시 입력해 주세요."
         })
-     }
-     
     },
     resend(email) {
       http.post('/auth/loginMailSend', this.email)
