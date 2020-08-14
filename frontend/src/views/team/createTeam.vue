@@ -4,7 +4,7 @@
         <subNav/>
         <div class="team-form">
             <!-- 프로젝트 이름 -->
-            <div class="inputForm">
+            <div class="input-title">
                 <input 
                 v-model="team.title" 
                 id="title" 
@@ -14,7 +14,7 @@
             </div>
 
             <!-- 프로젝트 인원 -->
-            <div class="cnt-area">
+            <div class="input-cnt">
                 인원
                 <b-icon-chevron-down scale="1.2" font-scale="1.5" class="cnt-down" @click="cntDown"></b-icon-chevron-down>
                 <div>{{ team.cnt }}</div>
@@ -22,9 +22,9 @@
             </div>
 
             <!-- 프로젝트 기술 -->
-            <div class="team-use">
+            <div class="text-team-use">
                 프로젝트 사용 기술
-                <span class="team-use-sub">
+                <span class="text-team-sub">
                     (필요한 기술을 클릭해주세요)
                 </span>
             </div>
@@ -206,7 +206,7 @@ export default {
                         num = 0;
                     }
                 }
-                console.log(this.team.clicktech)
+                // console.log(this.team.clicktech)
 
 
             } else { // 리더가 아닌 접근은 돌린다.
@@ -407,27 +407,12 @@ export default {
 .input-with-label{
     width: 100%;
 }
-.inputForm{
+.input-title {
     margin: 0px 5px 10px 5px;
 }
 
 
-.team-use {
-    margin: 20px 10px 10px 10px;
-    color: #464545;
-    font-size: 15px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
-
-.team-use-sub {
-    color:#757474;
-    font-size: 14px;
-    margin-left: 15px;
-    font-weight: normal;
-}
-
-.cnt-area {
+.input-cnt {
     display: inline-block;
     margin: 10px;
     color: #464545;
@@ -435,7 +420,7 @@ export default {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
-.cnt-area > div {
+.input-cnt > div {
     display: inline-block;
     font-weight: lighter;
 }
@@ -455,6 +440,23 @@ export default {
     color:white;
     padding: 5px;
 }
+
+
+.text-team-use {
+    margin: 20px 10px 10px 10px;
+    color: #464545;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.text-team-sub {
+    color:#757474;
+    font-size: 14px;
+    margin-left: 15px;
+    font-weight: normal;
+}
+
 
 .button-all {
     display: inline-block;
