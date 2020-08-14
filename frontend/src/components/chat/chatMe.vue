@@ -33,6 +33,8 @@ export default {
   border: 2px solid #BAD1CC;
   color: #464545;
   font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 .message-box:after {
   content: "";

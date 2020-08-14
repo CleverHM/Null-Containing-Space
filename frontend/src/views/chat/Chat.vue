@@ -15,13 +15,12 @@
 
     <div class="chat-input">
       <!-- <label for="name">내용: </label> -->
-      <input
+      <textarea
         v-model="message"
         name="message"
         type="text"
-        @keyup.enter="sendMessage"
         autocomplete="off"
-      >
+      />
       <button @click="sendMessage">입력</button>
     </div>
 
@@ -67,8 +66,11 @@ export default {
     this.connect()
   },
   mounted() {
-    console.log("mount")
+    console.log($(".chat-input").width()-$(".chat-input button").width())
+    $(".chat-input textarea").outerWidth($(".chat-input").width()-$(".chat-input button").width())
+    console.log($(".chat-input textarea").outerWidth())
     this.scrolltoBottom()
+
   },
   methods: {
     initialize(){
@@ -143,9 +145,14 @@ export default {
   display: flex;
   background-color: #EDECEA;
 }
-.chat-input input{
+.chat-input textarea{
+  padding: 15px 20px;
+  height: 50px;
+  background-color: #edecea;
   border: 0;
-  flex: 1;
+  outline: 0;
+  resize: none;
+
 }
 .chat-input button{
   position: absolute;
