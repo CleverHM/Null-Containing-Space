@@ -30,12 +30,12 @@
               <div class="team-tags">
                 팀장
               </div>
-              <div class="team-member-area">
-                <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
+              <div class="member-info d-flex flex-row align-items-center" style="height:110px;">
+                <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="ml-2"></memberImg>
               </div>
             </div>
             
-            <div v-if="teamExist" class="memberArea d-flex justify-content-start align-items-center mt-4">
+            <div v-if="teamExist" class="memberArea d-flex justify-content-start align-items-center">
               <div class="team-tags">
                 팀원
               </div>
