@@ -78,7 +78,7 @@ export default {
         infiniteHandler($state) {
             const EACH_LEN = 10
             
-            http.get(`/post/hashAll/${storage.getItem("NickName")}/${this.limit}`, {
+            http.get(`/post/hashall/${storage.getItem("NickName")}/${this.limit}`, {
                 params: {
                     hashtag: this.tag + ''
                 }

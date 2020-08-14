@@ -95,7 +95,7 @@ export default {
     // 댓글 삭제
     commentDelete() {
       http
-      .post('/reply/delete', this.reply.rid)
+      .delete(`/reply/${this.reply.rid}`)
       .then((res) =>{
         this.$emit('delete-reply')
       })
