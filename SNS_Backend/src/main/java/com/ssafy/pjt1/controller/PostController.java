@@ -698,16 +698,15 @@ public class PostController {
 
 	// 해당이메일 게시물 보내주기
 	// 무한 스크롤
-	@PostMapping("/post/getPost")
+	@GetMapping("/post/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
-	public Object getPost(@Valid @RequestParam String email, int pagenum)
+	public Object getPost(@PathVariable String nickname, @PathVariable int pagenum)
 			throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 
-		System.out.println(email);
 		List<Post> postList = new LinkedList<>();
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		Set<UserFollow> followList = user.getFollowings();
@@ -880,12 +879,11 @@ public class PostController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-//
-	@PostMapping("/post/postDetail")
+	@GetMapping("/post/detail/{pid}/{nickname}")
 	@ApiOperation(value = "게시물 디테일 페이지", notes = "게시물 디테일 페이지 기능을 구현.")
-	public FeedDetailData postDetail(@Valid @RequestParam String pid, String email) throws IOException {
+	public FeedDetailData postDetail(@PathVariable String pid, @PathVariable String nickname) throws IOException {
 
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		FeedDetailData feedDetailData = null;
@@ -1037,18 +1035,16 @@ public class PostController {
 	}
 
 	// 해당이메일 게시물 보내주기
-	@PostMapping("/post/getHashtagPost")
+	@GetMapping("/post/hash/{nickname}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPost(@Valid @RequestParam String email, String[] hashtag, int pagenum)
+	public Object getHashtagPost(@PathVariable String nickname, @Valid @RequestParam String[] hashtag, int pagenum)
 			throws MalformedURLException, IOException {
 
-		System.out.println(email);
 
 		List<FeedData> res = new LinkedList<FeedData>();
 
-		System.out.println(email);
 		List<Post> postList = new LinkedList<>();
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		Set<UserFollow> followList = user.getFollowings();
