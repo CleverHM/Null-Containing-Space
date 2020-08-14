@@ -231,11 +231,7 @@ export default {
               this.isLoading = false;
         },
         getUserInfo() {
-          var InputData = new FormData();
-          InputData.append("nickname", this.nickname)
-          InputData.append("pageNickname", this.pagenickname)
-          http
-          .post("/account/myPage", InputData)
+          http.get(`/account/myPage/${this.nickname}/${this.pagenickname}`)
           .then(({data}) => {
               console.log(data)
               this.User.nickname = data.nickname

@@ -155,11 +155,7 @@ export default {
     },
     methods: {
         getInfo() {
-            var InputData = new FormData();
-            InputData.append("nickname", storage.NickName)
-            InputData.append("pageNickname", storage.NickName)
-            http
-            .post("/account/myPage", InputData)
+            http.get(`/account/myPage/${this.nickname}/${this.pagenickname}`)
             .then(({data}) => {
                 this.newnickname = data.nickname
                 this.User.Introduce = data.intro
@@ -254,49 +250,34 @@ export default {
             var InputData = new FormData()
             InputData.append("profile", this.previewImg.file)
             InputData.append("email", this.User.email)
-            InputData.append("nickname", this.newnickname)
             InputData.append("blog", this.User.blogURL)
             InputData.append("git", this.User.GitURL)
             InputData.append("intro", this.User.Introduce)
-            console.log("inputdata", InputData)
             http
-            .post("/account/modifyTrue", InputData)
+            .put(`/account/modifyTrue/${this.newnickname}`, InputData)
             .then(({data}) => {
-                console.log(data)
                 storage.NickName = this.newnickname
                 this.$router.push({name:'profile', params: {nickname: this.newnickname}})
-            })
-            .catch((err) => {
-                console.log(err)
             })
         },
         WithProfile() {
             var InputData = new FormData()
             InputData.append("email", this.User.email)
-            InputData.append("nickname", this.newnickname)
             InputData.append("blog", this.User.blogURL)
             InputData.append("git", this.User.GitURL)
             InputData.append("intro", this.User.Introduce)
-            console.log("inputdata", InputData)
 
             http
-            .post("/account/modifyFalse", InputData)
+            .put(`/account/modifyFalse/${this.newnickname}`, InputData)
             .then(({data}) => {
-                console.log(data)
                 storage.NickName = this.newnickname
                 this.$router.push({name:'profile', params: {nickname: this.newnickname}})
-            })
-            .catch((err) => {
-                console.log(err)
             })
 
         },
         deleteUser() {
-            var InputData = new FormData()
-            InputData.append("nickname", storage.NickName)
-            http.put("/account/delete", InputData)
+            http.delete(`/account/${storage.NickName}`)
             .then((data) => {
-                console.log(data)
                 alert("회원탈퇴하였습니다.")
                 this.$router.push("/")
             })

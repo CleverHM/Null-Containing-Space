@@ -78,7 +78,7 @@ public class AuthController {
 		// 확인 하기
 		System.out.println(email);
 		System.out.println(auth);
-a
+
 		Optional<Auth> flag = authservice.findone(email);
 
 		flag.ifPresent(selectUser -> {
