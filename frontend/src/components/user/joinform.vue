@@ -186,8 +186,7 @@ export default {
     },
     // 닉네임체크
     isDuplicate() {
-      http
-      .post("/account/nickNameDuplicate", this.FormUser.nickname)
+      http.get(`/account/nickNameDuplicate/${this.FormUser.nickname}`)
       .then((data) => {
         if (data.data.status) {
           this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
