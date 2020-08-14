@@ -33,13 +33,9 @@ export default {
       'nickname'
     ],
     created() {
-      var InputData = new FormData()
-      console.log(this.nickname)
-      InputData.append("nickname", this.nickname)
-      http.post("/account/abilityInfo", InputData)
+      http.get(`/account/abilityInfo/${this.nickname}`)
       .then(({data}) => {
         this.modifyAbility = data
-        console.log(this.modifyAbility)
       })
       this.Loading();
       
@@ -91,9 +87,8 @@ export default {
       },
       Modify() {
         var InputData = new FormData()
-        InputData.append("nickname", this.nickname)
         InputData.append("ability", this.modifyAbility)
-        http.post("/account/abilityModify", InputData)
+        http.get(`/account/abilityModify/${this.nickname}`, InputData)
         .then(({data}) => {
           this.$router.push({ name: 'profile', params: { nickname: this.nickname }});
         })
