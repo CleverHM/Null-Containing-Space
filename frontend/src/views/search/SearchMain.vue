@@ -154,12 +154,8 @@ export default {
     searchPeople($state) {
       const EACH_LEN = 10
 
-      var InputData = new FormData()
-      InputData.append("search", this.SearchData)
-      InputData.append("mynickname", window.sessionStorage.NickName)
-      InputData.append("pagenum", this.limit)
 
-      http.post("/search/user", InputData)
+      http.get(`/search/user/${this.SearchData}/${window.sessionStorage.NickName}/${this.limit}`)
       .then(({data}) => {
         setTimeout(() => {
           if(data.length) {
@@ -178,11 +174,7 @@ export default {
     searchTag($state) {
       const EACH_LEN = 10
 
-      var InputData = new FormData()
-      InputData.append("hashtag", this.SearchData)
-      InputData.append("pagenum", this.limit)
-
-      http.post("/search/hashtag", InputData)
+      http.get(`/search/hashtag/${this.SearchData}/${this.limit}`)
       .then(({data}) => {
         setTimeout(() => {
           if(data.length) {

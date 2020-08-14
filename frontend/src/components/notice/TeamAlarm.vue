@@ -93,11 +93,9 @@ export default {
 
         // 알람 삭제
         alarmDelete() {
-            let formData = new FormData;
-            formData.append('aid', this.teamData.aid)
-
+            
             http
-            .post('/alarm/delete', formData)
+            .delete(`/alarm/${this.teamData.aid}`)
             .then((res) => {
                 this.$router.go({ name: 'Notice', params: { tapId: 1 } })
             })

@@ -106,12 +106,8 @@ export default {
     teamReceive($state) {
       const EACH_LEN = 10
 
-      let formData = new FormData;
-      formData.append("mynickname", storage.getItem("NickName"))
-      formData.append("pagenum", this.teamLimit)
-
       http
-      .post('/alarm/meAlarmTeam', formData)
+      .get(`/alarm/team/${storage.getItem("NickName")}/${this.teamLimit}`)
       .then((res) => {
         setTimeout(() => {
           if(res.data.teamalarm.length) {
@@ -136,12 +132,8 @@ export default {
     snsReceive($state) {
       const EACH_LEN = 10
 
-      let formData = new FormData;
-      formData.append("mynickname", storage.getItem("NickName"))
-      formData.append("pagenum", this.snsLimit)
-
       http
-      .post('/alarm/meAlarmSns', formData)
+      .get(`/alarm/sns/${storage.getItem("NickName")}/${this.snsLimit}`)
       .then((res) => {
         setTimeout(() => {
           if(res.data.snsalarm.length) {

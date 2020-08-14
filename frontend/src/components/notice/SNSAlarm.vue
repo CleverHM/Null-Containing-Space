@@ -78,10 +78,8 @@ export default {
             this.$router.push({ name: 'profile', params: { nickname: this.snsData.who }})
         },
         deleteAlarm() {
-            let formData = new FormData;
-            formData.append('aid', this.snsData.aid)
 
-            http.post('/alarm/delete', formData)
+            http.delete(`/alarm/${this.snsData.aid}`)
             .then(() => { this.$router.go() })
         },
         goDetail() {

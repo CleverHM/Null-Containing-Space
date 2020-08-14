@@ -8,12 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dao.TagDao;
@@ -22,7 +20,6 @@ import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.PersonData;
-import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -47,9 +44,9 @@ public class SearchController {
 	TagDao tagdao;
 
 	// 계정 검색 검색어 포함된 리스트
-	@PostMapping("/search/user")
+	@GetMapping("/search/user/{search}/{mynickname}/{pagenum}")
 	@ApiOperation(value = "계정 검색", notes = "계정 검색 기능을 구현.")
-	public Object postDelete(@Valid @RequestParam String search, String mynickname, int pagenum) throws IOException {
+	public Object postDelete(@PathVariable String search,@PathVariable String mynickname,@PathVariable int pagenum) throws IOException {
 		List<PersonData> list = new LinkedList<PersonData>();
 
 		List<User> allUser = userservice.findall();
@@ -134,9 +131,9 @@ public class SearchController {
 	}
 
 	// 해쉬태그 검색 검색어 포함된 리스트
-	@PostMapping("/search/hashtag")
+	@GetMapping("/search/hashtag/{hashtag}/{pagenum}")
 	@ApiOperation(value = "hashtag 검색", notes = "hashtag 기능을 구현.")
-	public Object hashtag(@Valid @RequestParam String hashtag, int pagenum) throws IOException {
+	public Object hashtag(@PathVariable String hashtag,@PathVariable int pagenum) throws IOException {
 		List<String> list = new LinkedList<String>();
 
 		List<Tag> allTag = tagdao.findAll();

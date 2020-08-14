@@ -12,12 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dto.Team;
@@ -50,9 +48,9 @@ public class MatchingController {
 	private MatchingService matchingservice;
 
 	
-	@PostMapping("/match/teammember")
+	@GetMapping("/match/{nickname}")
 	@ApiOperation(value = "팀원 추천", notes = "매칭 알고리즘을 구현")
-	public MatchingData matchingAlgo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+	public MatchingData matchingAlgo(@PathVariable String nickname) throws FileNotFoundException, IOException {
 		List<String> preferTech = new ArrayList<>();
 		List<User> userlist1 = new ArrayList<>();
 		List<User> userlist2 = new ArrayList<>();

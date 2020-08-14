@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,9 +66,9 @@ public class ReplyController {
 		System.out.println(reply.getUser().getUid());
 	}
 	
-	@PostMapping("/reply/delete")
+	@DeleteMapping("/reply/{rid}")
 	@ApiOperation(value = "댓글 삭제", notes = "댓글  삭제 기능을 구현.")
-	public void deleteReply(@Valid @RequestBody int rid) {
+	public void deleteReply(@PathVariable int rid) {
 		Optional<Reply> reply = replydao.findReplyByRid(rid);
 
 		Reply r = reply.get();

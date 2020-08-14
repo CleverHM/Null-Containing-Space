@@ -35,8 +35,8 @@
                 <div class="team-tags">
                   팀장
                 </div>
-                <div class="team-member-area">
-                    <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="mx-2"></memberImg>
+                <div class="leader-info">
+                    <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="ml-2"></memberImg>
                 </div>
               </div>
               
@@ -45,7 +45,7 @@
                   팀원
                 </div>
                 <div class="member-info d-flex flex-row align-items-center">
-                    <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="mr-2"></memberImg>
+                    <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
                 </div>
               </div>
             </div>
@@ -117,10 +117,8 @@ export default {
   created() {
     setTimeout(this.delayfinish, 300);
 
-    let formData = new FormData;
-    formData.append("teamid", this.teamId)
     http
-    .post('/team/teamInfo', formData)
+    .get(`/team/info/${this.teamId}`)
     .then((res) => {
       this.teamData = res.data.teamdate
       // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
@@ -254,12 +252,16 @@ export default {
   float: left;
   width: 17%;
 }
+.member-info {
+  display: inline;
+  margin-bottom: 20px;
+  width: 100%;
+}
 
 .member-info {
   display: inline;
   margin-bottom: 20px;
   width: 100%;
-  height: 120px;
   overflow-x: scroll;
   white-space:nowrap;
 }

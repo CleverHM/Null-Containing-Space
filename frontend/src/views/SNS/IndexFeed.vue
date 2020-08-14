@@ -11,6 +11,7 @@
           <RecommendUser v-for="userData in userList" :key="userData.nickname" :userData="userData" class="mx-2"/>
         </div>
       </div>
+
       <div class="d-flex justify-content-end align-items-center">
         <button v-for="tag in clicktags" :key="tag" class="btn-sort" style="background-color: #ACCCC4;" @click="tagRemove">{{ tag }}</button>
       </div>
@@ -78,18 +79,13 @@ export default {
     storage.removeItem("istagTab");
     storage.removeItem("ispeopleTab");
   },
-
   methods: {
     // 피드 가져오기 (해시태그 x)
     bringList($state) {
       const EACH_LEN = 5
 
-      let formData = new FormData;
-      formData.append("email", storage.getItem("User"));
-      formData.append("pagenum", this.limit);
-
       http
-      .post('/post/getPost', formData)
+      .get(`/post/${storage.getItem("NickName")}/${this.limit}`)
       .then((res) => {
         setTimeout(() => {
           if(res.data.feeddata.length) {
@@ -119,16 +115,12 @@ export default {
     bringListHash($state) {
       const EACH_LEN = 5
 
-      let formData = new FormData();
-      formData.append("email", storage.getItem("User"));
-      formData.append("hashtag", this.clicktags);
-      formData.append("pagenum", this.limit);
-      // console.log('해시', this.clicktags)
-
       http
-      .post('/post/getHashtagPost', 
-        formData
-      )
+      .get(`/post/hash/${storage.getItem("NickName")}/${this.limit}`, {
+        params: {
+          hashtag: this.clicktags + ''
+        }
+      })
       .then((res) => {
         setTimeout(() => {
           if(res.data.hashfeeddata.length) {
@@ -198,11 +190,7 @@ export default {
 
     // 유저 추천 받기
     userReco() {
-      let formData = new FormData;
-      formData.append('nickname', storage.getItem("NickName"))
-      
-      http
-      .post('/account/recommendUser', formData)
+      http.get(`/account/recommendUser/${storage.NickName}`)
       .then((res) => {
         this.userList = res.data
       })
