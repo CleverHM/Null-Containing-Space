@@ -24,6 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +47,6 @@ import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FeedDetailData;
 import com.ssafy.pjt1.model.FeedResponse;
-import com.ssafy.pjt1.model.HashSearchResponse;
-import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.model.ReplyData;
 import com.ssafy.pjt1.service.LikeService;
 import com.ssafy.pjt1.service.PostService;
@@ -158,16 +158,14 @@ public class PostController {
 		System.out.println(post.getFiles().getFid());
 		System.out.println(post.getTitle());
 		System.out.println(post.getUser().getUid());
-
 	}
 
 // 삭제
-	@PostMapping("/post/postDelete")
+	@DeleteMapping("/post/{pid}")
 	@ApiOperation(value = "게시물 삭제", notes = "게시물  삭제 기능을 구현.")
-	public void postDelete(@Valid @RequestBody String pid) {
+	public void postDelete(@PathVariable int pid) {
 
-		int currentPid = Integer.parseInt(pid);
-		Optional<Post> post = postdao.findPostByPid(currentPid);
+		Optional<Post> post = postdao.findPostByPid(pid);
 
 		Post p = post.get();
 
