@@ -79,7 +79,7 @@ public class AuthController {
 		System.out.println(email);
 		System.out.println(auth);
 
-		Optional<Auth> flag = authservice.findone(auth);
+		Optional<Auth> flag = authservice.findone(email);
 
 		flag.ifPresent(selectUser -> {
 			num = selectUser.getAuth_number();
