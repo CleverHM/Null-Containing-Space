@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --host localhost --port 3000 --open",
+    "dev": "webpack-dev-server --inline --progress --host 0.0.0.0 --disableHostCheck true --config build/webpack.dev.conf.js",
+    "serve": "vue-cli-service serve --host client --port 80 --open",
     "lint": "vue-cli-service lint",
     "test": "jest",
     "test:unit": "jest --no-cache"
