@@ -1,19 +1,7 @@
 <template>
   <div id="Chat">
    <Navbar></Navbar>
-   <!-- <subNav/> -->
 
-    <!-- 유저이름: 
-    <input
-      v-model="userName"
-      type="text"
-    > -->
-    <!-- <div
-      v-for="(item, idx) in recvList"
-      :key="idx"
-    >
-      <p>{{ item.userName }}: {{ item.content }} </p>
-    </div> -->
     <div id="chat-wrap">
       <div v-for="(item, idx) in recvList" :key="idx">
         <chatMe :content="item.content" v-if="item.userName === serverUser"/>
@@ -78,6 +66,7 @@ export default {
     this.connect()
   },
   mounted() {
+    console.log("hello")
     var element = document.querySelector("#Chat")
     element.scrollTop = element.scrollHeight
     console.log(element.scrollTop)
@@ -152,9 +141,12 @@ export default {
 
 <style scoped>
 #Chat{
+  /* max-height: 840px; */
+}
+#chat-wrap{
   padding-top: 10px;
-  height: 100vh;
-  width: 110vw;
+  /* height: 100%; */
+  /* max-height: 1080px; */
   overflow: scroll;
   overflow-x: hidden;
   overflow-y: hidden;
