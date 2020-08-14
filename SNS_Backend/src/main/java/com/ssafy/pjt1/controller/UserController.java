@@ -24,6 +24,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,10 +82,10 @@ public class UserController {
 	private TeamService teamservice;
 
 	// eamil 중복 체크
-	@PostMapping("/account/emailDuplicate")
+	@GetMapping("/account/emailDuplicate/{email}")
 	@ApiOperation(value = "이메일 중복체크", notes = "이메일 중복체크 기능을 구현")
 
-	public Object emailDuplicate(@Valid @RequestBody String email) {
+	public Object emailDuplicate(@PathVariable String email) {
 		Optional<User> optionaluser = userservice.findone(email);
 
 		if (optionaluser.isPresent()) {
@@ -101,10 +104,10 @@ public class UserController {
 	}
 
 // 중복 체크
-	@PostMapping("/account/nickNameDuplicate")
+	@GetMapping("/account/nickNameDuplicate/{nickname}")
 	@ApiOperation(value = "닉네임 중복체크", notes = "닉네임 중복체크 기능을 구현")
 
-	public Object nickNameDuplicate(@Valid @RequestBody String nickname) {
+	public Object nickNameDuplicate(@PathVariable String nickname) {
 		Optional<User> optionaluser = userservice.duplNick(nickname);
 
 		if (optionaluser.isPresent()) {
@@ -182,9 +185,9 @@ public class UserController {
 
 	}
 
-	@PostMapping("/account/modifyTrue")
+	@PutMapping("/account/modifyTrue/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog,
+	public Object updatetrue(@PathVariable String nickname , @Valid @RequestParam MultipartFile profile, String email, String blog,
 			String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
@@ -235,9 +238,9 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/modifyFalse")
+	@PutMapping("/account/modifyFalse/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro)
+	public Object updatefalse(@PathVariable String nickname, @Valid @RequestParam String email, String blog, String git, String intro)
 			throws Exception {
 		// 회원 수정 시작!
 		System.out.println(email);
@@ -263,9 +266,9 @@ public class UserController {
 		}
 	}
 
-	@PutMapping("/account/delete")
+	@DeleteMapping("/account/{nickname}")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
-	public Object delete(@Valid @RequestParam String nickname) {
+	public Object delete(@PathVariable String nickname) {
 		Optional<User> user2 = userservice.findtwo(nickname);
 
 		System.out.println(user2.toString());
@@ -344,9 +347,9 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping("/account/findPasswordModify")
+	@PutMapping("/account/findPasswordModify/{email}")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
-	public Object token(@Valid @RequestParam String email, String NewPassword) {
+	public Object token(@PathVariable String email, @Valid @RequestParam String NewPassword) {
 
 		Optional<User> optionalUser = userservice.findone(email);
 
@@ -374,9 +377,9 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/myPage")
+	@GetMapping("/account/myPage/{nickname}/{pageNickname}")
 	@ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
-	public MyPageData myPageDetail(@Valid @RequestParam String nickname, String pageNickname)
+	public MyPageData myPageDetail(@PathVariable String nickname,@PathVariable String pageNickname)
 			throws FileNotFoundException, IOException {
 		List<String> tag = new ArrayList<>();
 		List<Integer> abt = new ArrayList<>();
@@ -563,9 +566,9 @@ public class UserController {
 	}
 
 	// user 랜덤 추천
-	@PostMapping("/account/recommendUser")
+	@GetMapping("/account/recommendUser/{nickname}")
 	@ApiOperation(value = "유저 랜덤 추천", notes = "유저 랜덤 추천 기능을 구현.")
-	public List<RecommendUser> recommendUser(@Valid @RequestParam String nickname) {
+	public List<RecommendUser> recommendUser(@PathVariable String nickname) {
 
 		List<RecommendUser> list = new LinkedList<RecommendUser>();
 
@@ -624,9 +627,9 @@ public class UserController {
 		return list;
 	}
 
-	@PostMapping("/account/abilityInfo")
+	@GetMapping("/account/abilityInfo/{nickname}")
 	@ApiOperation(value = "능력치 넘기기", notes = "능력치 넘기기 기능을 구현.")
-	public List<Integer> abilityInfo(@Valid @RequestParam String nickname) throws FileNotFoundException, IOException {
+	public List<Integer> abilityInfo(@PathVariable String nickname) throws FileNotFoundException, IOException {
 		List<Integer> abt = new ArrayList<>();
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
@@ -651,9 +654,9 @@ public class UserController {
 		return abt;
 	}
 	
-	@PostMapping("/account/abilityModify")
+	@PutMapping("/account/abilityModify/{nickname}")
 	@ApiOperation(value = "능력치 수정", notes = "능력치 수정 기능을 구현.")
-	public void abilityInfo(@Valid @RequestParam String nickname, int[] ability) throws FileNotFoundException, IOException {
+	public void abilityInfo(@PathVariable String nickname, @Valid @RequestParam int[] ability) throws FileNotFoundException, IOException {
 		System.out.println("algo"+ability[14]);
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();

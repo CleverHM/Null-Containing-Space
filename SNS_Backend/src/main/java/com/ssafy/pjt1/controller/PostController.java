@@ -24,8 +24,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,8 +49,6 @@ import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FeedDetailData;
 import com.ssafy.pjt1.model.FeedResponse;
-import com.ssafy.pjt1.model.HashSearchResponse;
-import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.model.ReplyData;
 import com.ssafy.pjt1.service.LikeService;
 import com.ssafy.pjt1.service.PostService;
@@ -158,16 +160,14 @@ public class PostController {
 		System.out.println(post.getFiles().getFid());
 		System.out.println(post.getTitle());
 		System.out.println(post.getUser().getUid());
-
 	}
 
 // 삭제
-	@PostMapping("/post/postDelete")
+	@DeleteMapping("/post/{pid}")
 	@ApiOperation(value = "게시물 삭제", notes = "게시물  삭제 기능을 구현.")
-	public void postDelete(@Valid @RequestBody String pid) {
+	public void postDelete(@PathVariable int pid) {
 
-		int currentPid = Integer.parseInt(pid);
-		Optional<Post> post = postdao.findPostByPid(currentPid);
+		Optional<Post> post = postdao.findPostByPid(pid);
 
 		Post p = post.get();
 
@@ -175,9 +175,9 @@ public class PostController {
 	}
 
 // update 정보 주기
-	@PostMapping("/post/modifyData")
-	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public FeedDetailData modifyData(@Valid @RequestBody int pid) throws MalformedURLException, IOException {
+	@GetMapping("/post/modifyData/{pid}")
+	@ApiOperation(value = "게시물 상세 수정을 위한 정보 주기", notes = "게시물 상세 수정을 위한 정보 주기 기능을 구현.")
+	public FeedDetailData modifyData(@PathVariable int pid) throws MalformedURLException, IOException {
 
 		// 조회수 추가
 		Optional<Post> optionalPost = postdao.findPostByPid(pid);
@@ -236,9 +236,10 @@ public class PostController {
 		return feedDetailData;
 	}
 
-	@PostMapping("/post/modifyTrue")
+	// 게시물 사진 변화 O
+	@PutMapping("/post/isTrue/{pid}")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public void modifytrue(@Valid @RequestParam int pid, MultipartFile files, String email, String title,
+	public void modifytrue(@PathVariable int pid, @Valid @RequestParam MultipartFile files, String email, String title,
 			String content, String[] hashtags) throws MalformedURLException, IOException {
 
 		Optional<Post> p = postdao.findById(pid);
@@ -316,10 +317,11 @@ public class PostController {
 		post.setPosttags(pt);
 		postdao.save(post);
 	}
-
-	@PostMapping("/post/modifyFalse")
+	
+	// 게시물 사진 변화 X
+	@PutMapping("/post/isFalse/{pid}")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public void modifyfalse(@Valid @RequestParam int pid, String email, String title, String content, String[] hashtags)
+	public void modifyfalse(@PathVariable int pid, @Valid @RequestParam String email, String title, String content, String[] hashtags)
 			throws MalformedURLException, IOException {
 
 		Optional<Post> p = postdao.findById(pid);
@@ -373,9 +375,9 @@ public class PostController {
 	}
 
 	// 내게시물 보내주기
-	@PostMapping("/post/myPost")
+	@GetMapping("/post/upload/{nickname}/{pagenum}")
 	@ApiOperation(value = "내게시물 Vue로보내기", notes = "내게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> myPost(@Valid @RequestParam String nickname, int pagenum) throws FileNotFoundException, IOException {
+	public List<FeedData> myPost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 		List<Post> postList = new LinkedList<>();
@@ -525,9 +527,9 @@ public class PostController {
 	}
 
 	// 내가 좋아요한 게시물 보내주기
-	@PostMapping("/post/myLikePost")
+	@GetMapping("/post/like/{nickname}/{pagenum}")
 	@ApiOperation(value = "내가 좋아요한 게시물 Vue로보내기", notes = "내가 좋아요한 게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> myLikePost(@Valid @RequestParam String nickname, int pagenum) throws FileNotFoundException, IOException {
+	public List<FeedData> myLikePost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 		List<Post> postList = new LinkedList<>();
@@ -696,16 +698,15 @@ public class PostController {
 
 	// 해당이메일 게시물 보내주기
 	// 무한 스크롤
-	@PostMapping("/post/getPost")
+	@GetMapping("/post/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 Vue로보내기", notes = "게시물 Vue로보내기 기능을 구현.")
-	public Object getPost(@Valid @RequestParam String email, int pagenum)
+	public Object getPost(@PathVariable String nickname, @PathVariable int pagenum)
 			throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 
-		System.out.println(email);
 		List<Post> postList = new LinkedList<>();
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		Set<UserFollow> followList = user.getFollowings();
@@ -878,12 +879,11 @@ public class PostController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-//
-	@PostMapping("/post/postDetail")
+	@GetMapping("/post/detail/{pid}/{nickname}")
 	@ApiOperation(value = "게시물 디테일 페이지", notes = "게시물 디테일 페이지 기능을 구현.")
-	public FeedDetailData postDetail(@Valid @RequestParam String pid, String email) throws IOException {
+	public FeedDetailData postDetail(@PathVariable String pid, @PathVariable String nickname) throws IOException {
 
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		FeedDetailData feedDetailData = null;
@@ -1035,18 +1035,16 @@ public class PostController {
 	}
 
 	// 해당이메일 게시물 보내주기
-	@PostMapping("/post/getHashtagPost")
+	@GetMapping("/post/hash/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPost(@Valid @RequestParam String email, String[] hashtag, int pagenum)
+	public Object getHashtagPost(@PathVariable String nickname, @PathVariable int pagenum, @RequestParam String[] hashtag)
 			throws MalformedURLException, IOException {
 
-		System.out.println(email);
 
 		List<FeedData> res = new LinkedList<FeedData>();
-
-		System.out.println(email);
+		 
 		List<Post> postList = new LinkedList<>();
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		Set<UserFollow> followList = user.getFollowings();
@@ -1108,17 +1106,9 @@ public class PostController {
 				System.out.println("있음");
 				InputStream inputStream = new FileInputStream(hasftagPostList.get(i).getFiles().getFileurl()
 						+ hasftagPostList.get(i).getFiles().getFilename());
-				String type = result.toURL().openConnection()
-						.guessContentTypeFromName(postList.get(i).getFiles().getFilename());
-
-				System.out.println(type);
 
 				byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-				HttpHeaders responseHeaders = new HttpHeaders();
-				responseHeaders.add("content-disposition",
-						"attachment; filename=" + hasftagPostList.get(i).getFiles().getFilename());
-				responseHeaders.add("Content-Type", type);
 
 				int count = likeservice.likeCount(hasftagPostList.get(i));
 
@@ -1204,17 +1194,7 @@ public class PostController {
 
 		}
 
-		List<FeedData> res1 = new LinkedList<FeedData>();
-		res1.add(res.get(0));
-		for (int i = 1; i < res.size(); i++) {
-			for (int k = 0; k < res1.size(); k++) {
-				if (res1.get(k).getPid() != res.get(i).getPid()) {
-					res1.add(res.get(i));
-				}
-			}
-		}
-
-		Collections.sort(res1, new Comparator<FeedData>() {
+		Collections.sort(res, new Comparator<FeedData>() {
 
 			@Override
 			public int compare(FeedData o1, FeedData o2) {
@@ -1223,7 +1203,7 @@ public class PostController {
 			}
 		});
 
-		Set<FeedData> unique = new LinkedHashSet<>(res1);
+		Set<FeedData> unique = new LinkedHashSet<>(res);
 		List<FeedData> res2 = new LinkedList<>(unique);
 		System.out.println(unique.size());
 		System.out.println(res2.size());
@@ -1255,12 +1235,12 @@ public class PostController {
 	}
 
 	// 해당 해쉬태그가 있는 모든글 보여주기
-	@PostMapping("/post/getHashtagPostAll")
+	@GetMapping("/post/hashall/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPostAll(@Valid @RequestParam String email, String hashtag, int pagenum)
+	public Object getHashtagPostAll( @PathVariable String nickname, @PathVariable int pagenum, @RequestParam String hashtag)
 			throws MalformedURLException, IOException {
 
-		Optional<User> optionalUser = userservice.findone(email);
+		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
 		List<Post> postList = postservice.findall();
@@ -1400,17 +1380,7 @@ public class PostController {
 
 		}
 
-		List<FeedData> res1 = new LinkedList<FeedData>();
-		res1.add(res.get(0));
-		for (int i = 1; i < res.size(); i++) {
-			for (int k = 0; k < res1.size(); k++) {
-				if (res1.get(k).getPid() != res.get(i).getPid()) {
-					res1.add(res.get(i));
-				}
-			}
-		}
-
-		Collections.sort(res1, new Comparator<FeedData>() {
+		Collections.sort(res, new Comparator<FeedData>() {
 
 			@Override
 			public int compare(FeedData o1, FeedData o2) {
@@ -1419,7 +1389,7 @@ public class PostController {
 			}
 		});
 
-		Set<FeedData> unique = new LinkedHashSet<>(res1);
+		Set<FeedData> unique = new LinkedHashSet<>(res);
 		List<FeedData> res2 = new LinkedList<>(unique);
 		System.out.println(unique.size());
 		System.out.println(res2.size());

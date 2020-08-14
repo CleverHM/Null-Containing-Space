@@ -50,8 +50,6 @@ public class LikeController {
     public Object userLikePost(@Valid @RequestParam String email, @Valid @RequestParam int postid) {
         int likeFlag = 0;
         
-        System.out.println("adasdasdasdaqweqwrqsafvasqvavevwevewv");
-        
         // 좋아요 버튼 or 좋아요 취소 버튼 눌린 게시물을 들고옴.
         Optional<User> tempU = userservice.findone(email);
         User user = tempU.get();
@@ -73,28 +71,22 @@ public class LikeController {
         // 이미 좋아요한 사람일 경우.
         if(likeFlag == 1) {
             // 유저 u가 게시물 p를 좋아요 취소하는거임.
-            
             likeservice.userUnlikePost(user.getUid(), post.getPid());
             
             // 게시물에 해당하는 좋아요 개수
             likeFlag = 0;
             count = count - 1;
             
-            
-            
         }else {
             // 유저 u가 게시물 p를 좋아요 하는거임.
-            
             PostLike postlike = new PostLike();
             postlike.setUser(user);
             postlike.setPost(post);
             likeservice.userLikePost(postlike);
             
             // 게시물에 해당하는 좋아요 개수
-            
             likeFlag = 1;
             count = count + 1;
-            
             System.out.println(likeFlag);
         }
         Map<String, Integer> resultMap = new HashMap<>();
@@ -103,11 +95,4 @@ public class LikeController {
         
         return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
     }
-	
-//	@PostMapping("/unlike/post")
-//	@ApiOperation(value = "게시물 좋아요 취소", notes = "사용자가 게시물을 좋아요 취소하는 기능을 구현")
-//	public void userUnfollow(@Valid @RequestParam String user, @Valid @RequestParam int postid) {
-//
-//		
-//	}
 }
