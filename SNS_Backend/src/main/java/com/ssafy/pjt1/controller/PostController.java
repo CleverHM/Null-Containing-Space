@@ -25,9 +25,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -173,9 +175,9 @@ public class PostController {
 	}
 
 // update 정보 주기
-	@PostMapping("/post/modifyData")
-	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
-	public FeedDetailData modifyData(@Valid @RequestBody int pid) throws MalformedURLException, IOException {
+	@GetMapping("/post/modifyData/{pid}")
+	@ApiOperation(value = "게시물 상세 수정을 위한 정보 주기", notes = "게시물 상세 수정을 위한 정보 주기 기능을 구현.")
+	public FeedDetailData modifyData(@PathVariable int pid) throws MalformedURLException, IOException {
 
 		// 조회수 추가
 		Optional<Post> optionalPost = postdao.findPostByPid(pid);
@@ -234,7 +236,8 @@ public class PostController {
 		return feedDetailData;
 	}
 
-	@PostMapping("/post/modifyTrue")
+	// 게시물 사진 변화 O
+	@PutMapping("/post/isTrue")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
 	public void modifytrue(@Valid @RequestParam int pid, MultipartFile files, String email, String title,
 			String content, String[] hashtags) throws MalformedURLException, IOException {
@@ -314,8 +317,9 @@ public class PostController {
 		post.setPosttags(pt);
 		postdao.save(post);
 	}
-
-	@PostMapping("/post/modifyFalse")
+	
+	// 게시물 사진 변화 X
+	@PutMapping("/post/isFalse")
 	@ApiOperation(value = "게시물 수정", notes = "게시물  수정 기능을 구현.")
 	public void modifyfalse(@Valid @RequestParam int pid, String email, String title, String content, String[] hashtags)
 			throws MalformedURLException, IOException {
