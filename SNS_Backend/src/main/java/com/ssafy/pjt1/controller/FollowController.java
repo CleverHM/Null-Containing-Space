@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -125,29 +126,9 @@ public class FollowController {
 		return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
 	}
 
-	@PostMapping("/unfollow/user")
-	@ApiOperation(value = "유저 언팔로우", notes = "사용자간 언팔로우 기능을 구현")
-	public void userUnfollow(@Valid @RequestParam String From, @Valid @RequestParam String To) {
-
-		// u1이 u2 언팔로우하는거임.
-		Optional<User> U1 = userservice.findtwo(From);
-		Optional<User> U2 = userservice.findtwo(To);
-
-		User u1 = U1.get();
-		User u2 = U2.get();
-
-		followservice.unfollowUser(u1.getUid(), u2.getUid());
-
-		// u2의 팔로워 팔로잉 개수
-		int cnt1 = followservice.followerCount(u2);
-		int cnt2 = followservice.followingCount(u2);
-
-		System.out.println("팔로워 : " + cnt1 + "  팔로잉 : " + cnt2);
-	}
-
-	@PostMapping("/follow/user/list")
+	@GetMapping("/follow/user/{nickname}/{flag}/{pagenum}")
 	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	public List<FollowList> userFollowList(@Valid @RequestParam String nickname, int flag, int pagenum) throws IOException {
+	public List<FollowList> userFollowList(@PathVariable String nickname,@PathVariable int flag,@PathVariable int pagenum) throws IOException {
 
 		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
 		// flag : 1 -> 팔로잉 / 2 -> 팔로워
