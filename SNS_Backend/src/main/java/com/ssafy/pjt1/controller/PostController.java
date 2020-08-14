@@ -1204,17 +1204,7 @@ public class PostController {
 
 		}
 
-		List<FeedData> res1 = new LinkedList<FeedData>();
-		res1.add(res.get(0));
-		for (int i = 1; i < res.size(); i++) {
-			for (int k = 0; k < res1.size(); k++) {
-				if (res1.get(k).getPid() != res.get(i).getPid()) {
-					res1.add(res.get(i));
-				}
-			}
-		}
-
-		Collections.sort(res1, new Comparator<FeedData>() {
+		Collections.sort(res, new Comparator<FeedData>() {
 
 			@Override
 			public int compare(FeedData o1, FeedData o2) {
@@ -1223,7 +1213,7 @@ public class PostController {
 			}
 		});
 
-		Set<FeedData> unique = new LinkedHashSet<>(res1);
+		Set<FeedData> unique = new LinkedHashSet<>(res);
 		List<FeedData> res2 = new LinkedList<>(unique);
 		System.out.println(unique.size());
 		System.out.println(res2.size());
@@ -1400,17 +1390,7 @@ public class PostController {
 
 		}
 
-		List<FeedData> res1 = new LinkedList<FeedData>();
-		res1.add(res.get(0));
-		for (int i = 1; i < res.size(); i++) {
-			for (int k = 0; k < res1.size(); k++) {
-				if (res1.get(k).getPid() != res.get(i).getPid()) {
-					res1.add(res.get(i));
-				}
-			}
-		}
-
-		Collections.sort(res1, new Comparator<FeedData>() {
+		Collections.sort(res, new Comparator<FeedData>() {
 
 			@Override
 			public int compare(FeedData o1, FeedData o2) {
@@ -1419,7 +1399,7 @@ public class PostController {
 			}
 		});
 
-		Set<FeedData> unique = new LinkedHashSet<>(res1);
+		Set<FeedData> unique = new LinkedHashSet<>(res);
 		List<FeedData> res2 = new LinkedList<>(unique);
 		System.out.println(unique.size());
 		System.out.println(res2.size());

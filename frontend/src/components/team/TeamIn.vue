@@ -401,7 +401,6 @@ export default {
   display: inline;
   margin-bottom: 20px;
   width: 100%;
-  height: 120px;
   overflow-x: scroll;
   white-space:nowrap;
 }
