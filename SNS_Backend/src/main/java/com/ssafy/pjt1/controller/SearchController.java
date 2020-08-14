@@ -46,7 +46,7 @@ public class SearchController {
 	// 계정 검색 검색어 포함된 리스트
 	@GetMapping("/search/user/{search}/{mynickname}/{pagenum}")
 	@ApiOperation(value = "계정 검색", notes = "계정 검색 기능을 구현.")
-	public Object postDelete(@PathVariable String search, String mynickname, int pagenum) throws IOException {
+	public Object postDelete(@PathVariable String search,@PathVariable String mynickname,@PathVariable int pagenum) throws IOException {
 		List<PersonData> list = new LinkedList<PersonData>();
 
 		List<User> allUser = userservice.findall();
@@ -133,7 +133,7 @@ public class SearchController {
 	// 해쉬태그 검색 검색어 포함된 리스트
 	@GetMapping("/search/hashtag/{hashtag}/{pagenum}")
 	@ApiOperation(value = "hashtag 검색", notes = "hashtag 기능을 구현.")
-	public Object hashtag(@PathVariable String hashtag, int pagenum) throws IOException {
+	public Object hashtag(@PathVariable String hashtag,@PathVariable int pagenum) throws IOException {
 		List<String> list = new LinkedList<String>();
 
 		List<Tag> allTag = tagdao.findAll();
