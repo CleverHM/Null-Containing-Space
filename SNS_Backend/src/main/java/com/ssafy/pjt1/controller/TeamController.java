@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +28,6 @@ import com.ssafy.pjt1.dto.Chat;
 import com.ssafy.pjt1.dto.Team;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.TeamData;
 import com.ssafy.pjt1.model.TeamPersonData;
 import com.ssafy.pjt1.service.TeamService;
@@ -132,9 +134,9 @@ public class TeamController {
         }
     }
 
-    @PostMapping("/team/leave")
+    @DeleteMapping("/team/leave/{nickname}")
     @ApiOperation(value = "팀 탈퇴", notes = "팀 탈퇴 기능을 구현")
-    public void teamleave(@Valid @RequestParam String nickname) {
+    public void teamleave(@PathVariable String nickname) {
         Optional<User> optionalUser = userservice.findtwo(nickname);
         Optional<Team> optionalTeam = teamservice.findone(1);
 
@@ -149,9 +151,9 @@ public class TeamController {
         userservice.signUp(user);
     }
 
-    @PostMapping("/team/exit")
+    @DeleteMapping("/team/{nickname}")
     @ApiOperation(value = "프로젝트 종료", notes = "프로젝트 종료 기능을 구현")
-    public void teamexit(@Valid @RequestParam String nickname) {
+    public void teamexit(@PathVariable String nickname) {
     	System.out.println("닉네임: " + nickname);
        
     	Optional<User> optionalUser = userservice.findtwo(nickname);
@@ -181,9 +183,9 @@ public class TeamController {
     }
     
     // nick name 으로 프로젝트 페이지판별 하기
-    @PostMapping("/team/exist")
+    @GetMapping("/team/{nickname}/{pagenum}")
     @ApiOperation(value = "페이지판별", notes = "페이지판별 기능을 구현")
-    public Object exist(@Valid @RequestParam String nickname, int pagenum) throws MalformedURLException, IOException {
+    public Object exist(@PathVariable String nickname,@PathVariable int pagenum) throws MalformedURLException, IOException {
 
         Optional<User> optionalUser = userservice.findtwo(nickname);
         User user = optionalUser.get();
