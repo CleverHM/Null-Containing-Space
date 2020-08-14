@@ -347,9 +347,9 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping("/account/findPasswordModify")
+	@PutMapping("/account/findPasswordModify/{email}")
 	@ApiOperation(value = "비밀번호 찾기(새로운 비밀 번호 업데이트)", notes = "비밀번호 찾기(새로운 비밀 번호 업데이트) 기능을 구현.")
-	public Object token(@Valid @RequestParam String email, String NewPassword) {
+	public Object token(@PathVariable String email, @Valid @RequestParam String NewPassword) {
 
 		Optional<User> optionalUser = userservice.findone(email);
 
