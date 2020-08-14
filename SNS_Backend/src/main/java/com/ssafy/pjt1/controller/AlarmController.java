@@ -137,7 +137,7 @@ public class AlarmController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@PostMapping("/alarm/sns/{mynickname}/{pagenum}")
+	@GetMapping("/alarm/sns/{mynickname}/{pagenum}")
 	@ApiOperation(value = "나에게 온 메세지 확인", notes = "나에게 온 메세지 확인을 구현.")
 	public Object meAlarmSns(@PathVariable String mynickname, @PathVariable int pagenum) throws Exception {
 
