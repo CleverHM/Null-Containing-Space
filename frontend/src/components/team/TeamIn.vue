@@ -30,7 +30,7 @@
               <div class="team-tags">
                 팀장
               </div>
-              <div class="member-info d-flex flex-row align-items-center" style="height:110px;">
+              <div class="leader-info d-flex flex-row align-items-center">
                 <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="ml-2"></memberImg>
               </div>
             </div>
@@ -207,7 +207,6 @@ export default {
       this.ifLeader = false
     }
 
-    console.log(this.teamData)
     // 받아온 date 값이 string type 이므로 date type으로 변환 후 체크하는 methods 호출
     var postDate = new Date(this.teamData.createDate);
     this.diffTime = this.dateCheck(postDate);
@@ -320,11 +319,6 @@ export default {
       this.$router.push({ name: 'teamMatch' })
     },
 
-    // 유저 페이지 이동
-    goUserProfile() {
-      console.log('ㅠㅠㅠㅠ')
-    },
-
     // modal - 팀 탈퇴
     modalLeave() {
       if (this.ifLeader == false) {
@@ -395,6 +389,12 @@ export default {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   float: left;
   width: 17%;
+}
+
+.leader-info {
+  display: inline;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .member-info {
