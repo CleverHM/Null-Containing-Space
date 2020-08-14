@@ -38,7 +38,8 @@
                 <input v-model="newnickname" 
                 id="nickname"
                 type="text"
-                maxlength="5"/>
+                maxlength="5"
+                @keyup.enter="isDuplicate"/>
                 <div class="errorMsg" v-if="error.nickname"><i class="fas fa-exclamation-triangle"></i>{{ error.nickname }}</div>
                 <div class="Success" v-if="error.nicknameSuccess && error.nicknameSuccess!='me'"><i class="fas fa-exclamation-triangle"></i>{{ error.nicknameSuccess }}</div>
 
@@ -135,8 +136,8 @@ export default {
             User : {
                 email: storage.User,
                 nickname: null,
-                blogURL: null,
-                GitURL: null,
+                blogURL: "",
+                GitURL: "",
                 Introduce: null,
                 profileURL: null,
             },
@@ -172,26 +173,24 @@ export default {
         // 닉네임 중복 체크
         isDuplicate() {
             if (storage.NickName != this.newnickname){
-                http
-                .post("/account/nickNameDuplicate", this.newnickname)
+                http.get(`/account/nickNameDuplicate/${this.newnickname}`)
                 .then((data) => {
-                    console.log(data.data)
                     if (data.data.status) {
                     this.error.nicknameSuccess="사용할 수 있는 닉네임입니다."
                     this.error.nickname=""
     
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                     this.error.nickname="사용할 수 없는 닉네임입니다."
                     this.error.nicknameSuccess=""
                 })
             } else {
+                this.error.nickname=""
                 this.error.nicknameSuccess= 'me'
             }
         },
         checkGitURL() {
-            console.log(this.User.GitURL)
             if (this.User.GitURL && this.User.GitURL != null){
                 console.log(('https://' + this.User.GitURL).match(domainreg))
                 if (('https://' + this.User.GitURL).match(domainreg) != null){
@@ -205,15 +204,14 @@ export default {
             }
         },
         checkblogURL() {
-            if (this.User.blogURL){
-                console.log(('https://' + this.User.blogURL).match(domainreg))
+            if (this.User.blogURL && this.User.blogURL != null){
                 if (('https://' + this.User.blogURL).match(domainreg) != null){
                     this.error.blogURL = ""
                     } else {
                     this.error.blogURL = "도메인을 정확하게 입력하세요. (https:// 제외)"
                 }
             } else{
-                this.err.blogURL=""
+                this.error.blogURL=""
                 this.User.blogURL = ""
             } 
 
@@ -239,14 +237,14 @@ export default {
                 alert("다시 입력해주세요.")
             } else {
                 if (this.previewImg.file) {
-                    this.WithNoProfile()
-                } else {
                     this.WithProfile()
+                } else {
+                    this.WithNoProfile()
                     
                 }            
             }
         },
-        WithNoProfile() {
+        WithProfile() {
             var InputData = new FormData()
             InputData.append("profile", this.previewImg.file)
             InputData.append("email", this.User.email)
@@ -260,7 +258,7 @@ export default {
                 this.$router.push({name:'profile', params: {nickname: this.newnickname}})
             })
         },
-        WithProfile() {
+        WithNoProfile() {
             var InputData = new FormData()
             InputData.append("email", this.User.email)
             InputData.append("blog", this.User.blogURL)
