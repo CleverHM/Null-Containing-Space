@@ -84,9 +84,8 @@ export default {
 
     confirmPassword() {
       var InputData = new FormData()
-      InputData.append("email", window.sessionStorage.User)
       InputData.append("NewPassword", this.password)
-      http.post("/account/findPasswordModify", InputData)
+      http.put(`/account/findPasswordModify${window.sessionStorage.User}`, InputData)
       .then(({data}) => {
         if (data.status) this.ErrorMessage = "다시 입력해주세요."
         else {

@@ -151,7 +151,7 @@ export default {
                 file: "",
                 preview: "",
             },
-            newnickname: "",
+            newnickname: storage.NickName,
         }
     },
     methods: {
