@@ -114,15 +114,12 @@ export default {
     bringListHash($state) {
       const EACH_LEN = 5
 
-      let formData = new FormData();
-      formData.append("hashtag", this.clicktags);
-      formData.append("pagenum", this.limit);
-      // console.log('해시', this.clicktags)
-
       http
-      .get(`/post/hash/${storage.getItem("NickName")}`, 
-        formData
-      )
+      .get(`/post/hash/${storage.getItem("NickName")}/${this.limit}`, {
+        params: {
+          hashtag: this.clicktags + ''
+        }
+      })
       .then((res) => {
         setTimeout(() => {
           if(res.data.hashfeeddata.length) {

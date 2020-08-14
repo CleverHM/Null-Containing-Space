@@ -1037,12 +1037,16 @@ public class PostController {
 	// 해당이메일 게시물 보내주기
 	@GetMapping("/post/hash/{nickname}/{pagenum}")
 	@ApiOperation(value = "게시물 해쉬태그 클릭시", notes = "게시물 해쉬태그 클릭시 기능을 구현.")
-	public Object getHashtagPost(@PathVariable String nickname, @PathVariable int pagenum, @Valid @RequestParam(required = false) String[] hashtag)
+	public Object getHashtagPost(@PathVariable String nickname, @PathVariable int pagenum, @RequestParam String[] hashtag)
 			throws MalformedURLException, IOException {
 
-
+		for(int i = 0; i < hashtag.length; i ++) {
+			System.out.println(hashtag[i]);
+		}
+		
 		List<FeedData> res = new LinkedList<FeedData>();
-
+		System.out.println("============해시태그 클릭 시 =============");
+		System.out.println(nickname);
 		List<Post> postList = new LinkedList<>();
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
@@ -1072,7 +1076,10 @@ public class PostController {
 
 		System.out.println("=======넣는 중==========");
 		for (Post p : postList) {
+			System.out.println("asdad");
+			System.out.println(p.getPosttags());
 			end: for (PostTag t : p.getPosttags()) {
+				System.out.print(t.getTag().getName());
 				for (int i = 0; i < hashtag.length; i++) {
 					if (hashtag[i].equals(t.getTag().getName())) {
 						hasftagPostList.add(p);
@@ -1080,6 +1087,7 @@ public class PostController {
 					}
 				}
 			}
+			System.out.println();
 		}
 
 		// 내가 팔로우 0명인가?
