@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -389,9 +390,9 @@ public class TeamController {
 
 
     // 팀 아이디로 정보 보내기
-    @PostMapping("/team/teamInfo")
+    @GetMapping("/team/info/{teamid}")
     @ApiOperation(value = "팀페이지(팀아이디로)", notes = "팀페이지(팀아이디로) 기능을 구현")
-    public Object teamInfo(@Valid @RequestParam int teamid) throws MalformedURLException, IOException {
+    public Object teamInfo(@PathVariable int teamid) throws MalformedURLException, IOException {
 
         // 팀 원 넣기
         Optional<Team> optionalTeam = teamservice.findone(teamid);
@@ -469,9 +470,9 @@ public class TeamController {
     }
 
     //// 팀 수정
-    @PostMapping("/team/modify")
+    @PutMapping("/team/modify/{teamid}")
     @ApiOperation(value = "팀 수정", notes = "팀 수정 기능을 구현")
-    public void modify(@Valid @RequestParam int teamid, String title, String teamintro, int cnt, int prePro, Boolean[] preTech,
+    public void modify(@PathVariable int teamid, @Valid @RequestParam  String title, String teamintro, int cnt, int prePro, Boolean[] preTech,
             String nickname) {
 
         Optional<Team> t = teamservice.findone(1);
