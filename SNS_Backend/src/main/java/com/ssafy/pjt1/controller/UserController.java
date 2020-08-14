@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -184,9 +185,9 @@ public class UserController {
 
 	}
 
-	@PostMapping("/account/modifyTrue")
+	@PutMapping("/account/modifyTrue/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatetrue(@Valid @RequestParam MultipartFile profile, String email, String nickname, String blog,
+	public Object updatetrue(@PathVariable String nickname , @Valid @RequestParam MultipartFile profile, String email, String blog,
 			String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
@@ -237,9 +238,9 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/modifyFalse")
+	@PostMapping("/account/modifyFalse/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatefalse(@Valid @RequestParam String email, String nickname, String blog, String git, String intro)
+	public Object updatefalse(@PathVariable String nickname, @Valid @RequestParam String email, String blog, String git, String intro)
 			throws Exception {
 		// 회원 수정 시작!
 		System.out.println(email);
@@ -265,9 +266,9 @@ public class UserController {
 		}
 	}
 
-	@PutMapping("/account/delete")
+	@DeleteMapping("/account/{nickname}")
 	@ApiOperation(value = "회원  삭제", notes = "회원 삭제 기능 구현")
-	public Object delete(@Valid @RequestParam String nickname) {
+	public Object delete(@PathVariable String nickname) {
 		Optional<User> user2 = userservice.findtwo(nickname);
 
 		System.out.println(user2.toString());
@@ -376,9 +377,9 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/account/myPage")
+	@GetMapping("/account/myPage/{nickname}/{pageNickname}")
 	@ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
-	public MyPageData myPageDetail(@Valid @RequestParam String nickname, String pageNickname)
+	public MyPageData myPageDetail(@PathVariable String nickname,@PathVariable String pageNickname)
 			throws FileNotFoundException, IOException {
 		List<String> tag = new ArrayList<>();
 		List<Integer> abt = new ArrayList<>();
