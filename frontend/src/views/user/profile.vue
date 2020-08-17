@@ -233,7 +233,6 @@ export default {
         getUserInfo() {
           http.get(`/account/myPage/${this.nickname}/${this.pagenickname}`)
           .then(({data}) => {
-              console.log(data)
               this.User.nickname = data.nickname
               this.User.Introduce = data.intro
               this.User.profileURL = data.file
@@ -272,7 +271,6 @@ export default {
 
         },
         handleClick(event) {
-          console.log(event.target.innerText)
           this.currentTab = event.target.innerText;
           this.isCurrent = !this.isCurrent
         },
