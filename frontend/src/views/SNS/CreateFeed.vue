@@ -60,7 +60,7 @@
 
     <!-- 작성 -->
     <div class="article-submit fixed-bottom d-flex justify-content-center align-content-center">
-      <button @click="articleSubmit">작성하기</button>
+      <button @click="articleSubmit" :disabled="isDisabled">작성하기</button>
     </div>
   </div>
 </template>
@@ -109,10 +109,12 @@ export default {
       updateImage: '',
       notchangeImage: false, // 게시글 수정에서 이미지가 업데이트 되었는지 여부
       hashtag: "",
+      isDisabled: false,
     }
   },
 
   created() {
+    this.isDisabled = false;
     if (this.$route.name === 'FeedUpdate') {
       this.bringPost(this.pId);
     }
@@ -132,7 +134,7 @@ export default {
         this.notchangeImage = true
       } else {
         this.image.state = false
-        this.image.placeholder = '이미지를 등록해주세요'
+        this.image.placeholder = '이미지를 등록해주세요. (없으면 작성 불가)'
         this.notchangeImage = false
       }
     },
@@ -158,8 +160,10 @@ export default {
 
     // 글 작성
     articleSubmit() {
+      this.isDisabled = true;
       if (this.article.title === "") {
         this.errorMsg();
+        this.isDisabled = false;
       } else if (this.$route.name === 'FeedUpdate') {
         // console.log('글 수정')
         this.submitModify();

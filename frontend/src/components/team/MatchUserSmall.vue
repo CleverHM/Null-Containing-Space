@@ -55,7 +55,7 @@ export default {
 .userName {
     position: absolute;
     bottom: 5px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba( 247, 247, 247, 0.5 );
     width: 100%;
     color: #464545;
     font-size: 14px;

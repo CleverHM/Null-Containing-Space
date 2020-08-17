@@ -80,7 +80,7 @@ export default {
   font-weight: bold;
   bottom: 5px;
   width: 100px;
-  background-color: rgba( 255, 255, 255, 0.5 );
+  background-color: rgba( 247, 247, 247, 0.5 );
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: clip;
