@@ -156,10 +156,8 @@ export default {
     },
     methods: {
         getInfo() {
-            console.log()
             http.get(`/account/myPage/${this.newnickname}/${this.newnickname}`)
             .then(({data}) => {
-                console.log(data)
                 this.newnickname = data.nickname
                 this.User.Introduce = data.intro
                 this.User.profileURL = data.file
@@ -219,14 +217,11 @@ export default {
 
         },
         imageUpload() {
-            // console.log(this.$refs.files.files);
             this.previewImg = {
                 file: this.$refs.files.files[0],
                 preview: URL.createObjectURL(this.$refs.files.files[0]),
             }
             
-            console.log(this.previewImg);
-            // console.log(this.filesPreview);
         },
         Modify() {
             var InputData = new FormData()
@@ -234,7 +229,6 @@ export default {
             this.checkGitURL()
             this.checkblogURL()
             this.isDuplicate()
-            console.log("nick", this.error.nickname,"nickSuccess", this.error.nicknameSuccess,"git", this.error.GitURL,"blog", this.error.blogURL)
             if (this.error.nickname || !this.error.nicknameSuccess || this.error.GitURL || this.error.blogURL ){
                 alert("다시 입력해주세요.")
             } else {
@@ -279,6 +273,8 @@ export default {
             http.delete(`/account/${storage.NickName}`)
             .then((data) => {
                 alert("회원탈퇴하였습니다.")
+                storage.removeItem("NcikName")
+                storage.removeItem("User")
                 this.$router.push("/")
             })
         },

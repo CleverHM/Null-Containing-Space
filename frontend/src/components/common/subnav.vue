@@ -30,26 +30,23 @@ export default {
     },
     methods: {
         goProject() {
-            this.$router.push({name: 'Main'}).catch(()=>{})
+            if (this.$route.name == 'Main') this.$router.go()
+            else this.$router.push({name: 'Main'}).catch(()=>{})
         },
         goFeed() {
-            this.$router.push({name: 'FeedMain'}).catch(()=>{})
+            if (this.$route.name == 'FeedMain') this.$router.go()
+            else this.$router.push({name: 'FeedMain'}).catch(()=>{})
         },
         goNotice() {
-            this.$router.push({name: 'Notice'}).catch(()=>{})
+            if (this.$route.name == "Notice") this.$router.go()
+            else this.$router.push({name: 'Notice'}).catch(()=>{})
         },
         goProfile() {
-            console.log(".....")
-            this.$router.push({ name: 'profile', params: { nickname: this.nickname }})
-            // .then((data) => {
-            //     console.log("hdsfkdflwkej")
-            //     location.reload()
-            // })
-            // .catch((err)=>{
-            //     console.log(err)
-            //     console.log("please go")
-            //     location.reload()
-            // })
+            if (this.$route.name =='profile') this.$router.push({ name: 'profile', params: { nickname: this.nickname }}).catch(() => {})
+            else this.$router.push({ name: 'profile', params: { nickname: this.nickname }})
+            
+            
+            
         },
         
     }
@@ -71,5 +68,7 @@ export default {
     color: #464545;
     padding-top: 3px;
     width: 25%;
+    border: 0;
+    outline: 0;
 }
 </style>

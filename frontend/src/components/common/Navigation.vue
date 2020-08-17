@@ -10,18 +10,18 @@
                 <b-icon-list v-if="currentRouteName === 'profile'" @click='toggleShow' class='list-icon'></b-icon-list>
                     <div v-if='showMenu' class='menu'>
                         <div class='menu-items'>
-                            <li class="menu-user m-3">
-                                알골마스터
-                                </li>
-                            <hr>
+                            <!-- <li class="menu-user m-3"> -->
+                                <!-- 알골마스터 -->
+                                <!-- </li> -->
+                            <!-- <hr> -->
                             <!-- <li class="menu-tiem"><b-icon-question-circle-fill scale="1.1" class="mr-2"/>QnA</li> -->
                             <li class="menu-tiem" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
                             <li class="menu-tiem" @click="goMyLikePost"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
 
                             <li v-if="IsMe" class="menu-tiem" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
                             <li v-else class="menu-tiem" @click="teamJoinRequest"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>팀원 요청</li>
-                            <hr>
-                            <li class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
+                            <hr v-if="IsMe">
+                            <li v-if="IsMe" class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
                             <!-- <li class="menu-tiem" @click="goModifyUser"><b-icon-pencil scale="1.1" class="mr-2"/>회원정보 수정</li> -->
                         </div>
                     </div>
@@ -44,9 +44,7 @@ export default {
   ],
   created() {
     // 로그인 안되어있을 시 로그인 창으로 이동
-    const email = storage.User
-    const nickname = storage.NickName
-    if (!email || !nickname) {
+    if (!this.email || !this.nickname) {
         alert("로그인이 필요합니다.")
         this.$router.replace({name: 'Login'})
     }
@@ -56,7 +54,7 @@ export default {
         return this.$route.name;
       },
       IsMe() {
-          if (storage.NickName == this.$route.params.nickname) return true
+          if (this.nickname == this.$route.params.nickname) return true
           else return false
       },
       
@@ -65,6 +63,9 @@ export default {
   data() {
       return {
           showMenu: false,
+          email: storage.User,
+          nickname: storage.NickName,
+          
       }
   },
   methods: {
@@ -80,7 +81,7 @@ export default {
         },
         logout() {
             storage.clear()
-            alert("로그아웃")
+            alert("로그아웃 완료")
             this.$router.push('/')
 
         },
