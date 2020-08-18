@@ -7,25 +7,20 @@
                 <b-icon-search class="icons search-icon mx-4" scale="1.3" v-if="currentRouteName === 'FeedMain'" @click="goSearch"></b-icon-search>
 
                 <!-- 프로필페이지 dropdown -->
-                <b-icon-list v-if="currentRouteName === 'profile'" @click='toggleShow' class='list-icon'></b-icon-list>
-                    <div v-if='showMenu' class='menu'>
-                        <div class='menu-items'>
-                            <!-- <li class="menu-user m-3"> -->
-                                <!-- 알골마스터 -->
-                                <!-- </li> -->
-                            <!-- <hr> -->
-                            <!-- <li class="menu-tiem"><b-icon-question-circle-fill scale="1.1" class="mr-2"/>QnA</li> -->
-                            <li class="menu-tiem" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
-                            <li class="menu-tiem" @click="goMyLikePost"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
+                
+                <input type="checkbox" name="menu" class="toggleBox">
+                <b-icon-list v-if="currentRouteName === 'profile'" class='list-icon'></b-icon-list>
+                <div class='menu'>
+                    <div  class='menu-items'>
+                        <li class="menu-item" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
+                        <li class="menu-item" @click="goMyLikePost"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
 
-                            <li v-if="IsMe" class="menu-tiem" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
-                            <li v-else class="menu-tiem" @click="teamJoinRequest"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>팀원 요청</li>
-                            <hr v-if="IsMe">
-                            <li v-if="IsMe" class="menu-tiem" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
-                            <!-- <li class="menu-tiem" @click="goModifyUser"><b-icon-pencil scale="1.1" class="mr-2"/>회원정보 수정</li> -->
-                        </div>
+                        <li v-if="IsMe" class="menu-item" @click="goModifyAbility"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>개발 능력 수정</li>
+                        <li v-else class="menu-item" @click="teamJoinRequest"><b-icon-person-bounding-box scale="1.1" class="mr-2"/>팀원 요청</li>
+                        <hr v-if="IsMe">
+                        <li v-if="IsMe" class="menu-item" @click="logout"><b-icon-box-arrow-right scale="1.1" class="mr-2"/>로그아웃</li>
                     </div>
-                <!-- <b-icon-question-circle-fill v-if="currentRouteName === 'profile'" class="icons question-circle-icon" scale="1.3"></b-icon-question-circle-fill> -->
+                </div>
             </div>
         </div>
 
@@ -34,8 +29,14 @@
 
 <script>
 import http from '@/util/http-common.js'
+import $ from 'jquery'
 
 const storage = window.sessionStorage;
+$(document).click(e => {
+    if (e.target.className != 'menu-item' && e.target.className != 'toggleBox') {
+        $("input:checkbox[name='menu']")[0].checked = false;
+    }
+})
 
 export default {
   name:"NavBar",
@@ -84,9 +85,6 @@ export default {
             alert("로그아웃 완료")
             this.$router.push('/')
 
-        },
-        toggleShow() {
-            this.showMenu = !this.showMenu
         },
         goModifyAbility() {
             this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
@@ -163,14 +161,19 @@ export default {
     color: #464545;
     cursor: pointer;
 }
-.menu {
-    float: right;
-    width: 250px;
+.toggleBox ~ .menu {
+    position: absolute;
+    right: -200px;
+    top: 50px;
+    height: 0;
+    opacity: 0;
     margin-top: 1px;
+    overflow: hidden;
     background-color: #f7f7f7;
     border-left: 1px solid #dfdede;
     border-bottom: 1px solid #dfdede;
     color:#464545;
+    transition: opacity 0.3s, right 0.6s, width 0.6s, height 0.4s;
 }
 .menu-user {
     font-weight: bold;
@@ -186,5 +189,19 @@ export default {
     top:0;
     height:50px;
     color: #464545;
+}
+.toggleBox{
+    position: fixed;
+    right: 20px;
+    top: 0;
+    height: 50px;
+    z-index: 100;
+    opacity: 0;
+}
+.toggleBox:checked ~ .menu{
+    right: 0;
+    width: 200px;
+    height: 248px;
+    opacity: 1;
 }
 </style>
