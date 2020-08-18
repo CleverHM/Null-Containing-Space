@@ -114,11 +114,11 @@ FRONTEND/
 
 ### :black_medium_square: 상위 컴포넌트
 
-| File 이름          | 기술                                                    |
-| ------------------ | ------------------------------------------------------- |
-| `App.vue`          | vue.js의 기본적인 App.vue를 정의합니다.                 |
-| views/`Main.vue`   | 로그인 후 사용자가 보게 될 기본 Home 화면을 정의합니다. |
-| views/`Notice.vue` | 사용자 알림 화면을 정의합니다.                          |
+| File 이름          | 기술                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| `App.vue`          | vue.js의 기본적인 App.vue를 정의합니다.                      |
+| views/`Main.vue`   | 로그인 후 사용자가 보게 될 프로젝트 화면을 정의합니다.       |
+| views/`Notice.vue` | 사용자 알림 화면을 정의합니다. ([알림 페이지 구조](./Alarm_Construction.md/#construction)) |
 
 ### :black_medium_square: src/components
 
@@ -138,12 +138,16 @@ FRONTEND/
 
 - **src/components/notice**
 
+  > [알림 페이지 파일 정의](./Alarm_Construction.md/#file-definition)
+
   | File 이름       | 기술                                             |
   | --------------- | ------------------------------------------------ |
   | `SNSAlarm.vue`  | 알림 창의 SNS 관련 알람 component를 정의합니다.  |
   | `TeamAlarm.vue` | 알림 창의 Team 관련 알람 component를 정의합니다. |
 
 - **src/components/search**
+
+  > [검색 페이지 파일 정의](./Search_Construction.md/#file-definition)
 
   | File 이름            | 기술                                          |
   | -------------------- | --------------------------------------------- |
@@ -152,6 +156,8 @@ FRONTEND/
   | `tagItem.vue`        | 검색 결과 tag component를 정의합니다.         |
 
 - **src/components/SNS**
+
+  > [뉴스피드 파일 정의](./SNSFeed_Construction.md/#file-definition)
 
   | File 이름            | 기술                                                       |
   | -------------------- | ---------------------------------------------------------- |
@@ -174,6 +180,8 @@ FRONTEND/
 
 - **src/components/user**
 
+  > [유저 로그인 & 회원가입 파일 정의](./User(Login_Join)_Construction.md/#file-definition) / [유저 프로필 파일 정의](./User(profile)_Construction.md/#file-definition)
+  
   | File 이름            | 기술                                                         |
   | -------------------- | ------------------------------------------------------------ |
   | `checkAbility.vue`   | 사용자의 능력치 입력 component를 정의합니다.                 |
@@ -182,7 +190,7 @@ FRONTEND/
   | `Logo.vue`           | 로그인 창의 Logo component를 정의합니다.                     |
   | `myPostItem.vue`     | 내가 쓴 게시글 component를 정의합니다.                       |
   | `passwordform.vue`   | 사용자의 비밀번호 변경 페이지를 정의합니다.                  |
-  | `profileAbility.vue` | 능력치 입력을 위한 component를 정의합니다.                   |
+  | `profileAbility.vue` | 유저 프로필 페이지의 능력치 출력을 위한 component를 정의합니다. |
   | `step1.vue`          | 회원가입을 위한 이메일 인증을 보내는 component를 정의합니다. |
   | `step2.vue`          | 회원가입 이메일 인증 component를 정의합니다.                 |
 
@@ -202,12 +210,16 @@ FRONTEND/
 
 - **src/views/search**
 
+  > [검색 페이지 구조](./Search_Construction.md/#construction)
+
   | File 이름        | 기술                          |
   | ---------------- | ----------------------------- |
   | `SearchMain.vue` | 검색 페이지를 정의합니다.     |
   | `TagResult.vue`  | Tag 결과 페이지를 정의합니다. |
 
 - **src/views/SNS**
+
+  > [뉴스피드 구조](./SNSFeed_Construction.md/#construction)
 
   | File 이름        | 기술                                            |
   | ---------------- | ----------------------------------------------- |
@@ -227,6 +239,8 @@ FRONTEND/
 
 - **src/views/user**
 
+  > [유저 로그인 & 회원가입 구조](./User(Login_Join)_Construction.md/#construction) / [유저 프로필 구조](./User(profile)_Construction.md/#construction)
+  
   | File 이름            | 기술                                           |
   | -------------------- | ---------------------------------------------- |
   | `FindPassword.vue`   | 비밀번호 찾기를 위한 페이지를 정의합니다.      |
@@ -237,11 +251,11 @@ FRONTEND/
   | `modifyPassword.vue` | 비밀번호 변경을 위한 페이지를 정의합니다.      |
   | `myLikePost.vue`     | 내가 좋아요한 게시글 목록 페이지를 정의합니다. |
   | `myPost.vue`         | 내가 작성한 게시글 목록 페이지를 정의합니다.   |
-  | `profile.vue`        | 사용자 계정에 대한 페이지를 정의합니다.        |
+| `profile.vue`        | 사용자 계정에 대한 페이지를 정의합니다.        |
   | `UserModify.vue`     | 유저 정보 수정을 위한 페이지를 정의합니다.     |
 
   - **src/views/user/join**
-
+  
     | File 이름                 | 기술                                           |
     | ------------------------- | ---------------------------------------------- |
     | `getAbility.vue`          | 사용자 능력치 입력 페이지를 정의합니다.        |
@@ -249,16 +263,14 @@ FRONTEND/
 
 
 
-## 세부 사항 (링크)
+## 세부 사항 Link 모음
 
-- [뉴스피드 구조](./SNSFeed_Construction.md/#Construction)
-
-- [유저 로그인 & 회원가입 구조](./User(Login_Join)_Construction.md/#Construction)
-
-- [유저 페이지 구조]
-- [알람 페이지 구조](./Alarm_Construction.md/#Construction)
+- [뉴스피드 파일 정의](./SNSFeed_Construction.md/#file-definition)
+- [유저 로그인 & 회원가입 구조](./User(Login_Join)_Construction.md/#construction)
+- [유저 프로필 구조](./User(profile)_Construction.md/#construction)
+- [알림 페이지 구조](./Alarm_Construction.md/#construction)
 - [팀 페이지 구조]
-- [검색 페이지 구조](./Search_Construction.md/#Construction)
+- [검색 페이지 구조](./Search_Construction.md/#construction)
 
 
 
