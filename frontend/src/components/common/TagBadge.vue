@@ -12,7 +12,11 @@ export default {
     ],
     methods: {
         goTagResult() {
-            this.$router.push({name: 'TagResult', params: { tag: this.tag}})
+            var tag = {
+                'hash': this.tag,
+                'flag': true,
+            }
+            this.$router.push({name: 'TagResult', params: { tag: tag}})
         },
     }
 }

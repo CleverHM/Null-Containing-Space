@@ -1,10 +1,13 @@
 <template>
-    <div v-if="tag" class="follow-item" @click="goTagResult">
+    <div v-if="tag" class="follow-item">
         <div class="follow-img">
             <b-icon-tag />
         </div>
-        <div class="follow-nickname">#{{tag}}</div>
-            <!-- <myPostItem></myPostItem> -->
+        <div class="follow-nickname" @click="goTagResult">#{{tag.hash}} {{ tag.flag }}</div>
+        <div>
+            <button v-if="isFollow" class="unfollow-button" @click="followtag">팔로우 취소</button>
+            <button v-else class="follow-button" @click="followtag">팔로우</button>
+        </div>
     </div>
 </template>
 
@@ -12,6 +15,7 @@
 import myPostItem from '@/components/user/myPostItem.vue'
 import http from '@/util/http-common.js'
 
+const storage = window.sessionStorage
 
 export default {
     name: 'followItem',
@@ -21,9 +25,24 @@ export default {
     components: {
         // myPostItem,
     },
+    data() {
+        return {
+            isFollow: this.tag.flag,
+        }
+    },
     methods: {  
         goTagResult() {
-            this.$router.push({name: 'TagResult', params: { tag: this.tag}})
+            this.$router.push({name: 'TagResult', params: { tag: this.tag }})
+        },
+        followtag() {
+            var InputData = new FormData()
+            InputData.append("nickname", storage.NickName)
+            InputData.append("tagname", this.tag.hash)
+            http.post("/follow/tag", InputData)
+            .then(({data}) => {
+                this.isFollow = data
+                console.log("f", this.isFollow)
+            })
         },
         
     }
