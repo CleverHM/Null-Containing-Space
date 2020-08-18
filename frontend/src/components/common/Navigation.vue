@@ -9,7 +9,7 @@
                 <!-- 프로필페이지 dropdown -->
                 
                 <input type="checkbox" name="menu" class="toggleBox">
-                <b-icon-list v-if="currentRouteName === 'profile'" @click='toggleShow' class='list-icon'></b-icon-list>
+                <b-icon-list v-if="currentRouteName === 'profile'" class='list-icon'></b-icon-list>
                 <div class='menu'>
                     <div  class='menu-items'>
                         <li class="menu-item" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
@@ -36,14 +36,6 @@ $(document).click(e => {
     if (e.target.className != 'menu-item' && e.target.className != 'toggleBox') {
         $("input:checkbox[name='menu']")[0].checked = false;
     }
-})
-
-
-$(document).click(e => {
-    if (e.target.className == 'menu-item' || $(e.target).hasClass("bi")) {
-       console.log("hello")
-    }
-    
 })
 
 export default {
@@ -93,9 +85,6 @@ export default {
             alert("로그아웃 완료")
             this.$router.push('/')
 
-        },
-        toggleShow(e) {
-            this.showMenu = !this.showMenu
         },
         goModifyAbility() {
             this.$router.push({name: 'modifyAbility', params:{ nickname: storage.NickName}})
@@ -176,7 +165,6 @@ export default {
     position: absolute;
     right: -200px;
     top: 50px;
-    /* width: 200px; */
     height: 0;
     opacity: 0;
     margin-top: 1px;
