@@ -1,5 +1,5 @@
 <template>
-    <div class="ability-body">
+    <div class="ability-element">
         <div class="ability-kinds"> 
             {{ abilityname.name }} 
 
@@ -47,9 +47,10 @@ export default {
 </script>
 
 <style scoped>
-.ability-body{
+.ability-element{
     padding: 13px 0px;
     border-top: 1px solid #E2DFD8;
+    height: 56px;
 }
 .high, .middle, .low{
     display: inline-block;
