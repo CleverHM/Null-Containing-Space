@@ -38,11 +38,15 @@
 
 ```python
 PJT/
+	Chat_Backend/
+	DB/
+	document/
 	SNS_Backend/
 	frontend/
-	document/
-	DB/
 	README.md
+    docker-compose
+    오늘한일_backEnd
+    오늘한일_frontEnd
 ```
 
 
@@ -74,7 +78,7 @@ PJT/
 
 ## wireFrame
 
-![wireFrame](C:/Users/multicampus/Desktop/s03p12d105/document/images/wireframe.png)
+![wireFrame](./document/images/wireframe.png)
 
 
 

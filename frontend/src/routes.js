@@ -19,7 +19,6 @@ import modifyAbility from './views/user/modifyAbility.vue'
 import FeedMain from './views/SNS/IndexFeed.vue'
 import FeedDetail from './views/SNS/DetailFeed.vue'
 import FeedCreate from './views/SNS/CreateFeed.vue'
-import FeedComment from './views/SNS/CommentFeed.vue'
 
 // Main
 import Main from './views/Main.vue'
@@ -27,7 +26,6 @@ import Notice from './views/Notice.vue'
 
 // team
 import teamMatch from './views/team/teamMatch.vue'
-import Specs from './views/team/Specification.vue'
 import createTeam from './views/team/createTeam.vue'
 import SubjectForm from './views/team/subjectForm.vue'
 import TeamInfo from './views/team/TeamInfo.vue'
@@ -165,11 +163,6 @@ export default [
         component : FeedCreate,
         props: true,
     },
-    {
-        path : '/feed/comment',
-        name : 'FeedComment',
-        component : FeedComment
-    },   
     // Team
     {
         path : '/team/create',
@@ -182,11 +175,6 @@ export default [
         name : 'updateTeam',
         component : createTeam,
         props: true,
-    }, 
-    {
-        path : '/team/specs',
-        name : 'Specs',
-        component : Specs
     }, 
     {
         path : '/team/match',

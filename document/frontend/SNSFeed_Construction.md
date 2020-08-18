@@ -18,8 +18,9 @@
 
 | File 이름            | 기술                                                       |
 | -------------------- | ---------------------------------------------------------- |
-| `SNSItem.vue`        | 뉴스피드에 들어갈 게시물 component를 정의합니다.           |
+| `RecommendUser.vue`  | 뉴스피드 추천인 component를 정의합니다.                    |
 | `SNSCommentItem.vue` | 뉴스피드 게시물 상세페이지의  댓글 component를 정의합니다. |
+| `SNSItem.vue`        | 뉴스피드에 들어갈 게시물 component를 정의합니다.           |
 
 
 
@@ -28,10 +29,12 @@
 #### `IndexFeed.vue`
 
 > SNSFeed의 **최상단 컴포넌트**로 사용자의 팔로우들의 게시글을 가져와 출력한다.
+>
+> vue-infinite-loading로 무한스크롤을 적용한다.
 
 - 페이지가 열릴 때(`created`) 서버에 axios 요청을 보낸다.
-  - post 방식: `/post/getPost`
-  - 파라미터: `storage.getItem("User")` (사용자 이메일. session storage 안에 있음)
+  - get 방식: `/post/${storage.getItem("NickName")}/${this.limit}`
+    - 무한 스크롤을 위해 마지막은 page number
   - response data: 게시물의 `list 객체`
 
   ```html
@@ -111,12 +114,12 @@
 
 - `router-link`로 넘어올 때 받아온 postId를 `props`로 담아둔다.
 - 페이지 생성 시(`created`) axios 요청을 보내 해당 페이지 데이터를 받아온다.
-  - post 방식: `/post/postDetail`
-  - 파라미터: `formData` 형식 (사용자 이메일, 게시글 id)
-
-- 페이지 삭제 시에도 axios 요청을 보낸다.
-  - post방식: `/post/postDelete`
-  - 파라미터: `this.article.pid` (게시글 id)
+  - get 방식: `/post/detail/${this.postId}/${storage.getItem("NickName")}
+- 페이지 삭제 시 axios 요청을 보내서 처리한다.
+  - delete방식: `/post/${this.article.pid}`
+- 댓글 작성 시 axios 요청을 보낸다.
+  - post 방식: `/like/post`
+  - 파라미터: `FormData` 형식(email, postId)
 
 
 
@@ -125,13 +128,14 @@
 > 게시물 생성을 위한 컴포넌트이다.
 
 - 이미지는 파일 업로드 기능을 사용한다.
-  - ` accept="image/*"`를 사용하여 image 파일만 올릴 수 있도록 제한한다.
-
+  
+- ` accept="image/*"`를 사용하여 image 파일만 올릴 수 있도록 제한한다.
+  
 - 작성 후 axios 요청을 보내 게시글을 생성한다.
 
   - post 방식: `/post/create`
 
-  - 파라미터: `formData` 형식 (아래 참고)
+  - 파라미터: `FormData` 형식 (아래 참고)
 
     ```javascript
     let formData = new FormData();
