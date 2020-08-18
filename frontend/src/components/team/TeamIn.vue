@@ -242,7 +242,7 @@ export default {
 
     // chat페이지
     goChat() {
-      this.$router.push({ name: 'chat', params: { teamId: this.teamData.teamid } })
+      this.$router.push({ name: 'chat', params: { teamId: this.teamData.teamid, teamName: this.teamData.title } })
     },
 
     // 날짜 체크

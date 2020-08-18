@@ -1,7 +1,7 @@
 <template>
   <!-- chatbox -->
   <div id="chatbox">
-   <Navbar></Navbar>
+   <Navbar :teamName="teamName"></Navbar>
     <!-- chat-messages -->
     <div id="chat-messages">
       <div v-for="(item, idx) in recvList" :key="idx">
@@ -49,6 +49,7 @@ export default {
   
   props: [
     'teamId',
+    'teamName',
     ],
 
 
