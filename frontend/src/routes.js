@@ -25,11 +25,6 @@ import FeedComment from './views/SNS/CommentFeed.vue'
 import Main from './views/Main.vue'
 import Notice from './views/Notice.vue'
 
-// study
-import StudyList from './views/study/StudyList.vue'
-import StudyDetail from './views/study/StudyDetail.vue'
-import StudyMatching from './views/study/StudyMatching.vue'
-
 // team
 import teamMatch from './views/team/teamMatch.vue'
 import Specs from './views/team/Specification.vue'
@@ -47,7 +42,6 @@ import TagResult from './views/search/TagResult.vue'
 // etc
 
 import Components from './views/Components.vue'
-import test from './views/test.vue'
 
 export default [
     // User
@@ -146,22 +140,6 @@ export default [
         path : '/notice',
         name : 'Notice',
         component : Notice
-    },
-    // Study
-    {
-        path : '/study/list',
-        name : 'StudyList',
-        component : StudyList
-    },
-    {
-        path : '/study/detail',
-        name : 'StudyDetail',
-        component : StudyDetail
-    },
-    {
-        path : '/study/matching',
-        name : 'StudyMatching',
-        component : StudyMatching
     },
     // Feed
     {
@@ -272,11 +250,5 @@ export default [
         path : '/components',
         name : 'Components',
         component : Components
-    },
-    //test
-    {
-        path : '/test',
-        name : 'test',
-        component : test
     },
 ]
