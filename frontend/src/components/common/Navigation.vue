@@ -1,7 +1,8 @@
 <template>
     <div class="fixed-top">
         <div class="Navi">
-            <p>Null 담은 공간</p>
+            <p v-if="currentRouteName ==='chat'">{{ teamName }}팀 채팅방</p>
+            <p v-else>Null 담은 공간</p>
             <div>
                 <b-icon-arrow-left @click="goBack" class="arrow-left-icon icons" scale="1.3"></b-icon-arrow-left>
                 <b-icon-search class="icons search-icon mx-4" scale="1.3" v-if="currentRouteName === 'FeedMain'" @click="goSearch"></b-icon-search>
@@ -43,6 +44,7 @@ export default {
   name:"NavBar",
   props: [
       'subjectCheck', // LeaderForm에서 가지고있는 subject 정보
+      'teamName',
   ],
   created() {
     // 로그인 안되어있을 시 로그인 창으로 이동
