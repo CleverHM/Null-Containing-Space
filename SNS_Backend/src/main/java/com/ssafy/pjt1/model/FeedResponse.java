@@ -10,8 +10,10 @@ public class FeedResponse {
     public boolean status;
     @ApiModelProperty(value = "data", position = 2)
     public String data;
-    @ApiModelProperty(value = "feeddata", position = 5)
+    @ApiModelProperty(value = "feeddata", position = 3)
     public List<FeedData> feeddata;
-    @ApiModelProperty(value = "hashfeeddata", position = 6)
+    @ApiModelProperty(value = "hashfeeddata", position = 4)
     public Set<FeedData> hashfeeddata;
+    @ApiModelProperty(value = "listPage", position = 5)
+    public List<String> listPage;
 }

@@ -33,7 +33,6 @@
 <script>
 import Navbar from '../components/common/Navigation.vue'
 import subNav from '../components/common/subnav.vue'
-import competitionItem from '../components/main/competitionItem.vue'
 import TeamIn from '../components/team/TeamIn.vue'
 import TeamOut from '../components/team/TeamOut.vue'
 import NoTeam from '../components/team/NoTeam.vue'

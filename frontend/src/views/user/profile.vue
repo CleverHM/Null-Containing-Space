@@ -473,5 +473,46 @@ input[type="checkbox"]{
 }
 input[name="backend"]:checked ~ .ability-body{
   height: 224px;
+  opacity: 1;
+}
+input[name="backend"] ~ .ability-body{
+  height: 0px;
+  opacity: 0;
+}
+
+input[name="frontend"]:checked ~ .ability-body{
+  height: 168px;
+  opacity: 1;
+}
+input[name="frontend"] ~ .ability-body{
+  height: 0px;
+  opacity: 0;
+}
+input[name="database"]:checked ~ .ability-body{
+  height: 112px;
+  opacity: 1;
+}
+input[name="database"] ~ .ability-body{
+  height: 0px;
+  opacity: 0;
+}
+input[name="framework"]:checked ~ .ability-body{
+  height: 280px;
+  opacity: 1;
+}
+input[name="framework"] ~ .ability-body{
+  height: 0px;
+  opacity: 0;
+}
+input[name="algorithm"]:checked ~ .ability-body{
+  height: 56px;
+  opacity: 1;
+}
+input[name="algorithm"] ~ .ability-body{
+  height: 0px;
+  opacity: 0;
+}
+.ability-body{
+  transition: height 0.3s;
 }
 </style>

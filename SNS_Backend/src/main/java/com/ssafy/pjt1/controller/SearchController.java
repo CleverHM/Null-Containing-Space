@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dto.Tag;
+import com.ssafy.pjt1.dto.TagFollow;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
+import com.ssafy.pjt1.model.HashAllData;
 import com.ssafy.pjt1.model.PersonData;
 import com.ssafy.pjt1.service.UserService;
 
@@ -131,21 +134,37 @@ public class SearchController {
 	}
 
 	// 해쉬태그 검색 검색어 포함된 리스트
-	@GetMapping("/search/hashtag/{hashtag}/{pagenum}")
+	@GetMapping("/search/hashtag/{hashtag}/{pagenum}/{nickname}")
 	@ApiOperation(value = "hashtag 검색", notes = "hashtag 기능을 구현.")
-	public Object hashtag(@PathVariable String hashtag,@PathVariable int pagenum) throws IOException {
-		List<String> list = new LinkedList<String>();
-
+	public Object hashtag(@PathVariable String hashtag, @PathVariable int pagenum, @PathVariable String nickname) throws IOException {
+		Optional<User> optionalUser = userservice.findtwo(nickname);
+		User user = optionalUser.get();
+		
+		List<HashAllData> list = new LinkedList<HashAllData>();
+		
 		List<Tag> allTag = tagdao.findAll();
 
 		for (Tag t : allTag) {
 			if (t.getName().contains(hashtag)) {
-				list.add(t.getName());
+				// 팔로우 여부 확인
+				Set<TagFollow> tagfollow = user.getTagfollows();
+
+				boolean flag = false;
+
+				for (TagFollow tf : tagfollow) {
+					if (tf.getTag().getName().equals(t.getName())) {
+						System.out.println("태그 있음1");
+						flag = true;
+						break;
+					}
+				}
+				
+				list.add(new HashAllData(t.getName(), flag));
 			}
 		}
 		
         // 10개씩 보내기
-		List<String> listPage = new LinkedList<String>();
+		List<HashAllData> listPage = new LinkedList<HashAllData>();
 		int cnt = 10;
 		int min = pagenum * cnt - cnt;
 		int max = pagenum * cnt;
@@ -155,7 +174,7 @@ public class SearchController {
 				if (i == list.size()) {
 					break;
 				}
-				listPage.add(list.get(i));
+				listPage.add(new HashAllData(list.get(i).gethash(), list.get(i).isFlag()));
 			}
 		}
 		

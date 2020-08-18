@@ -42,7 +42,7 @@
 
                 </div>
                 <div v-else >
-                  <tagItem :tag="tag" v-for="tag in Results" :key="tag"/>
+                  <tagItem :tag="tag" v-for="tag in Results" :key="tag.hash"/>
                 </div>
                 <infinite-loading 
                 @infinite="infiniteHandler" 
@@ -102,6 +102,7 @@ export default {
       SearchData: "",
       isCurrent: true,
       currentTab: "사람",
+      nickname: storage.NickName,
       isEnter: false,
       Results: [],
       isLoading: false,
@@ -155,7 +156,7 @@ export default {
       const EACH_LEN = 10
 
 
-      http.get(`/search/user/${this.SearchData}/${window.sessionStorage.NickName}/${this.limit}`)
+      http.get(`/search/user/${this.SearchData}/${this.nickname}/${this.limit}`)
       .then(({data}) => {
         setTimeout(() => {
           if(data.length) {
@@ -174,7 +175,7 @@ export default {
     searchTag($state) {
       const EACH_LEN = 10
 
-      http.get(`/search/hashtag/${this.SearchData}/${this.limit}`)
+      http.get(`/search/hashtag/${this.SearchData}/${this.limit}/${this.nickname}`)
       .then(({data}) => {
         setTimeout(() => {
           if(data.length) {
