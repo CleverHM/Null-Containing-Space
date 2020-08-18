@@ -39,6 +39,13 @@ $(document).click(e => {
 })
 
 
+$(document).click(e => {
+    if (e.target.className == 'menu-item' || $(e.target).hasClass("bi")) {
+       console.log("hello")
+    }
+    
+})
+
 export default {
   name:"NavBar",
   props: [
