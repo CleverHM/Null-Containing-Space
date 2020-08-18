@@ -7,7 +7,6 @@
     "serve": "vue-cli-service serve --host client --port 80 --open",
     "build": "vue-cli-service build",    
     "lint": "vue-cli-service lint",
-    "test": "jest",
     "test:unit": "jest --no-cache"
   },
   "dependencies": {
