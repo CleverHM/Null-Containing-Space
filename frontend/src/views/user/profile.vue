@@ -77,48 +77,66 @@
               <div v-if="currentTab === 'Ability'" >
                 <!-- Backend -->
                 <div class="ability-detail">
+                  <input type="checkbox" name="backend" checked>
+                  
                   <div class="ability-header">
                       <div class="ability-kind">BackEnd</div>
                       <div class="ability-level"><b-icon-caret-down /></div>
                   </div> 
+                  <div class="ability-body">
                   <profileAbility :abilityname="abilities.backend[n-1]" :ability="User.ability[n-1]" :id="n-1" :key="n-1" v-for="n in 4"></profileAbility>
+
+                  </div>
                 </div>
       
                 <!-- FrontEnd -->
                 <div class="ability-detail">
+                  <input type="checkbox" name="frontend" checked>
                   <div class="ability-header">
                       <div class="ability-kind">FrontEnd</div>
                       <div class="ability-level"><b-icon-caret-down /></div>                  
                   </div> 
+                  <div class="ability-body">
                   <profileAbility :abilityname="abilities.frontend[n-1]" :ability="User.ability[3+n]" :id="n+3" :key="n+3" v-for="n in 3"></profileAbility>
+
+                  </div>
                 </div>
 
                 
                 <!-- DataBase -->
                 <div class="ability-detail">
+                  <input type="checkbox" name="database" checked>
                   <div class="ability-header">
                       <div class="ability-kind">DataBase</div>
                       <div class="ability-level"><b-icon-caret-down /></div>
                   </div> 
-                  <profileAbility :abilityname="abilities.DataBase[n-1]" :ability="User.ability[6+n]" :id="n+6" :key="n+6" v-for="n in 2"></profileAbility>
+                  <div class="ability-body">
+                    <profileAbility :abilityname="abilities.DataBase[n-1]" :ability="User.ability[6+n]" :id="n+6" :key="n+6" v-for="n in 2"></profileAbility>
+                  </div>
                 </div>
 
                 <!-- FrameWork -->
                 <div class="ability-detail">
+                  <input type="checkbox" name="framework" checked>
                   <div class="ability-header">
                       <div class="ability-kind">FrameWork</div>
                       <div class="ability-level"><b-icon-caret-down /></div>  
                   </div> 
-                  <profileAbility :abilityname="abilities.framework[n-1]" :ability="User.ability[8+n]" :id="n+8" :key="n+8" v-for="n in 5"></profileAbility>
+                  <div class="ability-body">
+                    <profileAbility :abilityname="abilities.framework[n-1]" :ability="User.ability[8+n]" :id="n+8" :key="n+8" v-for="n in 5"></profileAbility>
+                  </div>
                 </div>
 
                 <!-- Algorithm -->
                 <div class="ability-detail">
+                  <input type="checkbox" name="algorithm" checked>
                   <div class="ability-header">
                       <div class="ability-kind">Algorithm</div>
                       <div class="ability-level"><b-icon-caret-down /></div>  
                   </div> 
+                  <div class="ability-body">
                   <profileAbility :abilityname="abilities.Algorithm[n-1]" :ability="User.ability[13+n]" :id="n+13" :key="n+13" v-for="n in 1"></profileAbility>
+                  </div>
                 </div>
 
                 
@@ -425,7 +443,9 @@ export default {
 }
 .ability-header{
   border-bottom: 1px solid #464545;
+  height: 41px;
 }
+
 .ability-kind{
   padding-bottom: 10px;
   font-size: 18px;
@@ -442,5 +462,16 @@ export default {
   display: inline-block;
   width: 50%;
   text-align: right;
+}
+/* ability animation */
+input[type="checkbox"]{
+  width: 100%;
+  height: 41px;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+}
+input[name="backend"]:checked ~ .ability-body{
+  height: 224px;
 }
 </style>

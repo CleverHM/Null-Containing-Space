@@ -30,16 +30,12 @@ export default {
           this.$router.push({name: 'step1'}).catch(()=>{})
         },
         gostep2() {
-          this.$router.push({name: 'step2'}).catch(()=>{})
         },
         gostep3() {
-          this.$router.push({name: 'step3'}).catch(()=>{})
         },
         gostep4() {
-          this.$router.push({name: 'step4'}).catch(()=>{})
         },
         gostep5() {
-          this.$router.push({name: 'step5'}).catch(()=>{})
         },
     },
     

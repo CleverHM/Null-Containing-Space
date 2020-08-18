@@ -1,7 +1,9 @@
 <template>
     <div class="css-slider">
         <section class="slide slide-one">
-            감사합니다.
+          <h3>{{ nickname }} 님,</h3>
+           <h5>NULL 담은 공간 회원가입을 진심으로 환영합니다.</h5>
+            
             <button id="btn-join" @click="GoHome">완료</button>
         </section>
 
@@ -19,7 +21,9 @@
 
 export default {
     name: 'step1',
-
+    props: [
+      'nickname',
+    ],
     methods: {
     GoHome() {
 
@@ -112,5 +116,13 @@ header div#slide-5{
   color: #f7f7f7;
   font-weight: bold;
   width:100%;
+}
+
+/* 환영인사 */
+h3 {
+  margin-bottom: 20px;
+}
+h5{
+  margin : 0 20px ;
 }
 </style>

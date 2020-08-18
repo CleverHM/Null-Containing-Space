@@ -72,10 +72,9 @@ export default {
         }
       },
       Join() {
-        console.log(this.User)
         http.post("/account/signup", this.User)
         .then(({data}) => {
-          this.$router.push({name: 'step5'}) 
+          this.$router.push({name: 'step5', params: { nickname: this.User.nickname}}) 
         })
 
       },
@@ -92,7 +91,6 @@ export default {
         this.$router.push({name: 'step4'}).catch(()=>{})
       },
       gostep5() {
-        this.$router.push({name: 'step5'}).catch(()=>{})
       },
   },
     
