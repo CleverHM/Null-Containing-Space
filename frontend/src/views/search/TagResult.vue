@@ -6,7 +6,7 @@
             <div class="tag-image"><b-icon-tag /></div>
             <div class="tag-info">
                 <div class="tag-name-count">
-                    <div class="tag-name">#{{tag}}</div>
+                    <div class="tag-name">#{{tag.hash}}</div>
                     <div class="tag-count">(게시물 {{ Results.length }} 개)</div>
                 </div>
                 <button v-if="!isFollow" class="tag-follow-btn" @click="followtag">팔로우</button>
@@ -55,6 +55,8 @@ export default {
         InfiniteLoading,
     },
     created() {
+        console.log(this.tag)
+        this.isFollow = this.tag.flag
         this.Loading()
     },
     data() {
@@ -67,7 +69,7 @@ export default {
     methods: {
         Loading() {
               if (this.isLoading) {
-                  setTimeout(this.delayfinish, 100);
+                  setTimeout(this.delayfinish, 250);
               }
         },
           // 딜레이 화면
@@ -80,7 +82,7 @@ export default {
             
             http.get(`/post/hashall/${storage.getItem("NickName")}/${this.limit}`, {
                 params: {
-                    hashtag: this.tag + ''
+                    hashtag: this.tag.hash + ''
                 }
             })
             .then(({data}) => {
@@ -102,11 +104,12 @@ export default {
 
         followtag() {
             var InputData = new FormData()
-            InputData.append("nickname", window.sessionStorage.NickName)
-            InputData.append("tagname", this.tag)
+            InputData.append("nickname", storage.NickName)
+            InputData.append("tagname", this.tag.hash)
             http.post("/follow/tag", InputData)
             .then(({data}) => {
                 this.isFollow = data
+                console.log("f", this.isFollow)
             })
         },
     }

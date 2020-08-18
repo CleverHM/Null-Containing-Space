@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --host 0.0.0.0 --disableHostCheck true --config build/webpack.dev.conf.js",
     "serve": "vue-cli-service serve --host client --port 80 --open",
-    "build":"vue-cli-service build",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "jest --no-cache"
   },
