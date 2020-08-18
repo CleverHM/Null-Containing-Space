@@ -11,6 +11,8 @@ if [ "$isServer" == "" ]; then
 	# src/util/http-common.js
 	echo "src/util/http-common.js"
 	sed -i '5s/.*/    baseURL:"http:\/\/52.79.249.53:8080", /g' frontend/src/util/http-common.js
+	# src/views/chat/Chat.vue
+	sed -i 's/      const serverURL = "http:\/\/localhost:8080"/      const serverURL= "http:\/\/52.79.249.53:8080"/g' frontend/src/views/chat/Chat.vue
 
 	# /SNS_Backend/src/main/resources/application.properties
 	sed -i 's/#spring.datasource.url=jdbc:mariadb:\/\/mariadb/spring.datasource.url=jdbc:mariadb:\/\/mariadb/g' SNS_Backend/src/main/resources/application.properties
@@ -26,6 +28,9 @@ else
 	# src/util/http-common.js
 	echo "src/util/http-common.js"
 	sed -i '5s/.*/    baseURL:"http:\/\/localhost:8080", /g' frontend/src/util/http-common.js
+	# src/views/chat/Chat.vue
+	sed -i 's/      const serverURL= "http:\/\/52.79.249.53:8080"/      const serverURL = "http:\/\/localhost:8080"/g' frontend/src/views/chat/Chat.vue
+
 	# /SNS_Backend/src/main/resources/application.properties
 	sed -i 's/spring.datasource.url=jdbc:mariadb:\/\/mariadb/#spring.datasource.url=jdbc:mariadb:\/\/mariadb/g' SNS_Backend/src/main/resources/application.properties
 	sed -i 's/#spring.datasource.url=jdbc:mariadb:\/\/localhost/spring.datasource.url=jdbc:mariadb:\/\/localhost/g' SNS_Backend/src/main/resources/application.properties

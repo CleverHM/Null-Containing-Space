@@ -1419,6 +1419,7 @@ public class PostController {
 		
 
 		final FeedResponse result = new FeedResponse();
+		result.status = flag;
 		result.data = "success";
 		result.hashfeeddata = unique1;
 		

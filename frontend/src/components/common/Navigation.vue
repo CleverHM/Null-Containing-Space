@@ -8,9 +8,9 @@
 
                 <!-- 프로필페이지 dropdown -->
                 
-                <input type="checkbox" name="menu" class="toggleBox">
+                <input v-if="currentRouteName === 'profile'" type="checkbox" name="menu" class="toggleBox">
                 <b-icon-list v-if="currentRouteName === 'profile'" class='list-icon'></b-icon-list>
-                <div class='menu'>
+                <div v-if="currentRouteName === 'profile'" class='menu'>
                     <div  class='menu-items'>
                         <li class="menu-item" @click="goMyPost"><b-icon-layout-text-sidebar-reverse scale="1.1" class="mr-2"/>작성한 글</li>
                         <li class="menu-item" @click="goMyLikePost"><b-icon-bookmarks-fill scale="1.1" class="mr-2"/>좋아요 글</li>
@@ -32,9 +32,10 @@ import http from '@/util/http-common.js'
 import $ from 'jquery'
 
 const storage = window.sessionStorage;
+
 $(document).click(e => {
     if (e.target.className != 'menu-item' && e.target.className != 'toggleBox') {
-        $("input:checkbox[name='menu']")[0].checked = false;
+        if ($("input:checkbox[name='menu']").length != 0) $("input:checkbox[name='menu']")[0].checked = false;
     }
 })
 
