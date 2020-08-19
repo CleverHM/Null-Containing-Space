@@ -141,7 +141,6 @@ export default {
         if (this.$route.name === 'updateTeam') {
             if (this.teamData.leaderNickname.nickname === storage.getItem("NickName")) {
                 this.ifUpdate = true
-                console.log(this.ifUpdate)
 
                 // 정보 그대로 넣기
                 this.team.title = this.teamData.title;
@@ -175,7 +174,7 @@ export default {
 
             } else { // 리더가 아닌 접근은 돌린다.
                 alert('명세서 수정은 리더만 가능합니다.')
-                this.$router.go({ name: 'Main '}).catch(()=>{})
+                this.$router.replace({ name: 'Main '}).catch(()=>{})
             }
 
         }
@@ -264,7 +263,7 @@ export default {
             .post("/team/create", formData)
             .then((res) => {
                 alert('팀 개설이 완료되었습니다.')
-                this.$router.push({ name: 'Main' })
+                this.$router.replace({ name: 'Main' })
             })
             .catch((err) => {
                 console.log(err)

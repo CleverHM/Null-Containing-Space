@@ -47,6 +47,7 @@ export default {
       'teamName',
   ],
   created() {
+      console.log(this.currentRouteName)
     // 로그인 안되어있을 시 로그인 창으로 이동
     if (!this.email || !this.nickname) {
         alert("로그인이 필요합니다.")
@@ -74,8 +75,9 @@ export default {
   },
   methods: {
         goBack(){
+            
             if (this.currentRouteName === 'createTeam') {
-                this.$router.push({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
+                this.$router.replace({ name: 'LeaderForm', params: { beforeSubject: this.subjectCheck }});
             } else {
                 this.$router.go(-1)
             }

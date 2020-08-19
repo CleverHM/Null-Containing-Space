@@ -126,7 +126,7 @@ export default {
         },
 
         moveLeader() {
-            this.$router.push({ name: 'createTeam', params: { subjectCheck: this.subjectCheck }});
+            this.$router.replace({ name: 'createTeam', params: { subjectCheck: this.subjectCheck }});
         }
 
     }
