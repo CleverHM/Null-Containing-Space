@@ -1066,26 +1066,31 @@ public class PostController {
 			postList.addAll(followPost);
 		}
 
-		// 태그들 포함 여부
-		List<Post> hasftagPostList = new LinkedList<>();
-		// Iterator<Post> iterator = myPost.iterator();
+		 // 태그들 포함 여부
+        List<Post> hasftagPostList = new LinkedList<>();
+        // Iterator<Post> iterator = myPost.iterator();
 
-		System.out.println("=======넣는 중==========");
-		for (Post p : postList) {
-			System.out.println("asdad");
-			System.out.println(p.getPosttags());
-			end: for (PostTag t : p.getPosttags()) {
-				System.out.print(t.getTag().getName());
-				for (int i = 0; i < hashtag.length; i++) {
-					if (hashtag[i].equals(t.getTag().getName())) {
-						hasftagPostList.add(p);
-						break end;
-					}
-				}
-			}
-			System.out.println();
-		}
-
+        System.out.println("=======넣는 중==========");
+        for (Post p : postList) {
+            int cnt = 0;
+            System.out.println("asdad");
+            System.out.println(p.getPosttags());
+            for (PostTag t : p.getPosttags()) {
+                System.out.print(t.getTag().getName());
+                end: for (int i = 0; i < hashtag.length; i++) {
+                    if (hashtag[i].equals(t.getTag().getName())) {
+                        //hasftagPostList.add(p);
+                        cnt++;
+                        break end;
+                    }
+                }
+            }
+            if(cnt == hashtag.length) {
+                hasftagPostList.add(p);
+            }
+        }
+	
+		
 		// 내가 팔로우 0명인가?
 		boolean rflag = false;
 		if(followList.size() == 0) rflag = true;
