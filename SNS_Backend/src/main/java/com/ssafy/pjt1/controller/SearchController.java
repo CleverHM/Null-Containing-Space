@@ -169,10 +169,19 @@ public class SearchController {
 					}
 				}
 				
-				list.add(new HashAllData(t.getName(), flag));
+				list.add(new HashAllData(t.getTid(), t.getName(), flag));
 			}
 		}
 		
+		Collections.sort(list, new Comparator<HashAllData>() {
+
+			@Override
+			public int compare(HashAllData o1, HashAllData o2) {
+				// TODO Auto-generated method stub
+				return o1.getId() - o2.getId();
+			}
+		});
+	
         // 10개씩 보내기
 		List<HashAllData> listPage = new LinkedList<HashAllData>();
 		int cnt = 10;
@@ -184,7 +193,7 @@ public class SearchController {
 				if (i == list.size()) {
 					break;
 				}
-				listPage.add(new HashAllData(list.get(i).gethash(), list.get(i).isFlag()));
+				listPage.add(list.get(i));
 			}
 		}
 		
