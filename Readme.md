@@ -195,11 +195,25 @@ Color Map의 색조합을 사용하여 깔끔한 디자인으로 구현되었습
 
 ## ER Diagram
 
-> Mysql workbench 를 통해 작성되었습니다.
+> Mysql workbench로 작성되었습니다.
 
 ![ERD](./document/images/ERD.png)
 
 
+
+## Progress period
+
+총 기간: 2020.07.13 ~ 2020.08.21 (6주)
+
+- Sub PJT 1
+  - 기간: 2020.07.13 ~ 2020.07.17
+  - 내용: PJT 기본 UI 구상 및 환경 구축
+- Sub PJT 2
+  - 기간: 2020.07.20 ~ 2020.07.31
+  - 내용: PJT 기본 CRUD 기능 구현, 서버 & 프론트 연결
+- Sub PJT 3
+  - 기간: 2020.08.03 ~ 2020.08.21
+  - 내용: PJT 완성
 
 
 

@@ -77,7 +77,7 @@
   this.$refs.InfiniteLoading.stateChanger.reset(); 
   ```
 
-  - `html`에서 `ref="InfiniteLoading"`를 걸어준 후 위와 같이 reset 시켜주면 된다.
+  - `html`에서 `ref="InfiniteLoading"`로 연결해준 후 위와 같이 reset 시켜주면 된다.
 
 
 
