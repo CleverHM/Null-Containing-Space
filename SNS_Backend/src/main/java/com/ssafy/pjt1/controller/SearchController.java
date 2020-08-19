@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +69,7 @@ public class SearchController {
 					byte[] out1 = org.apache.commons.io.IOUtils.toByteArray(inputStream1);
 
 					if (u.getNickname().equals(mynickname)) {
-						PersonData pd = new PersonData(out1, u.getNickname(), 3);
+						PersonData pd = new PersonData(u.getUid(),out1, u.getNickname(), 3);
 						list.add(pd);
 					} else {
 						// 팔로우 여부 확인
@@ -81,16 +83,16 @@ public class SearchController {
 							}
 						}
 						if (f == 0) {
-							PersonData pd = new PersonData(out1, u.getNickname(), 0);
+							PersonData pd = new PersonData(u.getUid(),out1, u.getNickname(), 0);
 							list.add(pd);
 						} else {
-							PersonData pd = new PersonData(out1, u.getNickname(), 1);
+							PersonData pd = new PersonData(u.getUid(),out1, u.getNickname(), 1);
 							list.add(pd);
 						}
 					}
 				} else {
 					if (u.getNickname().equals(mynickname)) {
-						PersonData pd = new PersonData(reportBytes1, u.getNickname(), 3);
+						PersonData pd = new PersonData(u.getUid(),reportBytes1, u.getNickname(), 3);
 						list.add(pd);
 					} else {
 						// 팔로우 여부 확인
@@ -104,16 +106,24 @@ public class SearchController {
 							}
 						}
 						if (f == 0) {
-							PersonData pd = new PersonData(reportBytes1, u.getNickname(), 0);
+							PersonData pd = new PersonData(u.getUid(),reportBytes1, u.getNickname(), 0);
 							list.add(pd);
 						} else {
-							PersonData pd = new PersonData(reportBytes1, u.getNickname(), 1);
+							PersonData pd = new PersonData(u.getUid(), reportBytes1, u.getNickname(), 1);
 							list.add(pd);
 						}
 					}
 				}
 			}
 		}
+		
+		Collections.sort(list, new Comparator<PersonData>() {
+			@Override
+			public int compare(PersonData o1, PersonData o2) {
+				// TODO Auto-generated method stub
+				return o1.getId() - o2.getId();
+			}
+		});
 		
         // 10개씩 보내기
 		List<PersonData> listPage = new LinkedList<PersonData>();
