@@ -91,7 +91,7 @@ export default {
 
 <style scoped>
 .main-part {
-    margin: 60px 10px 30px 10px;
+    margin: 60px 0px 30px 0px;
 }
 .btn-study{
     padding: 7px;

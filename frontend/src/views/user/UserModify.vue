@@ -20,6 +20,7 @@
                 id="profileimg"
                 type="file"
                 ref="files"
+                accept="image/*"
                 @change="imageUpload" />
             </div>
         

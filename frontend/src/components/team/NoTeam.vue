@@ -134,7 +134,7 @@ export default {
 
 <style scoped>
 #noTeam {
-  margin: 60px 10px 50px 10px;
+  margin: 60px 20px 50px 20px;
 }
 
 .subjectArea {
@@ -142,8 +142,7 @@ export default {
   padding:10px;
   font-size: 15px;
   color: #C4BCB8;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 10px 20px 10px;
 }
 
 .subjectDesign {
