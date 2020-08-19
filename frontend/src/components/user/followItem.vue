@@ -5,12 +5,19 @@
             <img v-else src="@/assets/images/default_image.png">
         </div>
         <div class="follow-nickname" @click="goProfile">{{ User.nickname }}</div>
-        <!-- <button class="follow-button" @click="goProfile">프로필</button> -->
+        <div v-if="!IsMe">
+            <button v-if="User.flag" class="unfollow-button" @click="unfollow">팔로우 취소</button>
+            <button v-else class="follow-button" @click="follow">팔로우</button>
+        </div>
         <hr />
     </div>
 </template>
 
 <script>
+import http from '@/util/http-common.js'
+
+const storage = window.sessionStorage
+
 export default {
     name: 'followItem',
     props: [
@@ -19,9 +26,42 @@ export default {
     created() {
         // console.log(this.User)
     },
+    computed: {
+        IsMe() {
+            if (this.User.nickname === storage.NickName) return true
+            else return false
+            
+        },
+    },
     methods: {
         goProfile() {
             this.$router.push({ name: 'profile', params: { nickname: this.User.nickname }});
+        },
+        // 팔로우상태 -> 1, 언팔로우상태 -> 0
+        follow() {
+            this.User.flag = 1
+            var InputData = new FormData()
+            InputData.append("From", storage.NickName)
+            InputData.append("To", this.User.nickname)
+            http.post("follow/user", InputData)
+            .then(() => {
+                this.alarm()
+            })
+        },
+        unfollow() {
+            this.User.flag = 0
+            var InputData = new FormData()
+            InputData.append("From", storage.NickName)
+            InputData.append("To", this.User.nickname)
+            http.post("follow/user", InputData)
+
+        },
+        alarm(){
+            // 팔로우 알림 보내기
+            var AlarmData = new FormData()
+            AlarmData.append("mynickname", storage.NickName)
+            AlarmData.append("tonickname", this.User.nickname)
+            http.post("/alarm/followAlarm", AlarmData)
         },
     }
 
@@ -59,6 +99,7 @@ export default {
     top: 20px;
     margin-bottom: 10px;
 }
+
 .follow-button {
     position: absolute;
     top: 15px;
@@ -68,6 +109,21 @@ export default {
     padding: 3px 7px;
     border-radius: 5px;
     font-size: 16px;
+    border: 0;
+    outline: 0;
+
+}
+.unfollow-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #C4BCB8;
+    color: #f7f7f7;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 16px;
+    border: 0;
+    outline: 0;
 
 }
 hr {
