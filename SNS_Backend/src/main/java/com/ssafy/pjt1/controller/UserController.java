@@ -586,7 +586,7 @@ public class UserController {
 
 			for (int i = 0; i < optionalUsers.size(); i++) {
 				ran[i] = r.nextInt(optionalUsers.size()) + 1;
-				if((ran[i] -1) == oriUser.getUid()) {
+				if((ran[i]) == oriUser.getUid()) {
 					i--;
 				}
 				for (int k = 0; k < i; k++) {

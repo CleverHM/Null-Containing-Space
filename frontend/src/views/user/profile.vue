@@ -290,7 +290,8 @@ export default {
         },
         handleClick(event) {
           this.currentTab = event.target.innerText;
-          this.isCurrent = !this.isCurrent
+          if (this.currentTab === "Introduce") this.isCurrent = true
+          else this.isCurrent = false
         },
         goUserModify() {
           this.$router.push({name: 'UserModify'})

@@ -237,7 +237,7 @@ export default {
 
     // 명세서 수정 페이지
     goUpdateTeam() {
-      this.$router.replace({ name: 'updateTeam', params: { teamData: this.teamData }})
+      this.$router.push({ name: 'updateTeam', params: { teamData: this.teamData }})
     },
 
     // chat페이지
