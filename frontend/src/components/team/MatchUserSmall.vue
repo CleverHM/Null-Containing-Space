@@ -1,7 +1,7 @@
 <template>
     <div id="MatchUserSmall">
         <div class="userImg">
-            <img v-if="imgExist" :src="'data:image/png;base64, ' + userData.file" alt="user-image">
+            <img v-if="imgExist" :src="'data:image/png;base64, ' + userData.profile" alt="user-image">
             <img v-if="!imgExist" src="@/assets/images/default_image.png" alt="user_default_image">
             <div class="userName d-flex justify-content-center">
                 {{ userData.nickname }}
@@ -22,7 +22,7 @@ export default {
     },
     
     created() {
-        if (this.userData.file == null) {
+        if (this.userData.profile == null) {
             this.imgExist = false
         } else {
             this.imgExist = true

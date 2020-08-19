@@ -43,6 +43,7 @@ import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
 import com.ssafy.pjt1.model.LoginRequest;
+import com.ssafy.pjt1.model.MatchingMemberData;
 import com.ssafy.pjt1.model.MyPageData;
 import com.ssafy.pjt1.model.RecommendUser;
 import com.ssafy.pjt1.model.SignupRequest;
@@ -145,7 +146,8 @@ public class UserController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		// String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl =
+		// "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
 		String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
@@ -186,8 +188,8 @@ public class UserController {
 
 	@PutMapping("/account/modifyTrue/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatetrue(@PathVariable String nickname , @Valid @RequestParam MultipartFile profile, String email, String blog,
-			String git, String intro) throws Exception {
+	public Object updatetrue(@PathVariable String nickname, @Valid @RequestParam MultipartFile profile, String email,
+			String blog, String git, String intro) throws Exception {
 		// 프로필 사진 업로드 시작!
 		Profile img = new Profile();
 
@@ -196,7 +198,8 @@ public class UserController {
 		String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
 		File destinationFile;
 		String destinationFileName;
-		// String fileUrl = "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
+		// String fileUrl =
+		// "C:/s03p12d105/SNS_Backend/src/main/resources/static/images";
 		String fileUrl = "/home/ubuntu/s03p12d105/SNS_Backend/src/main/resources/static/images";
 
 		do {
@@ -238,8 +241,8 @@ public class UserController {
 
 	@PutMapping("/account/modifyFalse/{nickname}")
 	@ApiOperation(value = "회원 수정", notes = "회원 수정 기능 구현")
-	public Object updatefalse(@PathVariable String nickname, @Valid @RequestParam String email, String blog, String git, String intro)
-			throws Exception {
+	public Object updatefalse(@PathVariable String nickname, @Valid @RequestParam String email, String blog, String git,
+			String intro) throws Exception {
 		// 회원 수정 시작!
 		System.out.println(email);
 		Optional<User> legacyUser = userservice.findone(email);
@@ -377,7 +380,7 @@ public class UserController {
 
 	@GetMapping("/account/myPage/{nickname}/{pageNickname}")
 	@ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
-	public MyPageData myPageDetail(@PathVariable String nickname,@PathVariable String pageNickname)
+	public MyPageData myPageDetail(@PathVariable String nickname, @PathVariable String pageNickname)
 			throws FileNotFoundException, IOException {
 		System.out.println(nickname + " " + pageNickname);
 		List<String> tag = new ArrayList<>();
@@ -418,7 +421,7 @@ public class UserController {
 			abt.add(user.getAbility().getFrame_vue());
 			abt.add(user.getAbility().getFrame_react());
 			abt.add(user.getAbility().getAlgo());
-			
+
 			// 이미지
 			byte[] reportBytes = null;
 			File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
@@ -567,14 +570,14 @@ public class UserController {
 	// user 랜덤 추천
 	@GetMapping("/account/recommendUser/{nickname}")
 	@ApiOperation(value = "유저 랜덤 추천", notes = "유저 랜덤 추천 기능을 구현.")
-	public List<RecommendUser> recommendUser(@PathVariable String nickname) {
+	public List<RecommendUser> recommendUser(@PathVariable String nickname) throws IOException {
 
 		List<RecommendUser> list = new LinkedList<RecommendUser>();
 
 		List<User> optionalUsers = userservice.findall();
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User oriUser = optionalUser.get();
-		
+
 		// 램덤수 뽑기
 		// 다섯명 이상일 경우
 		if (optionalUsers.size() > 6) {
@@ -584,7 +587,7 @@ public class UserController {
 
 			for (int i = 0; i < optionalUsers.size(); i++) {
 				ran[i] = r.nextInt(optionalUsers.size()) + 1;
-				if((ran[i]) == oriUser.getUid()) {
+				if ((ran[i]) == oriUser.getUid()) {
 					i--;
 				}
 				for (int k = 0; k < i; k++) {
@@ -592,7 +595,8 @@ public class UserController {
 						i--;
 					}
 				}
-				if(i == 4) break;
+				if (i == 4)
+					break;
 			}
 
 			for (int i = 0; i < ran.length; i++) {
@@ -601,25 +605,55 @@ public class UserController {
 				int followerCount = followservice.followerCount(user);
 				int followingCount = followservice.followingCount(user);
 
-				RecommendUser ru = new RecommendUser(user.getUid(), null, user.getNickname(), user.getCreateDate(),
-						followerCount, followingCount);
+				byte[] trash = null;
 
-				list.add(ru);
+				File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("프로필 사진 있음");
+					InputStream inputStream = new FileInputStream(
+							user.getProfile().getFileurl() + user.getProfile().getFilename());
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+					RecommendUser ru = new RecommendUser(user.getUid(), out, user.getNickname(), user.getCreateDate(),
+							followerCount, followingCount);
+
+					list.add(ru);
+				} else {
+					RecommendUser ru = new RecommendUser(user.getUid(), trash, user.getNickname(), user.getCreateDate(),
+							followerCount, followingCount);
+
+					list.add(ru);
+				}
 			}
 		} else {
 			// 그냥 다넣기
 			for (int i = 0; i < optionalUsers.size(); i++) {
 				User user = optionalUsers.get(i);
-				if(user.getUid() == oriUser.getUid()) {
+				if (user.getUid() == oriUser.getUid()) {
 					continue;
 				}
 				int followerCount = followservice.followerCount(user);
 				int followingCount = followservice.followingCount(user);
 
-				RecommendUser ru = new RecommendUser(user.getUid(), null, user.getNickname(), user.getCreateDate(),
-						followerCount, followingCount);
+				byte[] trash = null;
 
-				list.add(ru);
+				File result = new File(user.getProfile().getFileurl() + user.getProfile().getFilename());
+
+				if (result.exists()) {
+					System.out.println("프로필 사진 있음");
+					InputStream inputStream = new FileInputStream(
+							user.getProfile().getFileurl() + user.getProfile().getFilename());
+					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+					RecommendUser ru = new RecommendUser(user.getUid(), out, user.getNickname(), user.getCreateDate(),
+							followerCount, followingCount);
+
+					list.add(ru);
+				} else {
+					RecommendUser ru = new RecommendUser(user.getUid(), trash, user.getNickname(), user.getCreateDate(),
+							followerCount, followingCount);
+
+					list.add(ru);
+				}
 			}
 		}
 
@@ -652,11 +686,12 @@ public class UserController {
 
 		return abt;
 	}
-	
+
 	@PutMapping("/account/abilityModify/{nickname}")
 	@ApiOperation(value = "능력치 수정", notes = "능력치 수정 기능을 구현.")
-	public void abilityInfo(@PathVariable String nickname, @Valid @RequestParam int[] ability) throws FileNotFoundException, IOException {
-		System.out.println("algo"+ability[14]);
+	public void abilityInfo(@PathVariable String nickname, @Valid @RequestParam int[] ability)
+			throws FileNotFoundException, IOException {
+		System.out.println("algo" + ability[14]);
 		Optional<User> optionalUser = userservice.findtwo(nickname);
 		User user = optionalUser.get();
 
