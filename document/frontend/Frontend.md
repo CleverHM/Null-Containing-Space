@@ -1,4 +1,26 @@
-# Frontend Construction
+# Frontend
+
+## Install
+
+1. **vue/cli 설치하기**
+
+   ```bash
+   $ npm install -g @vue/cli
+   ```
+
+2. **package 설치**
+
+   ```bash
+   $ npm i
+   ```
+
+3. **실행**
+
+   ```bash
+   $ npm run serve
+   ```
+
+   
 
 ## Directory
 
@@ -118,13 +140,13 @@ FRONTEND/
 | ------------------ | ------------------------------------------------------------ |
 | `App.vue`          | vue.js의 기본적인 App.vue를 정의합니다.                      |
 | views/`Main.vue`   | 로그인 후 사용자가 보게 될 프로젝트 화면을 정의합니다.       |
-| views/`Notice.vue` | 사용자 알림 화면을 정의합니다. ([알림 페이지 구조](./Alarm_Construction.md/#construction)) |
+| views/`Notice.vue` | 사용자 알림 화면을 정의합니다. ([알림 페이지 구조](./App_Alarm.md/#construction)) |
 
 ### :black_medium_square: src/components
 
 - **src/components/chat**
 
-  > [실시간채팅 파일 정의](./Chat_Construction.md/#file-definition)
+  > [실시간채팅 파일 정의](./App_Chat.md/#file-definition)
 
   | File 이름       | 기술                                                         |
   | --------------- | ------------------------------------------------------------ |
@@ -149,7 +171,7 @@ FRONTEND/
 
 - **src/components/search**
 
-  > [검색 파일 정의](./Search_Construction.md/#file-definition)
+  > [검색 파일 정의](./App_Search.md/#file-definition)
 
   | File 이름            | 기술                                          |
   | -------------------- | --------------------------------------------- |
@@ -159,7 +181,7 @@ FRONTEND/
 
 - **src/components/SNS**
 
-  > [뉴스피드 파일 정의](./SNSFeed_Construction.md/#file-definition)
+  > [뉴스피드 파일 정의](./App_SNSFeed.md/#file-definition)
 
   | File 이름            | 기술                                                       |
   | -------------------- | ---------------------------------------------------------- |
@@ -169,7 +191,7 @@ FRONTEND/
 
 - **src/components/team**
 
-  > [팀 파일 구조](./Team_Construction.md/#file-definition)
+  > [팀 파일 구조](./App_Team.md/#file-definition)
 
   | File 이름            | 기술                                                         |
   | -------------------- | ------------------------------------------------------------ |
@@ -184,7 +206,7 @@ FRONTEND/
 
 - **src/components/user**
 
-  > [유저 로그인 & 회원가입 파일 정의](./User(Login_Join)_Construction.md/#file-definition) / [유저 프로필 파일 정의](./User(profile)_Construction.md/#file-definition)
+  > [유저 로그인 & 회원가입 파일 정의](./App_User(Login_Join).md/#file-definition) / [유저 프로필 파일 정의](./App_User(profile).md/#file-definition)
   
   | File 이름            | 기술                                                         |
   | -------------------- | ------------------------------------------------------------ |
@@ -208,7 +230,7 @@ FRONTEND/
 
 - **src/views/chat**
 
-  > [실시간채팅 페이지 구조](./Chat_Construction.md/#construction)
+  > [실시간채팅 페이지 구조](./App_Chat.md/#construction)
 
   | File 이름  | 기술                             |
   | ---------- | -------------------------------- |
@@ -216,7 +238,7 @@ FRONTEND/
 
 - **src/views/search**
 
-  > [검색 페이지 구조](./Search_Construction.md/#construction)
+  > [검색 페이지 구조](./App_Search.md/#construction)
 
   | File 이름        | 기술                          |
   | ---------------- | ----------------------------- |
@@ -225,7 +247,7 @@ FRONTEND/
 
 - **src/views/SNS**
 
-  > [뉴스피드 구조](./SNSFeed_Construction.md/#construction)
+  > [뉴스피드 구조](./App_SNSFeed.md/#construction)
 
   | File 이름        | 기술                                            |
   | ---------------- | ----------------------------------------------- |
@@ -235,7 +257,7 @@ FRONTEND/
 
 - **src/views/team**
 
-  > [팀 페이지 구조](./Team_Construction.md/#construction)
+  > [팀 페이지 구조](./App_Team.md/#construction)
 
   | File 이름         | 기술                                           |
   | ----------------- | ---------------------------------------------- |
@@ -247,7 +269,7 @@ FRONTEND/
 
 - **src/views/user**
 
-  > [유저 로그인 & 회원가입 구조](./User(Login_Join)_Construction.md/#construction) / [유저 프로필 구조](./User(profile)_Construction.md/#construction)
+  > [유저 로그인 & 회원가입 구조](./App_User(Login_Join).md/#construction) / [유저 프로필 구조](./App_User(profile).md/#construction)
   
   | File 이름            | 기술                                           |
   | -------------------- | ---------------------------------------------- |
@@ -271,17 +293,27 @@ FRONTEND/
 
 
 
-## 세부 사항 Link 모음
+## App 별 Link 모음
 
-- [뉴스피드 파일 정의](./SNSFeed_Construction.md/#file-definition)
-- [유저 로그인 & 회원가입 구조](./User(Login_Join)_Construction.md/#construction)
-- [유저 프로필 구조](./User(profile)_Construction.md/#construction)
-- [알림 페이지 구조](./Alarm_Construction.md/#construction)
-- [팀 페이지 구조](./Team_Construction.md/#construction)
-- [검색 페이지 구조](./Search_Construction.md/#construction)
-- [실시간채팅 페이지 구조](./Chat_Construction.md/#construction)
-
-
+- [뉴스피드](./App_SNSFeed.md/#file-definition)
+- [유저 로그인 & 회원가입](./App_User(Login_Join).md/#construction)
+- [유저 프로필](./App_User(profile).md/#construction)
+- [알림 페이지](./App_Alarm.md/#construction)
+- [팀 페이지](./App_Team.md/#construction)
+- [검색 페이지](./App_Search.md/#construction)
+- [실시간채팅 페이지](./App_Chat.md/#construction)
 
 
+
+## Library
+
+- [Axios](./Library_Axios.md)
+- [infinite-loading](./Library_infinite-loading.md)
+
+
+
+## Technology & Summary
+
+- [CSS 정리](./Summary_CSS_정리.md)
+- [Javascript 정규식](./Summary_Javascript_정규식.md)
 
