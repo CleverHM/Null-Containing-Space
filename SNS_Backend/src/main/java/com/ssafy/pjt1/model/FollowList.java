@@ -4,15 +4,25 @@ public class FollowList {
     private int fid;
     private byte[] file;
     private String nickname;
+    private boolean flag;
 
-    public FollowList(int fid, byte[] file, String nickname) {
+    
+    public FollowList(int fid, byte[] file, String nickname, boolean flag) {
+		this.fid = fid;
+		this.file = file;
+		this.nickname = nickname;
+		this.flag = flag;
+	}
 
-        this.fid = fid;
-        this.file = file;
-        this.nickname = nickname;
-    }
+	public boolean isFlag() {
+		return flag;
+	}
 
-    public int getFid() {
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
+	public int getFid() {
         return fid;
     }
 
