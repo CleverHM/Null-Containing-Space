@@ -124,6 +124,8 @@ FRONTEND/
 
 - **src/components/chat**
 
+  > [실시간채팅 파일 정의](./Chat_Construction.md/#file-definition)
+
   | File 이름       | 기술                                                         |
   | --------------- | ------------------------------------------------------------ |
   | `chatMe.vue`    | 실시간 채팅에서 내 채팅 부분의 component를 정의합니다.       |
@@ -138,7 +140,7 @@ FRONTEND/
 
 - **src/components/notice**
 
-  > [알림 페이지 파일 정의](./Alarm_Construction.md/#file-definition)
+  > [알림 파일 정의](./Alarm_Construction.md/#file-definition)
 
   | File 이름       | 기술                                             |
   | --------------- | ------------------------------------------------ |
@@ -147,7 +149,7 @@ FRONTEND/
 
 - **src/components/search**
 
-  > [검색 페이지 파일 정의](./Search_Construction.md/#file-definition)
+  > [검색 파일 정의](./Search_Construction.md/#file-definition)
 
   | File 이름            | 기술                                          |
   | -------------------- | --------------------------------------------- |
@@ -166,6 +168,8 @@ FRONTEND/
   | `SNSItem.vue`        | 뉴스피드에 들어갈 게시물 component를 정의합니다.           |
 
 - **src/components/team**
+
+  > [팀 파일 구조](./Team_Construction.md/#file-definition)
 
   | File 이름            | 기술                                                         |
   | -------------------- | ------------------------------------------------------------ |
@@ -204,6 +208,8 @@ FRONTEND/
 
 - **src/views/chat**
 
+  > [실시간채팅 페이지 구조](./Chat_Construction.md/#construction)
+
   | File 이름  | 기술                             |
   | ---------- | -------------------------------- |
   | `Chat.vue` | 실시간 채팅 페이지를 정의합니다. |
@@ -228,6 +234,8 @@ FRONTEND/
   | `IndexFeed.vue`  | 뉴스피드를 위한 페이지를 정의합니다.            |
 
 - **src/views/team**
+
+  > [팀 페이지 구조](./Team_Construction.md/#construction)
 
   | File 이름         | 기술                                           |
   | ----------------- | ---------------------------------------------- |
@@ -269,8 +277,9 @@ FRONTEND/
 - [유저 로그인 & 회원가입 구조](./User(Login_Join)_Construction.md/#construction)
 - [유저 프로필 구조](./User(profile)_Construction.md/#construction)
 - [알림 페이지 구조](./Alarm_Construction.md/#construction)
-- [팀 페이지 구조]
+- [팀 페이지 구조](./Team_Construction.md/#construction)
 - [검색 페이지 구조](./Search_Construction.md/#construction)
+- [실시간채팅 페이지 구조](./Chat_Construction.md/#construction)
 
 
 

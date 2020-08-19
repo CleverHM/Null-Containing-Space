@@ -13,7 +13,7 @@
 | `SearchMain.vue` | 검색 페이지를 정의합니다.     |
 | `TagResult.vue`  | Tag 결과 페이지를 정의합니다. |
 
-### :black_medium_square: src/components/notice
+### :black_medium_square: src/components/search
 
 | File 이름            | 기술                                          |
 | -------------------- | --------------------------------------------- |
