@@ -56,8 +56,8 @@ PJT/
 ## 의존성
 
 - 해당 프로젝트는 **Backend**와 **Frontend**로 분리되어 있습니다.
-- **Backend**는 `Spring framework`를 통해 `Java`로 작성되었습니다.
-- **Frontend**는 `vue.js`를 통해 `javascript`와 `html/css`를 통해 작성되었습니다.
+- **Backend**는 `Spring framework`를 사용해 `Java`로 작성되었습니다.
+- **Frontend**는 `vue.js`를 사용해 `javascript`와 `html/css`로 작성되었습니다.
 
 
 
@@ -75,10 +75,13 @@ PJT/
 | frontend/     | frontend 관련 md 파일들을 정의합니다.              |
 | DB/           | Database 관련 파일들이 저장됩니다.                 |
 | document/     | README를 비롯한 프로젝트 관련 파일들이 저장됩니다. |
+| Chat_Backend/ | 실시간채팅 관련 파일들이 저장됩니다.               |
 
 
 
 ## wireFrame
+
+### [1차] 와이어 프레임
 
 ![wireFrame](./document/images/wireframe.png)
 

@@ -43,11 +43,27 @@
 
 - 받아온 data는 출력을 위해 `SNSItem.vue`로 내려준다.
   
-- `v-for`를 사용해 하나씩 내려줌
-  
 - `SNSItem.vue`에서 선택된 해시태그를 받아온다.
 
   - 받아온 해시태그는 `clicktags`라는 data안에 저장되어 출력한다.
+  
+- 해시태그 선택 시 axios 요청을 보내 해당 태그가 들어간 피드 목록을 받아온다.
+
+  - get방식
+
+    - :star: get 방식으로 요청을 보낼 때 params의 List 객체를 아래와 같이 적어서 보낸다.
+
+    ```javascript
+    http
+    .get(`/post/hash/${storage.getItem("NickName")}/${this.limit}`, {
+        params: {
+            hashtag: this.clicktags + ''
+        }
+    })
+    ```
+
+    - vue에서는 `+ ''` 을 통해 List 객체를 처리(?)하는 것 같다. (서버단 X. vue에서의 처리 문제)
+      - ~~serializer 등의 방식으로는 해결되지 않았다.~~
 
 
 
