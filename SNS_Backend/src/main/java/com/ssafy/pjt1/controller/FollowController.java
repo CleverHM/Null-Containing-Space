@@ -2,9 +2,10 @@ package com.ssafy.pjt1.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,16 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt1.dao.TagDao;
 import com.ssafy.pjt1.dao.UserDao;
-import com.ssafy.pjt1.dto.Post;
-import com.ssafy.pjt1.dto.PostLike;
 import com.ssafy.pjt1.dto.Tag;
 import com.ssafy.pjt1.dto.TagFollow;
 import com.ssafy.pjt1.dto.User;
 import com.ssafy.pjt1.dto.UserFollow;
 import com.ssafy.pjt1.model.BasicResponse;
-import com.ssafy.pjt1.model.FeedData;
 import com.ssafy.pjt1.model.FollowList;
-import com.ssafy.pjt1.model.MyAlarm;
 import com.ssafy.pjt1.service.FollowService;
 import com.ssafy.pjt1.service.UserService;
 
@@ -126,95 +122,100 @@ public class FollowController {
 		return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/follow/user/{nickname}/{flag}/{pagenum}")
-	@ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	public List<FollowList> userFollowList(@PathVariable String nickname,@PathVariable int flag,@PathVariable int pagenum) throws IOException {
+	 @GetMapping("/follow/user/{nickname}/{flag}/{pagenum}")
+	    @ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
+	    public List<FollowList> userFollowList(@PathVariable String nickname,@PathVariable int flag,@PathVariable int pagenum) throws IOException {
 
-		// 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
-		// flag : 1 -> 팔로잉 / 2 -> 팔로워
+	        // 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
+	        // flag : 1 -> 팔로잉 / 2 -> 팔로워
 
-		List<FollowList> list = new LinkedList<FollowList>();
+	        List<FollowList> list = new LinkedList<FollowList>();
 
-		Optional<User> U1 = userservice.findtwo(nickname);
-		User u1 = U1.get();
+	        Optional<User> U1 = userservice.findtwo(nickname);
+	        User u1 = U1.get();
 
-		if (flag == 1) {
-			System.out.println("팔로잉");
+	        if (flag == 1) {
+	            System.out.println("팔로잉");
 
-			Set<UserFollow> followings = u1.getFollowings();
+	            Set<UserFollow> followings = u1.getFollowings();
 
-			for (UserFollow uf : followings) {
-				System.out.println(uf.getTo().getEmail());
+	            for (UserFollow uf : followings) {
 
-				byte[] reportBytes = null;
-				File result = new File(uf.getTo().getProfile().getFileurl() + uf.getTo().getProfile().getFilename());
+	                byte[] reportBytes = null;
+	                File result = new File(uf.getTo().getProfile().getFileurl() + uf.getTo().getProfile().getFilename());
 
-				if (result.exists()) {
-					System.out.println("있음");
-					InputStream inputStream = new FileInputStream(
-							uf.getTo().getProfile().getFileurl() + uf.getTo().getProfile().getFilename());
+	                if (result.exists()) {
+	                    //System.out.println("있음");
+	                    InputStream inputStream = new FileInputStream(
+	                            uf.getTo().getProfile().getFileurl() + uf.getTo().getProfile().getFilename());
 
-					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+	                    byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-					list.add(new FollowList(out, uf.getTo().getNickname()));
-					// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
-				} else {
-					list.add(new FollowList(reportBytes, uf.getTo().getNickname()));
-					System.out.println("없는 파일");
-					// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
-				}
-			}
+	                    list.add(new FollowList(uf.getTo().getUid(), out, uf.getTo().getNickname()));
+	                    // respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+	                } else {
+	                    list.add(new FollowList(uf.getTo().getUid(), reportBytes, uf.getTo().getNickname()));
+	                    //System.out.println("없는 파일");
+	                    // respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
+	                }
+	            }
 
-		} else {
-			System.out.println("-----------------------------------------");
-			Set<UserFollow> followers = u1.getFollowers();
+	        } else {
+	            System.out.println("-----------------------------------------");
+	            Set<UserFollow> followers = u1.getFollowers();
 
-			System.out.println("팔로워");
+	            System.out.println("팔로워");
 
-			for (UserFollow uf : followers) {
-				System.out.println(uf.getFrom().getEmail());
+	            for (UserFollow uf : followers) {
 
-				byte[] reportBytes = null;
-				File result = new File(
-						uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
+	                byte[] reportBytes = null;
+	                File result = new File(
+	                        uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
 
-				if (result.exists()) {
-					System.out.println("있음");
-					InputStream inputStream = new FileInputStream(
-							uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
+	                if (result.exists()) {
+	                    //System.out.println("있음");
+	                    InputStream inputStream = new FileInputStream(
+	                            uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
 
-					byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
+	                    byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-					list.add(new FollowList(out, uf.getFrom().getNickname()));
-					// respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
-				} else {
-					list.add(new FollowList(reportBytes, uf.getFrom().getNickname()));
-					System.out.println("없는 파일");
-					// respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
-				}
-			}
+	                    list.add(new FollowList(uf.getFrom().getUid(), out, uf.getFrom().getNickname()));
+	                    // respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
+	                } else {
+	                    list.add(new FollowList(uf.getFrom().getUid(), reportBytes, uf.getFrom().getNickname()));
+	                    //System.out.println("없는 파일");
+	                    // respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
+	                }
+	            }
 
-		}
-
-		// 알람 10개씩 보내기
-		// page 만큼 자르기
-		List<FollowList> listPage = new LinkedList<FollowList>();
-
-		int tcnt = 10;
-		int tmin = pagenum * tcnt - tcnt;
-		int tmax = pagenum * tcnt;
-
-		if (tmin < list.size()) {
-			for (int i = tmin; i < tmax; i++) {
-				if (i == list.size()) {
-					break;
-				}
-				listPage.add(list.get(i));
-			}
-		}
-
-		return listPage;
-	}
+	        }
+	        
+	        Collections.sort(list, new Comparator<FollowList>() {
+	            @Override
+	            public int compare(FollowList o1, FollowList o2) {
+	                // TODO Auto-generated method stub
+	                return o1.getFid() - o2.getFid();
+	            }
+	        });
+	        
+	        // page 만큼 자르기
+	        List<FollowList> listPage = new LinkedList<FollowList>();
+	        System.out.println(list.size()+"  " +pagenum);
+	        int tcnt = 10;
+	        int tmin = pagenum * tcnt - tcnt;
+	        int tmax = pagenum * tcnt;
+	        System.out.println(tmin+" "+tmax);
+	        if (tmin < list.size()) {
+	            for (int i = tmin; i < tmax; i++) {
+	                if (i == list.size()) {
+	                    break;
+	                }
+	                listPage.add(list.get(i));
+	            }
+	        }
+	        
+	        return listPage;
+	    }
 
 	@PostMapping("/follow/tag")
 	@ApiOperation(value = "태그", notes = "사용자가 태그를 팔로우하는기능 ")
