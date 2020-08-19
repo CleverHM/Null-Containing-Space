@@ -90,6 +90,7 @@ export default {
       http.get(`/follow/user/${this.nickname}/${this.followFlag}/${this.limit}`)
       .then((res) => {
         setTimeout(() => {
+          console.log(res.data)
           if(res.data.length) {
             this.List = [...this.List, ...res.data]
             $state.loaded()

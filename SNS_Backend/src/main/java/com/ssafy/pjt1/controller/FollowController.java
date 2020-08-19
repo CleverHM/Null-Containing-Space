@@ -151,10 +151,10 @@ public class FollowController {
 
 	                    byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-	                    list.add(new FollowList(uf.getTo().getUid(), out, uf.getTo().getNickname()));
+	                    list.add(new FollowList(uf.getTo().getUid(), out, uf.getTo().getNickname(), true));
 	                    // respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 	                } else {
-	                    list.add(new FollowList(uf.getTo().getUid(), reportBytes, uf.getTo().getNickname()));
+	                    list.add(new FollowList(uf.getTo().getUid(), reportBytes, uf.getTo().getNickname(), true));
 	                    //System.out.println("없는 파일");
 	                    // respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 	                }
@@ -167,7 +167,19 @@ public class FollowController {
 	            System.out.println("팔로워");
 
 	            for (UserFollow uf : followers) {
-
+	            	
+	            	// 내가 팔로우 했는가?
+	            	Optional<User> ouser = userservice.findtwo(uf.getFrom().getNickname());
+	            	User fuser = ouser.get();
+	            	boolean fflag = false;
+	            	
+	            	Set<UserFollow> ffollowers = fuser.getFollowers();
+	            	for(UserFollow fuf : ffollowers) {
+	            		if(fuf.getFrom().getNickname().equals(nickname)) {
+	            			fflag = true;
+	            		}
+	            	}
+	            	
 	                byte[] reportBytes = null;
 	                File result = new File(
 	                        uf.getFrom().getProfile().getFileurl() + uf.getFrom().getProfile().getFilename());
@@ -179,10 +191,10 @@ public class FollowController {
 
 	                    byte[] out = org.apache.commons.io.IOUtils.toByteArray(inputStream);
 
-	                    list.add(new FollowList(uf.getFrom().getUid(), out, uf.getFrom().getNickname()));
+	                    list.add(new FollowList(uf.getFrom().getUid(), out, uf.getFrom().getNickname(), fflag));
 	                    // respEntity = new ResponseEntity(out, responseHeaders, HttpStatus.OK));
 	                } else {
-	                    list.add(new FollowList(uf.getFrom().getUid(), reportBytes, uf.getFrom().getNickname()));
+	                    list.add(new FollowList(uf.getFrom().getUid(), reportBytes, uf.getFrom().getNickname(), fflag));
 	                    //System.out.println("없는 파일");
 	                    // respEntity = new ResponseEntity ("File Not Found", HttpStatus.OK);
 	                }
