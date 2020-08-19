@@ -2,6 +2,7 @@
     <div class="fixed-top">
         <div class="Navi">
             <p v-if="currentRouteName ==='chat'">{{ teamName }}팀 채팅방</p>
+            <p v-else-if="currentRouteName === 'followList'">{{ profileNickname }}님의 팔로우</p>
             <p v-else>Null 담은 공간</p>
             <div>
                 <b-icon-arrow-left @click="goBack" class="arrow-left-icon icons" scale="1.3"></b-icon-arrow-left>
@@ -45,6 +46,7 @@ export default {
   props: [
       'subjectCheck', // LeaderForm에서 가지고있는 subject 정보
       'teamName',
+      'profileNickname',
   ],
   created() {
       console.log(this.currentRouteName)

@@ -70,10 +70,7 @@
           </button>
           
           <!-- 실시간 채팅 -->
-          <button @click="goChat">
-            <b-icon-chat-dots class="mr-2"/>
-            실시간 채팅
-          </button>
+         
           
           <!-- 팀 탈퇴 (팀장은 불가능)-->
           <button
@@ -89,7 +86,7 @@
             :class="{ noClick: !ifLeader }"
             @click="goUpdateTeam">
             <b-icon-card-checklist class="mr-2"/>
-            명세서 수정
+            기술 스택 수정
             <span v-if="!ifLeader" style="float: right; font-size: 13px;">(팀장만 가능)</span>
           </button>
           
@@ -140,8 +137,11 @@
     
 
     <!-- 팀원 매칭 버튼 -->
-    <div class="submit-area d-flex justify-content-center">
-      <button v-if="ifMatch" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
+    <div class="submit-area">
+      <div class="d-flex justify-content-center">
+        <button v-if="ifMatch" class="submit-button" @click="teamMatchGo">팀원 매칭하기</button>
+        <button @click="goChat" class="submit-button mx-2">실시간 채팅</button>
+      </div>
     </div>
     
   </div>
@@ -177,7 +177,7 @@ export default {
       teamExist: false,
       tabs: [
         '팀 정보',
-        '명세서',
+        '기술 스택',
         '설정',
       ],
       currentTab: 0,
@@ -358,11 +358,14 @@ export default {
 
 .tab-content {
   margin-bottom: 70px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.submit-button {
+.submit-area {
   position: fixed;
   bottom: 60px;
+  width: 100%;
 }
 
 .submit-button {

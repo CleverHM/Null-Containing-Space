@@ -3,7 +3,7 @@
         <div class="follow-img">
             <b-icon-tag />
         </div>
-        <div class="follow-nickname" @click="goTagResult">#{{tag.hash}} {{ tag.flag }}</div>
+        <div class="follow-nickname" @click="goTagResult">#{{tag.hash}}</div>
         <div>
             <button v-if="isFollow" class="unfollow-button" @click="followtag">팔로우 취소</button>
             <button v-else class="follow-button" @click="followtag">팔로우</button>

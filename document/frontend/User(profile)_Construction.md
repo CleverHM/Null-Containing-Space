@@ -52,7 +52,7 @@
     - database : SQL, noSQL
     - Framework: Spring, Django, Bootstrap, Vue, React
     - Algorithm: Algorithm
-  - 각각의 능력치들은 `profileAbility.vue`로 내려서 실력을 출력한다.
+  - 각각의 능력치들은 `profileAbility.vue`로 내려서 출력한다.
 - Navigation에서 profile일 경우에만 새로운 네비게이션 창 등을 통해 페이지를 이동한다.
   - 해당 유저가 작성한 글(`myPost.vue`)
   - 해당 유저가 좋아요한 글(`myLikePost.vue`)
@@ -65,7 +65,8 @@
 
 > 작성한 글 & 좋아요한 글의 목록을 출력한다.
 
-- axios 요청(get방식)을 보내서 글 목록을 받아 출력한다.
+- axios 요청(get방식)을 보내서 글 목록을 받아 리스트 형식의 무한 스크롤로 출력한다.
+  - 요청 주소 : `/post/upload/${this.nickname}/${this.limit}`
 - 해당 컴포넌트(`myPostItem.vue`)를 클릭하면 해당 게시글 상세 페이지로 이동한다.
 
 

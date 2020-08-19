@@ -2,71 +2,72 @@
   <div id="teamInfo">
     <Navbar></Navbar>
     <subNav/>
-      
-    <div v-if="delayOn">
-    </div>
-    <div v-if="!delayOn">
-      <div class="team-title d-flex justify-content-center">
-        {{ teamData.title }}
+    <div class="team-info">
+      <div v-if="delayOn">
       </div>
-
-      <!-- 팀 / 명세서-->
-      <div id="tabs">
-        <div class="tab-button d-flex justify-content-center">
-          <button v-for="(tab, index) in tabs"
-            :class="{active: currentTab === index}"
-            @click="currentTab = index"
-            :key="tab">
-            {{ tab }}
-          </button>
+      <div v-if="!delayOn">
+        <div class="team-title d-flex justify-content-center">
+          {{ teamData.title }}
         </div>
-        <div class="tab-content">
-          <div v-if="currentTab == 0" style="margin-top:20px;">
 
-            <!-- 시작일 -->
-            <div class="displaytags">
-              프로젝트 진행 : {{ diffTime }}
-            </div>
-            
-            <!-- 팀 정보 -->
-            <div id="team" class="my-3">
-              <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
-              <div class="d-flex justify-content-start align-items-center">
-                <div class="team-tags">
-                  팀장
-                </div>
-                <div class="leader-info">
-                    <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="ml-2"></memberImg>
-                </div>
+        <!-- 팀 / 명세서-->
+        <div id="tabs">
+          <div class="tab-button d-flex justify-content-center">
+            <button v-for="(tab, index) in tabs"
+              :class="{active: currentTab === index}"
+              @click="currentTab = index"
+              :key="tab">
+              {{ tab }}
+            </button>
+          </div>
+          <div class="tab-content">
+            <div v-if="currentTab == 0" style="margin-top:20px;">
+
+              <!-- 시작일 -->
+              <div class="displaytags">
+                프로젝트 진행 : {{ diffTime }}
               </div>
               
-              <div v-if="teamExist" class="memberArea d-flex justify-content-start align-items-center mt-4">
-                <div class="team-tags">
-                  팀원
+              <!-- 팀 정보 -->
+              <div id="team" class="my-3">
+                <div class="d-flex justify-content-center teamCnt"> 인원 ( {{ this.teamData.members.length + 1 }} / {{ this.teamData.cnt }} )</div>
+                <div class="d-flex justify-content-start align-items-center">
+                  <div class="team-tags">
+                    팀장
+                  </div>
+                  <div class="leader-info">
+                      <memberImg :memberData="teamData.leaderNickname" :isLeader="true" class="ml-2"></memberImg>
+                  </div>
                 </div>
-                <div class="member-info d-flex flex-row align-items-center">
-                    <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
+                
+                <div v-if="teamExist" class="memberArea d-flex justify-content-start align-items-center mt-4">
+                  <div class="team-tags">
+                    팀원
+                  </div>
+                  <div class="member-info d-flex flex-row align-items-center">
+                      <memberImg v-for="mem in teamData.members" :key="mem.nickname" :memberData="mem" :isLeader="false" class="ml-2"></memberImg>
+                  </div>
                 </div>
               </div>
-            </div>
 
-          </div>
-          
-          <div v-if="currentTab == 1">
-            
-            <!-- 프로젝트 명세서 -->
-            <div class="team-spec">
-                <specs :teamData="teamData"/>
             </div>
-          
+            
+            <div v-if="currentTab == 1">
+              
+              <!-- 프로젝트 명세서 -->
+              <div class="team-spec">
+                  <specs :teamData="teamData"/>
+              </div>
+            
+            </div>
           </div>
         </div>
-      </div>
-      
+        
 
-      <!-- 팀원 매칭 버튼 -->
-      <div class="submit-area d-flex justify-content-center">
-        <button class="submit-button" @click="teamSignup">팀 가입 신청</button>
+        <!-- 팀원 매칭 버튼 -->
+        <div class="submit-area d-flex justify-content-center">
+          <button class="submit-button" @click="teamSignup">팀 가입 신청</button>
+        </div>
       </div>
     </div>
   </div>
@@ -108,7 +109,7 @@ export default {
       delayOn: true,
       tabs: [
         '프로젝트 팀 정보',
-        '프로젝트 명세서',
+        '프로젝트 기술 스택',
       ],
       currentTab: 0,
     }
@@ -203,7 +204,11 @@ export default {
 
 <style scoped>
 #teamInfo {
-    margin: 60px 10px 30px 10px;
+    margin: 60px 0px 30px 0px;
+}
+
+.team-info {
+  margin: 0px 10px 0px 10px;
 }
 
 *:focus { outline:none; }

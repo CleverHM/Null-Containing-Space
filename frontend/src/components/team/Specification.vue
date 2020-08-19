@@ -124,8 +124,8 @@ export default {
 
 .displaytags {
   display: inline-block;
-  width: 25%;
-  padding: 10px;
+  width: 28%;
+  padding: 10px 5px 10px 5px;
   font-size: 14px;
   font-weight: bold;
   color: #464545;
@@ -140,7 +140,7 @@ export default {
 .button-area {
   float: right;
   display: inline;
-  width: 70%;
+  width: 68%;
   padding: 0px 10px 5px 10px;
   margin-bottom: 5px;
 }

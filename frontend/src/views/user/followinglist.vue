@@ -1,6 +1,7 @@
 <template>
   <div id="followList">
-    <Navbar />
+    <Navbar :profileNickname="nickname" />
+    <subNav></subNav>
       <nav class="default-tabs">
         <div class="default-tabs-item" :class="{'tabs-item_active':isCurrent}" @click="handleClick">
           <button> 팔로워 </button> <!-- active tab -->
@@ -41,6 +42,7 @@ import Navbar from '../../components/common/Navigation.vue'
 import followItem from '@/components/user/followItem.vue'
 import http from "@/util/http-common.js";
 import InfiniteLoading from 'vue-infinite-loading';
+import subNav from '../../components/common/subnav.vue'
 
 const storage = window.sessionStorage;
 
@@ -52,6 +54,7 @@ export default {
   ],
   components: {
     Navbar,
+    subNav,
     followItem,
     InfiniteLoading,
   },
