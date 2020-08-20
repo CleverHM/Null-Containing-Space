@@ -144,18 +144,13 @@ export default {
         },
         )
         .then((res) => {
-          // console.log(res)
           if(res.data.status) {
-            // console.log(res.data.email);
             msg = "로그인되었습니다.";
-            // storage에 받아온 데이터 집어넣기
             storage.setItem("token", res.data.token)
-            // console.log(storage)
             var User = {
               "email" : res.data.email,
               "nickname" : res.data.nickname,
             }
-            // console.log(User, typeof(User))
             storage.setItem("User", res.data.email)
             storage.setItem("NickName", res.data.nickname)
           }
@@ -163,7 +158,6 @@ export default {
           this.moveFeed();
         })
         .catch((err) => {
-          console.log(err)
           this.error.password = "로그인 정보가 일치하지 않습니다. 다시 입력하세요.";
         })
         

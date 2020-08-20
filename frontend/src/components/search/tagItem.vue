@@ -41,7 +41,6 @@ export default {
             http.post("/follow/tag", InputData)
             .then(({data}) => {
                 this.isFollow = data
-                console.log("f", this.isFollow)
             })
         },
         

@@ -55,7 +55,6 @@ export default {
         InfiniteLoading,
     },
     created() {
-        console.log(this.tag)
         this.isFollow = this.tag.flag
         this.Loading()
     },
@@ -109,7 +108,6 @@ export default {
             http.post("/follow/tag", InputData)
             .then(({data}) => {
                 this.isFollow = data
-                console.log("f", this.isFollow)
             })
         },
     }

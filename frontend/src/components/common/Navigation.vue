@@ -114,7 +114,7 @@ export default {
                 alert(`${this.$route.params.nickname}님에게 팀원 요청을 보냈습니다.`)
             })
             .catch((err) => {
-                console.log(err)
+                // console.log(err)
             })
         }
 
