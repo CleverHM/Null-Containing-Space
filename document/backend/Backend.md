@@ -183,7 +183,7 @@ SNS_Backend/
 
 ### :black_medium_square: src/main/java/com.saffy.pjt1.model
 
-> DB model의 필드 형식 지정
+> front 전달할 때 사용할 DB model의 필드 형식 지정
 
 ### :black_medium_square: src/main/java/com.saffy.pjt1.service
 
