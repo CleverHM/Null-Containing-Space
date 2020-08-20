@@ -222,7 +222,7 @@ Color Map의 색조합을 사용하여 깔끔한 디자인으로 구현되었습
 - 김호한(ghgksdk123@naver.com)
 - 조대흠
 - 박상현
-- 김지영
+- 김지영(jiyoung1329@naver.com)
 - 유수정(yusj1231@gmail.com)
 
 
