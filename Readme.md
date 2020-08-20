@@ -220,8 +220,8 @@ Color Map의 색조합을 사용하여 깔끔한 디자인으로 구현되었습
 ## Developer & Contact Information
 
 - 김호한(ghgksdk123@naver.com)
-- 조대흠
-- 박상현
+- 조대흠(conquerer1209@gmail.com)
+- 박상현(park03851@naver.com)
 - 김지영(jiyoung1329@naver.com)
 - 유수정(yusj1231@gmail.com)
 
