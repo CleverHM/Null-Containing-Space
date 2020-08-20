@@ -7,16 +7,22 @@
 
         <!-- button -->
         <td class="radio-wrap">
-            <input type="radio" value="상" :name="abilityName" @click="checkButton">
-            <div class="checkmark"></div>  
+            <div class="radio-box">
+                <input type="radio" value="상" :name="abilityName" @click="checkButton">
+                <div class="checkmark"></div>  
+            </div>
         </td>
         <td class="radio-wrap">
-            <input type="radio" value="중" :name="abilityName" @click="checkButton">
-            <div class="checkmark"></div>
+            <div class="radio-box">
+                <input type="radio" value="중" :name="abilityName" @click="checkButton">
+                <div class="checkmark"></div>
+            </div>
         </td>
         <td class="radio-wrap">
-            <input type="radio" value="하" :name="abilityName" @click="checkButton">
-            <div class="checkmark"></div>
+            <div class="radio-box">
+                <input type="radio" value="하" :name="abilityName" @click="checkButton">
+                <div class="checkmark"></div>
+            </div>
         </td>
     </tr>    
 </template>
@@ -58,31 +64,25 @@ export default {
 .radio-wrap{
     position: relative;
 }
+.radio-box{
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
 input[type="radio"],
 input[type="radio"]:checked {
     appearance: none;
     position: relative;
-    left: -5px;
     width: 24px;
     height: 24px;
     border-radius: 100%;
-}
-input[type="radio"]{
-    position: relative;
-    background-color: #f7f7f7;
-    border: 1px solid #464545;
-    
-}
-input[type="radio"]:checked{
-    position: relative;
     background-color: #f7f7f7;
     border: 1px solid #464545;
 }
-
 input[type="radio"]:checked + .checkmark {
     position: absolute;
-    top: 25px;
-    left: 20px;
+    top: 5px;
+    left: 5.5px;
     height: 13px;
     width: 13px;
     border-radius: 100%;

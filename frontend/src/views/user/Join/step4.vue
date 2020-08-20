@@ -5,9 +5,9 @@
           <table>
             <tr class="tableHeader">
               <th> 개발 능력 </th>
-              <th>상</th>
-              <th>중</th>
-              <th>하</th>
+              <th class="text-center">상</th>
+              <th class="text-center">중</th>
+              <th class="text-center">하</th>
             </tr>
             <Join4 :abilityLevel="2" :abilityName="ability" v-for="ability in abilities" :key="ability" @getAbility="saveAbility"></Join4>
           </table>
@@ -64,14 +64,16 @@ export default {
     },
     methods: {
       saveAbility(name, level){
+        console.log(name, level)
         for (var i in this.abilities){
           var ability = this.abilities[i]
-          if (ability.name === name){
+          if (ability === name){
             this.User.ability[i] = level
           }
         }
       },
       Join() {
+        console.log(this.User.ability)
         http.post("/account/signup", this.User)
         .then(({data}) => {
           this.$router.push({name: 'step5', params: { nickname: this.User.nickname}}) 
