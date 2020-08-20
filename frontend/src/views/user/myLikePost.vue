@@ -69,6 +69,11 @@ export default {
                 }
                 }, 400)
             })
+            .catch((err) => {
+                if (err.response.status == 404) {
+                this.$router.replace({ name: 'NotFound' })
+                }
+            })
         },
 
         Loading() {

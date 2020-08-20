@@ -33,7 +33,7 @@ export default {
     created() {
         var postDate = new Date(this.snsData.createDate)
         this.diffTime = this.dateCheck(postDate);
-        console.log(this.snsData)
+        // console.log(this.snsData)
     },
     data() {
         return {

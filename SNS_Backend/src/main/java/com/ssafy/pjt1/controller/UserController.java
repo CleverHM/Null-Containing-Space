@@ -217,7 +217,7 @@ public class UserController {
 		// 회원 수정 시작!
 		System.out.println(email);
 		Optional<User> legacyUser = userservice.findone(email);
-
+		
 		User originUser = legacyUser.get();
 
 		originUser.setNickname(nickname);
@@ -246,7 +246,7 @@ public class UserController {
 		// 회원 수정 시작!
 		System.out.println(email);
 		Optional<User> legacyUser = userservice.findone(email);
-
+		
 		User originUser = legacyUser.get();
 
 		originUser.setNickname(nickname);
@@ -380,13 +380,21 @@ public class UserController {
 
 	@GetMapping("/account/myPage/{nickname}/{pageNickname}")
 	@ApiOperation(value = "프로필 페이지", notes = "프로필 페이지 보여주기 기능을 구현.")
-	public MyPageData myPageDetail(@PathVariable String nickname, @PathVariable String pageNickname)
+	public Object myPageDetail(@PathVariable String nickname, @PathVariable String pageNickname)
 			throws FileNotFoundException, IOException {
 		System.out.println(nickname + " " + pageNickname);
 		List<String> tag = new ArrayList<>();
 		List<Integer> abt = new ArrayList<>();
 
 		Optional<User> optionalUser = userservice.findtwo(pageNickname);
+
+		if(!optionalUser.isPresent()) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "fail";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		
 		User user = optionalUser.get();
 
 		System.out.println(user.getEmail());
@@ -398,7 +406,7 @@ public class UserController {
 		boolean me = true;
 		boolean follow = true;
 		MyPageData mypage = null;
-
+		
 		if (nickname.equals(pageNickname)) {
 			if (user.getTagfollows().size() != 0) {
 				for (TagFollow t : user.getTagfollows()) {

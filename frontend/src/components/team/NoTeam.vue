@@ -28,9 +28,9 @@
       ref="InfiniteLoading"
       spinner="waveDots">
       <div slot="no-results">
-        <div v-if="!noMatch" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 프로젝트로 진행 중인 팀이 없습니다</div>
+        <div v-if="!noMatch" style="font-size: 14px; padding: 10px 0px;">해당 주제로 진행 중인 팀이 없습니다</div>
       </div>
-      <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 프로젝트로 진행 중인 팀이 없습니다</div>
+      <div slot="no-more" style="font-size: 14px; padding: 10px 0px;">더 이상 해당 주제로 진행 중인 팀이 없습니다</div>
     </infinite-loading>
 
     <div style="height:50px;"></div>

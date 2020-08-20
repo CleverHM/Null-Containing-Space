@@ -124,7 +124,7 @@ public class FollowController {
 
 	 @GetMapping("/follow/user/{nickname}/{flag}/{pagenum}")
 	    @ApiOperation(value = "팔로우리스트", notes = "팔로워 리스트, 팔로잉 리스트 보여주기")
-	    public List<FollowList> userFollowList(@PathVariable String nickname,@PathVariable int flag,@PathVariable int pagenum) throws IOException {
+	    public Object userFollowList(@PathVariable String nickname,@PathVariable int flag,@PathVariable int pagenum) throws IOException {
 
 	        // 뷰에서 사용자의 이메일을 던져주면 그에 해당하는 팔로워들과 팔로우한 사람들을 보여줌.
 	        // flag : 1 -> 팔로잉 / 2 -> 팔로워
@@ -132,6 +132,14 @@ public class FollowController {
 	        List<FollowList> list = new LinkedList<FollowList>();
 
 	        Optional<User> U1 = userservice.findtwo(nickname);
+	        
+			if (!U1.isPresent()) {
+				final BasicResponse result = new BasicResponse();
+				result.status = false;
+				result.data = "fail";
+				return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+			}
+	        
 	        User u1 = U1.get();
 
 	        if (flag == 1) {

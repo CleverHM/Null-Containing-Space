@@ -375,12 +375,20 @@ public class PostController {
 	// 내게시물 보내주기
 	@GetMapping("/post/upload/{nickname}/{pagenum}")
 	@ApiOperation(value = "내게시물 Vue로보내기", notes = "내게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> myPost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
+	public Object myPost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 		List<Post> postList = new LinkedList<>();
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
+		
+		if (!optionalUser.isPresent()) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "fail";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		
 		User user = optionalUser.get();
 
 		// 자기가 올린 게시문
@@ -527,12 +535,20 @@ public class PostController {
 	// 내가 좋아요한 게시물 보내주기
 	@GetMapping("/post/like/{nickname}/{pagenum}")
 	@ApiOperation(value = "내가 좋아요한 게시물 Vue로보내기", notes = "내가 좋아요한 게시물 Vue로보내기 기능을 구현.")
-	public List<FeedData> myLikePost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
+	public Object myLikePost(@PathVariable String nickname, @PathVariable int pagenum) throws FileNotFoundException, IOException {
 
 		List<FeedData> res = new LinkedList<FeedData>();
 		List<Post> postList = new LinkedList<>();
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
+		
+		if (!optionalUser.isPresent()) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "fail";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		
 		User user = optionalUser.get();
 
 		// 전체 게시문
@@ -879,16 +895,32 @@ public class PostController {
 
 	@GetMapping("/post/detail/{pid}/{nickname}")
 	@ApiOperation(value = "게시물 디테일 페이지", notes = "게시물 디테일 페이지 기능을 구현.")
-	public FeedDetailData postDetail(@PathVariable String pid, @PathVariable String nickname) throws IOException {
+	public Object postDetail(@PathVariable int pid, @PathVariable String nickname) throws IOException {
 
 		Optional<User> optionalUser = userservice.findtwo(nickname);
+		
+		if(!optionalUser.isPresent()) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "fail";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+		System.out.println("일단 닉네임은 있음");
 		User user = optionalUser.get();
 
 		FeedDetailData feedDetailData = null;
 
 		// 조회수 추가
-		int currentPid = Integer.parseInt(pid);
-		Optional<Post> optionalPost = postdao.findPostByPid(currentPid);
+		Optional<Post> optionalPost = postdao.findPostByPid(pid);
+
+		if(!optionalPost.isPresent()) {
+			final BasicResponse result = new BasicResponse();
+			result.status = false;
+			result.data = "fail";
+			return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+		}
+
+		System.out.println("일단 postid은 있음");
 		List<String> list = new LinkedList<String>();
 
 		Post post = optionalPost.get();

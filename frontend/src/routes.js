@@ -40,6 +40,7 @@ import TagResult from './views/search/TagResult.vue'
 // etc
 
 import Components from './views/Components.vue'
+import NotFound from './views/NotFound.vue'
 
 export default [
     // User
@@ -238,5 +239,12 @@ export default [
         path : '/components',
         name : 'Components',
         component : Components
+    },
+
+    // NotFound
+    {
+        path : '*',
+        name : 'NotFound',
+        component : NotFound
     },
 ]

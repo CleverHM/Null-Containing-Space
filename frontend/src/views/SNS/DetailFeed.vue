@@ -184,6 +184,13 @@ export default {
       })
       .catch((err) => {
         console.log(err)
+        if (err.response.status == 404) {
+          this.$router.replace({ name: 'NotFound' })
+        } else if (err.response.status == 400) {
+          this.$router.replace({ name: 'NotFound' })
+        } else {
+          console.log (err)
+        }
       })
     },
 
