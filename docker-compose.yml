@@ -13,7 +13,7 @@ services:
       - vue-sns
     depends_on:
       - mariadb
-    command: ["./wait-for-it.sh", "mariadb:3306", "20", "python", "app.py"]
+    command: ["./wait-for-it.sh", "mariadb:3306", "30", "python", "app.py"]
 
   client:
     build:
