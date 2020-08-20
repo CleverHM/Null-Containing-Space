@@ -87,7 +87,7 @@ export default {
     dataReceive($state) {
       const EACH_LEN = 10
 
-      http.get(`/follow/user/${storage.NickName}/${this.followFlag}/${this.limit}`)
+      http.get(`/follow/user/${this.nickname}/${storage.NickName}/${this.followFlag}/${this.limit}`)
       .then((res) => {
         setTimeout(() => {
           if(res.data.length) {
