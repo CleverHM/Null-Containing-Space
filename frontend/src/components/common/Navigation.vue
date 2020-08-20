@@ -49,7 +49,7 @@ export default {
       'profileNickname',
   ],
   created() {
-    //   console.log(this.currentRouteName)
+    // console.log(this.currentRouteName)
     // 로그인 안되어있을 시 로그인 창으로 이동
     if (!this.email || !this.nickname) {
         alert("로그인이 필요합니다.")
