@@ -96,7 +96,6 @@ export default {
   },
 
   created() {
-    // console.log(this.tapId)
     this.currentHandle();
     
   },
@@ -124,7 +123,6 @@ export default {
         }, 400)
       })
       .catch((err) => {
-        console.log(err)
       })
 
     },
@@ -150,7 +148,6 @@ export default {
         }, 400)
       })
       .catch((err) => {
-        console.log(err)
       })
     },
 

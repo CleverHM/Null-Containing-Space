@@ -64,7 +64,6 @@ export default {
     },
     methods: {
       saveAbility(name, level){
-        console.log(name, level)
         for (var i in this.abilities){
           var ability = this.abilities[i]
           if (ability === name){
@@ -73,7 +72,6 @@ export default {
         }
       },
       Join() {
-        console.log(this.User.ability)
         http.post("/account/signup", this.User)
         .then(({data}) => {
           this.$router.push({name: 'step5', params: { nickname: this.User.nickname}}) 

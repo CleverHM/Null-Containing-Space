@@ -23,9 +23,6 @@ export default {
     props: [
         'User',
     ],
-    created() {
-        console.log(this.User)
-    },
     computed: {
         IsMe() {
             if (storage.NickName === this.User.nickname) return true

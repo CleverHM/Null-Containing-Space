@@ -66,8 +66,6 @@ export default {
   methods:{
     Gostep2(email){
       this.user.email = email
-      console.log(this.user.email, typeof(this.user.email))
-      console.log(this.user, typeof(this.user))
       http
       .post('/auth/loginMailSend', 
         this.user.email,
@@ -80,22 +78,18 @@ export default {
       })
     },
     resend(email) {
-      console.log(email)
       http
       .post('/auth/loginMailSend', 
         this.user.email,
       )
       .then((data) => {
         this.isActiveStep2 = true
-        console.log("complete")
       })  
       .catch((err) => {
         this.ErrorMsg.email = "이미 존재하는 이메일입니다."
       })
     },
     Gostep3(authNum) {
-      console.log(this.user.email)
-      console.log(authNum)
       http
       .post('/auth/loginMailConfirm', 
         {
@@ -113,7 +107,6 @@ export default {
     },
     Join(user){
       this.user = user
-      console.log(this.user)
       let msg = "";
       http
       .post("/account/signup", {

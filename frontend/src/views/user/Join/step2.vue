@@ -33,7 +33,6 @@ export default {
       http
       .post("/auth/loginMailSend", this.email)
       .catch((err) => {
-        console.log(err)
       })
     },
     NextStep(email) {

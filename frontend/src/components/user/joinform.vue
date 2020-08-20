@@ -96,7 +96,7 @@
 import http from "@/util/http-common.js";
 
 const passwordReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
-const ageReg = /^[1-9]{1}$|^[1-4]{1}[0-9]{1}$|^100$/
+const ageReg = /^[1-9]{1}$|^[1-9]{1}[0-9]{1}$/
 export default {
   name: 'Join3',
   props: {

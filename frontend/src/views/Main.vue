@@ -77,7 +77,7 @@ export default {
             this.delayfinish();
         })
         .catch((err) => {
-            console.log(err)
+            // console.log(err)
         })
     },
 

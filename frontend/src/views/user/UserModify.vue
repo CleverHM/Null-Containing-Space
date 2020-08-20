@@ -169,7 +169,6 @@ export default {
                 else this.User.GitURL = data.gitaddr
             })
             .catch((err) => {
-            console.log(err)
             })
         },
         // 닉네임 중복 체크
@@ -194,7 +193,6 @@ export default {
         },
         checkGitURL() {
             if (this.User.GitURL && this.User.GitURL != null){
-                console.log(('https://' + this.User.GitURL).match(domainreg))
                 if (('https://' + this.User.GitURL).match(domainreg) != null){
                     this.error.GitURL = ""
                 } else {
