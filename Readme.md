@@ -114,7 +114,7 @@ Eclipse에서 SNS_Backend folder를 가져와 실행합니다.
 
 ## Project Construction
 
-> 해당 프로젝트는 **Spring**과 **Vue.js**를 사용합니다. [directory](#-File-Directory)
+> 해당 프로젝트는 **Spring**과 **Vue.js**를 사용합니다.
 >
 > 각 구조 확인: [Back end](./document/backend/Backend.md/#Directory) | [Front end](./document/frontend/Frontend.md/#Directory)
 
