@@ -62,10 +62,10 @@ Hibernate ORM은 자바 언어를 위한 객체 관계 매핑 프레임워크이
 
 각 기능별로 controller, DTO, Service, DAO가 필요하며 DAO는  Interface 이다.
 
-| # controller                                   | # Dao                                   |
+| controller                                     | Dao                                     |
 | ---------------------------------------------- | :-------------------------------------- |
-| ![chat_construction](../images/controller.PNG) | ![chat_construction](../images/Dao.PNG) |
-| # Service                                      | # Dto                                   |
+| ![chat_construction](../images/controller.PNG) | ![chat_construction](../images/dao.PNG) |
+| Service                                        | Dto                                     |
 | ![chat_construction](../images/service.PNG)    | ![chat_construction](../images/dto.PNG) |
 
 
