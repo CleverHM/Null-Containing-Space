@@ -24,7 +24,7 @@ Matching Algorithm은 **프로젝트 팀을 생성할 때** 팀원을 주제, �
 
    ex) 매칭시스템을 돌리는 팀장이 1번 프로젝트를 선호할 때,
 
-![3](..\images\matching_phase1.PNG)
+![1](../images/matching_phase1.PNG)
 
 ###### 	
 
@@ -36,7 +36,7 @@ Matching Algorithm은 **프로젝트 팀을 생성할 때** 팀원을 주제, �
 
    ex) 언어 따라 상위 3명을 추출
 
-   ![4](..\images\matching_phase2.PNG)
+   ![1](../images/matching_phase2.PNG)
 
 
 
@@ -44,7 +44,7 @@ Matching Algorithm은 **프로젝트 팀을 생성할 때** 팀원을 주제, �
 
    ex) 팀장이 프로젝트를 할 때 선호하는 Backend 언어가 C++과  Python일 때,
 
-![5](..\images\matching_phase3.PNG)
+![1](../images/matching_phase3.PNG)
 
 
 
@@ -52,7 +52,7 @@ Matching Algorithm은 **프로젝트 팀을 생성할 때** 팀원을 주제, �
 
    ex) 최종 매칭 인원들이 3명일 경우,
 
-![6](..\images\matching_phase4.PNG)
+![1](../images/matching_phase4.PNG)
 
 ###### 	* 적합도는 각 기술마다 상 : 99%, 중 : 50%, 하 : 0%로 산정 후, 선호하는 기술에 한 해 평균을 내서 계산
 
