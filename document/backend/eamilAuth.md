@@ -165,17 +165,17 @@ public class CustomMailSender {
 
 - ##### 5-1  인증메일을 보낼 주소 입력
 
-![mailAuth1](C:\Users\multicampus\Desktop\mailAuth1.PNG)
+![chat_construction](../images/mailAuth1.PNG)
 
 
 
 - ##### 5-2  위에서 입력한 이메일 메일함으로 들어가서 인증 번호 확인
 
-![emailAuthResult](C:\Users\multicampus\Desktop\emailAuthResult.PNG)
+![chat_construction](../images/emailAuthResult.PNG)
 
 
 
 - ##### 5-3 확인한 인증 번호로 이메일 인증 하기
 
-![](C:\Users\multicampus\Desktop\mailAuth2.PNG)
+![chat_construction](../images/mailAuth2.PNG)
 
